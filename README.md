@@ -3,16 +3,16 @@
 
 ## Lab Sessions
 
-1. Introduction, R basics and best practice \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-1-intro/1-intro.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-1-intro/1-intro.Rmd)\]
-2. Version control and project management \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-2-version-control/2-git.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-2-version-control/2-git.Rmd)\]
-3. R and the tidyverse \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-3-tidyverse/3-tidyverse.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-3-tidyverse/3-tidyverse.Rmd)\]
-4. Functions, iteration and data bases \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-4-databases/4-databases.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-4-databases/4-databases.Rmd)\]
-5. Web scraping with R \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-5-web-scraping/5-web-scraping.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-5-web-scraping/5-web-scraping.html)\]
-6. Modelling with R \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-6-modelling/6-modelling.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-6-modelling/6-modelling.Rmd)\]
-7. Visualization in R \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-7-visualization/7-visualization.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-7-visualization/7-visualization.Rmd)\]
-8. Working with the Shell \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-8-shell/8-shell.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-8-shell/8-shell.Rmd)\]
-9. Debugging and Packaging in R \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-9-debugging/9-debugging.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-9-debugging/9-debugging.Rmd)\]
-10. Interactive Web Applications with Shiny \[[**.html**](https://raw.githack.com/intro-to-data-science-21/labs/main/session-10-shiny/10-shiny.html) | [**.Rmd**](https://github.com/intro-to-data-science-21/labs/blob/main/session-10-shiny/10-shiny.Rmd)\]
+1. Introduction, R basics and best practice \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-1-intro/1-intro.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-1-intro/1-intro.Rmd)\]
+2. Version control and project management \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-2-version-control/2-git.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-2-version-control/2-git.Rmd)\]
+3. R and the tidyverse \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-3-tidyverse/3-tidyverse.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-3-tidyverse/3-tidyverse.Rmd)\]
+4. Functions, iteration and data bases \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-4-databases/4-databases.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-4-databases/4-databases.Rmd)\]
+5. Web scraping with R \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-5-web-scraping/5-web-scraping.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-5-web-scraping/5-web-scraping.html)\]
+6. Modelling with R \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-6-modelling/6-modelling.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-6-modelling/6-modelling.Rmd)\]
+7. Visualization in R \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-7-visualization/7-visualization.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-7-visualization/7-visualization.Rmd)\]
+8. Working with the Shell \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-8-shell/8-shell.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-8-shell/8-shell.Rmd)\]
+9. Debugging and Packaging in R \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-9-debugging/9-debugging.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-9-debugging/9-debugging.Rmd)\]
+10. Interactive Web Applications with Shiny \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-10-shiny/10-shiny.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-10-shiny/10-shiny.Rmd)\]
 
 ## Instructors
 
