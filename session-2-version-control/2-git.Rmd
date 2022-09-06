@@ -131,15 +131,6 @@ The following section highlights the recommended workflow that you should employ
 Great, now that you created a new repo on Github, it is important to note that you **should always** create a repo **prior** to starting your work in RStudio.
 
 
-:::: {.questionbox data-latex=""}
-::: {.center data-latex=""}
-**Question:**
-::: 
-::: {.center data-latex=""}
-There is a distinct advantage to employing the GitHub first, RStudio/Shell second approach, do you know which one?
-:::
-::::
-
 ***
 ### 2. Clone it to your local machine {.tabset .tabset-fade .tabset-pills}
 
