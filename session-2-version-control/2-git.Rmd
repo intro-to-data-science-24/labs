@@ -113,7 +113,7 @@ git config --global user.email 'my-email@adress.eu'
 
 ------------------------------------------------------------------------
 
-The following section highlights the recommended workflow that you should employ when you work with Git. You can see it as a sort of recipe that you should follow under most circumstances. At each stage you can find the instructions for working through both the Command Line and through RStudio. **Be aware** however that these are **separate** processes that should not be mixed. Either you use the shell for version control or you use RStudio.
+The following section highlights the recommended workflow that you should employ when you work with Git. You can see it as a sort of recipe that you should follow under most circumstances. At each stage you can find the instructions for working through both the Command Line and through RStudio. **Be aware** however that these are **separate** processes that should not be mixed. Either you use the shell for version control or you use RStudio or you use GitHub Desktop.
 
 ### 1. Create a new repo on Github
 
