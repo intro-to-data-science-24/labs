@@ -17,6 +17,9 @@ write.csv(my_df, "./data/my_df.csv", row.names=FALSE) #same
 
 # c) by specifying the absolute path (WRONG)
 write.csv(my_df,"/Users/l.oswald/Documents/R/Session-2-test/data/my_df2.csv", row.names=FALSE)
+# updates always necessary! ...
+write.csv(my_df,"/Users/l.oswald/Documents/Github/labs/session-2-version-control/data/my_df2.csv", row.names=FALSE)
+
 # abbreviate root dirctory - a little bit shorter but still absolute - no one has your folder structure!
 write.csv(my_df,"~/Documents/R/Session-2-test/data/my_df2.csv", row.names=FALSE) 
 
