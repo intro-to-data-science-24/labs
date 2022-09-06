@@ -87,11 +87,18 @@ str(asia)
 asia <- as.logical(asia)
 str(asia)
 
+## EX 1 ----------------------------------------
 
+#no_good <- (a,b,c)
+#no_good_either <- c(one, two, three)
+
+
+# EX 2
 ## ---- results="hide"-------------------------------------------------------------------------
 diff <-c(TRUE,"TRUE")
 
 
+# EX 3
 ## ---- results="hide"-------------------------------------------------------------------------
 vec <- c("1", "2", "3")
 
@@ -236,7 +243,7 @@ library(foreign)
 
 
 ## --------------------------------------------------------------------------------------------
-mydata <- read.csv("ACLED_countries.csv",
+mydata <- read.csv("data/ACLED_countries.csv",
                    stringsAsFactors = F)
 
 

@@ -553,7 +553,7 @@ Most data formats we commonly use are not native to `R` and need to be imported.
 
 
 ```{r}
-mydata <- read.csv("ACLED_countries.csv",
+mydata <- read.csv("data/ACLED_countries.csv",
                    stringsAsFactors = F)
 ```
 
