@@ -21,7 +21,10 @@ tidyverse_packages()
 
 ## These next two lines of code do exactly the same thing.
 
-mpg %>% filter(manufacturer=="audi") %>% group_by(model) %>% summarise(hwy_mean = mean(hwy))
+mpg %>%
+  filter(manufacturer=="audi") %>% 
+  group_by(model) %>% 
+  summarise(hwy_mean = mean(hwy))
 
 summarise(group_by(filter(mpg, manufacturer=="audi"), model), hwy_mean = mean(hwy))
 # 
@@ -90,7 +93,7 @@ stocks = data.frame( ## Could use "tibble" instead of "data.frame" if you prefer
 )
 stocks
 
-stocks %>% pivot_longer(-time, names_to="stock", values_to="price")
+stocks %>% pivot_longer(c("X", "Y", "Z"), names_to="stock", values_to="price")
 
 ## other example
 
@@ -102,7 +105,7 @@ panel = data.frame( ## Could use "tibble" instead of "data.frame" if you prefer
 )
 panel
 
-pivot_longer(panel, -unit , names_to="time", values_to="rating")
+pivot_longer(panel, c("var1", "var2", "var3"), names_to="time", values_to="rating")
 panel %>% pivot_longer(-unit, names_to="time", values_to="rating", names_prefix = "var")
 
 
@@ -173,18 +176,31 @@ names(penguins)
 
 
 ## ---- eval=F------------------------------------------------------------------------------------------
-dplyr::select(penguins, species, island, year)
+penguins %>% select(species, island, year, sex, body_mass_g)
 
-penguins %>%
+penguins_no_yr <- penguins %>%
   select(-year) 
 
 
 ## ---- eval=F------------------------------------------------------------------------------------------
 dplyr::filter(penguins, year == 2007)
 
+penguins %>%filter(year == 2007 | species == "Chinstrap")
+
+
+final_df <- penguins %>%
+  filter(year == 2009 & species == "Chinstrap") %>% 
+  select(species, sex, year)
+
+final_df %>% print()
+
+
+
+
+
 ## ---- echo=FALSE, eval=F------------------------------------------------------------------------------
 ## # you just need to utilize & and type the logical operator for the species
-dplyr::filter(penguins, year == 2007 & species == "Chinstrap")
+dplyr::filter(penguins, year == 2007 & species == "Chinstrap" & )
 dplyr::filter(penguins, year == 2007 , species == "Chinstrap")
 dplyr::filter(penguins, year == 2007 | species == "Chinstrap")
 
@@ -199,9 +215,10 @@ penguins %>%
 names(penguins)
 
 penguins_n <- penguins %>%
-  dplyr::mutate(body_mass_g = body_mass_g - 2 ,
-                body_mass_kg = body_mass_g/1000,
-                body_mass_scaled = scale(body_mass_g))
+  mutate(body_mass_g = body_mass_g - 2,
+         body_mass_kg = body_mass_g/1000,
+         body_mass_scaled = scale(body_mass_g)) %>% 
+  select(species, body_mass_g, body_mass_kg)
 
 
 

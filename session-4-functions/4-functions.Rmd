@@ -1,0 +1,365 @@
+---
+title: "Functional Programming"
+subtitle: "Functions, Iteration and debugging in R"
+output: 
+  html_document:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    theme: lumen
+    toc_depth: 3
+    toc_float: true
+    css: custom.css 
+    self_contained: false
+    includes:
+      after_body: footer.html
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+pacman::p_load(tidyverse, purrr)
+```
+
+This week, we will teach you one of **the most important** parts of coding with R (and I cannot stress enough how important it is). Built-in functions and packages can only get you so far, there will be times when it is both easier and more efficient to create your own. Writing your own functions is a key skill in any coding language really, and R is no different. Unfortunately, writing your own function also requires you to be able to find and fix bugs that will inevitably creep into your code. For all of these reasons, this lab will teach you how to: 
+
+* write your own functions 
+* iterate functions over multiple inputs
+* vectorise your functions using the `purrr` package
+* debug your code 
+
+--- 
+
+# Quick review: lists
+
+One of the more important objects in R for functional programming are lists. Since we only briefly touched upon them in Week 1, let's go over them again in more detail.
+
+Vectors can only hold a single data type.
+```{r}
+vec <- c(a = "hello", b = 1)
+```
+
+By comparison lists can hold many different data types at the same time.
+
+```{r}
+list(a = "hello", b = 1, c = mean)
+```
+
+When you think about, data.frames are also lists (or rather a list of columns).
+
+```{r}
+library(gapminder)
+head(gapminder)
+```
+
+You don't believe me?
+
+```{r}
+as.list(head(gapminder))
+```
+
+Lists will be very common (and useful) once you get into the writing of your functions and iterating them using the `purrr` family of functions. 
+
+
+---
+
+# Functions
+
+In any coding language a fundamental principle should be **DRY** (**D**on't **R**epeat **Y**ourself). You should adhere to this as much as possible, but really, once you have copy-pasted code twice, it is time to write a function.
+
+Functions allow you to automate tasks in a more powerful and general way than copy-and-pasting. Writing a function has three big advantages over using copy-and-paste:
+
+1. You can give a function an evocative name that makes your code easier to understand.
+
+2. As requirements change, you only need to update code in one place, instead of many.
+
+3. You eliminate the chance of making incidental mistakes when you copy and paste (i.e. updating a variable name in one place, but not in another).
+
+You can read more on functions in [this section](https://r4ds.had.co.nz/functions.html#functions) of R 
+for Data Science.
+
+What does code look like that calls for writing a function? Something along these lines:
+
+```{r, results=FALSE}
+df <- data.frame(
+  a = rnorm(100, 5, 2),
+  b = rnorm(100, 100, 15),
+  c = rnorm(100, 2, 1),
+  d = rnorm(100, 36, 7)
+)
+
+df$a <- (df$a - mean(df$a, na.rm = TRUE)) / sd(df$a, na.rm = TRUE)
+df$b <- (df$b - mean(df$b, na.rm = TRUE)) / sd(df$a, na.rm = TRUE) # spot the mistake?
+df$c <- (df$c - mean(df$c, na.rm = TRUE)) / sd(df$c, na.rm = TRUE)
+df$d <- (df$d - mean(df$d, na.rm = TRUE)) / sd(df$d, na.rm = TRUE)
+```
+
+There are three key steps to creating a new function:
+
+1. Pick a **name** for the function. For us it could be zscale because this function rescales (or z-transforms) a vector to have a mean of 0 and a standard deviation of 1.
+
+2. You list the **inputs**, or **arguments**, to the function inside the brackets. Here we have just one argument. If we had more, the call would look like this: function(x, y, z).
+
+3. You place the code you have developed in the **body** of the function. The body of the function is represented by a {} block that immediately follows the function(...) call.
+
+The overall structure of a function looks like this:
+
+```
+function_name <- function(input_parameters) {
+  Do what you want to do in the body of the
+  function, just like you would write other code in R.
+}
+```
+
+In our example, we could simplify the z-transformation of 4 variables with this function:
+
+```{r}
+zscale <- function(x) {
+  (x - mean(x, na.rm = T) / sd(x, na.rm = T))
+}
+```
+
+A word on **function names**. Generally, function names should be verbs, and arguments should be nouns. There are some exceptions: nouns are ok if the function computes a very well known noun (i.e. mean), or accessing some property of an object (i.e. coefficients). A good sign that a noun might be a better choice is if you’re using a very broad verb like “get”, “compute”, “calculate”, or “determine”. Where possible, avoid overriding existing functions and variables. This might be a little tricky sometimes, as many good names are already taken by other packages. Nevertheless, avoiding the most common names from base R will avoid confusion.
+
+Let's look at another example and work with a fictional experimental study dataset "study.csv" that was generated for this course.
+
+```{r, eval=T}
+library(tidyverse)
+study <- read_csv("./study.csv")
+
+glimpse(study)
+```
+##### **Exercise 1:**
+
+Can you write a function to calculate the mode for the relevant variables in the data?
+
+
+
+##### **Exercise 2:**
+
+What is the mode for the variable `bmi_3cat`?
+
+
+
+---
+
+# Conditional functions
+
+In practice you will often encounter a situation in which you would like to apply a function if a certain conditions are met. Luckily, including conditions in your custom functions is fairly straightforward. Here is what the syntax for such a conditional functions would look like. 
+
+```
+if (this) {
+  # do that
+} else if (that) {
+  # do something else
+} else {
+  # 
+}
+```
+
+The conditions in the normal brackets are specified using the logical operators of R (`!=`, `==`, `<`, `>`, etc.) or a function that returns a logical value. In many ways these conditions follow the same approach we applied to `filter()` during last week's lab. The {} denominate the body of the function, just as with unconditional functions.
+
+You could, for example, only transform numeric variables and code the function to warn you if you tried to scale a character variable.
+
+```{r}
+zscale <- function(x){
+  if (is.numeric(x)) {
+  (x - mean(x, na.rm = T) / sd(x, na.rm = T))
+  } else {
+    return(paste("Not a numeric input!"))
+  }
+}
+```
+
+Now we can apply our function to any variable that we would like to transform. It will run even if we apply it to a character input, but warn us that the input does not fit the required input.
+
+```{r, results = F}
+df$a <- zscale(df$a)
+df$b <- zscale(df$b)
+df$c <- zscale(df$c)
+df$d <- zscale(df$d)
+
+# you can also use your function with a pipe!
+df$d %>% zscale()
+```
+
+Note that there is still a lot of repetition in the example above. We can get rid of this repetition using what coders call iteration `r emo::ji("point_down")`.
+
+##### **Exercise 3:**
+
+You feel that the variable on emotions in our study dataset is badly represented and you decide to replace it with Emoticons! You want to write a function to automate this task. Transform this pseudo code into an R function: 
+
+```{r, eval=F}
+
+replace_w_emoticons <- # If person is "happy", person is ":)", 
+                       # Else if person is emotion "neutral", person is ":/"
+                       # Else person is ":("
+  
+```
+
+
+---
+
+# Iteration
+
+Iteration helps you when you need to do the same thing to multiple inputs: repeating the same operation on different columns, or on different datasets.
+
+On the one hand, you have for loops and while loops which are a great place to start because they make iteration very explicit. On the other hand, functional programming (FP) offers tools to extract out duplicated code, so each common for loop pattern gets its own function.
+
+Remember the code above - it violates the rule of thumb that you should not copy-paste code more than twice.
+
+```{r, results=FALSE}
+# repetitive code
+df$a <- zscale(df$a)
+df$b <- zscale(df$b)
+df$c <- zscale(df$c)
+df$d <- zscale(df$d)
+
+```
+
+To solve problems like this one with a for loop we need to think again about the following three components:
+
+1. **Output:** we already have the output — it’s the same as the input because we are modifying data. If that is not the case, make sure to define a space where the output should go (e.g. an empty vector). If the length of your vector is unknown, you might be tempted to solve this problem by progressively growing the vector. However, this is not very efficient because in each iteration, R has to copy all the data from the previous iterations. In technical terms you get “quadratic” (O(n^2)) behaviour which means that a loop with three times as many elements would take nine (3^2) times as long to run. A better solution to save the results in a list, and then combine into a single vector after the loop is done. See more on this [here](https://r4ds.had.co.nz/iteration.html).
+
+2. **Sequence:** we can think about a data frame as a list of columns, so we can iterate over each column with seq_along(df).
+
+3. **Body:** apply zscale() or any other function.
+
+The better solution will look like this:
+
+```{r, results = FALSE}
+# repetitive code
+df$a <- zscale(df$a)
+df$b <- zscale(df$b)
+df$c <- zscale(df$c)
+df$d <- zscale(df$d)
+
+# equivalent iteration
+for (i in seq_along(df)) {       # seq_along() similar to length()
+  df[[i]] <- zscale(df[[i]])     # [[]] because we are working on single elements
+}
+```
+
+Remember, this only works for for-loops that manipulate existing inputs (ie. columns in a dataframe). If you want to save the output of your function in a different way, you need to define the object where you wish to store the output **ahead** of the function.
+
+```{r}
+output_median <- vector("double", ncol(df))
+
+for (i in seq_along(df)) {            
+  output_median[[i]] <- median(df[[i]])    
+}
+
+output_median
+
+```
+
+
+You should also be aware that there is a conditional version of for-loops called while loops. There uses are a little more niche and as such will not be covered in this lab. For those among you who are curious about them can find a pretty good tutorial [here](https://www.r-bloggers.com/2021/09/r-while-loop/).
+
+---
+
+# The `purrr` package `r emo::ji("cat")`
+
+For loops are not as important in R as they are in other languages because R is a functional programming language. This means that it’s possible to wrap up for loops in a function, and call that function instead of using the for loop directly. `r emo::ji("bulb")`
+
+The `purrr` package provides functions that eliminate the need for many common for loops. The apply family of functions in base R (`apply()`, `lapply()`, `tapply()`, etc.) solve a similar problem, but purrr is more consistent and thus is easier to learn. The most useful function will be `map(.x, .f)`, where :
+  * .x: a vector, list, or data frame
+  * .f: a function
+  * it returns a list
+
+```{r, echo = FALSE, out.width="49%", out.height="20%",fig.cap="Logic behind vectorised functions (also called functional programming).",fig.show='hold',fig.align='center'}
+knitr::include_graphics("pics/purrr_f_list.png")
+
+```
+
+The pattern of looping over a vector, doing something to each element and saving the results is so common that the purrr package provides a family of functions to do it for you. There is one function for each type of output:
+
+* `map()` returns a list.
+* `map_lgl()` returns a logical vector
+* `map_int()` returns an integer vector.
+* `map_dbl()` returns a double vector.
+* `map_chr()` returns a character vector.
+
+
+Three ways to pass functions to `map()`:
+
+1. pass directly to `map()`
+```{r, results=FALSE}
+
+map(df, mean, na.rm = TRUE)                        
+```
+
+2. use an anonymous function
+```{r, results=FALSE}
+
+map(df, function(.x) {
+  mean(.x, na.rm = TRUE) }
+)
+
+```
+
+
+3. use ~
+```{r, results=FALSE}
+
+map(df, ~ mean(.x, na.rm = TRUE))
+                        
+```
+
+
+Let's look at this in practice. Imagine you want to calculate the mean of each column in your df:
+
+```{r, results=FALSE}
+# repetitive code
+mean(df$a)
+mean(df$b)
+mean(df$c)
+mean(df$d)
+
+# equivalent map function
+map(.x = df, ~ mean(.x, na.rm =T))
+
+# map function in tidyverse style
+df %>% map(mean)
+
+```
+
+##### **Exercise 3:**
+Since all of the means are numeric, it makes more sense to store them in a vectors, which function should I use?
+
+## mapping over two lists at the same time
+
+You can also iterate over two lists at the same time using `map2(.x, .y, .f)`
+
+```{r, echo = FALSE, out.width="49%", out.height="20%",fig.cap="Logic behind map2().",fig.show='hold',fig.align='center'}
+knitr::include_graphics("pics/purr_f2_input.png")
+
+```
+The function works exactly as the map* functions for a single input. One caveat that applies only to `map2()` is that both inputs need to have the **same length**!
+
+There is, of course, much more to learn about functions in R and for those of you who want to take it further you can find some great resources here or here.
+For now, consider this as is the first exposure to functions (that can actually already get you pretty far). However, it is important that you apply `r emo::ji("nerd")` you new skills and practice further on your own. 
+
+
+##### **Exercise 4:**
+Write a function that returns both the mean and the standard deviation for the numeric variables in our study data.
+
+##### **Exercise 5:**
+Iterate over the relevant columns.
+
+##### **Exercise 5:**
+Use `map` and the `tolower` function to harmonise character values in the study dataframe.
+
+
+---
+
+## Actually learning R `r emo::ji("backpack")`
+
+Let us remind you again, the key to learning `R` is: **Google**! We can only give you an overview over basic `R` functions, but to really learn `R` you will have to actively use it yourself, trouble shoot, ask questions, and google! It is very likely that someone else has had the exact same or just *similar enough* issue before and that the R community has answered it with 5+ different solutions years ago. `r emo::ji("wink")`
+
+---
+
+# Sources {-}
+
+The section on functions and iteration is partly based on [_R for Data Science_](http://r4ds.had.co.nz/), section 5.2, [_Quantitative Politics with R_](http://qpolr.com/data.html/), chapter 3; as well as the [Tidyverse Session](https://github.com/uo-ec607/lectures/tree/master/05-tidyverse) and on the excellent slides by [_Malcolm Barrett_](https://github.com/malcolmbarrett/happy_scientist)  in the course Data Science for Economists by Grant McDermott. The data for the exercises was inspired by [R for Epidemiology](https://www.r4epi.com/). The section on functions relies 
