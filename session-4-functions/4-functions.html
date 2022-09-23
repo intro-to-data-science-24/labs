@@ -325,7 +325,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Functional Programming</h1>
-<h3 class="subtitle">Functions, Iteration and debugging in R</h3>
+<h3 class="subtitle">Functions, iteration and debugging in R</h3>
 
 </div>
 
@@ -347,7 +347,7 @@ teach you how to:</p>
 </ul>
 <hr />
 <div id="quick-review-lists" class="section level1">
-<h1>Quick review: lists</h1>
+<h1>Quick review: lists 📃</h1>
 <p>One of the more important objects in R for functional programming are
 lists. Since we only briefly touched upon them in Week 1, let’s go over
 them again in more detail.</p>
@@ -365,7 +365,7 @@ time.</p>
 ## $c
 ## function (x, ...) 
 ## UseMethod(&quot;mean&quot;)
-## &lt;bytecode: 0x11ed10f20&gt;
+## &lt;bytecode: 0x122446f20&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p>When you think about, data.frames are also lists (or rather a list of
 columns).</p>
@@ -403,7 +403,7 @@ of functions.</p>
 <hr />
 </div>
 <div id="functions" class="section level1">
-<h1>Functions</h1>
+<h1>Functions 🏭</h1>
 <p>In any coding language a fundamental principle should be
 <strong>DRY</strong> (<strong>D</strong>on’t <strong>R</strong>epeat
 <strong>Y</strong>ourself). You should adhere to this as much as
@@ -424,6 +424,8 @@ another).</p></li>
 <p>You can read more on functions in <a
 href="https://r4ds.had.co.nz/functions.html#functions">this section</a>
 of R for Data Science.</p>
+<div id="basic-syntax" class="section level2">
+<h2>Basic Syntax</h2>
 <p>What does code look like that calls for writing a function? Something
 along these lines:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
@@ -495,11 +497,10 @@ variables in the data?</p>
 <div id="exercise-2" class="section level5">
 <h5><strong>Exercise 2:</strong></h5>
 <p>What is the mode for the variable <code>bmi_3cat</code>?</p>
-<hr />
 </div>
 </div>
-<div id="conditional-functions" class="section level1">
-<h1>Conditional functions</h1>
+<div id="conditional-functions" class="section level2">
+<h2>Conditional functions 🔀</h2>
 <p>In practice you will often encounter a situation in which you would
 like to apply a function if a certain conditions are met. Luckily,
 including conditions in your custom functions is fairly straightforward.
@@ -551,8 +552,9 @@ an R function:</p>
 <hr />
 </div>
 </div>
+</div>
 <div id="iteration" class="section level1">
-<h1>Iteration</h1>
+<h1>Iteration ⚙️</h1>
 <p>Iteration helps you when you need to do the same thing to multiple
 inputs: repeating the same operation on different columns, or on
 different datasets.</p>
@@ -567,6 +569,8 @@ should not copy-paste code more than twice.</p>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>b <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>b)</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>c <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>c)</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>d <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>d)</span></code></pre></div>
+<div id="for-loops" class="section level2">
+<h2>For-loops</h2>
 <p>To solve problems like this one with a for loop we need to think
 again about the following three components:</p>
 <ol style="list-style-type: decimal">
@@ -610,7 +614,10 @@ you wish to store the output <strong>ahead</strong> of the function.</p>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>output_median</span></code></pre></div>
-<pre><code>## [1]  0.12460191  1.23870526 -0.09560797 -0.04284436</code></pre>
+<pre><code>## [1] 0.030735654 1.593450708 0.008053258 0.037411459</code></pre>
+</div>
+<div id="while-loops" class="section level2">
+<h2>While-loops</h2>
 <p>You should also be aware that there is a conditional version of
 for-loops called while loops. There uses are a little more niche and as
 such will not be covered in this lab. For those among you who are
@@ -618,36 +625,28 @@ curious about them can find a pretty good tutorial <a
 href="https://www.r-bloggers.com/2021/09/r-while-loop/">here</a>.</p>
 <hr />
 </div>
+</div>
 <div id="the-purrr-package" class="section level1">
 <h1>The <code>purrr</code> package 🐱</h1>
-<p>For loops are not as important in R as they are in other languages
+<p>For-loops are not as important in R as they are in other languages
 because R is a functional programming language. This means that it’s
-possible to wrap up for loops in a function, and call that function
-instead of using the for loop directly. 💡</p>
+possible to wrap up for-loops in a function, and call that function
+instead of using the for-loop directly. 💡</p>
+<div id="basic-syntax-1" class="section level2">
+<h2>Basic syntax 🖊</h2>
 <p>The <code>purrr</code> package provides functions that eliminate the
 need for many common for loops. The apply family of functions in base R
 (<code>apply()</code>, <code>lapply()</code>, <code>tapply()</code>,
 etc.) solve a similar problem, but purrr is more consistent and thus is
 easier to learn. The most useful function will be
-<code>map(.x, .f)</code>, where : * .x: a vector, list, or data frame *
-.f: a function * it returns a list</p>
+<code>map(.x, .f)</code>, where: - .x: is a vector, list, or data frame
+- .f: is a function - output: is a list</p>
 <div class="figure" style="text-align: center">
 <img src="pics/purrr_f_list.png" alt="Logic behind vectorised functions (also called functional programming)." width="49%" height="20%" />
 <p class="caption">
 Logic behind vectorised functions (also called functional programming).
 </p>
 </div>
-<p>The pattern of looping over a vector, doing something to each element
-and saving the results is so common that the purrr package provides a
-family of functions to do it for you. There is one function for each
-type of output:</p>
-<ul>
-<li><code>map()</code> returns a list.</li>
-<li><code>map_lgl()</code> returns a logical vector</li>
-<li><code>map_int()</code> returns an integer vector.</li>
-<li><code>map_dbl()</code> returns a double vector.</li>
-<li><code>map_chr()</code> returns a character vector.</li>
-</ul>
 <p>Three ways to pass functions to <code>map()</code>:</p>
 <ol style="list-style-type: decimal">
 <li>pass directly to <code>map()</code></li>
@@ -676,15 +675,32 @@ mean of each column in your df:</p>
 <span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># map function in tidyverse style</span></span>
 <span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> <span class="fu">map</span>(mean)</span></code></pre></div>
+</div>
+<div id="the-map-family-of-functions" class="section level2">
+<h2>The map* family of functions 👪</h2>
+<p>The pattern of looping over a vector, doing something to each element
+and saving the results is so common that the purrr package provides a
+family of functions to do it for you. Indeed, their use is so common
+that several wrapper functions were created to include the final
+transformation of the list output. There is one function for each type
+of output:</p>
+<ul>
+<li><code>map()</code> returns a list.</li>
+<li><code>map_lgl()</code> returns a logical vector</li>
+<li><code>map_int()</code> returns an integer vector.</li>
+<li><code>map_dbl()</code> returns a double vector.</li>
+<li><code>map_chr()</code> returns a character vector.</li>
+</ul>
 <div id="exercise-3-1" class="section level5">
 <h5><strong>Exercise 3:</strong></h5>
-<p>Since all of the means are numeric, it makes more sense to store them
-in a vectors, which function should I use?</p>
+<p>Go back to the example above, since all of the means are numeric, it
+makes more sense to store them in a vector rather than a list. Which
+function should I use?</p>
 </div>
-<div id="mapping-over-two-lists-at-the-same-time"
-class="section level2">
-<h2>mapping over two lists at the same time</h2>
-<p>You can also iterate over two lists at the same time using
+</div>
+<div id="map2" class="section level2">
+<h2>Map2 ‼️</h2>
+<p>You can also iterate over two inputs at the same time using
 <code>map2(.x, .y, .f)</code></p>
 <div class="figure" style="text-align: center">
 <img src="pics/purr_f2_input.png" alt="Logic behind map2()." width="49%" height="20%" />
@@ -692,15 +708,9 @@ class="section level2">
 Logic behind map2().
 </p>
 </div>
-<p>The function works exactly as the map* functions for a single input.
-One caveat that applies only to <code>map2()</code> is that both inputs
-need to have the <strong>same length</strong>!</p>
-<p>There is, of course, much more to learn about functions in R and for
-those of you who want to take it further you can find some great
-resources here or here. For now, consider this as is the first exposure
-to functions (that can actually already get you pretty far). However, it
-is important that you apply 🤓 you new skills and practice further on
-your own.</p>
+<p>The function works exactly the same way as the map* functions for a
+single input. One caveat that applies only to <code>map2()</code> is
+that both inputs need to have the <strong>same length</strong>!</p>
 <div id="exercise-4" class="section level5">
 <h5><strong>Exercise 4:</strong></h5>
 <p>Write a function that returns both the mean and the standard
@@ -714,8 +724,328 @@ deviation for the numeric variables in our study data.</p>
 <h5><strong>Exercise 5:</strong></h5>
 <p>Use <code>map</code> and the <code>tolower</code> function to
 harmonise character values in the study dataframe.</p>
+</div>
+</div>
+<div id="non-standard-evaluation-optional" class="section level2">
+<h2>Non standard evaluation (optional)</h2>
+<p>There is, of course, much more to learn about functions in R and for
+those of you who want to take it further you can find some great
+resources here or here. For now, consider this as is the first exposure
+to functions (that can actually already get you pretty far). However, it
+is important that you apply 🤓 your new skills and practice further on
+your own.</p>
 <hr />
 </div>
+</div>
+<div id="debugging" class="section level1">
+<h1>Debugging 🐞</h1>
+<p>When you write code, things will inevitably go wrong at some point.
+You can professionalize the way of how to - fix unanticipated problems
+(debugging) - let functions communicate problems and take actions based
+on those communications (condition handling) - learn how to avoid common
+problems before they occur (defensive programming)</p>
+<p>Potential problems are communicated via “conditions”: errors,
+warnings, and messages. For example - fatal errors are raised by stop()
+and force all execution to terminate - warnings are generated by
+warning() and display potential problems - messages are generated by
+message() and can provide informative output on the way</p>
+<div id="debugging-workflow" class="section level2">
+<h2>Debugging workflow</h2>
+<ol style="list-style-type: decimal">
+<li>realize that you have a bug</li>
+<li>make bug repeatable: start with big block of code and narrow it down
+to isolate it</li>
+<li>figure out where it is</li>
+<li>fix it and test it</li>
+</ol>
+</div>
+<div id="debugging-tools" class="section level2">
+<h2>Debugging tools 🔦</h2>
+<p>In the lecture, we saw the following function that calculates the
+geodesic distance between two points specified by radian
+latitude/longitude using the Haversine formula (hf); taken from <a
+href="https://goo.gl/GezNGB">here</a>, as an example. We inserted some
+bugs here… 🐛</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>geod_dist <span class="ot">&lt;-</span> <span class="cf">function</span>(lat1, lon1, lat2, lon2, <span class="at">earth.radius =</span> <span class="dv">6371</span>) {</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># from degrees to radians</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg) <span class="fu">return</span>(deg<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  lon1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon1)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  lat1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat1)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  lon2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(long2)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  lat2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat2)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculation</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  delta.long <span class="ot">&lt;-</span> (lon2 <span class="sc">-</span> lon1)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  delta.lat <span class="ot">&lt;-</span> (lat2 <span class="sc">-</span> lat1)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">sin</span>(delta.lat<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">cos</span>(lat1) <span class="sc">*</span> <span class="fu">cos</span>(lat2) <span class="sc">*</span> <span class="fu">sing</span>(delta.long<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  c <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">asin</span>(<span class="fu">min</span>(<span class="dv">1</span>,<span class="fu">sqrt</span>(a)))</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">=</span> earth_radius <span class="sc">*</span> c</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(d)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="fu">geod_dist</span>(<span class="at">lat1 =</span> <span class="fl">49.5</span>, <span class="at">lon1 =</span> <span class="fl">8.4</span>, <span class="at">lat2 =</span> <span class="fl">52.5</span>, <span class="at">lon2 =</span> <span class="fl">13.4</span>)</span></code></pre></div>
+<div id="trial-and-error" class="section level3">
+<h3>Trial and error 🎓</h3>
+<p>That is, if you see the error right away, try and fix it. You have
+lots of experience doing that. 🤓</p>
+</div>
+<div id="making-function-global" class="section level3">
+<h3>Making function global 🌎</h3>
+<p>You basically turn the arguments of the function into global objects
+(objects you can see in your environment, otherwise the objects are only
+available within your function). Then you can step through the code line
+by line to locate the bug.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make the objects that are otherwise entered as input parameters to your function global</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>lat1 <span class="ot">=</span> <span class="fl">49.5</span>; lon1 <span class="ot">=</span> <span class="fl">8.4</span>; lat2 <span class="ot">=</span> <span class="fl">52.5</span>; lon2 <span class="ot">=</span> <span class="fl">13.4</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># now, execute line by line</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg) <span class="fu">return</span>(deg<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>lon1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon1)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>lat1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat1)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>lon2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(long2)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>lat2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat2)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>delta.long <span class="ot">&lt;-</span> (lon2 <span class="sc">-</span> lon1)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>delta.lat <span class="ot">&lt;-</span> (lat2 <span class="sc">-</span> lat1)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">sin</span>(delta.lat<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">cos</span>(lat1) <span class="sc">*</span> <span class="fu">cos</span>(lat2) <span class="sc">*</span> <span class="fu">sing</span>(delta.long<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">asin</span>(<span class="fu">min</span>(<span class="dv">1</span>,<span class="fu">sqrt</span>(a)))</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>d <span class="ot">=</span> earth_radius <span class="sc">*</span> c</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span>(d)</span></code></pre></div>
+<p><strong>Problem:</strong> This creates global objects that match
+arguments names, which can become confusing and cause problems that
+become obvious when the function is called in a different environment.
+⚠️ In case you choose this option, it is a good idea to clean your
+environment afterwards, or simply to remove all the new global objects
+using <code>rm()</code>.</p>
+<p><strong>Side note</strong> If you haven’t done so already, as a
+general best practice advise, change the settings in your global options
+to “never” save the workspace as this can cause similar issues to the
+example described above.</p>
+<p><img src="pics/workspace.png" width="506" /></p>
+</div>
+<div id="using-traceback" class="section level3">
+<h3>Using traceback() 👈</h3>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">geod_dist</span>(<span class="at">lat1 =</span> <span class="fl">49.5</span>, <span class="at">lon1 =</span> <span class="fl">8.4</span>, <span class="at">lat2 =</span> <span class="fl">52.5</span>, <span class="at">lon2 =</span> <span class="fl">13.4</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">traceback</span>()</span></code></pre></div>
+<p>This shows you where the error occurred (but not why). Read from
+bottom to top (e.g. 1. called function X, 2. called function Y, error
+occurred in line #6 of function Y)</p>
+</div>
+<div id="using-browser" class="section level3">
+<h3>Using browser() 🦊</h3>
+<p>Basically, add <code>browser()</code> into your function somewhere
+before you expect the expected error. <strong>Note:</strong> browser()
+works best within a clean .R script, it can shoot some troubles within
+.Rmd.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>geod_dist <span class="ot">&lt;-</span> <span class="cf">function</span>(lat1, lon1, lat2, lon2, <span class="at">earth.radius =</span> <span class="dv">6371</span>) {</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># from degrees to radians</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">browser</span>()</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg) <span class="fu">return</span>(deg<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  lon1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon1)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  lat1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat1)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  lon2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon2)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  lat2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat2)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculation</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  delta.long <span class="ot">&lt;-</span> (lon2 <span class="sc">-</span> lon1)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  delta.lat <span class="ot">&lt;-</span> (lat2 <span class="sc">-</span> lat1)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">sin</span>(delta.lat<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">cos</span>(lat1) <span class="sc">*</span> <span class="fu">cos</span>(lat2) <span class="sc">*</span> <span class="fu">sin</span>(delta.long<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  c <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">asin</span>(<span class="fu">min</span>(<span class="dv">1</span>,<span class="fu">sqrt</span>(a)))</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">=</span> earth_radius <span class="sc">*</span> c</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(d)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="fu">geod_dist</span>(<span class="at">lat1 =</span> <span class="fl">49.5</span>, <span class="at">lon1 =</span> <span class="fl">8.4</span>, <span class="at">lat2 =</span> <span class="fl">52.5</span>, <span class="at">lon2 =</span> <span class="fl">13.4</span>)</span></code></pre></div>
+<p>You can then interactively work through the function line by line by
+hitting enter in the console or send additional lines of code.</p>
+<p><img src="pics/browser.png" width="776" /></p>
+<p><strong>Note:</strong> Other helpful tools to debug functions in R
+that you have not written yourself are <code>debug()</code>, that
+automatically opens a debugger at the start of a function call and
+<code>trace()</code>, which allows temporary code modifications inside
+functions that you don’t have easy access to (e.g. ggplot()).</p>
+</div>
+</div>
+<div id="condition-handling" class="section level2">
+<h2>Condition handling 🐜🐜🐝🐜</h2>
+<p>Sometimes errors come expected, and you want to handle them
+automatically, e.g.: - model fails to converge - download of files fails
+- stack processing of lists</p>
+<p>Useful functions to deal with such cases: <code>try()</code> and
+<code>tryCatch()</code></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">log</span>(x) </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">10</span> </span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  } </span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(<span class="st">&quot;x&quot;</span>)</span></code></pre></div>
+<div id="using-try" class="section level3">
+<h3>Using try() 🤷</h3>
+<p>Ignore error:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">try</span>(<span class="fu">log</span>(x))</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">10</span> </span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>} </span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(<span class="st">&quot;x&quot;</span>)</span></code></pre></div>
+<pre><code>## Error in log(x) : non-numeric argument to mathematical function</code></pre>
+<pre><code>## [1] 10</code></pre>
+<p>Suppress error message:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">try</span>(<span class="fu">log</span>(x), <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">10</span> </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>} </span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">f1</span>(<span class="st">&quot;x&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 10</code></pre>
+<p>Pass block of code to try():</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">try</span>({ </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="dv">1</span> </span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="st">&quot;x&quot;</span> </span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  a <span class="sc">+</span> b </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>## Error in a + b : non-numeric argument to binary operator</code></pre>
+<p>Capture the output of try():</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>success <span class="ot">&lt;-</span> <span class="fu">try</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span>) </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>failure <span class="ot">&lt;-</span> <span class="fu">try</span>(<span class="st">&quot;a&quot;</span> <span class="sc">+</span> <span class="st">&quot;b&quot;</span>) </span></code></pre></div>
+<pre><code>## Error in &quot;a&quot; + &quot;b&quot; : non-numeric argument to binary operator</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(success)</span></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(failure) </span></code></pre></div>
+<pre><code>## [1] &quot;try-error&quot;</code></pre>
+<p>Use <code>possibly()</code>, a function similar to <code>try()</code>
+from the <code>purrr</code> package when applying a function to multiple
+elements in a list. You can also provide a default value (here: NA) in
+case execution fails.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>elements <span class="ot">&lt;-</span><span class="fu">list</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="st">&quot;f&quot;</span>)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">map</span>(elements, log)</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">map</span>(elements, <span class="fu">possibly</span>(log, <span class="cn">NA</span>))</span></code></pre></div>
+</div>
+<div id="condition-handling-with-trycatch" class="section level3">
+<h3>Condition handling with tryCatch() 🎣</h3>
+<p>React to conditions, such as errors, warnings, messages, or
+interruptions, with certain actions “handlers” (functions that are
+called with the condition as an input) are mapped to condition handler
+functions can do anything but typically will return a value or create a
+more informative error message:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>show_condition <span class="ot">&lt;-</span> <span class="cf">function</span>(code) { </span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>(code, </span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">error =</span> <span class="cf">function</span>(c) <span class="st">&quot;error&quot;</span>, </span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">warning =</span> <span class="cf">function</span>(c) <span class="st">&quot;warning&quot;</span>, </span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">message =</span> <span class="cf">function</span>(c) <span class="st">&quot;message&quot;</span> )</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="fu">stop</span>(<span class="st">&quot;!&quot;</span>))</span></code></pre></div>
+<pre><code>## [1] &quot;error&quot;</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="fu">warning</span>(<span class="st">&quot;?!&quot;</span>))</span></code></pre></div>
+<pre><code>## [1] &quot;warning&quot;</code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="fu">message</span>(<span class="st">&quot;?&quot;</span>))</span></code></pre></div>
+<pre><code>## [1] &quot;message&quot;</code></pre>
+<p>If no condition is captured, tryCatch returns the value of the
+input:</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="dv">10</span><span class="sc">+</span><span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 15</code></pre>
+<p>A more real-life example of how to use tryCatch() is this one:</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>model_selection <span class="ot">&lt;-</span> <span class="cf">function</span>(data, formula1, formula2){</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>(<span class="fu">lm</span>(formula1, data), <span class="at">error =</span> <span class="cf">function</span>(e) <span class="fu">lm</span>(formula2, data))</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>You try to fit formula1 to the data, however, maybe it is a model
+with very strict requirements. You might also have a more robust (but
+maybe less interesting) formula2 that you might fit if the requirements
+are not met and the modeling process throws an error.</p>
+<p>Make more informative error messages</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>read.csv_new <span class="ot">&lt;-</span> <span class="cf">function</span>(file, ...) { </span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>(<span class="fu">read.csv</span>(file, ...), <span class="at">error =</span> <span class="cf">function</span>(c) {</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    c<span class="sc">$</span>message <span class="ot">&lt;-</span> <span class="fu">paste0</span>(c<span class="sc">$</span>message, <span class="st">&quot; (in &quot;</span>, file, <span class="st">&quot;)&quot;</span>) </span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(c) </span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">&quot;code/dummy.csv&quot;</span>)</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv_new</span>(<span class="st">&quot;code/dummy.csv&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="defensive-programming" class="section level2">
+<h2>Defensive programming 🛡</h2>
+<ul>
+<li>“making code fail in a well-defined manner”</li>
+<li>“fail fast”: as soon as something wrong is discovered, signal an
+error</li>
+<li>Three rules to implement the “fail fast” principle:</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>be strict about what you accept (e.g., only scalars)</li>
+<li>avoid functions that use non-standard evaluation, such as subset(),
+transform(), or with()</li>
+<li>avoid functions that return different types of output depending on
+their input, e.g. [ and sapply</li>
+</ol>
+</div>
+<div id="debugging-exercise" class="section level2">
+<h2>Debugging Exercise 💀</h2>
+<p>Here is a piece of code that comes with quite some flaws. As an
+optional take-home exercise, please identify the bugs, remove them and
+report what you have done using comments.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(LegislatoR)</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="co"># get political data on German legislators</span></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>political_df <span class="ot">&lt;-</span> </span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="at">x =</span> <span class="fu">filter</span>(<span class="fu">get_political</span>(<span class="at">legislature =</span> <span class="st">&quot;ger&quot;</span>), <span class="fu">as.numeric</span>(<span class="st">&quot;session&quot;</span>) <span class="sc">==</span> <span class="dv">18</span>), </span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> <span class="fu">get_core</span>(<span class="at">legislature =</span> <span class="st">&quot;ger&quot;</span>), <span class="at">by =</span> <span class="st">&quot;pageid&quot;</span>)</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a><span class="co"># wiki traffic data</span></span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="ot">&lt;-</span> </span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_traffic</span>(<span class="at">legislature =</span> <span class="st">&quot;ger&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="st">&quot;2013-10-22&quot;</span> <span class="sc">&amp;</span> date <span class="sc">&lt;=</span> <span class="st">&quot;2017-10-24&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pageid) <span class="sc">%&gt;%</span> </span>
+<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">traffic_mean =</span> <span class="fu">mean</span>(traffic, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">traffic_max =</span> <span class="fu">max</span>(traffic, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-18"><a href="#cb54-18" aria-hidden="true" tabindex="-1"></a><span class="co"># sessions served</span></span>
+<span id="cb54-19"><a href="#cb54-19" aria-hidden="true" tabindex="-1"></a>sessions_served_df <span class="ot">&lt;-</span> </span>
+<span id="cb54-20"><a href="#cb54-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_political</span>(<span class="at">legislature =</span> <span class="st">&quot;deu&quot;</span>) <span class="sc">%%</span> </span>
+<span id="cb54-21"><a href="#cb54-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pageid) <span class="sc">%&gt;%</span> </span>
+<span id="cb54-22"><a href="#cb54-22" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">sessions_served =</span> <span class="fu">n</span>())</span>
+<span id="cb54-23"><a href="#cb54-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-24"><a href="#cb54-24" aria-hidden="true" tabindex="-1"></a><span class="co"># merge</span></span>
+<span id="cb54-25"><a href="#cb54-25" aria-hidden="true" tabindex="-1"></a>legislator_df <span class="ot">&lt;-</span> </span>
+<span id="cb54-26"><a href="#cb54-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(political_df, sessions_served_df, <span class="at">by =</span> <span class="st">&quot;pageid&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb54-27"><a href="#cb54-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(traffic_df, <span class="at">by =</span> <span class="st">&quot;pageid&quot;</span>) </span>
+<span id="cb54-28"><a href="#cb54-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-29"><a href="#cb54-29" aria-hidden="true" tabindex="-1"></a><span class="co"># compute age</span></span>
+<span id="cb54-30"><a href="#cb54-30" aria-hidden="true" tabindex="-1"></a>get_age <span class="ot">&lt;-</span> <span class="cf">function</span>(birth, date_at) {</span>
+<span id="cb54-31"><a href="#cb54-31" aria-hidden="true" tabindex="-1"></a>  date_at_fmt <span class="ot">&lt;-</span> date_at</span>
+<span id="cb54-32"><a href="#cb54-32" aria-hidden="true" tabindex="-1"></a>  birth_fmt <span class="ot">&lt;-</span> birth</span>
+<span id="cb54-33"><a href="#cb54-33" aria-hidden="true" tabindex="-1"></a>  diff <span class="ot">&lt;-</span> <span class="fu">difftime</span>(lubridate<span class="sc">::</span><span class="fu">ymd</span>(birth_fmt), lubridate<span class="sc">::</span><span class="fu">ymd</span>(date_at_fmt))</span>
+<span id="cb54-34"><a href="#cb54-34" aria-hidden="true" tabindex="-1"></a>  diff_years <span class="ot">&lt;-</span> <span class="fu">time_length</span>(diff, <span class="st">&quot;years&quot;</span>)</span>
+<span id="cb54-35"><a href="#cb54-35" aria-hidden="true" tabindex="-1"></a>  diff_years</span>
+<span id="cb54-36"><a href="#cb54-36" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb54-37"><a href="#cb54-37" aria-hidden="true" tabindex="-1"></a>legislator_df<span class="sc">$</span>age_in_years <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">get_age</span>(legislator_df<span class="sc">$</span>birth, <span class="st">&quot;2017-10-24&quot;</span>), <span class="dv">0</span>)</span>
+<span id="cb54-38"><a href="#cb54-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-39"><a href="#cb54-39" aria-hidden="true" tabindex="-1"></a><span class="co"># plot top 10 pageviews</span></span>
+<span id="cb54-40"><a href="#cb54-40" aria-hidden="true" tabindex="-1"></a>legislator_df <span class="ot">&lt;-</span> <span class="fu">arrange</span>(legislator_df, <span class="fu">desc</span>(traffic_mean))</span>
+<span id="cb54-41"><a href="#cb54-41" aria-hidden="true" tabindex="-1"></a>legislator_df<span class="sc">$</span>rank <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(legislator_df)</span>
+<span id="cb54-42"><a href="#cb54-42" aria-hidden="true" tabindex="-1"></a>legislator_df_table <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(rank, name, traffic_mean, traffic_max)</span>
+<span id="cb54-43"><a href="#cb54-43" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(legislator_df_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Rank&quot;</span>, <span class="st">&quot;Representative&quot;</span>, <span class="st">&quot;Mean&quot;</span>, <span class="st">&quot;Maximum&quot;</span>)</span>
+<span id="cb54-44"><a href="#cb54-44" aria-hidden="true" tabindex="-1"></a>legislator_df_table <span class="ot">&lt;-</span> <span class="fu">head</span>(legislator_df_table, <span class="dv">10</span>)</span>
+<span id="cb54-45"><a href="#cb54-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-46"><a href="#cb54-46" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(legislator_df_table, <span class="fu">aes</span>(<span class="at">y =</span> Mean, <span class="at">x =</span> <span class="sc">-</span>Rank)) <span class="sc">+</span> </span>
+<span id="cb54-47"><a href="#cb54-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Rank&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Avg. daily page views&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb54-48"><a href="#cb54-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Top 10 representatives by average daily page views&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb54-49"><a href="#cb54-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stats =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb54-50"><a href="#cb54-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="sc">-</span><span class="fu">nrow</span>(legislator_df_table)<span class="sc">:-</span><span class="dv">1</span>, <span class="at">labels =</span> <span class="fu">rev</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(legislator_df_table)))  </span>
+<span id="cb54-51"><a href="#cb54-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="dv">10</span>, <span class="at">label =</span> Representative), <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb54-52"><a href="#cb54-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb54-53"><a href="#cb54-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb54-54"><a href="#cb54-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-55"><a href="#cb54-55" aria-hidden="true" tabindex="-1"></a><span class="co"># run model of page views as a function of sessions served, party, sex, and age in years</span></span>
+<span id="cb54-56"><a href="#cb54-56" aria-hidden="true" tabindex="-1"></a>legislator_df<span class="sc">$</span>traffic_log <span class="ot">&lt;-</span> <span class="fu">log</span>(legislator_df<span class="sc">$</span>traffic_mean)</span>
+<span id="cb54-57"><a href="#cb54-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-58"><a href="#cb54-58" aria-hidden="true" tabindex="-1"></a>covars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;sessions_served&quot;</span>, <span class="st">&quot;party&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;age_in_years&quot;</span>)</span>
+<span id="cb54-59"><a href="#cb54-59" aria-hidden="true" tabindex="-1"></a>fmla <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;traffic_log&quot;</span>, <span class="fu">paste</span>(covars, <span class="at">collapse =</span> <span class="st">&quot; - &quot;</span>), <span class="at">sep =</span> <span class="st">&quot; ~ &quot;</span>)</span>
+<span id="cb54-60"><a href="#cb54-60" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(log_traffic_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(fmla, legislator_df))</span>
+<span id="cb54-61"><a href="#cb54-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-62"><a href="#cb54-62" aria-hidden="true" tabindex="-1"></a><span class="co"># plot table</span></span>
+<span id="cb54-63"><a href="#cb54-63" aria-hidden="true" tabindex="-1"></a>sjPlot<span class="sc">::</span><span class="fu">tab_model</span>(log_traffic_model)</span></code></pre></div>
+<hr />
 </div>
 <div id="actually-learning-r" class="section level2">
 <h2>Actually learning R 🎒</h2>
