@@ -365,7 +365,7 @@ time.</p>
 ## $c
 ## function (x, ...) 
 ## UseMethod(&quot;mean&quot;)
-## &lt;bytecode: 0x122446f20&gt;
+## &lt;bytecode: 0x10a345d20&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 <p>When you think about, data.frames are also lists (or rather a list of
 columns).</p>
@@ -614,7 +614,7 @@ you wish to store the output <strong>ahead</strong> of the function.</p>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>output_median</span></code></pre></div>
-<pre><code>## [1] 0.030735654 1.593450708 0.008053258 0.037411459</code></pre>
+<pre><code>## [1] -0.069838140  0.064987850  0.014097401 -0.004056629</code></pre>
 </div>
 <div id="while-loops" class="section level2">
 <h2>While-loops</h2>
@@ -734,6 +734,24 @@ resources here or here. For now, consider this as is the first exposure
 to functions (that can actually already get you pretty far). However, it
 is important that you apply 🤓 your new skills and practice further on
 your own.</p>
+<p>One such skill is the question of how to integrate tidyverse
+functions into your own functions. Most dplyr verbs use tidy evaluation
+in some way. Tidy evaluation is a special type of non-standard
+evaluation (meaning the way how R interprets your written code) used
+throughout the tidyverse. There are two basic forms found in dplyr:</p>
+<ul>
+<li><strong>data masking</strong> makes it so that you can use data
+variables as if they were variables in the environment (i.e. you write
+my_variable instead of df$myvariable).</li>
+<li><strong>tidy selection</strong> allows you to switch choosing
+variables based on their position, name, or type (e.g. starts_with(“x”)
+or is.numeric).</li>
+</ul>
+<p>Data masking and tidy selection make interactive data exploration
+fast and fluid, but they add some new challenges when you attempt to use
+them indirectly such as in a for loop or a function. <a
+href="https://dplyr.tidyverse.org/articles/programming.html">This
+vignette</a> shows you how to overcome those challenges.</p>
 <hr />
 </div>
 </div>
@@ -789,7 +807,7 @@ bugs here… 🐛</p>
 lots of experience doing that. 🤓</p>
 </div>
 <div id="making-function-global" class="section level3">
-<h3>Making function global 🌎</h3>
+<h3>Making function global 🌍</h3>
 <p>You basically turn the arguments of the function into global objects
 (objects you can see in your environment, otherwise the objects are only
 available within your function). Then you can step through the code line

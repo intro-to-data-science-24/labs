@@ -359,6 +359,12 @@ Use `map` and the `tolower` function to harmonise character values in the study 
 There is, of course, much more to learn about functions in R and for those of you who want to take it further you can find some great resources here or here.
 For now, consider this as is the first exposure to functions (that can actually already get you pretty far). However, it is important that you apply `r emo::ji("nerd")` your new skills and practice further on your own. 
 
+One such skill is the question of how to integrate tidyverse functions into your own functions. Most dplyr verbs use tidy evaluation in some way. Tidy evaluation is a special type of non-standard evaluation (meaning the way how R interprets your written code) used throughout the tidyverse. There are two basic forms found in dplyr:
+
+* **data masking** makes it so that you can use data variables as if they were variables in the environment (i.e. you write my_variable instead of df$myvariable).
+* **tidy selection** allows you to switch choosing variables based on their position, name, or type (e.g. starts_with("x") or is.numeric).
+
+Data masking and tidy selection make interactive data exploration fast and fluid, but they add some new challenges when you attempt to use them indirectly such as in a for loop or a function. [This vignette](https://dplyr.tidyverse.org/articles/programming.html) shows you how to overcome those challenges.
 
 ---
 
