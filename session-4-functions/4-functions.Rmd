@@ -118,7 +118,7 @@ In our example, we could simplify the z-transformation of 4 variables with this 
 
 ```{r}
 zscale <- function(x) {
-  (x - mean(x, na.rm = T) / sd(x, na.rm = T))
+  (x - mean(x, na.rm = T)) / sd(x, na.rm = T)
 }
 ```
 
@@ -128,7 +128,7 @@ Let's look at another example and work with a fictional experimental study datas
 
 ```{r, eval=T}
 library(tidyverse)
-study <- read_csv("./study.csv")
+study <- read_csv("./study.csv") 
 
 glimpse(study)
 ```
@@ -137,9 +137,23 @@ glimpse(study)
 
 Can you write a function to calculate the mode for the relevant variables in the data?
 
+```{r}
+get_mode <- function(v) {
+  v <- v %>% na.omit()
+  uniq_v <- v %>% unique()
+  return(uniq_v[which.max(tabulate(match(v, uniq_v)))])
+}
+```
+
+
 ##### **Exercise 2:**
 
 What is the mode for the variable `bmi_3cat`?
+
+```{r}
+get_mode(study$bmi_3cat)
+```
+
 
 
 ## Conditional functions `r emo::ji("shuffle_tracks_button")`
@@ -189,11 +203,26 @@ Note that there is still a lot of repetition in the example above. We can get ri
 You feel that the variable on emotions in our study dataset is badly represented and you decide to replace it with Emoticons! You want to write a function to automate this task. Transform this pseudo code into an R function: 
 
 ```{r, eval=F}
+# replace netural with neutral
 
-replace_w_emoticons <- # If person is "happy", person is ":)", 
-                       # Else if person is emotion "neutral", person is ":/"
-                       # Else person is ":("
-  
+study$emotions[study$emotions == 'netural'] <- 'neutral'
+
+replace_w_emoticons <- function(x) {
+  if (x == "happy") {
+    ":)"
+  } else if (x == "sad") {
+    ":("
+  } else {
+    ":/"
+  }
+}
+
+# vectorize function:
+replace_w_emoticons_vectorized <- Vectorize(replace_w_emoticons)
+
+# Apply function and create emoticon column
+study$emoticons <- replace_w_emoticons_vectorized(study$emotions)
+
 ```
 
 
@@ -247,7 +276,7 @@ Remember, this only works for for-loops that manipulate existing inputs (ie. col
 output_median <- vector("double", ncol(df))
 
 for (i in seq_along(df)) {            
-  output_median[[i]] <- median(df[[i]])    
+  output_median[[i]] <- median(df[[i]])
 }
 
 output_median
@@ -311,6 +340,7 @@ mean(df$b)
 mean(df$c)
 mean(df$d)
 
+
 # equivalent map function
 map(.x = df, ~ mean(.x, na.rm =T))
 
@@ -347,12 +377,35 @@ The function works exactly the same way as the map* functions for a single input
 
 ##### **Exercise 4:**
 Write a function that returns both the mean and the standard deviation for the numeric variables in our study data.
+```{r}
+mean_sd <- function(x) {
+  list('mean' = mean(x, na.rm=T), 'sd' = sd(x, na.rm=T))
+}
+```
+
+
 
 ##### **Exercise 5:**
 Iterate over the relevant columns.
+```{r}
+map_df(study %>% select(where(is.numeric)), mean_sd) %>% 
+  cbind(
+    'col' = study %>% 
+      select(where(is.numeric)) %>% 
+      colnames()
+    )
+```
 
-##### **Exercise 5:**
+
+
+##### **Exercise 6:**
 Use `map` and the `tolower` function to harmonise character values in the study dataframe.
+
+```{r}
+study %>% select(where(is.character)) %>% map_df(tolower)
+```
+
+
 
 ## Non standard evaluation (optional)
 
@@ -395,19 +448,21 @@ Potential problems are communicated via "conditions": errors, warnings, and mess
 In the lecture, we saw the following function that calculates the geodesic distance between two points specified by radian latitude/longitude using the Haversine formula (hf); taken from [here](https://goo.gl/GezNGB), as an example. We inserted some bugs here... `r emo::ji("bug")`
 
 ```{r eval = FALSE}
+# please find the bug fixes in the comments in line
+
 geod_dist <- function(lat1, lon1, lat2, lon2, earth.radius = 6371) {
   # from degrees to radians
   deg2rad <- function(deg) return(deg*pi/180)
   lon1 <- deg2rad(lon1)
   lat1 <- deg2rad(lat1)
-  lon2 <- deg2rad(long2)
+  lon2 <- deg2rad(long2) # replace with lon2
   lat2 <- deg2rad(lat2)
   # calculation
   delta.long <- (lon2 - lon1)
   delta.lat <- (lat2 - lat1)
-  a <- sin(delta.lat/2)^2 + cos(lat1) * cos(lat2) * sing(delta.long/2)^2
+  a <- sin(delta.lat/2)^2 + cos(lat1) * cos(lat2) * sing(delta.long/2)^2 # replace sing with sin
   c <- 2 * asin(min(1,sqrt(a)))
-  d = earth_radius * c
+  d = earth_radius * c # replace earth_radius with earth.radius
   return(d)
 }
 
@@ -628,16 +683,16 @@ identify the bugs, remove them and report what you have done using comments.
 ```{r, eval = FALSE}
 # load packages
 library(tidyverse)
-library(LegislatoR)
+library(LegislatoR) # legislatoR
 
 # get political data on German legislators
 political_df <- 
-  left_join(x = filter(get_political(legislature = "ger"), as.numeric("session") == 18), 
-            y = get_core(legislature = "ger"), by = "pageid")
+  left_join(x = filter(get_political(legislature = "ger"), as.numeric("session") == 18), # issue with the filter and retrieval, see solution
+            y = get_core(legislature = "ger"), by = "pageid") # deu instead of ger
 
 # wiki traffic data
 traffic_df <- 
-  get_traffic(legislature = "ger") %>% 
+  get_traffic(legislature = "ger") %>% # deu instead of ger
   filter(date >= "2013-10-22" & date <= "2017-10-24") %>% 
   group_by(pageid) %>% 
   summarize(traffic_mean = mean(traffic, na.rm = TRUE),
@@ -645,7 +700,7 @@ traffic_df <-
 
 # sessions served
 sessions_served_df <- 
-  get_political(legislature = "deu") %% 
+  get_political(legislature = "deu") %% # error in the pipe
   group_by(pageid) %>% 
   dplyr::summarize(sessions_served = n())
 
@@ -658,8 +713,8 @@ legislator_df <-
 get_age <- function(birth, date_at) {
   date_at_fmt <- date_at
   birth_fmt <- birth
-  diff <- difftime(lubridate::ymd(birth_fmt), lubridate::ymd(date_at_fmt))
-  diff_years <- time_length(diff, "years")
+  diff <- difftime(lubridate::ymd(birth_fmt), lubridate::ymd(date_at_fmt)) # switch death and birth
+  diff_years <- time_length(diff, "years") # you need load the lubridate function here
   diff_years
 }
 legislator_df$age_in_years <- round(get_age(legislator_df$birth, "2017-10-24"), 0)
@@ -667,15 +722,15 @@ legislator_df$age_in_years <- round(get_age(legislator_df$birth, "2017-10-24"), 
 # plot top 10 pageviews
 legislator_df <- arrange(legislator_df, desc(traffic_mean))
 legislator_df$rank <- 1:nrow(legislator_df)
-legislator_df_table <- dplyr::select(rank, name, traffic_mean, traffic_max)
-names(legislator_df_table) <- c("Rank", "Representative", "Mean", "Maximum")
+legislator_df_table <- dplyr::select(rank, name, traffic_mean, traffic_max) # pass the dataframe
+names(legislator_df_table) <- c("Rank", "Representative", "Mean", "Maximum") # change to colnames()
 legislator_df_table <- head(legislator_df_table, 10)
 
 ggplot(legislator_df_table, aes(y = Mean, x = -Rank)) + 
   xlab("Rank") + ylab("Avg. daily page views") + 
   labs(title = "Top 10 representatives by average daily page views") + 
-  geom_bar(stats = "identity") + 
-  scale_x_continuous(breaks = -nrow(legislator_df_table):-1, labels = rev(1:nrow(legislator_df_table)))  
+  geom_bar(stats = "identity") + # change to geom_col
+  scale_x_continuous(breaks = -nrow(legislator_df_table):-1, labels = rev(1:nrow(legislator_df_table))) # add +
   geom_text(aes(y = 10, label = Representative), hjust = 0, color = "white", size = 2) + 
   coord_flip() + 
   theme_minimal()
@@ -684,7 +739,7 @@ ggplot(legislator_df_table, aes(y = Mean, x = -Rank)) +
 legislator_df$traffic_log <- log(legislator_df$traffic_mean)
 
 covars <- c("sessions_served", "party", "sex", "age_in_years")
-fmla <- paste("traffic_log", paste(covars, collapse = " - "), sep = " ~ ")
+fmla <- paste("traffic_log", paste(covars, collapse = " - "), sep = " ~ ") # collapse with +
 summary(log_traffic_model <- lm(fmla, legislator_df))
 
 # plot table
