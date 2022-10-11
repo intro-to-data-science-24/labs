@@ -13,7 +13,7 @@
 
 <title>Databases</title>
 
-<script src="5-databases_files/header-attrs-2.11/header-attrs.js"></script>
+<script src="5-databases_files/header-attrs-2.14/header-attrs.js"></script>
 <script src="5-databases_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="5-databases_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
@@ -44,6 +44,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -168,6 +169,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -325,7 +329,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Databases</h1>
-<h3 class="subtitle">Functions, dtplyr and working with SQL in R</h3>
+<h3 class="subtitle">Functions, dbplyr and working with SQL in R</h3>
 
 </div>
 
@@ -401,7 +405,7 @@ href="https://stat545.com/bit001_dplyr-cheatsheet.html#left_joinsuperheroes-publ
 join</a> on the flights and planes datasets. - <em>Note</em>: I’m going
 subset columns after the join, but only to keep text on the slide.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">left_join</span>(flights, planes) <span class="sc">%&gt;%</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model)<span class="sc">%&gt;%</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) <span class="sc">%&gt;%</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>) <span class="do">## Just to save vertical space in output</span></span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -473,11 +477,13 @@ also works with remote data stored in databases.</p></li>
 a DBMS (<strong>D</strong>ata<strong>B</strong>ase
 <strong>M</strong>anagement <strong>S</strong>ystem)</p></li>
 <li><p>Some package to interact with the back-end of the remote database
-such as <code>RSQLite</code>, other options might be:</p></li>
-<li><p><code>RMariaDB::MariaDB()</code> for RMariaDB,</p></li>
-<li><p><code>RPostgres::Postgres()</code> for RPostgres,</p></li>
-<li><p><code>odbc::odbc()</code> for odbc,</p></li>
-<li><p>and <code>bigrquery::bigquery()</code> for BigQuery.</p></li>
+such as <code>RSQLite</code>, other options might be:</p>
+<ul>
+<li><code>RMariaDB::MariaDB()</code> for RMariaDB,</li>
+<li><code>RPostgres::Postgres()</code> for RPostgres,</li>
+<li><code>odbc::odbc()</code> for odbc,</li>
+<li>and <code>bigrquery::bigquery()</code> for BigQuery.</li>
+</ul></li>
 </ul>
 </div>
 <div id="connecting-to-a-database" class="section level2">
@@ -713,7 +719,7 @@ queries</strong> that are worth pointing out.</p>
 SQL and executed in the database on the remote server, not in R on your
 local machine.</p>
 <p>This has the following implications. When working with databases,
-dplyr tries to be as <strong>lazy as possible</strong> 🛌:</p>
+dplyr tries to be as <strong>lazy as possible</strong> 😴:</p>
 <ul>
 <li>It never pulls data into R unless you explicitly ask for it.</li>
 <li>It delays doing any work until the last possible moment: it collects
@@ -800,7 +806,7 @@ services!</p>
 <h2>Exercises on Databases</h2>
 <p>If you want to practice accessing databases going forward, have a
 look at the practice script <a
-href="https://github.com/intro-to-data-science-21/labs/tree/main/practice-scripts/database_example_S4">here</a>.
+href="https://github.com/intro-to-data-science-21/labs/tree/main/practice-scripts/05_database_example">here</a>.
 It comes with a database file so you can open the connection locally
 without the need to register. Thanks for the excellent example to our
 colleague <a href="https://conjugateprior.org/">Will Lowe</a>!</p>
@@ -844,14 +850,6 @@ answered it with 5+ different solutions years ago. 😉</p>
 </div>
 <div id="sources" class="section level1 unnumbered">
 <h1 class="unnumbered">Sources</h1>
-<p>The section on functions and iteration is partly based on <a
-href="http://r4ds.had.co.nz/"><em>R for Data Science</em></a>, section
-5.2, <a href="http://qpolr.com/data.html/"><em>Quantitative Politics
-with R</em></a>, chapter 3; as well as the <a
-href="https://github.com/uo-ec607/lectures/tree/master/05-tidyverse">Tidyverse
-Session</a> in the course Data Science for Economists by Grant
-McDermott. The data for the exercises was inspired by <a
-href="https://www.r4epi.com/">R for Epidemiology</a></p>
 <p>The section on databases and SQL relies on the vignette from the <a
 href="https://cran.r-project.org/web/packages/dbplyr/vignettes/dbplyr.html"><em>dbplyr
 package</em></a>, <a

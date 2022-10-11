@@ -1,6 +1,6 @@
 ---
 title: "Databases"
-subtitle: "Functions, dtplyr and working with SQL in R"
+subtitle: "Functions, dbplyr and working with SQL in R"
 output: 
   html_document:
     toc: TRUE
@@ -72,7 +72,7 @@ Let's perform a [left join](https://stat545.com/bit001_dplyr-cheatsheet.html#lef
 
 ```{r}
 left_join(flights, planes) %>%
-  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model)%>%
+  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) %>%
   head(3) ## Just to save vertical space in output
 ```
 
@@ -132,7 +132,7 @@ Accessing databases in R requires a few packages:
 
 * `dbplyr`makes use of the same functions as dplyr, but also works with remote data stored in databases.
 * `DBI` is a package that allows R to connect easily to a DBMS (**D**ata**B**ase **M**anagement **S**ystem)
- * Some package to interact with the back-end of the remote database such as `RSQLite`, other options might be:
+* Some package to interact with the back-end of the remote database such as `RSQLite`, other options might be:
  
   + `RMariaDB::MariaDB()` for RMariaDB,
   + `RPostgres::Postgres()` for RPostgres,
@@ -452,7 +452,7 @@ DBI::dbDisconnect(con)
 
 ## Exercises on Databases
 
-If you want to practice accessing databases going forward, have a look at the practice script [here](https://github.com/intro-to-data-science-21/labs/tree/main/practice-scripts/database_example_S4). It comes with a database file so you can open the connection locally without the need to register. Thanks for the excellent example to our colleague [Will Lowe](https://conjugateprior.org/)!
+If you want to practice accessing databases going forward, have a look at the practice script [here](https://github.com/intro-to-data-science-21/labs/tree/main/practice-scripts/05_database_example). It comes with a database file so you can open the connection locally without the need to register. Thanks for the excellent example to our colleague [Will Lowe](https://conjugateprior.org/)!
 
 ---
 
@@ -481,6 +481,5 @@ Let us remind you again, the key to learning `R` is: **Google**! We can only giv
 
 # Sources {-}
 
-The section on functions and iteration is partly based on [_R for Data Science_](http://r4ds.had.co.nz/), section 5.2, [_Quantitative Politics with R_](http://qpolr.com/data.html/), chapter 3; as well as the [Tidyverse Session](https://github.com/uo-ec607/lectures/tree/master/05-tidyverse) in the course Data Science for Economists by Grant McDermott. The data for the exercises was inspired by [R for Epidemiology](https://www.r4epi.com/)
 
 The section on databases and SQL relies on the vignette from the [_dbplyr package_](https://cran.r-project.org/web/packages/dbplyr/vignettes/dbplyr.html), [_RStudio Tutorial on databases_](https://db.rstudio.com/getting-started/connect-to-database) as well as the [_Databases Session_](https://github.com/uo-ec607/lectures/blob/master/16-databases/16-databases.html) in McDermott's Data Science for Economists by Grant McDermott.
