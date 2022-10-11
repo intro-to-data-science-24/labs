@@ -529,10 +529,12 @@ generated, you could now call <code>DBI::dbListTables(con)</code> to see
 a list of the tables present in the database. Our local database is
 however still devoid of content.</p>
 <p>We need to populate our database. We copy the data from last week to
-<p>We need to populate our database. We copy the data from earlier to
 our database connection. In <strong>real life</strong> this step would
 probably be taken care of by the responsible <strong>database
-maintainer</strong>.</p>
+maintainer</strong>. We need to populate our database. We copy the data
+from earlier to our database connection. In <strong>real life</strong>
+this step would probably be taken care of by the responsible
+<strong>database maintainer</strong>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># upload local data frame into remote data source; here: database</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">copy_to</span>(</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dest =</span> con, </span>
@@ -600,10 +602,13 @@ should you need to transfer the entire table to your RStudio
 environment. You can perform operations directly on the remote source.
 What is more you can rely on the <code>dplyr</code> syntax from last
 week to formulate your queries. R will automatically translate it into
-SQL (more on that below).</p>
-What is more you can rely on the <code>dplyr</code> syntax from earlier
-to formulate your queries. R will automatically translate it into SQL
-(more on that below).</p>
+SQL (more on that below). The console output shows that this is a
+<strong>remote source</strong>; the table is not stored in our RStudio
+environment. Nor should you need to transfer the entire table to your
+RStudio environment. You can perform operations directly on the remote
+source. What is more you can rely on the <code>dplyr</code> syntax from
+earlier to formulate your queries. R will automatically translate it
+into SQL (more on that below).</p>
 </div>
 <div id="selecting-columns" class="section level2">
 <h2>Selecting Columns</h2>
@@ -723,8 +728,7 @@ queries</strong> that are worth pointing out.</p>
 SQL and executed in the database on the remote server, not in R on your
 local machine.</p>
 <p>This has the following implications. When working with databases,
-dplyr tries to be as <strong>lazy as possible</strong> 😴:</p>
-dplyr tries to be as <strong>lazy as possible</strong> 🛏:</p>
+dplyr tries to be as <strong>lazy as possible</strong> 😪:</p>
 <ul>
 <li>It never pulls data into R unless you explicitly ask for it.</li>
 <li>It delays doing any work until the last possible moment: it collects
@@ -812,6 +816,11 @@ services!</p>
 <p>If you want to practice accessing databases going forward, have a
 look at the practice script <a
 href="https://github.com/intro-to-data-science-21/labs/tree/main/practice-scripts/05_database_example">here</a>.
+It comes with a database file so you can open the connection locally
+without the need to register. Thanks for the excellent example to our
+colleague <a href="https://conjugateprior.org/">Will Lowe</a>! If you
+want to practice accessing databases going forward, have a look at the
+practice script <a
 href="https://github.com/intro-to-data-science-22/labs/tree/main/practice-scripts/05_database_example">here</a>.
 It comes with a database file so you can open the connection locally
 without the need to register. Thanks for the excellent example to our
