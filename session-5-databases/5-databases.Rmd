@@ -181,7 +181,7 @@ summary(con)
 
 If you were to connect to a real online database that someone else generated, you could now call `DBI::dbListTables(con)` to see a list of the tables present in the database. Our local database is however still devoid of content.
 
-We need to populate our database. We copy the data from last week to our database connection. In **real life** this step would probably be taken care of by the responsible **database maintainer**.
+We need to populate our database. We copy the data from earlier to our database connection. In **real life** this step would probably be taken care of by the responsible **database maintainer**.
 
 ```{r}
 
@@ -244,7 +244,7 @@ flights_db <- tbl(con, "flights")
 flights_db 
 ```
 
-The console output shows that this is a **remote source**; the table is not stored in our RStudio environment. Nor should you need to transfer the entire table to your RStudio environment. You can perform operations directly on the remote source. What is more you can rely on the `dplyr` syntax from last week to formulate your queries. R will automatically translate it into SQL (more on that below).
+The console output shows that this is a **remote source**; the table is not stored in our RStudio environment. Nor should you need to transfer the entire table to your RStudio environment. You can perform operations directly on the remote source. What is more you can rely on the `dplyr` syntax from earlier to formulate your queries. R will automatically translate it into SQL (more on that below).
 
 
 ## Selecting Columns
@@ -452,7 +452,7 @@ DBI::dbDisconnect(con)
 
 ## Exercises on Databases
 
-If you want to practice accessing databases going forward, have a look at the practice script [here](https://github.com/intro-to-data-science-21/labs/tree/main/practice-scripts/database_example_S4). It comes with a database file so you can open the connection locally without the need to register. Thanks for the excellent example to our colleague [Will Lowe](https://conjugateprior.org/)!
+If you want to practice accessing databases going forward, have a look at the practice script [here](https://github.com/intro-to-data-science-22/labs/tree/main/practice-scripts/05_database_example). It comes with a database file so you can open the connection locally without the need to register. Thanks for the excellent example to our colleague [Will Lowe](https://conjugateprior.org/)!
 
 ---
 
