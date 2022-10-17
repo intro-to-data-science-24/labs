@@ -28,13 +28,13 @@ What we will cover:
 * basic web technologies (html, xpath)
 * scraping static webpages
 * scraping multiple static webpages 
+* data cleaning using regular expressions
 * building up and maintaining you own original sets of web-based data
 
 What we will not cover (today): 
 
 * scraping dynamic webpages
 * APIs 
-* extensive data cleaning using regular expressions
 
 # Why webscrape with R? `r emo::ji("globe")`
 
@@ -69,6 +69,7 @@ Who doesn't love Wikipedia? Let's use this as our first, straight forward test c
 ```{r, message=F}
 library(rvest)
 library(stringr)
+library(tidyverse)
 ```
 
 **Step 2.** Parse the page source.
@@ -80,13 +81,12 @@ parsed_url <- read_html("https://en.wikipedia.org/wiki/Cologne")
 **Step 3.** Extract information.
 
 ```{r}
-parsed_nodes <- html_nodes(parsed_url, 
-                           xpath = '//p[(((count(preceding-sibling::*) + 1) = 157) and parent::*)]')
-carnival <- html_text(parsed_nodes)
-carnival
+parsed_url %>% 
+  html_element(xpath = '//p[(((count(preceding-sibling::*) + 1) = 164) and parent::*)]') %>% 
+  html_text()
 ```
 
-How can do I know THIS `xpath = '//p[(((count(preceding-sibling::*) + 1) = 157) and parent::*)]'` ?
+How can do I know THIS `xpath = '//p[(((count(preceding-sibling::*) + 1) = 164) and parent::*)]'` ?
 
 There are two options: 
 
@@ -112,18 +112,18 @@ knitr::include_graphics("pics/selector2.png")
 
 
 
-Let's repeat step 2 and 3 with a more data-sciency example. `r emo::ji("man_dancing")`
+Let's repeat step 2 and 3 with a more data-sciency example. `r emo::ji("cap")`
 
 **Step 2.** Parse the page source.
 ```{r}
-hot100page <- "https://www.billboard.com/charts/hot-100"
-hot100 <- read_html(hot100page)
+nypl_url <- "https://www.nypl.org/books-more/recommendations/best-books/adults?year=2021"
+nypl100 <- read_html(nypl_url)
 ```
 
 **Step 3.** Extract information. When going through different levels of html, you can also use tidyverse logic.
 ```
-body_nodes <- hot100 %>% 
- html_node("body") %>% 
+body_nodes <- nypl100 %>% 
+ html_elements("body") %>% 
  html_children()
 
 body_nodes %>% 
@@ -131,68 +131,78 @@ body_nodes %>%
 ```
 play with that yourself if you like...
 
-Now let's get more specific - `xml_find_all()` takes xpath syntax!
+Now let's have a look at three different ways to extract information:
 ```{r}
-rank <- hot100 %>% 
-  rvest::html_nodes('body') %>% 
-  xml2::xml_find_all("//span[contains(@class, 'chart-element__rank__number')]") %>% 
-  rvest::html_text()
+title <- nypl100 %>% 
+  html_elements(xpath = '//ul/li/div/div/h4') %>% 
+  html_text2()
 
-artist <- hot100 %>% 
-  rvest::html_nodes('body') %>% 
-  xml2::xml_find_all("//span[contains(@class, 'chart-element__information__artist')]") %>% 
-  rvest::html_text()
+author <- nypl100 %>% 
+  html_elements(css = '.spbb-card__byline--grid') %>% 
+  html_text2()
 
-title <- hot100 %>% 
-  rvest::html_nodes('body') %>% 
-  xml2::xml_find_all("//span[contains(@class, 'chart-element__information__song')]") %>% 
-  rvest::html_text()
+summary <- nypl100 %>% 
+  html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "spbb-card__description--grid", " " ))]') %>% 
+  html_text2()
 
 ```
-**Step 4.** Usually, step 4 is to clean extracted data. In this case, it actually is very clean already. However, if you need help with data cleaning using regular expressions (me, always.), visit the section of [R for Data Science](https://r4ds.had.co.nz/strings.html) or simply this [cheat sheet](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf).
+**Step 4.** Usually, step 4 is to clean extracted data. In this case, it actually is pretty clean already, thanks to `html_text2()`. However, in many cases, we need to clean the data we scraped with regular expressions.
 
 **Step 5.** Put everything into a data frame. `r emo::ji("musical_note")`
 ```{r}
-chart_df <- data.frame(rank, artist, title)
-
-knitr::kable(chart_df  %>% head(10))
+knitr::kable(data.frame(title, author, summary) %>% head(10))
 ```
 
 ## Scraping HTML tables `r emo::ji("rocket")`
 
-We have just been scraping an html table... but there is even an easier way to do this in `rvest`!
+Oftentimes, we would like to scrape tabular data from the web. This is even easier in `rvest`!
 
 ```{r}
-url_p <- read_html("https://en.wikipedia.org/wiki/List_of_human_spaceflights")
-tables <- html_table(url_p, header = TRUE, fill = TRUE)
-spaceflights <- tables[[1]]
-
-knitr::kable(spaceflights[,1:7]  %>% head(10))
+url_p <- read_html('https://en.wikipedia.org/wiki/R_(programming_language)')
+r_table <- html_table(url_p, header = TRUE, fill = TRUE) %>% 
+  pluck(2)
+r_table %>% 
+  select(Description) %>% 
+  head(5)
 ```
 Another R workaround for more complex tables is the package `htmltab` that offers some more flexibility.
 
-## It's your turn! `r emo::ji("hammer_and_wrench")`
+# Regular expressions `r emo::ji('memo')`
 
-Think about web data hosted on a **static webpage** that you might be interested in scraping!
-Comparably easy to scrape webpages are Wikipedia pages or pages that contain data in table format (as we've seen already). 
+Regular expressions (Regex) allow us to manipulate strings based on pattern matching. Regex patterns specify a sequence of strings, either explicitly or by meta characters. While they can be a hard nut to crack, they are extremely useful. `stringr` and `stringi` are the two most common libraries for string manipulation in R.
 
-Before you start - it might be worth a thought to get Chrome + Selector Gadget. This will make your future as web scraper a bit easier. 
+```{r}
+x <- c("apple", "banana", "pear")
+str_view(x, "a")
+```
 
-**Option A**
+Meta characters allow us to abstract from explicit patterns. These meta characters are `. \ | ( ) [ { ^ $ * + ?`. For example, `.` matches any character, except for line breaks (`\n`). `? * + {n} {n,} {n,m}` are so-called quantifiers, that allow us to match the preceding character either zero or one `?`,  zero or more `.`, or one or more `+` times. `{n}` allows us to match a pattern exactly n times. To match n times and more, we add a comma in the curly brackets `{n,}` and to match between n and m times, we use `{n,m}`.
 
-1. Inspect the page and try to find the elements you are interested in in the html code.
+```{r}
+str_view(x, "a.*")
+```
 
-2. Parse the url.
+But how can we match those meta characters then? This is where it gets complicated. Theoretically, we only use `\` as an escape character. However, we also use regular characters, like `\d` for instance, to match digits or `\s` to match white spaces. Therefore, we add another backward slash to escape the meta character `\\`. To match a question mark, we would use `\\?`.
 
-3. Extract the XPath for the element you would like to scrape and parse the nodes.
+```{r}
+y <- 'abc?defg'
+str_view(y, '\\?')
+```
+Next to character classes and quantifiers, anchors match the start `^` or end `$` of a string. Alternates allow us to handle multiple cases in our pattern. As in R `|`, is equivalent to an or. With `[qwert]` we are creating a "one of" pattern that matches any of the strings in the squared brackets. To negate this and get "anything but" we use `[^qwert]`.
 
-4. Inspect the html output you get. What would be the next steps now? Can you already put your output into a dataframe? 
+```{r}
+str_view(x, "^a|b")
+```
 
-**Option B**
+Constructing regex patterns can be a quite nerve-wrecking task. This [cheat sheet](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf) should get you started using them with `stringr` in R. There are [webtools](https://regex101.com/) that facilitate the construction of regexes. However, most of them are designed for regex implementations in other programming languages which handle escaping escape characters differently.
 
-1. Find an html table that you'd like to scrape.
+Now lets apply this on the table we just scraped. As you may have noticed, the text in the Description column still contains citation marks in square brackets. Let's write a regex pattern to remove them, using the `stringr::str_replace_all` function.
 
-2. Scrape it.
+```{r}
+r_table %>% 
+  mutate(Description = str_replace_all(r_table$Description,  "\\[\\d+\\]", '')) %>% 
+  select(Description)
+```
 
 
 # Scraping multiple pages `r emo::ji("robot")`
@@ -229,16 +239,17 @@ dir.create(folder)
 
 for (i in 1:length(urls_list)) {
   # only update, don't replace
-    if (!file.exists(paste0(folder, names[i]))) {  
-  # skip article when we run into an error   
-      tryCatch( 
-        download.file(urls_list[i], destfile = paste0(folder, names[i])),
-        error = function(e) e
-      )
-  # don't kill their server --> be polite!  
-      Sys.sleep(runif(1, 0, 1)) 
-        
-} }
+  if (!file.exists(paste0(folder, names[i]))) {
+    # skip article when we run into an error
+    tryCatch(
+      download.file(urls_list[i], destfile = paste0(folder, names[i])),
+      error = function(e)
+        e
+    )
+    # don't kill their server --> be polite!
+    Sys.sleep(runif(1, 0, 1))
+  }
+}
 ```
 
 While R is downloading the pages for you, you can watch it directly in the directory you defined...
@@ -356,7 +367,8 @@ This will pop up in the server logs: The webpage administrator has the chance to
 
 # Sources
 
-This tutorial drew heavily on Simon Munzert's book [Automated Data Collection with R](http://r-datacollection.com/) and related [course materials](https://github.com/simonmunzert/web-scraping-with-r-extended-edition). We also used an [example](https://towardsdatascience.com/tidy-web-scraping-in-r-tutorial-and-resources-ac9f72b4fe47) from Keith McNulty's blog post on tidy web scraping in R.
+This tutorial drew heavily on Simon Munzert's book [Automated Data Collection with R](http://r-datacollection.com/) and related [course materials](https://github.com/simonmunzert/web-scraping-with-r-extended-edition). We also used an [example](https://towardsdatascience.com/tidy-web-scraping-in-r-tutorial-and-resources-ac9f72b4fe47) from Keith McNulty's blog post on tidy web scraping in R. 
+For the regex part, we used examples from the string manipulation section in Hadley Wickham' s [R for Data Science](https://r4ds.had.co.nz/strings.html) book.
 
 
 

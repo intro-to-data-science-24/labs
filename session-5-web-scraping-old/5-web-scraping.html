@@ -13,8 +13,8 @@
 
 <title>Web Scraping</title>
 
-<script src="5-web-scraping_files/header-attrs-2.9/header-attrs.js"></script>
-<script src="5-web-scraping_files/jquery-1.11.3/jquery.min.js"></script>
+<script src="5-web-scraping_files/header-attrs-2.14/header-attrs.js"></script>
+<script src="5-web-scraping_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="5-web-scraping_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
 <script src="5-web-scraping_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -35,6 +35,9 @@
 <script src="5-web-scraping_files/navigation-1.1/tabsets.js"></script>
 <link href="5-web-scraping_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
 <script src="5-web-scraping_files/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="5-web-scraping_files/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="5-web-scraping_files/str_view-0.1.0/str_view.css" rel="stylesheet" />
+<script src="5-web-scraping_files/str_view-binding-1.4.0/str_view.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -44,6 +47,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -168,6 +172,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -331,368 +338,414 @@ div.tocify {
 
 
 <hr />
-<p>After talking quite a bit about data formats and data processing in the past weeks, today’s session is dedicated to data collection - from the web!</p>
+<p>After talking quite a bit about data formats and data processing in
+the past weeks, today’s session is dedicated to data collection - from
+the web!</p>
 <p>What we will cover:</p>
 <ul>
 <li>basic web technologies (html, xpath)</li>
 <li>scraping static webpages</li>
 <li>scraping multiple static webpages</li>
-<li>building up and maintaining you own original sets of web-based data</li>
+<li>data cleaning using regular expressions</li>
+<li>building up and maintaining you own original sets of web-based
+data</li>
 </ul>
 <p>What we will not cover (today):</p>
 <ul>
 <li>scraping dynamic webpages</li>
 <li>APIs</li>
-<li>extensive data cleaning using regular expressions</li>
 </ul>
 <div id="why-webscrape-with-r" class="section level1">
-<h1>Why webscrape with R? 🌐</h1>
-<p>Webscraping broadly includes a) getting (unstructured) data from the web and b) bringing it into shape (e.g. cleaning it, getting it into tabular format).</p>
-<p>Why webscrape? While some influential people consider “Data Scientist” 👩‍💻 as the <a href="https://hbr.org/2012/10/data-scientist-the-sexiest-job-of-the-21st-century">sexiest job</a> of the 21st century (congratulations!), one of the sexiest just emerging academic disciplines (my influential view) - Computational Social Science (CSS). Why so?</p>
+<h1>Why webscrape with R? 🌏</h1>
+<p>Webscraping broadly includes a) getting (unstructured) data from the
+web and b) bringing it into shape (e.g. cleaning it, getting it into
+tabular format).</p>
+<p>Why webscrape? While some influential people consider “Data
+Scientist” 👩‍💻 as the <a
+href="https://hbr.org/2012/10/data-scientist-the-sexiest-job-of-the-21st-century">sexiest
+job</a> of the 21st century (congratulations!), one of the sexiest just
+emerging academic disciplines (my influential view) - Computational
+Social Science (CSS). Why so?</p>
 <ul>
 <li>data abundance online</li>
 <li>social interaction online</li>
 <li>services track social behavior</li>
 </ul>
-<p>BUT online data are usually meant for display, not (clean) download!</p>
-<p>But getting access to online data would also be incredibly interesting when you think of very pragmatic things like financial resources, time resources, reproducibility and updateability…</p>
-<p>Luckily, with <code>R</code> we can automate the whole pipeline of downloading, parsing and post-processing to make our projects easily reproducible.</p>
-<p>In general, remember, the basic <strong>workflow for scraping static webpages</strong> is the following.</p>
+<p>BUT online data are usually meant for display, not (clean)
+download!</p>
+<p>But getting access to online data would also be incredibly
+interesting when you think of very pragmatic things like financial
+resources, time resources, reproducibility and updateability…</p>
+<p>Luckily, with <code>R</code> we can automate the whole pipeline of
+downloading, parsing and post-processing to make our projects easily
+reproducible.</p>
+<p>In general, remember, the basic <strong>workflow for scraping static
+webpages</strong> is the following.</p>
 <p><img src="pics/workflow.png" width="90%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="scraping-static-websites-with-rvest" class="section level1">
 <h1>Scraping static websites with <code>rvest</code> 🚜</h1>
-<p>Who doesn’t love Wikipedia? Let’s use this as our first, straight forward test case.</p>
-<p><strong>Step 1.</strong> Load the packages <code>rvest</code> and <code>stringr</code>.</p>
+<p>Who doesn’t love Wikipedia? Let’s use this as our first, straight
+forward test case.</p>
+<p><strong>Step 1.</strong> Load the packages <code>rvest</code> and
+<code>stringr</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span></code></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 <p><strong>Step 2.</strong> Parse the page source.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>parsed_url <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">&quot;https://en.wikipedia.org/wiki/Cologne&quot;</span>)</span></code></pre></div>
 <p><strong>Step 3.</strong> Extract information.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>parsed_nodes <span class="ot">&lt;-</span> <span class="fu">html_nodes</span>(parsed_url, </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">xpath =</span> <span class="st">&#39;//p[(((count(preceding-sibling::*) + 1) = 157) and parent::*)]&#39;</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>carnival <span class="ot">&lt;-</span> <span class="fu">html_text</span>(parsed_nodes)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>carnival</span></code></pre></div>
-<pre><code>## [1] &quot;Cologne is also famous for Eau de Cologne (German: Kölnisch Wasser; lit: \&quot;Water of Cologne\&quot;), a perfume created by Italian expatriate Johann Maria Farina at the beginning of the 18th century. During the 18th century, this perfume became increasingly popular, was exported all over Europe by the Farina family and Farina became a household name for Eau de Cologne. In 1803 Wilhelm Mülhens entered into a contract with an unrelated person from Italy named Carlo Francesco Farina who granted him the right to use his family name and Mühlens opened a small factory at Cologne&#39;s Glockengasse. In later years, and after various court battles, his grandson Ferdinand Mülhens was forced to abandon the name Farina for the company and their product. He decided to use the house number given to the factory at Glockengasse during the French occupation in the early 19th century, 4711. Today, original Eau de Cologne is still produced in Cologne by both the Farina family, currently in the eighth generation, and by Mäurer &amp; Wirtz who bought the 4711 brand in 2006.\n&quot;</code></pre>
-<p>How can do I know THIS <code>xpath = '//p[(((count(preceding-sibling::*) + 1) = 157) and parent::*)]'</code> ?</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>parsed_url <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_element</span>(<span class="at">xpath =</span> <span class="st">&#39;//p[(((count(preceding-sibling::*) + 1) = 164) and parent::*)]&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;The Cologne carnival is one of the largest street festivals in Europe. In Cologne, the carnival season officially starts on 11 November at 11 minutes past 11 a.m. with the proclamation of the new Carnival Season, and continues until Ash Wednesday. However, the so-called \&quot;Tolle Tage\&quot; (crazy days) do not start until Weiberfastnacht (Women&#39;s Carnival) or, in dialect, Wieverfastelovend, the Thursday before Ash Wednesday, which is the beginning of the street carnival. Zülpicher Strasse and its surroundings, Neumarkt square, Heumarkt and all bars and pubs in the city are crowded with people in costumes dancing and drinking in the streets. Hundreds of thousands of visitors flock to Cologne during this time. Generally, around a million people celebrate in the streets on the Thursday before Ash Wednesday.[69]&quot;</code></pre>
+<p>How can do I know THIS
+<code>xpath = '//p[(((count(preceding-sibling::*) + 1) = 164) and parent::*)]'</code>
+?</p>
 <p>There are two options:</p>
-<p><strong>Option 1.</strong> On your page of interest, go to a table that you’d like to scrape. Our favorite bowser for webscraping is Google Chrome but others work as well. On Chrome, you go in View &gt; Developer &gt; inspect elements. If you hover over the html code on the right, you should see boxes of different colors framing different elements of the page. Once the part of the page you would like to scrape is selected, right click on the html code and Copy &gt; Copy Xpath. That’s it.</p>
+<p><strong>Option 1.</strong> On your page of interest, go to a table
+that you’d like to scrape. Our favorite bowser for webscraping is Google
+Chrome but others work as well. On Chrome, you go in View &gt; Developer
+&gt; inspect elements. If you hover over the html code on the right, you
+should see boxes of different colors framing different elements of the
+page. Once the part of the page you would like to scrape is selected,
+right click on the html code and Copy &gt; Copy Xpath. That’s it.</p>
 <p><img src="pics/inspect.png" width="90%" style="display: block; margin: auto;" /></p>
-<p><strong>Option 2.</strong> You download the <a href="https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb?hl=de">Chrome Extension</a> <code>SelectorGadget</code> and activate it while browsing the page you’d like to scrape from. You will see a selection box moving with your cursor. You select an element by clickin on it. It turns green - and so does all other content that would be selected with the current XPath.</p>
+<p><strong>Option 2.</strong> You download the <a
+href="https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb?hl=de">Chrome
+Extension</a> <code>SelectorGadget</code> and activate it while browsing
+the page you’d like to scrape from. You will see a selection box moving
+with your cursor. You select an element by clickin on it. It turns green
+- and so does all other content that would be selected with the current
+XPath.</p>
 <p><img src="pics/selector.png" width="90%" style="display: block; margin: auto;" /></p>
-<p>You can now de-select everything that is irrelevant to you by clicking it again (it then turns red). Final step, then just click the XPath button at the bottom of the browser window. Make sure to use single quotation marks with this XPath!</p>
+<p>You can now de-select everything that is irrelevant to you by
+clicking it again (it then turns red). Final step, then just click the
+XPath button at the bottom of the browser window. Make sure to use
+single quotation marks with this XPath!</p>
 <p><img src="pics/selector2.png" width="90%" style="display: block; margin: auto;" /></p>
-<p>Let’s repeat step 2 and 3 with a more data-sciency example. 🕺</p>
+<p>Let’s repeat step 2 and 3 with a more data-sciency example. 🎓</p>
 <p><strong>Step 2.</strong> Parse the page source.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>hot100page <span class="ot">&lt;-</span> <span class="st">&quot;https://www.billboard.com/charts/hot-100&quot;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>hot100 <span class="ot">&lt;-</span> <span class="fu">read_html</span>(hot100page)</span></code></pre></div>
-<p><strong>Step 3.</strong> Extract information. When going through different levels of html, you can also use tidyverse logic.</p>
-<pre><code>body_nodes &lt;- hot100 %&gt;% 
- html_node(&quot;body&quot;) %&gt;% 
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>nypl_url <span class="ot">&lt;-</span> <span class="st">&quot;https://www.nypl.org/books-more/recommendations/best-books/adults?year=2021&quot;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>nypl100 <span class="ot">&lt;-</span> <span class="fu">read_html</span>(nypl_url)</span></code></pre></div>
+<p><strong>Step 3.</strong> Extract information. When going through
+different levels of html, you can also use tidyverse logic.</p>
+<pre><code>body_nodes &lt;- nypl100 %&gt;% 
+ html_elements(&quot;body&quot;) %&gt;% 
  html_children()
 
 body_nodes %&gt;% 
  html_children()</code></pre>
 <p>play with that yourself if you like…</p>
-<p>Now let’s get more specific - <code>xml_find_all()</code> takes xpath syntax!</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>rank <span class="ot">&lt;-</span> hot100 <span class="sc">%&gt;%</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  rvest<span class="sc">::</span><span class="fu">html_nodes</span>(<span class="st">&#39;body&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  xml2<span class="sc">::</span><span class="fu">xml_find_all</span>(<span class="st">&quot;//span[contains(@class, &#39;chart-element__rank__number&#39;)]&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  rvest<span class="sc">::</span><span class="fu">html_text</span>()</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>artist <span class="ot">&lt;-</span> hot100 <span class="sc">%&gt;%</span> </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  rvest<span class="sc">::</span><span class="fu">html_nodes</span>(<span class="st">&#39;body&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  xml2<span class="sc">::</span><span class="fu">xml_find_all</span>(<span class="st">&quot;//span[contains(@class, &#39;chart-element__information__artist&#39;)]&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  rvest<span class="sc">::</span><span class="fu">html_text</span>()</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>title <span class="ot">&lt;-</span> hot100 <span class="sc">%&gt;%</span> </span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  rvest<span class="sc">::</span><span class="fu">html_nodes</span>(<span class="st">&#39;body&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  xml2<span class="sc">::</span><span class="fu">xml_find_all</span>(<span class="st">&quot;//span[contains(@class, &#39;chart-element__information__song&#39;)]&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  rvest<span class="sc">::</span><span class="fu">html_text</span>()</span></code></pre></div>
-<p><strong>Step 4.</strong> Usually, step 4 is to clean extracted data. In this case, it actually is very clean already. However, if you need help with data cleaning using regular expressions (me, always.), visit the section of <a href="https://r4ds.had.co.nz/strings.html">R for Data Science</a> or simply this <a href="https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf">cheat sheet</a>.</p>
+<p>Now let’s have a look at three different ways to extract
+information:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>title <span class="ot">&lt;-</span> nypl100 <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">&#39;//ul/li/div/div/h4&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>()</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>author <span class="ot">&lt;-</span> nypl100 <span class="sc">%&gt;%</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="at">css =</span> <span class="st">&#39;.spbb-card__byline--grid&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>()</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>summary <span class="ot">&lt;-</span> nypl100 <span class="sc">%&gt;%</span> </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">&#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;spbb-card__description--grid&quot;, &quot; &quot; ))]&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>()</span></code></pre></div>
+<p><strong>Step 4.</strong> Usually, step 4 is to clean extracted data.
+In this case, it actually is pretty clean already, thanks to
+<code>html_text2()</code>. However, in many cases, we need to clean the
+data we scraped with regular expressions.</p>
 <p><strong>Step 5.</strong> Put everything into a data frame. 🎵</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>chart_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(rank, artist, title)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(chart_df  <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">10</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">data.frame</span>(title, author, summary) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">10</span>))</span></code></pre></div>
 <table>
+<colgroup>
+<col width="13%" />
+<col width="8%" />
+<col width="78%" />
+</colgroup>
 <thead>
 <tr class="header">
-<th align="left">rank</th>
-<th align="left">artist</th>
 <th align="left">title</th>
+<th align="left">author</th>
+<th align="left">summary</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">1</td>
-<td align="left">Lil Nas X &amp; Jack Harlow</td>
-<td align="left">Industry Baby</td>
+<td align="left">Act Your Age, Eve Brown: A Novel</td>
+<td align="left">By Talia Hibbert</td>
+<td align="left">Jacob likes things in life to be neat and orderly. But
+everything is turned upside down when Eve Brown blows into his life like
+a sparkly tornado. This steamy opposites-attract romance will have you
+laughing out loud and begging for more. Third in a series but it stands
+alone.</td>
 </tr>
 <tr class="even">
-<td align="left">2</td>
-<td align="left">The Kid LAROI &amp; Justin Bieber</td>
-<td align="left">Stay</td>
+<td align="left">Afterparties: Stories</td>
+<td align="left">By Anthony Veasna So</td>
+<td align="left">Seamlessly transitioning between the absurd and the
+tenderhearted, this book offers a portrait of Cambodian-American lives.
+Children of refugees shoulder the inherited weight of the Khmer Rouge
+genocide and grapple with the complexities of race, sexuality,
+friendship, and family.</td>
 </tr>
 <tr class="odd">
-<td align="left">3</td>
-<td align="left">Walker Hayes</td>
-<td align="left">Fancy Like</td>
+<td align="left">All Her Little Secrets: A Novel</td>
+<td align="left">By Wanda M. Morris</td>
+<td align="left">Ellice has safely guarded her secrets for years, but
+when she discovers her boss dead in his office, all of them begin to
+unravel.</td>
 </tr>
 <tr class="even">
-<td align="left">4</td>
-<td align="left">Ed Sheeran</td>
-<td align="left">Bad Habits</td>
+<td align="left">Asadora!, Vol. 1</td>
+<td align="left">By Naoki Urasawa</td>
+<td align="left">How does a typhoon in 1959 Nagoya lead to a gigantic
+monster making Tokyoites flee for their lives in 2020? One thing is
+certain: our lovable protagonist Asa is going to be at the heart of it
+all!</td>
 </tr>
 <tr class="odd">
-<td align="left">5</td>
-<td align="left">Drake Featuring Future &amp; Young Thug</td>
-<td align="left">Way 2 Sexy</td>
+<td align="left">Ballad for Sophie</td>
+<td align="left">By Filipe Melo</td>
+<td align="left">Illustrated by Juan Cavia | Translated from the
+Portuguese by Gabriela Soares | The curtains of a famous pianist’s life
+are pulled back by a determined reporter to uncover secrets, betrayal,
+highs and lows, and finally a shared passion for music.</td>
 </tr>
 <tr class="even">
-<td align="left">6</td>
-<td align="left">Olivia Rodrigo</td>
-<td align="left">Good 4 U</td>
+<td align="left">Barbalien: Red Planet</td>
+<td align="left">By Jeff Lemire &amp; Tate Brombal</td>
+<td align="left">Art by Gabriel Hernandez Walta | In this Black Hammer
+spinoff, Barbalien examines Mark Markz in his early days on Earth as a
+police officer and superhero. Mark has a secret that leads to an
+internal battle while facing the costs of police brutality during the
+AIDS epidemic.</td>
 </tr>
 <tr class="odd">
-<td align="left">7</td>
-<td align="left">Doja Cat Featuring SZA</td>
-<td align="left">Kiss Me More</td>
+<td align="left">The Black Panther Party: A Graphic Novel History</td>
+<td align="left">By David F. Walker</td>
+<td align="left">Art, colors, and letters by Marcus Kwame Anderson |
+Many know the name, not so many the story. Vibrant colors and realistic
+drawings invite readers to learn about key figures, important events,
+and the tragic downfall and enduring legacy of the Black Panther
+Party.</td>
 </tr>
 <tr class="even">
-<td align="left">8</td>
-<td align="left">Dua Lipa</td>
-<td align="left">Levitating</td>
+<td align="left">Bolla: A Novel</td>
+<td align="left">By Pajtim Statovci</td>
+<td align="left">Translated from the Finnish by David Hackston | A young
+married Albanian man studying in Kosovo in 1995 meets and falls in love
+with a young Serbian man on the eve of the outbreak of war and begins
+down a dark path.</td>
 </tr>
 <tr class="odd">
-<td align="left">9</td>
-<td align="left">Wizkid Featuring Justin Bieber &amp; Tems</td>
-<td align="left">Essence</td>
+<td align="left">The Book of Accidents: A Novel</td>
+<td align="left">By Chuck Wendig</td>
+<td align="left">Wendig offers a puzzle of a novel packed with dynamic
+characters and haunted spaces that poses the question of how to deal
+with inherited pain and unresolved emotional damage through
+relationships that are both beautiful and real. Visceral, sensory, and
+delightfully unsettling.</td>
 </tr>
 <tr class="even">
-<td align="left">10</td>
-<td align="left">Ed Sheeran</td>
-<td align="left">Shivers</td>
+<td align="left">The Breaks: An Essay</td>
+<td align="left">By Julietta Singh</td>
+<td align="left">A profound meditation on race, inheritance, and queer
+mothering at the end of the world. In a letter to her daughter, Singh
+writes toward a tender vision of the world, offering the radical embrace
+of possibility by children as a model for how we might live.</td>
 </tr>
 </tbody>
 </table>
 <div id="scraping-html-tables" class="section level2">
 <h2>Scraping HTML tables 🚀</h2>
-<p>We have just been scraping an html table… but there is even an easier way to do this in <code>rvest</code>!</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>url_p <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">&quot;https://en.wikipedia.org/wiki/List_of_human_spaceflights&quot;</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>tables <span class="ot">&lt;-</span> <span class="fu">html_table</span>(url_p, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>spaceflights <span class="ot">&lt;-</span> tables[[<span class="dv">1</span>]]</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(spaceflights[,<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>]  <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">10</span>))</span></code></pre></div>
-<table>
-<colgroup>
-<col width="8%" />
-<col width="18%" />
-<col width="18%" />
-<col width="18%" />
-<col width="12%" />
-<col width="12%" />
-<col width="12%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Entity</th>
-<th align="left">Soviet Union</th>
-<th align="left">Soviet Union</th>
-<th align="left">Soviet Union</th>
-<th align="left">United States</th>
-<th align="left">United States</th>
-<th align="left">United States</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Agency</td>
-<td align="left">Soviet space program</td>
-<td align="left">Soviet space program</td>
-<td align="left">Soviet space program</td>
-<td align="left">NASA</td>
-<td align="left">NASA</td>
-<td align="left">NASA</td>
-</tr>
-<tr class="even">
-<td align="left">Decades</td>
-<td align="left">Program</td>
-<td align="left">Dates[a]</td>
-<td align="left">No.[b]</td>
-<td align="left">Program[c]</td>
-<td align="left">Dates</td>
-<td align="left">No.[d]</td>
-</tr>
-<tr class="odd">
-<td align="left">1961–1970</td>
-<td align="left">Vostok</td>
-<td align="left">1961–1963</td>
-<td align="left">6</td>
-<td align="left">Mercury</td>
-<td align="left">1961–1963</td>
-<td align="left">6</td>
-</tr>
-<tr class="even">
-<td align="left">1961–1970</td>
-<td align="left">Voskhod</td>
-<td align="left">1964–1965</td>
-<td align="left">2</td>
-<td align="left">X-15</td>
-<td align="left">1962–1968</td>
-<td align="left">13</td>
-</tr>
-<tr class="odd">
-<td align="left">1961–1970</td>
-<td align="left">Soyuz</td>
-<td align="left">1967–1991</td>
-<td align="left">63</td>
-<td align="left">Gemini</td>
-<td align="left">1965–1966</td>
-<td align="left">10</td>
-</tr>
-<tr class="even">
-<td align="left">1961–1970</td>
-<td align="left">Soyuz</td>
-<td align="left">1967–1991</td>
-<td align="left">63</td>
-<td align="left">Apollo</td>
-<td align="left">1968–1972</td>
-<td align="left">11</td>
-</tr>
-<tr class="odd">
-<td align="left">1971–1980</td>
-<td align="left">Soyuz</td>
-<td align="left">1967–1991</td>
-<td align="left">63</td>
-<td align="left">Apollo</td>
-<td align="left">1968–1972</td>
-<td align="left">11</td>
-</tr>
-<tr class="even">
-<td align="left">1971–1980</td>
-<td align="left">Soyuz</td>
-<td align="left">1967–1991</td>
-<td align="left">63</td>
-<td align="left">Skylab</td>
-<td align="left">1973–1974</td>
-<td align="left">3</td>
-</tr>
-<tr class="odd">
-<td align="left">1971–1980</td>
-<td align="left">Soyuz</td>
-<td align="left">1967–1991</td>
-<td align="left">63</td>
-<td align="left">Apollo–Soyuz</td>
-<td align="left">1975</td>
-<td align="left">1</td>
-</tr>
-<tr class="even">
-<td align="left">1981–1990</td>
-<td align="left">Soyuz</td>
-<td align="left">1967–1991</td>
-<td align="left">63</td>
-<td align="left">Space Shuttle</td>
-<td align="left">1981–2011</td>
-<td align="left">135</td>
-</tr>
-</tbody>
-</table>
-<p>Another R workaround for more complex tables is the package <code>htmltab</code> that offers some more flexibility.</p>
+<p>Oftentimes, we would like to scrape tabular data from the web. This
+is even easier in <code>rvest</code>!</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>url_p <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">&#39;https://en.wikipedia.org/wiki/R_(programming_language)&#39;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>r_table <span class="ot">&lt;-</span> <span class="fu">html_table</span>(url_p, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pluck</span>(<span class="dv">2</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>r_table <span class="sc">%&gt;%</span> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Description) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">5</span>)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Description"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"This is the last alpha version developed primarily by Ihaka and Gentleman. Much of the basic functionality from the \"White Book\" (see S history) was implemented. The mailing lists commenced on 1 April 1997."},{"1":"This is the oldest source release which is currently available on CRAN.[62] CRAN is started on this date, with 3 mirrors that initially hosted 12 packages.[63] Alpha versions of R for Microsoft Windows and the classic Mac OS are made available shortly after this version.[citation needed]"},{"1":"R becomes an official part of the GNU Project. The code is hosted and maintained on CVS."},{"1":"First versions of update.packages and install.packages functions for downloading and installing packages from CRAN.[64]"},{"1":"Considered by its developers stable enough for production use.[65]"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
-<div id="its-your-turn" class="section level2">
-<h2>It’s your turn! 🛠</h2>
-<p>Think about web data hosted on a <strong>static webpage</strong> that you might be interested in scraping! Comparably easy to scrape webpages are Wikipedia pages or pages that contain data in table format (as we’ve seen already).</p>
-<p>Before you start - it might be worth a thought to get Chrome + Selector Gadget. This will make your future as web scraper a bit easier.</p>
-<p><strong>Option A</strong></p>
-<ol style="list-style-type: decimal">
-<li><p>Inspect the page and try to find the elements you are interested in in the html code.</p></li>
-<li><p>Parse the url.</p></li>
-<li><p>Extract the XPath for the element you would like to scrape and parse the nodes.</p></li>
-<li><p>Inspect the html output you get. What would be the next steps now? Can you already put your output into a dataframe?</p></li>
-</ol>
-<p><strong>Option B</strong></p>
-<ol style="list-style-type: decimal">
-<li><p>Find an html table that you’d like to scrape.</p></li>
-<li><p>Scrape it.</p></li>
-</ol>
+<p>Another R workaround for more complex tables is the package
+<code>htmltab</code> that offers some more flexibility.</p>
+</div>
+</div>
+<div id="regular-expressions" class="section level1">
+<h1>Regular expressions 📝</h1>
+<p>Regular expressions (Regex) allow us to manipulate strings based on
+pattern matching. Regex patterns specify a sequence of strings, either
+explicitly or by meta characters. While they can be a hard nut to crack,
+they are extremely useful. <code>stringr</code> and <code>stringi</code>
+are the two most common libraries for string manipulation in R.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="st">&quot;pear&quot;</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(x, <span class="st">&quot;a&quot;</span>)</span></code></pre></div>
+<div id="htmlwidget-0c5dc1f8dc4e035fa7b4" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0c5dc1f8dc4e035fa7b4">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span>pple<\/li>\n  <li>b<span class='match'>a<\/span>nana<\/li>\n  <li>pe<span class='match'>a<\/span>r<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<p>Meta characters allow us to abstract from explicit patterns. These
+meta characters are <code>. \ | ( ) [ { ^ $ * + ?</code>. For example,
+<code>.</code> matches any character, except for line breaks
+(<code>\n</code>). <code>? * + {n} {n,} {n,m}</code> are so-called
+quantifiers, that allow us to match the preceding character either zero
+or one <code>?</code>, zero or more <code>.</code>, or one or more
+<code>+</code> times. <code>{n}</code> allows us to match a pattern
+exactly n times. To match n times and more, we add a comma in the curly
+brackets <code>{n,}</code> and to match between n and m times, we use
+<code>{n,m}</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(x, <span class="st">&quot;a.*&quot;</span>)</span></code></pre></div>
+<div id="htmlwidget-604ae371931b4b202d88" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-604ae371931b4b202d88">{"x":{"html":"<ul>\n  <li><span class='match'>apple<\/span><\/li>\n  <li>b<span class='match'>anana<\/span><\/li>\n  <li>pe<span class='match'>ar<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<p>But how can we match those meta characters then? This is where it
+gets complicated. Theoretically, we only use <code>\</code> as an escape
+character. However, we also use regular characters, like <code>\d</code>
+for instance, to match digits or <code>\s</code> to match white spaces.
+Therefore, we add another backward slash to escape the meta character
+<code>\\</code>. To match a question mark, we would use
+<code>\\?</code>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="st">&#39;abc?defg&#39;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(y, <span class="st">&#39;</span><span class="sc">\\</span><span class="st">?&#39;</span>)</span></code></pre></div>
+<div id="htmlwidget-b8be0cb076c2b70c5839" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b8be0cb076c2b70c5839">{"x":{"html":"<ul>\n  <li>abc<span class='match'>?<\/span>defg<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<p>Next to character classes and quantifiers, anchors match the start
+<code>^</code> or end <code>$</code> of a string. Alternates allow us to
+handle multiple cases in our pattern. As in R <code>|</code>, is
+equivalent to an or. With <code>[qwert]</code> we are creating a “one
+of” pattern that matches any of the strings in the squared brackets. To
+negate this and get “anything but” we use <code>[^qwert]</code>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(x, <span class="st">&quot;^a|b&quot;</span>)</span></code></pre></div>
+<div id="htmlwidget-f6a37f4be26daa4165a3" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f6a37f4be26daa4165a3">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span>pple<\/li>\n  <li><span class='match'>b<\/span>anana<\/li>\n  <li>pear<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<p>Constructing regex patterns can be a quite nerve-wrecking task. This
+<a
+href="https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf">cheat
+sheet</a> should get you started using them with <code>stringr</code> in
+R. There are <a href="https://regex101.com/">webtools</a> that
+facilitate the construction of regexes. However, most of them are
+designed for regex implementations in other programming languages which
+handle escaping escape characters differently.</p>
+<p>Now lets apply this on the table we just scraped. As you may have
+noticed, the text in the Description column still contains citation
+marks in square brackets. Let’s write a regex pattern to remove them,
+using the <code>stringr::str_replace_all</code> function.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>r_table <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Description =</span> <span class="fu">str_replace_all</span>(r_table<span class="sc">$</span>Description,  <span class="st">&quot;</span><span class="sc">\\</span><span class="st">[</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">]&quot;</span>, <span class="st">&#39;&#39;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Description)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Description"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"This is the last alpha version developed primarily by Ihaka and Gentleman. Much of the basic functionality from the \"White Book\" (see S history) was implemented. The mailing lists commenced on 1 April 1997."},{"1":"This is the oldest source release which is currently available on CRAN. CRAN is started on this date, with 3 mirrors that initially hosted 12 packages. Alpha versions of R for Microsoft Windows and the classic Mac OS are made available shortly after this version.[citation needed]"},{"1":"R becomes an official part of the GNU Project. The code is hosted and maintained on CVS."},{"1":"First versions of update.packages and install.packages functions for downloading and installing packages from CRAN."},{"1":"Considered by its developers stable enough for production use."},{"1":"S4 methods are introduced and the first version for Mac OS X is made available soon after."},{"1":"Introduced a flexible condition handling mechanism for signalling and handling condition objects."},{"1":"Introduced lazy loading, which enables fast loading of data with minimal expense of system memory."},{"1":"Support for UTF-8 encoding, and the beginnings of internationalization and localization for different languages."},{"1":"Last version to support Windows 95, 98, Me and NT 4.0"},{"1":"Support for Windows 64-bit systems."},{"1":"Last version to support Windows 2000"},{"1":"Adding a new compiler function that allows speeding up functions by converting them to bytecode."},{"1":"Added mandatory namespaces for packages. Added a new parallel package."},{"1":"New load balancing functions. Improved serialisation speed for long vectors."},{"1":"Support for numeric index values 231 and larger on 64-bit systems."},{"1":"Last version to support Microsoft Windows XP."},{"1":"Just-in-time compilation (JIT) of functions and loops to byte-code enabled by default."},{"1":"Packages byte-compiled on installation by default. Compact internal representation of integer sequences. Added a new serialisation format to support compact internal representations."},{"1":"Improved sampling from a discrete uniform distribution, which was noticeably non-uniform on large populations. New serialisation format supported since 3.5.0 becomes the default."},{"1":"R now uses a stringsAsFactors = FALSE default, and hence by default no longer converts strings to factors in calls to data.frame() and read.table(). Reference counting is used for tracking object sharing, which reduces the need for copying objects. New syntax for raw string constants."},{"1":"Introduced |> as the pipe operator for base R syntax (similar to the %>% operator of the magrittr package) and the anonymous function shortcut syntax \\\\(x) x+1"},{"1":"R uses UTF-8 as the native encoding on recent Windows systems. Support for 32-bit Windows builds has been dropped. Calling if() or while() with a condition of length greater than one is now an error."}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
 </div>
 <div id="scraping-multiple-pages" class="section level1">
 <h1>Scraping multiple pages 🤖</h1>
-<p>Whenever you want to really understand what’s going on within the functions of a new R package, it is very likely that there is a relevant article published in the <a href="https://www.jstatsoft.org/index">Journal of Statistical Software</a>. Let’s say you are interested in how the journal was doing over the past years.</p>
-<p><strong>Step 1.</strong> Inspect the source. Basically, follow steps to extract the Xpath information.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">browseURL</span>(<span class="st">&quot;http://www.jstatsoft.org/issue/archive&quot;</span>)</span></code></pre></div>
-<p><strong>Step 2</strong> Develop a scraping strategy. We need a set of URLs leading to all sources. Inspect the URLs of different sources and find the pattern. Then, construct the list of URLs from scratch.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>baseurl <span class="ot">&lt;-</span> <span class="st">&quot;http://www.jstatsoft.org/article/view/v&quot;</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>volurl <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;0&quot;</span>, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">99</span>, <span class="dv">1</span>))</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>volurl[<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;00&quot;</span>, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">1</span>))</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>brurl <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;0&quot;</span>, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">1</span>))</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>urls_list <span class="ot">&lt;-</span> <span class="fu">paste0</span>(baseurl, volurl)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>urls_list <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">rep</span>(urls_list, <span class="at">each =</span> <span class="dv">9</span>), <span class="st">&quot;i&quot;</span>, brurl)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>urls_list[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<p>Whenever you want to really understand what’s going on within the
+functions of a new R package, it is very likely that there is a relevant
+article published in the <a
+href="https://www.jstatsoft.org/index">Journal of Statistical
+Software</a>. Let’s say you are interested in how the journal was doing
+over the past years.</p>
+<p><strong>Step 1.</strong> Inspect the source. Basically, follow steps
+to extract the Xpath information.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">browseURL</span>(<span class="st">&quot;http://www.jstatsoft.org/issue/archive&quot;</span>)</span></code></pre></div>
+<p><strong>Step 2</strong> Develop a scraping strategy. We need a set of
+URLs leading to all sources. Inspect the URLs of different sources and
+find the pattern. Then, construct the list of URLs from scratch.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>baseurl <span class="ot">&lt;-</span> <span class="st">&quot;http://www.jstatsoft.org/article/view/v&quot;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>volurl <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;0&quot;</span>, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">99</span>, <span class="dv">1</span>))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>volurl[<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;00&quot;</span>, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">1</span>))</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>brurl <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;0&quot;</span>, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">1</span>))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>urls_list <span class="ot">&lt;-</span> <span class="fu">paste0</span>(baseurl, volurl)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>urls_list <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">rep</span>(urls_list, <span class="at">each =</span> <span class="dv">9</span>), <span class="st">&quot;i&quot;</span>, brurl)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>urls_list[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
 <pre><code>## [1] &quot;http://www.jstatsoft.org/article/view/v001i01&quot;
 ## [2] &quot;http://www.jstatsoft.org/article/view/v001i02&quot;
 ## [3] &quot;http://www.jstatsoft.org/article/view/v001i03&quot;
 ## [4] &quot;http://www.jstatsoft.org/article/view/v001i04&quot;
 ## [5] &quot;http://www.jstatsoft.org/article/view/v001i05&quot;</code></pre>
-<p><strong>Step 3</strong> Think about where you want your scraped material to be stored and create a directory.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>tempwd <span class="ot">&lt;-</span> (<span class="st">&quot;data/jstatsoftStats&quot;</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(tempwd)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(tempwd)</span></code></pre></div>
-<p><strong>Step 4</strong> Download the pages. Note that we did not do this step last time, when we were only scraping one page.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>folder <span class="ot">&lt;-</span> <span class="st">&quot;html_articles/&quot;</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(folder)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(urls_list)) {</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># only update, don&#39;t replace</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">paste0</span>(folder, names[i]))) {  </span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># skip article when we run into an error   </span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tryCatch</span>( </span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">download.file</span>(urls_list[i], <span class="at">destfile =</span> <span class="fu">paste0</span>(folder, names[i])),</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">error =</span> <span class="cf">function</span>(e) e</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># don&#39;t kill their server --&gt; be polite!  </span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">Sys.sleep</span>(<span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>)) </span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>} }</span></code></pre></div>
-<p>While R is downloading the pages for you, you can watch it directly in the directory you defined…</p>
+<p><strong>Step 3</strong> Think about where you want your scraped
+material to be stored and create a directory.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>tempwd <span class="ot">&lt;-</span> (<span class="st">&quot;data/jstatsoftStats&quot;</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(tempwd)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(tempwd)</span></code></pre></div>
+<p><strong>Step 4</strong> Download the pages. Note that we did not do
+this step last time, when we were only scraping one page.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>folder <span class="ot">&lt;-</span> <span class="st">&quot;html_articles/&quot;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(folder)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(urls_list)) {</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># only update, don&#39;t replace</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">paste0</span>(folder, names[i]))) {</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># skip article when we run into an error</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tryCatch</span>(</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">download.file</span>(urls_list[i], <span class="at">destfile =</span> <span class="fu">paste0</span>(folder, names[i])),</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">error =</span> <span class="cf">function</span>(e)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        e</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># don&#39;t kill their server --&gt; be polite!</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Sys.sleep</span>(<span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>While R is downloading the pages for you, you can watch it directly
+in the directory you defined…</p>
 <p><img src="pics/html_files.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>Check whether it worked.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>list_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder, <span class="at">pattern =</span> <span class="st">&quot;0.*&quot;</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>list_files_path <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder, <span class="at">pattern =</span> <span class="st">&quot;0.*&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(list_files)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>list_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder, <span class="at">pattern =</span> <span class="st">&quot;0.*&quot;</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>list_files_path <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder, <span class="at">pattern =</span> <span class="st">&quot;0.*&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(list_files)</span></code></pre></div>
 <p>Yay! Apparently, we scraped the html pages of 802 articles.</p>
 <div id="gitignoring-files" class="section level2">
 <h2>(Git)ignoring files 🙅</h2>
-<p>In case you scraping project is is linked to GitHub (as it will be in your assignment!), it can be useful to <strong>.gitignore</strong> the folder of downloaded files. This means that the folder can be stored in your local directory of the project but will not be synced with the remote (main) repository. Here is information on how to do this using <a href="https://carpentries-incubator.github.io/git-Rstudio-course/02-ignore/index.html">RStudio</a>. In Github Desktop it is very simple, you do your scraping work, the folder is created in your local repository and before your commit and push these changes, you go on <code>Repository</code> &gt; <code>Repository Settings</code> &gt; <code>Ignored Files</code> and edit the .gitignore file (add the name of the new folder / files you don’t want to sync). More generally, it makes sense to exclude .Rproj files, .RData files (and other binary or large data files), draft folders and sensitive information from version control. Remember, git is built to track changes in code, not in large data files.</p>
-<p><strong>Step 5</strong> Import files and parse out information. A loop is helpful here!</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define output first</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>authors <span class="ot">&lt;-</span> <span class="fu">character</span>()</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>title <span class="ot">&lt;-</span> <span class="fu">character</span>()</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>datePublish <span class="ot">&lt;-</span> <span class="fu">character</span>()</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># then run the loop</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(list_files_path)) {</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  html_out <span class="ot">&lt;-</span> <span class="fu">read_html</span>(list_files_path[i])</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  authors[i] <span class="ot">&lt;-</span> <span class="fu">html_text</span>(<span class="fu">html_nodes</span>(html_out , <span class="at">xpath =</span> <span class="st">&#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;authors_long&quot;, &quot; &quot; ))]//strong&#39;</span>))</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  title[i] <span class="ot">&lt;-</span> <span class="fu">html_text</span>(<span class="fu">html_nodes</span>(html_out , <span class="at">xpath =</span> <span class="st">&#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;page-header&quot;, &quot; &quot; ))]&#39;</span>))</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  datePublish[i] <span class="ot">&lt;-</span> <span class="fu">html_text</span>(<span class="fu">html_nodes</span>(html_out , <span class="at">xpath =</span> <span class="st">&#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;article-meta&quot;, &quot; &quot; ))]//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;row&quot;, &quot; &quot; )) and (((count(preceding-sibling::*) + 1) = 2) and parent::*)]//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;col-sm-8&quot;, &quot; &quot; ))]&#39;</span>))</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co"># inspect data</span></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>authors[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>title[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>datePublish[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame</span></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">authors =</span> authors, <span class="at">title =</span> title, <span class="at">datePublish =</span> datePublish)</span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(dat)</span></code></pre></div>
+<p>In case you scraping project is is linked to GitHub (as it will be in
+your assignment!), it can be useful to <strong>.gitignore</strong> the
+folder of downloaded files. This means that the folder can be stored in
+your local directory of the project but will not be synced with the
+remote (main) repository. Here is information on how to do this using <a
+href="https://carpentries-incubator.github.io/git-Rstudio-course/02-ignore/index.html">RStudio</a>.
+In Github Desktop it is very simple, you do your scraping work, the
+folder is created in your local repository and before your commit and
+push these changes, you go on <code>Repository</code> &gt;
+<code>Repository Settings</code> &gt; <code>Ignored Files</code> and
+edit the .gitignore file (add the name of the new folder / files you
+don’t want to sync). More generally, it makes sense to exclude .Rproj
+files, .RData files (and other binary or large data files), draft
+folders and sensitive information from version control. Remember, git is
+built to track changes in code, not in large data files.</p>
+<p><strong>Step 5</strong> Import files and parse out information. A
+loop is helpful here!</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define output first</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>authors <span class="ot">&lt;-</span> <span class="fu">character</span>()</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>title <span class="ot">&lt;-</span> <span class="fu">character</span>()</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>datePublish <span class="ot">&lt;-</span> <span class="fu">character</span>()</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># then run the loop</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(list_files_path)) {</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  html_out <span class="ot">&lt;-</span> <span class="fu">read_html</span>(list_files_path[i])</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  authors[i] <span class="ot">&lt;-</span> <span class="fu">html_text</span>(<span class="fu">html_nodes</span>(html_out , <span class="at">xpath =</span> <span class="st">&#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;authors_long&quot;, &quot; &quot; ))]//strong&#39;</span>))</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  title[i] <span class="ot">&lt;-</span> <span class="fu">html_text</span>(<span class="fu">html_nodes</span>(html_out , <span class="at">xpath =</span> <span class="st">&#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;page-header&quot;, &quot; &quot; ))]&#39;</span>))</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  datePublish[i] <span class="ot">&lt;-</span> <span class="fu">html_text</span>(<span class="fu">html_nodes</span>(html_out , <span class="at">xpath =</span> <span class="st">&#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;article-meta&quot;, &quot; &quot; ))]//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;row&quot;, &quot; &quot; )) and (((count(preceding-sibling::*) + 1) = 2) and parent::*)]//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;col-sm-8&quot;, &quot; &quot; ))]&#39;</span>))</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co"># inspect data</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>authors[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>title[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>datePublish[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">authors =</span> authors, <span class="at">title =</span> title, <span class="at">datePublish =</span> datePublish)</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(dat)</span></code></pre></div>
 <p><strong>Step 6</strong> Clean data…</p>
-<p>You see, scraping data from multiple pages is no problem in R. Most of the brain work often goes into developing a scraping strategy and tidying the data, not into the actual downloading/scraping part.</p>
-<p>Scraping is also possible in much more complex scenarios! Watch out for workshop presentations on</p>
+<p>You see, scraping data from multiple pages is no problem in R. Most
+of the brain work often goes into developing a scraping strategy and
+tidying the data, not into the actual downloading/scraping part.</p>
+<p>Scraping is also possible in much more complex scenarios! Watch out
+for workshop presentations on</p>
 <ul>
 <li>Dynamic webscraping with RSelenium</li>
 <li>Web APIs</li>
@@ -707,28 +760,58 @@ body_nodes %&gt;%
 <p>There is a set of general rules to the game:</p>
 <ol style="list-style-type: decimal">
 <li>You take all the responsibility for your web scraping work.</li>
-<li>Think about the nature of the data. Does it entail sensitive information? Do not collect personal data without explicit permission.</li>
-<li>Take all copyrights of a country’s jurisdiction into account. If you publish data, do not commit copyright fraud.</li>
-<li>If possible, stay identifiable. Stay polite. Stay friendly. Obey the scraping etiquette.</li>
-<li>If in doubt, ask the author/creator/provider of data for permission—if your interest is entirely scientific, chances aren’t bad that you get data.</li>
+<li>Think about the nature of the data. Does it entail sensitive
+information? Do not collect personal data without explicit
+permission.</li>
+<li>Take all copyrights of a country’s jurisdiction into account. If you
+publish data, do not commit copyright fraud.</li>
+<li>If possible, stay identifiable. Stay polite. Stay friendly. Obey the
+scraping etiquette.</li>
+<li>If in doubt, ask the author/creator/provider of data for
+permission—if your interest is entirely scientific, chances aren’t bad
+that you get data.</li>
 </ol>
-<div id="how-do-i-know-the-scraping-etiquette-of-a-site" class="section level2">
+<div id="how-do-i-know-the-scraping-etiquette-of-a-site"
+class="section level2">
 <h2>How do I know the scraping etiquette of a site? 🤝</h2>
-<p>Robot exclusion standards (<code>robot.txt</code>) are informal protocols to prohibit web robots from crawling content. They list documents that are allowed to crawl and which not. It is not a technical barrier but an ask for compliance. They are located in the root directory of a website (e.g <code>https://de.wikipedia.org/robots.txt</code>).</p>
-<p>For example, let’s have a look at wikipedia’s <a href="https://de.wikipedia.org/robots.txt">robot.txt</a> file, which is very human readable.</p>
-<p>General rules are listed under <code>User-agent: *</code> which is most interesting for R-based crawlers. A universal ban for a directory looks like this <code>Disallows: /</code>, sometimes Crawl-delays are suggested (in seconds) <code>Crawl-delay: 2</code>.</p>
+<p>Robot exclusion standards (<code>robot.txt</code>) are informal
+protocols to prohibit web robots from crawling content. They list
+documents that are allowed to crawl and which not. It is not a technical
+barrier but an ask for compliance. They are located in the root
+directory of a website (e.g
+<code>https://de.wikipedia.org/robots.txt</code>).</p>
+<p>For example, let’s have a look at wikipedia’s <a
+href="https://de.wikipedia.org/robots.txt">robot.txt</a> file, which is
+very human readable.</p>
+<p>General rules are listed under <code>User-agent: *</code> which is
+most interesting for R-based crawlers. A universal ban for a directory
+looks like this <code>Disallows: /</code>, sometimes Crawl-delays are
+suggested (in seconds) <code>Crawl-delay: 2</code>.</p>
 </div>
 <div id="what-is-polite-scraping" class="section level2">
 <h2>What is “polite” scraping? 🐌</h2>
-<p>First thing would be not to scrape at a speed that causes trouble for their server. Therefore, whenever you loop over a list of URLs, add a <code>Sys.sleep(runif(1, 1, 2))</code> at the end of the loop.</p>
-<p>And generally, it is better practice to store data on your local drive first (<code>download.file()</code>), then parse (<code>read_html()</code>).</p>
-<p><strong>A footnote on sustainability.</strong> In the digital context, we often forget that or actions do have physical consequences. For example, training AI, using blockchain and just streaming videos do cause considerable amounts of CO2 emissions. So does bombarding a server with requests - certainly to a much lesser extent than the examples before - but please consider whether you have to re-run a large scraping project 100 times in order to debug things.</p>
-<p>Furthermore, downloading massive amounts of data may arouse attention from server administrators. Assuming that you’ve got nothing to hide, you should stay identifiable beyond your IP address.</p>
+<p>First thing would be not to scrape at a speed that causes trouble for
+their server. Therefore, whenever you loop over a list of URLs, add a
+<code>Sys.sleep(runif(1, 1, 2))</code> at the end of the loop.</p>
+<p>And generally, it is better practice to store data on your local
+drive first (<code>download.file()</code>), then parse
+(<code>read_html()</code>).</p>
+<p><strong>A footnote on sustainability.</strong> In the digital
+context, we often forget that or actions do have physical consequences.
+For example, training AI, using blockchain and just streaming videos do
+cause considerable amounts of CO2 emissions. So does bombarding a server
+with requests - certainly to a much lesser extent than the examples
+before - but please consider whether you have to re-run a large scraping
+project 100 times in order to debug things.</p>
+<p>Furthermore, downloading massive amounts of data may arouse attention
+from server administrators. Assuming that you’ve got nothing to hide,
+you should stay identifiable beyond your IP address.</p>
 </div>
 <div id="how-can-i-stay-identifyable" class="section level2">
 <h2>How can I stay identifyable? 👤</h2>
 <p>Option 1: Get in touch with website administrators / data owners.</p>
-<p>Option 2: Use HTTP header fields From and User-Agent to provide information about yourself.</p>
+<p>Option 2: Use HTTP header fields From and User-Agent to provide
+information about yourself.</p>
 <pre><code>url &lt;- &quot;http://a-totally-random-website.com&quot;
 
 rvest_session &lt;- session(url, 
@@ -739,12 +822,25 @@ scraped_text &lt;- rvest_session %&gt;%
             html_elements(xpath = &quot;p//a&quot;) %&gt;% 
             html_text()
 </code></pre>
-<p>rvest’s <code>session()</code> creates a session object that responds to HTTP and HTML methods. Here, we provide our email address and the current R version as User-Agent information. This will pop up in the server logs: The webpage administrator has the chance to easily get in touch with you.</p>
+<p>rvest’s <code>session()</code> creates a session object that responds
+to HTTP and HTML methods. Here, we provide our email address and the
+current R version as User-Agent information. This will pop up in the
+server logs: The webpage administrator has the chance to easily get in
+touch with you.</p>
 </div>
 </div>
 <div id="sources" class="section level1">
 <h1>Sources</h1>
-<p>This tutorial drew heavily on Simon Munzert’s book <a href="http://r-datacollection.com/">Automated Data Collection with R</a> and related <a href="https://github.com/simonmunzert/web-scraping-with-r-extended-edition">course materials</a>. We also used an <a href="https://towardsdatascience.com/tidy-web-scraping-in-r-tutorial-and-resources-ac9f72b4fe47">example</a> from Keith McNulty’s blog post on tidy web scraping in R.</p>
+<p>This tutorial drew heavily on Simon Munzert’s book <a
+href="http://r-datacollection.com/">Automated Data Collection with R</a>
+and related <a
+href="https://github.com/simonmunzert/web-scraping-with-r-extended-edition">course
+materials</a>. We also used an <a
+href="https://towardsdatascience.com/tidy-web-scraping-in-r-tutorial-and-resources-ac9f72b4fe47">example</a>
+from Keith McNulty’s blog post on tidy web scraping in R. For the regex
+part, we used examples from the string manipulation section in Hadley
+Wickham’ s <a href="https://r4ds.had.co.nz/strings.html">R for Data
+Science</a> book.</p>
 </div>
 
 &nbsp;
