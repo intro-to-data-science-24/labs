@@ -150,7 +150,7 @@ summary <- nypl100 %>%
 
 **Step 5.** Put everything into a data frame. `r emo::ji("musical_note")`
 ```{r}
-knitr::kable(data.frame(title, author, summary) %>% head(10))
+knitr::kable(data.frame(title, author, summary) %>% head(3))
 ```
 
 ## Scraping HTML tables `r emo::ji("rocket")`

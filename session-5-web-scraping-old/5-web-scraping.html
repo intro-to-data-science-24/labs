@@ -356,7 +356,7 @@ data</li>
 <li>APIs</li>
 </ul>
 <div id="why-webscrape-with-r" class="section level1">
-<h1>Why webscrape with R? 🌏</h1>
+<h1>Why webscrape with R? 🌎</h1>
 <p>Webscraping broadly includes a) getting (unstructured) data from the
 web and b) bringing it into shape (e.g. cleaning it, getting it into
 tabular format).</p>
@@ -455,12 +455,12 @@ In this case, it actually is pretty clean already, thanks to
 <code>html_text2()</code>. However, in many cases, we need to clean the
 data we scraped with regular expressions.</p>
 <p><strong>Step 5.</strong> Put everything into a data frame. 🎵</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">data.frame</span>(title, author, summary) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">10</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">data.frame</span>(title, author, summary) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">3</span>))</span></code></pre></div>
 <table>
 <colgroup>
-<col width="13%" />
-<col width="8%" />
-<col width="78%" />
+<col width="9%" />
+<col width="6%" />
+<col width="83%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -495,65 +495,6 @@ friendship, and family.</td>
 when she discovers her boss dead in his office, all of them begin to
 unravel.</td>
 </tr>
-<tr class="even">
-<td align="left">Asadora!, Vol. 1</td>
-<td align="left">By Naoki Urasawa</td>
-<td align="left">How does a typhoon in 1959 Nagoya lead to a gigantic
-monster making Tokyoites flee for their lives in 2020? One thing is
-certain: our lovable protagonist Asa is going to be at the heart of it
-all!</td>
-</tr>
-<tr class="odd">
-<td align="left">Ballad for Sophie</td>
-<td align="left">By Filipe Melo</td>
-<td align="left">Illustrated by Juan Cavia | Translated from the
-Portuguese by Gabriela Soares | The curtains of a famous pianist’s life
-are pulled back by a determined reporter to uncover secrets, betrayal,
-highs and lows, and finally a shared passion for music.</td>
-</tr>
-<tr class="even">
-<td align="left">Barbalien: Red Planet</td>
-<td align="left">By Jeff Lemire &amp; Tate Brombal</td>
-<td align="left">Art by Gabriel Hernandez Walta | In this Black Hammer
-spinoff, Barbalien examines Mark Markz in his early days on Earth as a
-police officer and superhero. Mark has a secret that leads to an
-internal battle while facing the costs of police brutality during the
-AIDS epidemic.</td>
-</tr>
-<tr class="odd">
-<td align="left">The Black Panther Party: A Graphic Novel History</td>
-<td align="left">By David F. Walker</td>
-<td align="left">Art, colors, and letters by Marcus Kwame Anderson |
-Many know the name, not so many the story. Vibrant colors and realistic
-drawings invite readers to learn about key figures, important events,
-and the tragic downfall and enduring legacy of the Black Panther
-Party.</td>
-</tr>
-<tr class="even">
-<td align="left">Bolla: A Novel</td>
-<td align="left">By Pajtim Statovci</td>
-<td align="left">Translated from the Finnish by David Hackston | A young
-married Albanian man studying in Kosovo in 1995 meets and falls in love
-with a young Serbian man on the eve of the outbreak of war and begins
-down a dark path.</td>
-</tr>
-<tr class="odd">
-<td align="left">The Book of Accidents: A Novel</td>
-<td align="left">By Chuck Wendig</td>
-<td align="left">Wendig offers a puzzle of a novel packed with dynamic
-characters and haunted spaces that poses the question of how to deal
-with inherited pain and unresolved emotional damage through
-relationships that are both beautiful and real. Visceral, sensory, and
-delightfully unsettling.</td>
-</tr>
-<tr class="even">
-<td align="left">The Breaks: An Essay</td>
-<td align="left">By Julietta Singh</td>
-<td align="left">A profound meditation on race, inheritance, and queer
-mothering at the end of the world. In a letter to her daughter, Singh
-writes toward a tender vision of the world, offering the radical embrace
-of possibility by children as a model for how we might live.</td>
-</tr>
 </tbody>
 </table>
 <div id="scraping-html-tables" class="section level2">
@@ -584,8 +525,8 @@ they are extremely useful. <code>stringr</code> and <code>stringi</code>
 are the two most common libraries for string manipulation in R.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="st">&quot;pear&quot;</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(x, <span class="st">&quot;a&quot;</span>)</span></code></pre></div>
-<div id="htmlwidget-0c5dc1f8dc4e035fa7b4" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-0c5dc1f8dc4e035fa7b4">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span>pple<\/li>\n  <li>b<span class='match'>a<\/span>nana<\/li>\n  <li>pe<span class='match'>a<\/span>r<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4665309f4a9c568714ed" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4665309f4a9c568714ed">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span>pple<\/li>\n  <li>b<span class='match'>a<\/span>nana<\/li>\n  <li>pe<span class='match'>a<\/span>r<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <p>Meta characters allow us to abstract from explicit patterns. These
 meta characters are <code>. \ | ( ) [ { ^ $ * + ?</code>. For example,
 <code>.</code> matches any character, except for line breaks
@@ -597,8 +538,8 @@ exactly n times. To match n times and more, we add a comma in the curly
 brackets <code>{n,}</code> and to match between n and m times, we use
 <code>{n,m}</code>.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(x, <span class="st">&quot;a.*&quot;</span>)</span></code></pre></div>
-<div id="htmlwidget-604ae371931b4b202d88" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-604ae371931b4b202d88">{"x":{"html":"<ul>\n  <li><span class='match'>apple<\/span><\/li>\n  <li>b<span class='match'>anana<\/span><\/li>\n  <li>pe<span class='match'>ar<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-eab652dcad957e9c1ebe" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-eab652dcad957e9c1ebe">{"x":{"html":"<ul>\n  <li><span class='match'>apple<\/span><\/li>\n  <li>b<span class='match'>anana<\/span><\/li>\n  <li>pe<span class='match'>ar<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <p>But how can we match those meta characters then? This is where it
 gets complicated. Theoretically, we only use <code>\</code> as an escape
 character. However, we also use regular characters, like <code>\d</code>
@@ -608,8 +549,8 @@ Therefore, we add another backward slash to escape the meta character
 <code>\\?</code>.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="st">&#39;abc?defg&#39;</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(y, <span class="st">&#39;</span><span class="sc">\\</span><span class="st">?&#39;</span>)</span></code></pre></div>
-<div id="htmlwidget-b8be0cb076c2b70c5839" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b8be0cb076c2b70c5839">{"x":{"html":"<ul>\n  <li>abc<span class='match'>?<\/span>defg<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-91d127c1f106cf16b52d" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-91d127c1f106cf16b52d">{"x":{"html":"<ul>\n  <li>abc<span class='match'>?<\/span>defg<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <p>Next to character classes and quantifiers, anchors match the start
 <code>^</code> or end <code>$</code> of a string. Alternates allow us to
 handle multiple cases in our pattern. As in R <code>|</code>, is
@@ -617,8 +558,8 @@ equivalent to an or. With <code>[qwert]</code> we are creating a “one
 of” pattern that matches any of the strings in the squared brackets. To
 negate this and get “anything but” we use <code>[^qwert]</code>.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(x, <span class="st">&quot;^a|b&quot;</span>)</span></code></pre></div>
-<div id="htmlwidget-f6a37f4be26daa4165a3" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f6a37f4be26daa4165a3">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span>pple<\/li>\n  <li><span class='match'>b<\/span>anana<\/li>\n  <li>pear<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-517dfaab5b9d27290c34" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-517dfaab5b9d27290c34">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span>pple<\/li>\n  <li><span class='match'>b<\/span>anana<\/li>\n  <li>pear<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <p>Constructing regex patterns can be a quite nerve-wrecking task. This
 <a
 href="https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf">cheat
