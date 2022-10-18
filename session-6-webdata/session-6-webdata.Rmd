@@ -91,11 +91,26 @@ Next to numeric predicates, there are also **textual predicates**. Textual predi
 ```{r}
 html_elements(parsed_doc, xpath = "//h1[contains(., 'Rolf')] | //h1[contains(., 'Robert')]" )
 ```
+## Xpath exercise `r emo::ji('pick')``
+
+Can you find all links in on our example document?
+
+```{r}
+html_elements(parsed_doc, xpath = "//a[@href]" )
+```
+## The xpath grammar `r emo::ji('mage')`
 
 ```{r, fig.align='center', echo=F, out.width = "90%"}
 knitr::include_graphics("pics/Xpath.png")
 ```
 
+* `//`: The releative path that lets us start with our current element
+* tagname: the tagname of our current element
+* `@`: The `@` is used to select an attribute in out element.
+* Attribute: The name of our attribute.
+* Value: The value of our attribute
+
+## Developer Tools `r emo::ji('surfer')`
 
 While we can use R to inspect the parsed document, it is much easier to do this part in the browser. To do so, we right click anywhere on the website and click on "Inspect" or. On windows, you can also simply press F12. 
 
@@ -105,7 +120,7 @@ knitr::include_graphics("pics/inspect.png")
 
 This opens up the developer tools interface on your browser. The most important tab in the developer tools is the "Elements" tab. This tab shows you the source code of the webpage in an interactive manner. Now, when we hover over the elements in the tab they will be highlighted on the webpage. By clicking the mouse icon on the top left, we can reverse this behaviour.
 
-# String manipulation with `stringr` `r emo::ji('speech_balloon')`
+# Strings with `stringr` `r emo::ji('speech_balloon')`
 
 `stringr` and `stringi` are the two most common libraries for string manipulation in R. Before we look into regular expressions, let us quickly look into some of th core functionalities of `stringr` and how you can use them.   
 
@@ -147,6 +162,8 @@ Meta characters allow us to abstract from explicit patterns. These meta characte
 str_view(x, "a.")
 ```
 
+## Quantifiers `r emo::ji('asterisk')`
+
 `? * + {n} {n,} {n,m}` are so-called *quantifiers*, that allow us to match the preceding character either zero or one `?`,  zero or more `.`, or one or more `+` times. `{n}` allows us to match a pattern exactly n times. To match n times and more, we add a comma in the curly brackets `{n,}` and to match between n and m times, we use `{n,m}`.
 
 ```{r}
@@ -161,6 +178,8 @@ str_view_all(y, "\\d\\W")
 ```
 R's regex implmentation also ships with a number of predefined character classes, like `[:upper:]`, `[:lower:]` and `[:punct:]`.
 They are usually simpler and much easier to remember than corresponding regex patterns. Note however, that these will require double squared brackets in many of the base R functions.
+
+## Anchors & alternates `r emo::ji('anchor')`
 
 Next to character classes and quantifiers, *anchors* match the start `^` or end `$` of a string. *Alternates* allow us to handle multiple cases in our pattern. As in R `|`, is equivalent to an or. With `[qwert]` we are creating a "one of" pattern that matches any of the strings in the squared brackets. To negate this and get "anything but" we use `[^qwert]`. Parenthesis in regex are used to create groups and establish an order of evaluation. 
 
