@@ -136,9 +136,6 @@ html_elements(parsed_doc, xpath = "//h1[contains(., 'Rolf')] | //h1[contains(., 
 
 Can you find all links in on our example document?
 
-```{r}
-html_elements(parsed_doc, xpath = "//a[@href]" )
-```
 
 ***
 
@@ -210,6 +207,7 @@ Next to character classes and quantifiers, *anchors* match the start `^` or end 
 ```{r}
 str_view(x, "^a|b")
 ```
+
 ```{r}
 fruits <- c("apple", "orange", "pear")
 fruit_match <- str_c(fruits, collapse = "|")
@@ -222,6 +220,7 @@ At this point you may wonder yourself, how we match those characters that are us
 z <- c('abc?defg', '123456?89', "[?.{!]\\")
 str_view(z, '\\?')
 ```
+
 Finally a word of caution at the end: Since regular expressions are extremely powerful in string manipulation, it is easy to try and solve every problem with a single regex. Do not forget that you have other tools available in a programming language and you can break down the problem by writing a series of simpler regexes. 
 
 # Regex exercises  `r emo::ji('wrench')`
@@ -237,31 +236,21 @@ Finally a word of caution at the end: Since regular expressions are extremely po
 2. How many words are there in `stringr::words` that end with a "y" and are exactly 3 characers long?
 
 ```{r}
-str_detect(stringr::words, '^\\w{2}y$') %>% sum
 ```
 
 3. Now, try to find all words that end with "-ed" but not with "eed"!
 
 ```{r}
-str_subset(stringr::words, "[^e]ed$")
 ```
 
 4. Let us now write a pattern that matches both emails in the vector below. 
 
 ```{r}
-hertie_emails <- c('456123@students.hertie-school.org', 'h.simpson@students.hertie-school.org')
-str_view(hertie_emails, '(^\\d{6}|^\\w\\.\\w{1,})@students\\.hertie-school\\.org')
 ```
 
 5. Now try to extract all names and corresponding phone numbers from the string below.
 
 ```{r}
-raw_data <- "555-1239Moe Szyslak(636) 555-0113Burns, C. Montgomery555-6542Rev. Timothy Lovejoy555 8904Ned Flanders636-555-3226Simpson, Homer5553642Dr. Julius Hibbert"
-
-str_view_all(raw_data, "[[:alpha:]., ]{2,}")
-
-str_view_all(raw_data, "\\(?(\\d{3})?\\)?(-| )?\\d{3}(-| )?\\d{4}")
-
 ```
 
 # Sources
