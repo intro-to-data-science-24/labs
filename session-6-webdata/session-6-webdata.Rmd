@@ -29,7 +29,7 @@ Regular expressions are handy whenever manipulating strings and will serve you w
 
 # HTML structure `r emo::ji('deciduous_tree')`
 
-
+Here is an example of a document object model (DOM). Notice how the there is a cascading structure of html nodes. 
 
 ```{html, prompt = FALSE, eval = FALSE}
 <!DOCTYPE html> 
@@ -38,33 +38,54 @@ Regular expressions are handy whenever manipulating strings and will serve you w
       <title id=1>First HTML</title>
     </head>
   <body>
-    I am your first HTML file! 
+      <div>
+          <h1>
+            I am your first HTML file!
+          </h1>
+      </div>
   </body>
 </html>
 ```
 
+A simple xpath in this example would be `html/body/div/h1`. The simple slashes in this example indicate an *absolute path*. This means, we start at the root node and follow the whole way down to our target element h1.
+
+*Relative paths* on the other hand are indicated with double slashes `//`. Relative paths skip nodes and do not need to start at the root node. An example here would be `//body//h1`.
+
+Now let's have a look at how to do this in R:
 
 ```{r, message=F}
 library(rvest)
 library(stringr)
 ```
 
-
-# Xpath Basics `r emo::ji('woman_technologist')`
-
+Before we can go ahead and locate elements on a webpage with xpaths, we need to parse our webpage. Parsing a website in R is straightforward:
 
 ```{r}
 parsed_doc <- read_html("http://www.r-datacollection.com/materials/ch-4-xpath/fortunes/fortunes.html") 
 ```
 
+Now that we have the parsed document, we can locate individual elements with the xpath. For this we use `rvest`, a library that you will learn more about in the next session. The `html_elements()` function finds and select 
 
 ```{r}
-html_nodes(parsed_doc, xpath = "/html/body/div/p/i")
+html_elements(parsed_doc, xpath = "/html/body/div/p/i")
 ```
 
+# Xpath Basics `r emo::ji('woman_technologist')`
+
+Now let's look at more complex examples of xpaths.
+
 ```{r}
-html_nodes(parsed_doc, xpath = "//p/i")
+knitr::include_graphics("pics/Xpath.png")
 ```
+
+
+While we can use R to inspect the parsed document, it is much easier to do this part in the browser. To do so, we right click anywhere on the website and click on "Inspect" or. On windows, you can also simply press F12. 
+
+```{r}
+knitr::include_graphics("pics/inspect.png")
+```
+
+This opens up the developer tools interface on your browser. The most important tab in the developer tools is the "Elements" tab. This tab shows you the source code of the webpage in an interactive manner. Now, when we hover over the elements in the tab they will be highlighted on the webpage. By clicking the mouse icon on the top left, we can reverse this behaviour.
 
 # String manipulation with `stringr` `r emo::ji('speech_balloon')`
 
