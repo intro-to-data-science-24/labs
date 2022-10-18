@@ -47,9 +47,11 @@ Here is an example of a document object model (DOM). Notice how the there is a c
 </html>
 ```
 
-A simple xpath in this example would be `html/body/div/h1`. The simple slashes in this example indicate an *absolute path*. This means, we start at the root node and follow the whole way down to our target element h1.
+A simple xpath in this example would be `html/body/div/h1`. The simple slashes in this example indicate an **absolute path**. This means, we start at the root node and follow the whole way down to our target element h1.
 
-*Relative paths* on the other hand are indicated with double slashes `//`. Relative paths skip nodes and do not need to start at the root node. An example here would be `//body//h1`.
+**Relative paths** on the other hand are indicated with double slashes `//`. Relative paths skip nodes and do not need to start at the root node. An example here would be `//body//h1`.
+
+The wildcard operator `*` allows us to skip elements in the xpath.
 
 Now let's have a look at how to do this in R:
 
@@ -64,7 +66,7 @@ Before we can go ahead and locate elements on a webpage with xpaths, we need to 
 parsed_doc <- read_html("http://www.r-datacollection.com/materials/ch-4-xpath/fortunes/fortunes.html") 
 ```
 
-Now that we have the parsed document, we can locate individual elements with the xpath. For this we use `rvest`, a library that you will learn more about in the next session. The `html_elements()` function finds and select 
+Now that we have the parsed document, we can locate individual elements with the xpath. For this we use `rvest`, a library that you will learn more about in the next session. The `html_elements()` function finds and selects elements in the parsed document. We can use both css and xpath selectors.
 
 ```{r}
 html_elements(parsed_doc, xpath = "/html/body/div/p/i")
@@ -72,16 +74,32 @@ html_elements(parsed_doc, xpath = "/html/body/div/p/i")
 
 # Xpath Basics `r emo::ji('woman_technologist')`
 
-Now let's look at more complex examples of xpaths.
+Now let's take a look at some more complex examples of xpaths. Elements ob the webpage can also be selected with xpath by leveraging their relations to the elements that they are connected to. The basic syntax for this is `element1/relation::element2`. 
+
+If we would like to extract the two names on our example webpage, using element relations, we can do so like this:
 
 ```{r}
+html_elements(parsed_doc, xpath = "//p/preceding-sibling::h1")
+```
+Finally, we can also use True/False conditions on our elements to filter them. In xpath, this is called **predicates**. A **numeric predicate** lets us select the nth element within a given path. Let us use this to extract the Source of the quotes on our example page:
+
+```{r}
+html_elements(parsed_doc, xpath = "//p[2]")
+```
+Next to numeric predicates, there are also **textual predicates**. Textual predicates allow us to do rudimentary text matching. This is implemented in string functions like `contains()`, `starts_with` or `ends_with()`. Predicates can also be chained together with `and`. Multiple xpaths can be combined in an or logic with the pipe operator `|`:
+
+```{r}
+html_elements(parsed_doc, xpath = "//h1[contains(., 'Rolf')] | //h1[contains(., 'Robert')]" )
+```
+
+```{r, fig.align='center', echo=F, out.width = "90%"}
 knitr::include_graphics("pics/Xpath.png")
 ```
 
 
 While we can use R to inspect the parsed document, it is much easier to do this part in the browser. To do so, we right click anywhere on the website and click on "Inspect" or. On windows, you can also simply press F12. 
 
-```{r}
+```{r, fig.align='center', echo=F, out.width = "90%"}
 knitr::include_graphics("pics/inspect.png")
 ```
 

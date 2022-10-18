@@ -371,12 +371,14 @@ class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/html&gt;</span></span></code></pre></div>
 <p>A simple xpath in this example would be
 <code>html/body/div/h1</code>. The simple slashes in this example
-indicate an <em>absolute path</em>. This means, we start at the root
-node and follow the whole way down to our target element h1.</p>
-<p><em>Relative paths</em> on the other hand are indicated with double
-slashes <code>//</code>. Relative paths skip nodes and do not need to
-start at the root node. An example here would be
+indicate an <strong>absolute path</strong>. This means, we start at the
+root node and follow the whole way down to our target element h1.</p>
+<p><strong>Relative paths</strong> on the other hand are indicated with
+double slashes <code>//</code>. Relative paths skip nodes and do not
+need to start at the root node. An example here would be
 <code>//body//h1</code>.</p>
+<p>The wildcard operator <code>*</code> allows us to skip elements in
+the xpath.</p>
 <p>Now let’s have a look at how to do this in R:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span></code></pre></div>
@@ -387,7 +389,8 @@ straightforward:</p>
 <p>Now that we have the parsed document, we can locate individual
 elements with the xpath. For this we use <code>rvest</code>, a library
 that you will learn more about in the next session. The
-<code>html_elements()</code> function finds and select</p>
+<code>html_elements()</code> function finds and selects elements in the
+parsed document. We can use both css and xpath selectors.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">html_elements</span>(parsed_doc, <span class="at">xpath =</span> <span class="st">&quot;/html/body/div/p/i&quot;</span>)</span></code></pre></div>
 <pre><code>## {xml_nodeset (2)}
 ## [1] &lt;i&gt;&#39;What we have is nice, but we need something very different&#39;&lt;/i&gt;
@@ -395,15 +398,42 @@ that you will learn more about in the next session. The
 </div>
 <div id="xpath-basics" class="section level1">
 <h1>Xpath Basics 👩‍💻</h1>
-<p>Now let’s look at more complex examples of xpaths.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;pics/Xpath.png&quot;</span>)</span></code></pre></div>
-<p><img src="pics/Xpath.png" width="1024" /></p>
+<p>Now let’s take a look at some more complex examples of xpaths.
+Elements ob the webpage can also be selected with xpath by leveraging
+their relations to the elements that they are connected to. The basic
+syntax for this is <code>element1/relation::element2</code>.</p>
+<p>If we would like to extract the two names on our example webpage,
+using element relations, we can do so like this:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">html_elements</span>(parsed_doc, <span class="at">xpath =</span> <span class="st">&quot;//p/preceding-sibling::h1&quot;</span>)</span></code></pre></div>
+<pre><code>## {xml_nodeset (2)}
+## [1] &lt;h1&gt;Robert Gentleman&lt;/h1&gt;
+## [2] &lt;h1&gt;Rolf Turner&lt;/h1&gt;</code></pre>
+<p>Finally, we can also use True/False conditions on our elements to
+filter them. In xpath, this is called <strong>predicates</strong>. A
+<strong>numeric predicate</strong> lets us select the nth element within
+a given path. Let us use this to extract the Source of the quotes on our
+example page:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">html_elements</span>(parsed_doc, <span class="at">xpath =</span> <span class="st">&quot;//p[2]&quot;</span>)</span></code></pre></div>
+<pre><code>## {xml_nodeset (2)}
+## [1] &lt;p&gt;&lt;b&gt;Source: &lt;/b&gt;Statistical Computing 2003, Reisensburg&lt;/p&gt;
+## [2] &lt;p&gt;&lt;b&gt;Source: &lt;/b&gt;&lt;a href=&quot;https://stat.ethz.ch/mailman/listinfo/r-help&quot;&gt; ...</code></pre>
+<p>Next to numeric predicates, there are also <strong>textual
+predicates</strong>. Textual predicates allow us to do rudimentary text
+matching. This is implemented in string functions like
+<code>contains()</code>, <code>starts_with</code> or
+<code>ends_with()</code>. Predicates can also be chained together with
+<code>and</code>. Multiple xpaths can be combined in an or logic with
+the pipe operator <code>|</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">html_elements</span>(parsed_doc, <span class="at">xpath =</span> <span class="st">&quot;//h1[contains(., &#39;Rolf&#39;)] | //h1[contains(., &#39;Robert&#39;)]&quot;</span> )</span></code></pre></div>
+<pre><code>## {xml_nodeset (2)}
+## [1] &lt;h1&gt;Robert Gentleman&lt;/h1&gt;
+## [2] &lt;h1&gt;Rolf Turner&lt;/h1&gt;</code></pre>
+<p><img src="pics/Xpath.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>While we can use R to inspect the parsed document, it is much easier
 to do this part in the browser. To do so, we right click anywhere on the
 website and click on “Inspect” or. On windows, you can also simply press
 F12.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;pics/inspect.png&quot;</span>)</span></code></pre></div>
-<p><img src="pics/inspect.png" width="625" /></p>
+<p><img src="pics/inspect.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>This opens up the developer tools interface on your browser. The most
 important tab in the developer tools is the “Elements” tab. This tab
 shows you the source code of the webpage in an interactive manner. Now,
@@ -419,15 +449,15 @@ expressions, let us quickly look into some of th core functionalities of
 <code>stringr</code> and how you can use them.</p>
 <p>Here is a quick overview of the most useful functions in the
 <code>stringr</code> package:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="st">&quot;pear&quot;</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str_detect</span>(x, <span class="st">&quot;e&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;banana&quot;</span>, <span class="st">&quot;pear&quot;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str_detect</span>(x, <span class="st">&quot;e&quot;</span>)</span></code></pre></div>
 <pre><code>## [1]  TRUE FALSE  TRUE</code></pre>
 <p>To extract the actual text of a match, use
 <code>str_extract()</code>. Note that <code>str_extract()</code> only
 extracts the first match. To get all matches, use
 <code>str_extract_all()</code>, which returns a list.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_extract_all</span>(x, <span class="st">&#39;a&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_extract_all</span>(x, <span class="st">&#39;a&#39;</span>)</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] &quot;a&quot;
 ## 
@@ -440,12 +470,12 @@ extracts the first match. To get all matches, use
 you to replace matches with new strings. The simplest way is to replace
 a fixed string, however with <code>str_replace_all()</code> you can
 perform multiple replacements by supplying a named vector:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_replace_all</span>(x, <span class="fu">c</span>(<span class="st">&quot;a&quot;</span> <span class="ot">=</span> <span class="st">&quot;A&quot;</span>, <span class="st">&quot;b&quot;</span> <span class="ot">=</span> <span class="st">&quot;B&quot;</span>, <span class="st">&quot;p&quot;</span> <span class="ot">=</span> <span class="st">&quot;P&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_replace_all</span>(x, <span class="fu">c</span>(<span class="st">&quot;a&quot;</span> <span class="ot">=</span> <span class="st">&quot;A&quot;</span>, <span class="st">&quot;b&quot;</span> <span class="ot">=</span> <span class="st">&quot;B&quot;</span>, <span class="st">&quot;p&quot;</span> <span class="ot">=</span> <span class="st">&quot;P&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;APPle&quot;  &quot;BAnAnA&quot; &quot;PeAr&quot;</code></pre>
 <p><code>str_locate()</code> and <code>str_locate_all()</code> give you
 the starting and ending positions of each match. These are particularly
 useful when none of the other functions does exactly what you want.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_locate</span>(x, <span class="st">&#39;a&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_locate</span>(x, <span class="st">&#39;a&#39;</span>)</span></code></pre></div>
 <pre><code>##      start end
 ## [1,]     1   1
 ## [2,]     2   2
@@ -462,9 +492,9 @@ they are extremely useful.</p>
 meta characters are <code>. \ | ( ) [ { ^ $ * + ?</code>. For example,
 <code>.</code> is called a wildcard, as it matches any character, except
 for line breaks (<code>\n</code>).</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(x, <span class="st">&quot;a.&quot;</span>)</span></code></pre></div>
-<div id="htmlwidget-24e881bff036bfa8d006" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-24e881bff036bfa8d006">{"x":{"html":"<ul>\n  <li><span class='match'>ap<\/span>ple<\/li>\n  <li>b<span class='match'>an<\/span>ana<\/li>\n  <li>pe<span class='match'>ar<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(x, <span class="st">&quot;a.&quot;</span>)</span></code></pre></div>
+<div id="htmlwidget-1fc5dcfe4187f92dad66" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1fc5dcfe4187f92dad66">{"x":{"html":"<ul>\n  <li><span class='match'>ap<\/span>ple<\/li>\n  <li>b<span class='match'>an<\/span>ana<\/li>\n  <li>pe<span class='match'>ar<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <p><code>? * + {n} {n,} {n,m}</code> are so-called <em>quantifiers</em>,
 that allow us to match the preceding character either zero or one
 <code>?</code>, zero or more <code>.</code>, or one or more
@@ -472,22 +502,22 @@ that allow us to match the preceding character either zero or one
 exactly n times. To match n times and more, we add a comma in the curly
 brackets <code>{n,}</code> and to match between n and m times, we use
 <code>{n,m}</code>.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(x, <span class="st">&quot;p+&quot;</span>)</span></code></pre></div>
-<div id="htmlwidget-f6c61838d6712de86bf4" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f6c61838d6712de86bf4">{"x":{"html":"<ul>\n  <li>a<span class='match'>pp<\/span>le<\/li>\n  <li>banana<\/li>\n  <li><span class='match'>p<\/span>ear<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(x, <span class="st">&quot;p+&quot;</span>)</span></code></pre></div>
+<div id="htmlwidget-170d46d1c5ea23df05a0" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-170d46d1c5ea23df05a0">{"x":{"html":"<ul>\n  <li>a<span class='match'>pp<\/span>le<\/li>\n  <li>banana<\/li>\n  <li><span class='match'>p<\/span>ear<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <p>We can also match for specific <em>character classes</em>: If you
 would like to match whitespaces (spaces, linebreaks, tabs) you can use
 <code>\\w</code>. To match any digit, simply use <code>\\d</code>, for
 word character (digits and alphabetic characters) you can use
 <code>\\w</code>. We can negate those character classes by using them in
 uppercase (e.g. <code>\\D</code> matching all non-digits).</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="st">&quot;1. A small sentence. - 2. Another tiny sentence.&quot;</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view_all</span>(y, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">s(</span><span class="sc">\\</span><span class="st">w{4,5})</span><span class="sc">\\</span><span class="st">s&quot;</span>)</span></code></pre></div>
-<div id="htmlwidget-f48dc0714580ec961804" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f48dc0714580ec961804">{"x":{"html":"<ul>\n  <li>1. A<span class='match'> small <\/span>sentence. - 2. Another<span class='match'> tiny <\/span>sentence.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view_all</span>(y, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">d</span><span class="sc">\\</span><span class="st">W&quot;</span>)</span></code></pre></div>
-<div id="htmlwidget-c40fe1a1c5f34ae3bfc0" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c40fe1a1c5f34ae3bfc0">{"x":{"html":"<ul>\n  <li><span class='match'>1.<\/span> A small sentence. - <span class='match'>2.<\/span> Another tiny sentence.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="st">&quot;1. A small sentence. - 2. Another tiny sentence.&quot;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view_all</span>(y, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">s(</span><span class="sc">\\</span><span class="st">w{4,5})</span><span class="sc">\\</span><span class="st">s&quot;</span>)</span></code></pre></div>
+<div id="htmlwidget-0ce6086700baee907222" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0ce6086700baee907222">{"x":{"html":"<ul>\n  <li>1. A<span class='match'> small <\/span>sentence. - 2. Another<span class='match'> tiny <\/span>sentence.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view_all</span>(y, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">d</span><span class="sc">\\</span><span class="st">W&quot;</span>)</span></code></pre></div>
+<div id="htmlwidget-1f249082d479ebbfb89f" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1f249082d479ebbfb89f">{"x":{"html":"<ul>\n  <li><span class='match'>1.<\/span> A small sentence. - <span class='match'>2.<\/span> Another tiny sentence.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <p>R’s regex implmentation also ships with a number of predefined
 character classes, like <code>[:upper:]</code>, <code>[:lower:]</code>
 and <code>[:punct:]</code>. They are usually simpler and much easier to
@@ -502,12 +532,12 @@ we are creating a “one of” pattern that matches any of the strings in
 the squared brackets. To negate this and get “anything but” we use
 <code>[^qwert]</code>. Parenthesis in regex are used to create groups
 and establish an order of evaluation.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(x, <span class="st">&quot;^a|b&quot;</span>)</span></code></pre></div>
-<div id="htmlwidget-d897292706234680a164" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d897292706234680a164">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span>pple<\/li>\n  <li><span class='match'>b<\/span>anana<\/li>\n  <li>pear<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>fruits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;orange&quot;</span>, <span class="st">&quot;pear&quot;</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>fruit_match <span class="ot">&lt;-</span> <span class="fu">str_c</span>(fruits, <span class="at">collapse =</span> <span class="st">&quot;|&quot;</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(stringr<span class="sc">::</span>sentences, fruit_match) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(x, <span class="st">&quot;^a|b&quot;</span>)</span></code></pre></div>
+<div id="htmlwidget-50098f27089dfea0da5e" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-50098f27089dfea0da5e">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span>pple<\/li>\n  <li><span class='match'>b<\/span>anana<\/li>\n  <li>pear<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>fruits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;apple&quot;</span>, <span class="st">&quot;orange&quot;</span>, <span class="st">&quot;pear&quot;</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>fruit_match <span class="ot">&lt;-</span> <span class="fu">str_c</span>(fruits, <span class="at">collapse =</span> <span class="st">&quot;|&quot;</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(stringr<span class="sc">::</span>sentences, fruit_match) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;The pearl was worn in a thin silver ring.&quot;
 ## [2] &quot;The fruit of a fig tree is apple-shaped.&quot; 
 ## [3] &quot;Canned pears lack full flavor.&quot;</code></pre>
@@ -519,10 +549,10 @@ for instance, to match digits or <code>\s</code> to match white spaces.
 Therefore, we add another backward slash to escape the meta character
 <code>\\</code>. To match a question mark, we would use
 <code>\\?</code>.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;abc?defg&#39;</span>, <span class="st">&#39;123456?89&#39;</span>, <span class="st">&quot;[?.{!]</span><span class="sc">\\</span><span class="st">&quot;</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(z, <span class="st">&#39;</span><span class="sc">\\</span><span class="st">?&#39;</span>)</span></code></pre></div>
-<div id="htmlwidget-7a4e452f0c7b9ad1ab17" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-7a4e452f0c7b9ad1ab17">{"x":{"html":"<ul>\n  <li>abc<span class='match'>?<\/span>defg<\/li>\n  <li>123456<span class='match'>?<\/span>89<\/li>\n  <li>[<span class='match'>?<\/span>.{!]\\<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;abc?defg&#39;</span>, <span class="st">&#39;123456?89&#39;</span>, <span class="st">&quot;[?.{!]</span><span class="sc">\\</span><span class="st">&quot;</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(z, <span class="st">&#39;</span><span class="sc">\\</span><span class="st">?&#39;</span>)</span></code></pre></div>
+<div id="htmlwidget-a0531eae87e233488d4d" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a0531eae87e233488d4d">{"x":{"html":"<ul>\n  <li>abc<span class='match'>?<\/span>defg<\/li>\n  <li>123456<span class='match'>?<\/span>89<\/li>\n  <li>[<span class='match'>?<\/span>.{!]\\<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <p>Finally a word of caution at the end: Since regular expressions are
 extremely powerful in string manipulation, it is easy to try and solve
 every problem with a single regex. Do not forget that you have other
@@ -544,34 +574,34 @@ problem by writing a series of simpler regexes.</p>
 <li>How many words are there in <code>stringr::words</code> that end
 with a “y” and are exactly 3 characers long?</li>
 </ol>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_detect</span>(stringr<span class="sc">::</span>words, <span class="st">&#39;^</span><span class="sc">\\</span><span class="st">w{2}y$&#39;</span>) <span class="sc">%&gt;%</span> sum</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_detect</span>(stringr<span class="sc">::</span>words, <span class="st">&#39;^</span><span class="sc">\\</span><span class="st">w{2}y$&#39;</span>) <span class="sc">%&gt;%</span> sum</span></code></pre></div>
 <pre><code>## [1] 15</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Now, try to find all words that end with “-ed” but not with
 “eed”!</li>
 </ol>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(stringr<span class="sc">::</span>words, <span class="st">&quot;[^e]ed$&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(stringr<span class="sc">::</span>words, <span class="st">&quot;[^e]ed$&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;bed&quot;     &quot;hundred&quot; &quot;red&quot;</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Let us now write a pattern that matches both emails in the vector
 below.</li>
 </ol>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>hertie_emails <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;456123@students.hertie-school.org&#39;</span>, <span class="st">&#39;h.simpson@students.hertie-school.org&#39;</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(hertie_emails, <span class="st">&#39;(^</span><span class="sc">\\</span><span class="st">d{6}|^</span><span class="sc">\\</span><span class="st">w</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">w{1,})@students</span><span class="sc">\\</span><span class="st">.hertie-school</span><span class="sc">\\</span><span class="st">.org&#39;</span>)</span></code></pre></div>
-<div id="htmlwidget-149f3cf801ddbe6d5936" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-149f3cf801ddbe6d5936">{"x":{"html":"<ul>\n  <li><span class='match'>456123@students.hertie-school.org<\/span><\/li>\n  <li><span class='match'>h.simpson@students.hertie-school.org<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>hertie_emails <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;456123@students.hertie-school.org&#39;</span>, <span class="st">&#39;h.simpson@students.hertie-school.org&#39;</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(hertie_emails, <span class="st">&#39;(^</span><span class="sc">\\</span><span class="st">d{6}|^</span><span class="sc">\\</span><span class="st">w</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">w{1,})@students</span><span class="sc">\\</span><span class="st">.hertie-school</span><span class="sc">\\</span><span class="st">.org&#39;</span>)</span></code></pre></div>
+<div id="htmlwidget-04cb972ac884a01e4e27" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-04cb972ac884a01e4e27">{"x":{"html":"<ul>\n  <li><span class='match'>456123@students.hertie-school.org<\/span><\/li>\n  <li><span class='match'>h.simpson@students.hertie-school.org<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 <ol start="5" style="list-style-type: decimal">
 <li>Now try to extract all names and corresponding phone numbers from
 the string below.</li>
 </ol>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="ot">&lt;-</span> <span class="st">&quot;555-1239Moe Szyslak(636) 555-0113Burns, C. Montgomery555-6542Rev. Timothy Lovejoy555 8904Ned Flanders636-555-3226Simpson, Homer5553642Dr. Julius Hibbert&quot;</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view_all</span>(raw_data, <span class="st">&quot;[[:alpha:]., ]{2,}&quot;</span>)</span></code></pre></div>
-<div id="htmlwidget-a7c226f730d1935ab740" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a7c226f730d1935ab740">{"x":{"html":"<ul>\n  <li>555-1239<span class='match'>Moe Szyslak<\/span>(636) 555-0113<span class='match'>Burns, C. Montgomery<\/span>555-6542<span class='match'>Rev. Timothy Lovejoy<\/span>555 8904<span class='match'>Ned Flanders<\/span>636-555-3226<span class='match'>Simpson, Homer<\/span>5553642<span class='match'>Dr. Julius Hibbert<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view_all</span>(raw_data, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">(?(</span><span class="sc">\\</span><span class="st">d{3})?</span><span class="sc">\\</span><span class="st">)?(-| )?</span><span class="sc">\\</span><span class="st">d{3}(-| )?</span><span class="sc">\\</span><span class="st">d{4}&quot;</span>)</span></code></pre></div>
-<div id="htmlwidget-ca12c85420ea7e68f634" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ca12c85420ea7e68f634">{"x":{"html":"<ul>\n  <li><span class='match'>555-1239<\/span>Moe Szyslak<span class='match'>(636) 555-0113<\/span>Burns, C. Montgomery<span class='match'>555-6542<\/span>Rev. Timothy Lovejoy<span class='match'>555 8904<\/span>Ned Flanders<span class='match'>636-555-3226<\/span>Simpson, Homer<span class='match'>5553642<\/span>Dr. Julius Hibbert<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="ot">&lt;-</span> <span class="st">&quot;555-1239Moe Szyslak(636) 555-0113Burns, C. Montgomery555-6542Rev. Timothy Lovejoy555 8904Ned Flanders636-555-3226Simpson, Homer5553642Dr. Julius Hibbert&quot;</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view_all</span>(raw_data, <span class="st">&quot;[[:alpha:]., ]{2,}&quot;</span>)</span></code></pre></div>
+<div id="htmlwidget-b31f688a9b3a528b50f3" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b31f688a9b3a528b50f3">{"x":{"html":"<ul>\n  <li>555-1239<span class='match'>Moe Szyslak<\/span>(636) 555-0113<span class='match'>Burns, C. Montgomery<\/span>555-6542<span class='match'>Rev. Timothy Lovejoy<\/span>555 8904<span class='match'>Ned Flanders<\/span>636-555-3226<span class='match'>Simpson, Homer<\/span>5553642<span class='match'>Dr. Julius Hibbert<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view_all</span>(raw_data, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">(?(</span><span class="sc">\\</span><span class="st">d{3})?</span><span class="sc">\\</span><span class="st">)?(-| )?</span><span class="sc">\\</span><span class="st">d{3}(-| )?</span><span class="sc">\\</span><span class="st">d{4}&quot;</span>)</span></code></pre></div>
+<div id="htmlwidget-20c036e767e414b45be7" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-20c036e767e414b45be7">{"x":{"html":"<ul>\n  <li><span class='match'>555-1239<\/span>Moe Szyslak<span class='match'>(636) 555-0113<\/span>Burns, C. Montgomery<span class='match'>555-6542<\/span>Rev. Timothy Lovejoy<span class='match'>555 8904<\/span>Ned Flanders<span class='match'>636-555-3226<\/span>Simpson, Homer<span class='match'>5553642<\/span>Dr. Julius Hibbert<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="sources" class="section level1">
 <h1>Sources</h1>
