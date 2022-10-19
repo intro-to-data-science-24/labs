@@ -190,7 +190,7 @@ str_view(x, "a.")
 ```{r}
 str_view(x, "p+")
 ```
-We can also match for specific *character classes*: If you would like to match whitespaces (spaces, linebreaks, tabs) you can use `\\w`. To match any digit, simply use `\\d`, for word character (digits and alphabetic characters) you can use `\\w`. We can negate those character classes by using them in uppercase (e.g. `\\D` matching all non-digits).
+We can also match for specific *character classes*: If you would like to match whitespaces (spaces, linebreaks, tabs) you can use `\\s`. To match any digit, simply use `\\d`, for word character (digits and alphabetic characters) you can use `\\w`. We can negate those character classes by using them in uppercase (e.g. `\\D` matching all non-digits).
 
 ```{r}
 y <- "1. A small sentence. - 2. Another tiny sentence."
@@ -252,6 +252,8 @@ emails <- c('456123@students.hertie-school.org', 'h.simpson@students.hertie-scho
 5. Now try to extract all names and corresponding phone numbers from the string below.
 
 ```{r}
+ex_string <- "555-1239Moe Szyslak(636) 555-0113Burns, C. Montgomery555-6542Rev. Timothy Lovejoy555 8904Ned Flanders636-555-3226Simpson, Homer5553642Dr. Julius Hibbert"
+
 ```
 
 # Sources
