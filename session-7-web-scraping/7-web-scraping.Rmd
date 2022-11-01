@@ -347,10 +347,9 @@ To get data from an API, we suggest to follow a workflow like this:
 3. Find out the parameters referring to the resources of interest to you
 4. Create a query url from the base url and the query parameters
 5. Run the `GET` function on the query url
-
-Depending on the encoding (usually, it's json), you will need to:
-6. Parse the result with the `content` function
-7. Either use `jsonlite` or `xml2` to parse the json or xml files
+6. Depending on the encoding (usually, it's json), you will need to:
+  + Parse the result with the `content` function
+  + Either use `jsonlite` or `xml2` to parse the json or xml files
 
 
 Let's have a look at an example, the [Star Wars API](https://swapi.dev/):
