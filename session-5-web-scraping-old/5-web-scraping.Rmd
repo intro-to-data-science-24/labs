@@ -21,20 +21,18 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 ***
 
-After talking quite a bit about data formats and data processing in the past weeks, today's session is dedicated to data collection - from the web!
+After talking quite a bit about web data in the last session, today's session is dedicated to data collection - from the web!
 
 What we will cover:
 
-* basic web technologies (html, xpath)
 * scraping static webpages
 * scraping multiple static webpages 
-* data cleaning using regular expressions
+* API calls
 * building up and maintaining you own original sets of web-based data
 
 What we will not cover (today): 
 
 * scraping dynamic webpages
-* APIs 
 
 # Why webscrape with R? `r emo::ji("globe")`
 
@@ -82,11 +80,11 @@ parsed_url <- read_html("https://en.wikipedia.org/wiki/Cologne")
 
 ```{r}
 parsed_url %>% 
-  html_element(xpath = '//p[(((count(preceding-sibling::*) + 1) = 164) and parent::*)]') %>% 
+  html_element(xpath = '//p[(((count(preceding-sibling::*) + 1) = 170) and parent::*)]') %>% 
   html_text()
 ```
 
-How can do I know THIS `xpath = '//p[(((count(preceding-sibling::*) + 1) = 164) and parent::*)]'` ?
+How can do I know THIS `xpath = '//p[(((count(preceding-sibling::*) + 1) = 170) and parent::*)]'` ?
 
 There are two options: 
 
@@ -109,8 +107,6 @@ You can now de-select everything that is irrelevant to you by clicking it again 
 
 knitr::include_graphics("pics/selector2.png")
 ```
-
-
 
 Let's repeat step 2 and 3 with a more data-sciency example. `r emo::ji("cap")`
 
@@ -148,7 +144,7 @@ summary <- nypl100 %>%
 ```
 **Step 4.** Usually, step 4 is to clean extracted data. In this case, it actually is pretty clean already, thanks to `html_text2()`. However, in many cases, we need to clean the data we scraped with regular expressions.
 
-**Step 5.** Put everything into a data frame. `r emo::ji("musical_note")`
+**Step 5.** Put everything into a data frame. `r emo::ji("book")`
 ```{r}
 knitr::kable(data.frame(title, author, summary) %>% head(3))
 ```
@@ -167,44 +163,6 @@ r_table %>%
 ```
 Another R workaround for more complex tables is the package `htmltab` that offers some more flexibility.
 
-# Regular expressions `r emo::ji('memo')`
-
-Regular expressions (Regex) allow us to manipulate strings based on pattern matching. Regex patterns specify a sequence of strings, either explicitly or by meta characters. While they can be a hard nut to crack, they are extremely useful. `stringr` and `stringi` are the two most common libraries for string manipulation in R.
-
-```{r}
-x <- c("apple", "banana", "pear")
-str_view(x, "a")
-```
-
-Meta characters allow us to abstract from explicit patterns. These meta characters are `. \ | ( ) [ { ^ $ * + ?`. For example, `.` matches any character, except for line breaks (`\n`). `? * + {n} {n,} {n,m}` are so-called quantifiers, that allow us to match the preceding character either zero or one `?`,  zero or more `.`, or one or more `+` times. `{n}` allows us to match a pattern exactly n times. To match n times and more, we add a comma in the curly brackets `{n,}` and to match between n and m times, we use `{n,m}`.
-
-```{r}
-str_view(x, "a.*")
-```
-
-But how can we match those meta characters then? This is where it gets complicated. Theoretically, we only use `\` as an escape character. However, we also use regular characters, like `\d` for instance, to match digits or `\s` to match white spaces. Therefore, we add another backward slash to escape the meta character `\\`. To match a question mark, we would use `\\?`.
-
-```{r}
-y <- 'abc?defg'
-str_view(y, '\\?')
-```
-Next to character classes and quantifiers, anchors match the start `^` or end `$` of a string. Alternates allow us to handle multiple cases in our pattern. As in R `|`, is equivalent to an or. With `[qwert]` we are creating a "one of" pattern that matches any of the strings in the squared brackets. To negate this and get "anything but" we use `[^qwert]`.
-
-```{r}
-str_view(x, "^a|b")
-```
-
-Constructing regex patterns can be a quite nerve-wrecking task. This [cheat sheet](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf) should get you started using them with `stringr` in R. There are [webtools](https://regex101.com/) that facilitate the construction of regexes. However, most of them are designed for regex implementations in other programming languages which handle escaping escape characters differently.
-
-Now lets apply this on the table we just scraped. As you may have noticed, the text in the Description column still contains citation marks in square brackets. Let's write a regex pattern to remove them, using the `stringr::str_replace_all` function.
-
-```{r}
-r_table %>% 
-  mutate(Description = str_replace_all(r_table$Description,  "\\[\\d+\\]", '')) %>% 
-  select(Description)
-```
-
-
 # Scraping multiple pages `r emo::ji("robot")`
 
 Whenever you want to really understand what's going on within the functions of a new R package, it is very likely that there is a relevant article published in the [Journal of Statistical Software](https://www.jstatsoft.org/index). Let's say you are interested in how the journal was doing over the past years.
@@ -217,12 +175,12 @@ browseURL("http://www.jstatsoft.org/issue/archive")
 **Step 2** Develop a scraping strategy. We need a set of URLs leading to all sources. Inspect the URLs of different sources and find the pattern. Then, construct the list of URLs from scratch.
 ```{r}
 baseurl <- "http://www.jstatsoft.org/article/view/v"
-volurl <- paste0("0", seq(1, 99, 1))
-volurl[1:9] <- paste0("00", seq(1, 9, 1))
-brurl <- paste0("0", seq(1, 9, 1))
-urls_list <- paste0(baseurl, volurl)
-urls_list <- paste0(rep(urls_list, each = 9), "i", brurl)
-urls_list[1:5]
+volurl <- paste0("0", 1:99)
+volurl[1:9] <- paste0("00", 1:9)
+brurl <- paste0("0", 1:9)
+
+urls_list <- cross2(volurl, brurl) %>% map_chr(~paste0(baseurl, .[[1]], 'i', .[[2]]))
+names <- cross2(volurl, brurl) %>% map_chr(~paste0(.[[1]], '_', .[[2]], '.html'))
 ```
 
 **Step 3** Think about where you want your scraped material to be stored and create a directory.
@@ -234,10 +192,10 @@ setwd(tempwd)
 
 **Step 4** Download the pages. Note that we did not do this step last time, when we were only scraping one page.
 ```{r, eval=F}
-folder <- "html_articles/"
+folder <- paste0(tempwd, "\\html_articles\\")
 dir.create(folder)
 
-for (i in 1:length(urls_list)) {
+for (i in seq_along(urls_list)) {
   # only update, don't replace
   if (!file.exists(paste0(folder, names[i]))) {
     # skip article when we run into an error
@@ -248,7 +206,7 @@ for (i in 1:length(urls_list)) {
     )
     # don't kill their server --> be polite!
     Sys.sleep(runif(1, 0, 1))
-  }
+  } 
 }
 ```
 
@@ -264,7 +222,7 @@ list_files <- list.files(folder, pattern = "0.*")
 list_files_path <- list.files(folder, pattern = "0.*", full.names = TRUE)
 length(list_files)
 ```
-Yay! Apparently, we scraped the html pages of 802 articles. 
+Yay! Apparently, we scraped the html pages of 425 articles. 
 
 ## (Git)ignoring files `r emo::ji("no_good_woman")`
 In case you scraping project is is linked to GitHub (as it will be in your assignment!), it can be useful to **.gitignore** the folder of downloaded files. This means that the folder can be stored in your local directory of the project but will not be synced with the remote (main) repository. Here is information on how to do this using [RStudio](https://carpentries-incubator.github.io/git-Rstudio-course/02-ignore/index.html). In Github Desktop it is very simple, you do your scraping work, the folder is created in your local repository and before your commit and push these changes, you go on `Repository` > `Repository Settings` > `Ignored Files` and edit the .gitignore file (add the name of the new folder / files you don't want to sync). More generally, it makes sense to exclude .Rproj files, .RData files (and other binary or large data files), draft folders and sensitive information from version control. Remember, git is built to track changes in code, not in large data files.
@@ -278,19 +236,27 @@ title <- character()
 datePublish <- character()
 
 # then run the loop
-for (i in 1:length(list_files_path)) {
+for (i in seq_along(list_files_path)) {
+  
   html_out <- read_html(list_files_path[i])
     
-  authors[i] <- html_text(html_nodes(html_out , xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "authors_long", " " ))]//strong'))
+  authors[i] <- html_out %>% 
+    html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "authors_long", " " ))]//strong') %>% 
+    html_text2()
     
-  title[i] <- html_text(html_nodes(html_out , xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "page-header", " " ))]'))
+  title[i] <- html_out %>% 
+    html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "page-header", " " ))]') %>% 
+    html_text2()
     
-  datePublish[i] <- html_text(html_nodes(html_out , xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "article-meta", " " ))]//*[contains(concat( " ", @class, " " ), concat( " ", "row", " " )) and (((count(preceding-sibling::*) + 1) = 2) and parent::*)]//*[contains(concat( " ", @class, " " ), concat( " ", "col-sm-8", " " ))]'))
+  datePublish[i] <- html_out %>% 
+    html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "article-meta", " " ))]//*[contains(concat( " ", @class, " " ), concat( " ", "row", " " )) and (((count(preceding-sibling::*) + 1) = 2) and parent::*)]//*[contains(concat( " ", @class, " " ), concat( " ", "col-sm-8", " " ))]') %>% 
+    html_text2()
+  
 }
 
 # inspect data
 authors[1:3]
-title[1:2]
+title[1:3]
 datePublish[1:3]
 
 # create a data frame
@@ -363,6 +329,104 @@ scraped_text <- rvest_session %>%
 rvest's `session()` creates a session object that responds to HTTP and HTML methods.
 Here, we provide our email address and the current R version as User-Agent information.
 This will pop up in the server logs: The webpage administrator has the chance to easily get in touch with you.
+
+# On an API far, far away... `r emo::ji("star")`
+
+```{r}
+library(httr)
+library(jsonlite)
+library(xml2)
+```
+
+
+To get data from an API, we suggest to follow a workflow like this:
+
+1. Read the APIs documentation!
+2. Get the baseurl
+3. Find out the parameters referring to the resources of interest to you
+4. Create a query url from the base url and the query parameters
+5. Run the `GET` function on the query url
+
+Depending on the encoding (usually, it's json), you will need to:
+6. Parse the result with the `content` function
+7. Either use `jsonlite` or `xml2` to parse the json or xml files
+
+
+Let's have a look at an example, the [Star Wars API](https://swapi.dev/):
+
+```{r}
+baseurl <- "https://swapi.dev/api/"
+
+query <- 'films'
+
+GET(paste0(baseurl, query)) %>%
+  content(as = 'text') %>%
+  fromJSON() %>% 
+  pluck(4) %>% 
+  as.data.frame()
+  
+```
+
+```{r}
+query <- 'people/?search=skywalker'
+
+GET(paste0(baseurl, query)) %>%
+  content(as = 'text') %>%
+  fromJSON() %>% 
+  pluck(4) %>% 
+  as.data.frame()
+```
+
+If you do not know the source format, the `http_type` function will help you out!
+
+```{r}
+query <- 'starships/?search=death/?format=wookiee'
+
+GET(paste0(baseurl, query)) %>%
+  http_type()
+```
+
+## API keys and authentication `r emo::ji('lock')``
+
+For many APIs, you will need to obtain an api key to retrieve data. Once you received your api key (or token), you will also need to adapt your GET query. How you need to do this depends a lot on the API. Let's have a look at how to do this for the API of the [US congress](https://api.congress.gov/): The API is actually valid across a number of [US government institutions](https://api.data.gov/docs/). We can sign up for an API key [here](https://api.data.gov/signup/). The API website, gives us detailed information on how to build our queries. But how do we actually authenticate ourselves with the API key? The [documentation](https://api.data.gov/docs/api-key/) tells us that there are multiple ways to go about this. We can either do adapt the use HTTP basic authentication, the GET query parameter, or the HTTP header.
+
+Here's a quick overview of how to implement these with `httr`:
+
+
+```{r, eval=FALSE}
+baseurl <- 'https://api.congress.gov/v3/'
+
+query <- 'nomination/115/2259/actions'
+
+GET(paste0(baseurl, query), 
+    authenticate(user = Sys.getenv('US.GOV_API'), password = '')) %>%
+  content(as = 'text') %>% 
+  fromJSON() %>% 
+  pluck(1) %>% 
+  as.data.frame()
+```
+
+```{r, eval=FALSE}
+query <- paste0('summaries/117/hr?fromDateTime=2022-10-01T00:00:00Z&toDateTime=2022-11-01T00:00:00Z&sort=updateDate+desc')
+
+GET(paste0(baseurl, query), query = list(api_key = Sys.getenv('US.GOV_API'))) %>%
+  content(as = 'text') %>% 
+  fromJSON() %>% 
+  pluck(3) %>% 
+  as.data.frame()
+```
+
+```{r, eval=FALSE}
+query <- 'member/O000167/sponsored-legislation.xml'
+
+GET(paste0(baseurl, query), 
+    add_headers('X-Api-Key' = Sys.getenv('US.GOV_API'))) %>%
+  content(as = 'text') %>% 
+  read_xml() %>% 
+  xml_find_all('//sponsoredLegislation//title') %>% xml_text()
+```
+
+Retrieving data from API's using `httr` can at times be quite tiresome. Luckily, there are many R libraries that make it much easier to retrieve data from APIs. Here is a [list of ready-made R bindings to web-APIs]('https://ropensci.org/packages/data-access/'). Actually, even the starwars API we queried earlier has its own R package, `rwars`!
 
 
 # Sources
