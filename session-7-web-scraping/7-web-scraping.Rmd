@@ -58,7 +58,7 @@ In general, remember, the basic **workflow for scraping static webpages** is the
 knitr::include_graphics("pics/workflow.png")
 ```
 
-# Scraping static websites with `rvest` `r emo::ji("tractor")`
+# Scraping static sites with `rvest` `r emo::ji("tractor")`
 
 Who doesn't love Wikipedia? Let's use this as our first, straight forward test case.
 
