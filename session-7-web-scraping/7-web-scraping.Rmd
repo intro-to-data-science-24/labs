@@ -39,13 +39,13 @@ What we will not cover (today):
 Webscraping broadly includes a) getting (unstructured) data from the web and b) 
 bringing it into shape (e.g. cleaning it, getting it into tabular format).
 
-Why webscrape? While some influential people consider "Data Scientist" `r emo::ji("woman_technologist")` as the [sexiest job](https://hbr.org/2012/10/data-scientist-the-sexiest-job-of-the-21st-century) of the 21st century (congratulations!), one of the sexiest just emerging academic disciplines (my influential view) - Computational Social Science (CSS). Why so? 
+Why webscrape? While some influential people consider "Data Scientist" `r emo::ji("woman_technologist")` to be the [sexiest job](https://hbr.org/2012/10/data-scientist-the-sexiest-job-of-the-21st-century) of the 21st century (congratulations!), one of the sexiest just emerging academic disciplines is (in my influential view) - Computational Social Science (CSS). Why is that so? 
 
 * data abundance online 
 * social interaction online
 * services track social behavior
 
-BUT online data are usually meant for display, not (clean) download!
+BUT online data are usually meant for display, not a (clean) download!
 
 But getting access to online data would also be incredibly interesting when you think of 
 very pragmatic things like financial resources, time resources, reproducibility and updateability...
