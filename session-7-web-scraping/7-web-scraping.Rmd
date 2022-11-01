@@ -84,17 +84,16 @@ parsed_url %>%
   html_text()
 ```
 
-How can do I know THIS `xpath = '//p[(((count(preceding-sibling::*) + 1) = 170) and parent::*)]'` ?
 
 There are two options: 
 
-**Option 1.** On your page of interest, go to a table that you'd like to scrape. Our favorite bowser for webscraping is Google Chrome but others work as well. On Chrome, you go in View > Developer > inspect elements. If you hover over the html code on the right, you should see boxes of different colors framing different elements of the page. Once the part of the page you would like to scrape is selected, right click on the html code and Copy > Copy Xpath. That's it. 
+**Option 1.** We saw how to do this before the Midterm brea. On your page of interest, go to a table that you'd like to scrape. Our favorite bowser for webscraping is Google Chrome but others work as well. On Chrome, you go in View > Developer > inspect elements. If you hover over the html code on the right, you should see boxes of different colors framing different elements of the page. Once the part of the page you would like to scrape is selected, right click on the html code and Copy > Copy Xpath. That's it.
 
 ```{r, fig.align='center', echo=F, out.width = "90%"}
 knitr::include_graphics("pics/inspect.png")
 ```
 
-**Option 2.** You download the [Chrome Extension](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb?hl=de) `SelectorGadget` and activate it while browsing the page you'd like to scrape from. You will see a selection box moving with your cursor. You select an element by clickin on it. It turns green - and so does all other content that would be selected with the current XPath.
+**Option 2.** Something we did not show you, but that you might look at in your own time is the Chrome Extension `SelectorGadget`. You download the [Chrome Extension](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb?hl=de) `SelectorGadget` and activate it while browsing the page you'd like to scrape from. You will see a selection box moving with your cursor. You select an element by clickin on it. It turns green - and so does all other content that would be selected with the current XPath.
 
 ```{r, fig.align='center', echo=F, out.width = "90%"}
 knitr::include_graphics("pics/selector.png")
@@ -127,7 +126,8 @@ body_nodes %>%
 ```
 play with that yourself if you like...
 
-Now let's have a look at three different ways to extract information:
+Now let's have a look at the different ways to extract information:
+
 ```{r}
 title <- nypl100 %>% 
   html_elements(xpath = '//ul/li/div/div/h4') %>% 
@@ -142,6 +142,7 @@ summary <- nypl100 %>%
   html_text2()
 
 ```
+
 **Step 4.** Usually, step 4 is to clean extracted data. In this case, it actually is pretty clean already, thanks to `html_text2()`. However, in many cases, we need to clean the data we scraped with regular expressions.
 
 **Step 5.** Put everything into a data frame. `r emo::ji("book")`

@@ -350,7 +350,7 @@ data</li>
 <li>scraping dynamic webpages</li>
 </ul>
 <div id="why-webscrape-with-r" class="section level1">
-<h1>Why webscrape with R? 🌎</h1>
+<h1>Why webscrape with R? 🌍</h1>
 <p>Webscraping broadly includes a) getting (unstructured) data from the
 web and b) bringing it into shape (e.g. cleaning it, getting it into
 tabular format).</p>
@@ -393,19 +393,19 @@ forward test case.</p>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_element</span>(<span class="at">xpath =</span> <span class="st">&#39;//p[(((count(preceding-sibling::*) + 1) = 170) and parent::*)]&#39;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text</span>()</span></code></pre></div>
 <pre><code>## [1] &quot;The Cologne carnival is one of the largest street festivals in Europe. In Cologne, the carnival season officially starts on 11 November at 11 minutes past 11 a.m. with the proclamation of the new Carnival Season, and continues until Ash Wednesday. However, the so-called \&quot;Tolle Tage\&quot; (crazy days) do not start until Weiberfastnacht (Women&#39;s Carnival) or, in dialect, Wieverfastelovend, the Thursday before Ash Wednesday, which is the beginning of the street carnival. Zülpicher Strasse and its surroundings, Neumarkt square, Heumarkt and all bars and pubs in the city are crowded with people in costumes dancing and drinking in the streets. Hundreds of thousands of visitors flock to Cologne during this time. Generally, around a million people celebrate in the streets on the Thursday before Ash Wednesday.[69]&quot;</code></pre>
-<p>How can do I know THIS
-<code>xpath = '//p[(((count(preceding-sibling::*) + 1) = 170) and parent::*)]'</code>
-?</p>
 <p>There are two options:</p>
-<p><strong>Option 1.</strong> On your page of interest, go to a table
-that you’d like to scrape. Our favorite bowser for webscraping is Google
-Chrome but others work as well. On Chrome, you go in View &gt; Developer
-&gt; inspect elements. If you hover over the html code on the right, you
-should see boxes of different colors framing different elements of the
-page. Once the part of the page you would like to scrape is selected,
-right click on the html code and Copy &gt; Copy Xpath. That’s it.</p>
+<p><strong>Option 1.</strong> We saw how to do this before the Midterm
+brea. On your page of interest, go to a table that you’d like to scrape.
+Our favorite bowser for webscraping is Google Chrome but others work as
+well. On Chrome, you go in View &gt; Developer &gt; inspect elements. If
+you hover over the html code on the right, you should see boxes of
+different colors framing different elements of the page. Once the part
+of the page you would like to scrape is selected, right click on the
+html code and Copy &gt; Copy Xpath. That’s it.</p>
 <p><img src="pics/inspect.png" width="90%" style="display: block; margin: auto;" /></p>
-<p><strong>Option 2.</strong> You download the <a
+<p><strong>Option 2.</strong> Something we did not show you, but that
+you might look at in your own time is the Chrome Extension
+<code>SelectorGadget</code>. You download the <a
 href="https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb?hl=de">Chrome
 Extension</a> <code>SelectorGadget</code> and activate it while browsing
 the page you’d like to scrape from. You will see a selection box moving
@@ -431,7 +431,7 @@ different levels of html, you can also use tidyverse logic.</p>
 body_nodes %&gt;% 
  html_children()</code></pre>
 <p>play with that yourself if you like…</p>
-<p>Now let’s have a look at three different ways to extract
+<p>Now let’s have a look at the different ways to extract
 information:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>title <span class="ot">&lt;-</span> nypl100 <span class="sc">%&gt;%</span> </span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">&#39;//ul/li/div/div/h4&#39;</span>) <span class="sc">%&gt;%</span> </span>
