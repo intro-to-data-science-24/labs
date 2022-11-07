@@ -10,7 +10,7 @@
 5. Databases \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-5-databases/5-databases.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-5-databases/5-databases.html)\]
 6. Web data and technologies \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-6-webdata/session-6-webdata.html) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-6-webdata/session-6-webdata.Rmd)\]
 7. Web scraping and APIs \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-7-web-scraping/7-web-scraping.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-7-web-scraping/7-web-scraping.Rmd)\]
-8. Modelling \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-8-modellingll/8-modelling.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-8-modelling/8-modelling.Rmd)\]
+8. Modelling \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-8-modelling/8-modelling.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-8-modelling/8-modelling.Rmd)\]
 9. Visualization \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-9-visualization/9-visualization.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-9-visualization/9-visualization.Rmd)\]
 10. Final Project Prep \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-10-shiny/10-shiny.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-10-shiny/10-shiny.Rmd)\]
 
