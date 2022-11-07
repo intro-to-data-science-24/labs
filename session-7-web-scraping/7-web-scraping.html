@@ -13,7 +13,7 @@
 
 <title>Web Scraping</title>
 
-<script src="7-web-scraping_files/header-attrs-2.17/header-attrs.js"></script>
+<script src="7-web-scraping_files/header-attrs-2.14/header-attrs.js"></script>
 <script src="7-web-scraping_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="7-web-scraping_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
@@ -127,20 +127,13 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    var j = 0;
-    while (j < rules.length) {
+    for (var j = 0; j < rules.length; j++) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
-        j++;
-        continue;
-      }
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') {
-        j++;
-        continue;
-      }
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -199,8 +192,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -208,9 +201,16 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
+  content: "&#xe258;";
   border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -350,7 +350,7 @@ data</li>
 <li>scraping dynamic webpages</li>
 </ul>
 <div id="why-webscrape-with-r" class="section level1">
-<h1>Why webscrape with R? 🌍</h1>
+<h1>Why webscrape with R? 🌏</h1>
 <p>Webscraping broadly includes a) getting (unstructured) data from the
 web and b) bringing it into shape (e.g. cleaning it, getting it into
 tabular format).</p>
@@ -716,11 +716,14 @@ this:</p>
 you</li>
 <li>Create a query url from the base url and the query parameters</li>
 <li>Run the <code>GET</code> function on the query url</li>
+<li>Depending on the encoding (usually, it’s json), you will need
+to:</li>
 </ol>
-<p>Depending on the encoding (usually, it’s json), you will need to: 6.
-Parse the result with the <code>content</code> function 7. Either use
-<code>jsonlite</code> or <code>xml2</code> to parse the json or xml
-files</p>
+<ul>
+<li>Parse the result with the <code>content</code> function</li>
+<li>Either use <code>jsonlite</code> or <code>xml2</code> to parse the
+json or xml files</li>
+</ul>
 <p>Let’s have a look at an example, the <a
 href="https://swapi.dev/">Star Wars API</a>:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>baseurl <span class="ot">&lt;-</span> <span class="st">&quot;https://swapi.dev/api/&quot;</span></span>
