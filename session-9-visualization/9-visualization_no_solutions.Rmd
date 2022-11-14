@@ -152,7 +152,7 @@ To do so, we need three of our building blocks: a) data, b) aesthetics, and c) a
 
 Once we have our scatterplot. Can you think of a way to adapt the code to: 
 
-* (1) convey another dimension through color, the species of penguin 
+* (1) convey another dimension through colour; for example the species of penguin 
 * (2) change the axes names
 * (3) render the graph with `theme_minimal()`. 
 
