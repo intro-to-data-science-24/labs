@@ -623,7 +623,8 @@ ggplot(df,
        aes(x = lifeExp)) +
   geom_line(stat = "density") +
   labs(title = "Distribution of global life expectancy 1952-2007",
-       subtitle = "Data source: Gapminder package",
+       subtitle = "A bimodal distribution",
+       caption = 'Source: Gapminder package',
        x = "Life expectancy in years",
        y = "Density")
 ```
@@ -900,7 +901,7 @@ ggplot(subset(df, country %in% c("Brazil", "Russia", "China", "India", "South Af
 
 
 # or alternatively, just hide the two other legends
-guides(shape = "none", linetype = "none") 
+# guides(shape = "none", linetype = "none") 
 
 ```
 
@@ -963,7 +964,7 @@ p3
 
 Now that you have been introduced to some of the basics of `ggplot2`, **the best way to move forward is to experiment**. As we have discussed before, the **R** community is very open. Perhaps, you can gather some inspiration from the Tidy Tuesday social data project in R where users explore a new dataset each week and share their visualizations and code on Twitter under \#TidyTuesday. You can explore some of the previous visualizations [here](https://shiny.rstudio.com/gallery/tidy-tuesday.html) and try to replicate their code.
 
-[Here is a curated list](https://github.com/erikgahner/awesome-ggplot2) of awesome `ggplot2` resources. Other cool plot forms to check out are, for example, parallel plots, spaghetti plots, interactive plots, maps, three dimensional plots, network graphs, etc. 
+[Here](https://github.com/erikgahner/awesome-ggplot2) and [here](https://exts.ggplot2.tidyverse.org/gallery/) are curated lists of awesome `ggplot2` resources. Other cool plot forms to check out are, for example, parallel plots, spaghetti plots, interactive plots, maps, three dimensional plots, network graphs, etc. 
 Of course, there will also be some really cool visualization content in the workshops!!
 
 In case you're already thinking about Christmas gifts, want to have some more color on your walls or - just in case you are bored by this course, check out some *generative art* or play around with some open projects, for example, by [Katharina Brunner](https://katharinabrunner.de/generativeart/), [Ijeamaka](https://twitter.com/ijeamaka_a) or [Sharla Gelfand](https://twitter.com/sharlagelfand) - all **conducted in R**! 

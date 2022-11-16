@@ -55,7 +55,7 @@ We will learn the fundamentals of data visualization with `ggplot` including bar
 ***
 # Introduction to `ggplot2`
 
-`ggplot2` is by far the most popular visualization package in **R**. `ggplot2` implements the **grammar of graphics** to render a versatile syntax of creating visuals. The underlying logic of the package relies on deconstructing the structure of graphs (if you are interested in this you can read this [article](http://vita.had.co.nz/papers/layered-grammar.pdf)). You can access the data visualization with `ggplot2` cheat sheet [here](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf).
+`ggplot2` is by far the most popular visualization package in **R**. `ggplot2` implements the **grammar of graphics** to render a versatile syntax of creating visuals. The underlying logic of the package relies on deconstructing the structure of graphs (if you are interested in this you can read this [article](http://vita.had.co.nz/papers/layered-grammar.pdf)). You can access the data visualization with `ggplot2` cheat sheet [here](https://posit.co/wp-content/uploads/2022/10/data-visualization-1.pdf).
 
 For the purposes of this introduction to visualization with ggplot, we care about the layered nature of visualizing with `ggplot2`.
 
@@ -100,7 +100,7 @@ Beyond your axis, you can add more aesthetics representing further dimensions of
 
 ### Geometric objects 
 
-The third layer to render our graph (to make it a specific type of graph, e.g. bar plot, scatter plot, etc.) is a geometric object. To add one, we need to add a plus (**+**) at the end of the initial line and state the type of geometric object we want to add, for example, `geom_point()` for a scatter plot, or `geom_bar()` for bar plots. For an overview of the most important functions and geoms available through `ggplot2`, see the `ggplot2` [cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf).
+The third layer to render our graph (to make it a specific type of graph, e.g. bar plot, scatter plot, etc.) is a geometric object. To add one, we need to add a plus (**+**) at the end of the initial line and state the type of geometric object we want to add, for example, `geom_point()` for a scatter plot, or `geom_bar()` for bar plots. For an overview of the most important functions and geoms available through `ggplot2`, see the `ggplot2` [cheat sheet](https://posit.co/wp-content/uploads/2022/10/data-visualization-1.pdf).
 
 ```r
 ggplot(name_of_your_df, aes(x = your_x_axis_variable, y = your_y_axis_variable)) +
@@ -162,8 +162,8 @@ par(mar = c(4, 4, .1, .1)) # to let the figures sit side by side
 
 # basic plot
 
-
 # advanced scatter plot
+
 
 ```
 
@@ -276,6 +276,8 @@ Let's adapt the code of our histogram:
 ```{r, fig.show="hold", out.width="50%", warning=F, echo=F, message=F}
 par(mar = c(4, 4, .1, .1)) # to let the figures sit side by side
 
+ggplot(penguins, aes(x = body_mass_g)) +
+  geom_histogram()
 
 ```
 
@@ -345,7 +347,7 @@ ggplot(df,
   geom_line(stat = "density") +
   labs(title = "Transformation using scales") +
   scale_x_log10() +
-  geom_vline(xintercept = av, color = "red")
+  geom_vline(xintercept = av, color = "red") 
 
 # Bonus: alternatively could also use scale_x_continuous(trans = "log10")
 ```
@@ -597,7 +599,8 @@ ggplot(df,
        aes(x = lifeExp)) +
   geom_line(stat = "density") +
   labs(title = "Distribution of global life expectancy 1952-2007",
-       subtitle = "Data source: Gapminder package",
+       subtitle = "A bimodal distribution",
+       caption = 'Source: Gapminder package',
        x = "Life expectancy in years",
        y = "Density")
 ```
@@ -915,7 +918,7 @@ p3
 
 Now that you have been introduced to some of the basics of `ggplot2`, **the best way to move forward is to experiment**. As we have discussed before, the **R** community is very open. Perhaps, you can gather some inspiration from the Tidy Tuesday social data project in R where users explore a new dataset each week and share their visualizations and code on Twitter under \#TidyTuesday. You can explore some of the previous visualizations [here](https://shiny.rstudio.com/gallery/tidy-tuesday.html) and try to replicate their code.
 
-[Here is a curated list](https://github.com/erikgahner/awesome-ggplot2) of awesome `ggplot2` resources. Other cool plot forms to check out are, for example, parallel plots, spaghetti plots, interactive plots, maps, three dimensional plots, network graphs, etc. 
+[Here](https://github.com/erikgahner/awesome-ggplot2) and [here](https://exts.ggplot2.tidyverse.org/gallery/) are curated lists of awesome `ggplot2` resources. Other cool plot forms to check out are, for example, parallel plots, spaghetti plots, interactive plots, maps, three dimensional plots, network graphs, etc. 
 Of course, there will also be some really cool visualization content in the workshops!!
 
 In case you're already thinking about Christmas gifts, want to have some more color on your walls or - just in case you are bored by this course, check out some *generative art* or play around with some open projects, for example, by [Katharina Brunner](https://katharinabrunner.de/generativeart/), [Ijeamaka](https://twitter.com/ijeamaka_a) or [Sharla Gelfand](https://twitter.com/sharlagelfand) - all **conducted in R**! 
