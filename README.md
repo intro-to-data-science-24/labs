@@ -12,7 +12,7 @@
 7. Web scraping and APIs \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-7-web-scraping/7-web-scraping.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-7-web-scraping/7-web-scraping.Rmd)\]
 8. Modelling \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-8-modelling/8-modelling.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-8-modelling/8-modelling.Rmd)\]
 9. Visualization \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-9-visualization/9-visualization.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-9-visualization/9-visualization.Rmd)\]
-10. Final Project Prep \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-10-shiny/10-shiny.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-10-shiny/10-shiny.Rmd)\]
+10. Filexdashboards and Shiny Apps \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-10-shiny/10-shiny.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-10-shiny/10-shiny.Rmd)\]
 
 ## Instructors
 
