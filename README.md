@@ -3,7 +3,7 @@
 
 ## Lab Sessions
 
-1. Introduction, R basics and best practice \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-1-intro/1-intro.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-1-intro/1-intro.Rmd)\]
+1. Introduction, R basics, and best practices \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-1-intro/1-intro.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-1-intro/1-intro.Rmd)\]
 2. Version control and project management \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-2-version-control/2-git.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-2-version-control/2-git.Rmd)\]
 3. R and the tidyverse \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-3-tidyverse/3-tidyverse.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-3-tidyverse/3-tidyverse.Rmd)\]
 4. Functions and debugging \[[**.html**](https://raw.githack.com/intro-to-data-science-22/labs/main/session-4-functions/4-functions.html) | [**.Rmd**](https://github.com/intro-to-data-science-22/labs/blob/main/session-4-functions/4-functions.Rmd)\]
@@ -16,7 +16,7 @@
 
 ## Instructors
 
-The lab sessions to the course Introduction to Data Science by [Simon Munzert](https://simonmunzert.github.io/) at the [Hertie School, Berlin](https://www.hertie-school.org/en/), are taught by Hiba Ahmad and [Steve Kerr](https://github.com/smkerr).
+The lab sessions to the course Introduction to Data Science by [Simon Munzert](https://simonmunzert.github.io/) at the [Hertie School, Berlin](https://www.hertie-school.org/en/), are taught by [Hiba Ahmad](https://www.hertie-school.org/en/cv-books/cv-book-2023/cv-book/student/ahmad) and [Steve Kerr](https://github.com/smkerr).
 
 
 ## License
