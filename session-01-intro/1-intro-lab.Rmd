@@ -119,7 +119,7 @@ Logical operators are incredibly helpful for any type of exploratory analysis, d
 
 # Objects in R
 
-`R` stores information as an *object*. You can name objects whatever you like. Just remember to not use names that are reserved for build-in functions or functions in the packages you use, such as `sum`, `mean`, or `abs`. Most of the time, `R` will let you use these as names, but it leads to confusion in your code. 
+`R` stores information as an *object*. You can name objects whatever you like. Just remember not to use names that are reserved for built-in functions or functions in the packages you use, such as `sum`, `mean`, or `abs`. Most of the time, `R` will let you use these as names, but it leads to confusion in your code. 
 
 
 ## Assigning values to objects
@@ -147,7 +147,7 @@ result
 
 There are four main variable types you should be familiar with:
 
-* **Numerical**: Any number. **Integer** is a numerical variable without any decimals.
+* **Numerical**: Any number. An **integer** is a numerical variable *without* any decimals, while a **double** is a numerical variable *with* decimals.
 * **Character**: This is what Stata (and other programming languages such as Python) calls a string. We typically store any alphanumeric data that is not ordered as a character vector.
 * **Logical**: A collection of `TRUE` and `FALSE` values.
 * **Factor**: Think about it as an ordinal variable, i.e. an ordered categorical variable.
@@ -219,7 +219,7 @@ my_factor <- as.factor(my_vector)
 levels(my_factor)
 ```
 
-If you are thrilled by object classes in R by now, [here is more](https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/).
+If you are thrilled by object classes in R by now, [here is more](https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures.html).
 
 ---
 
@@ -230,7 +230,7 @@ Let's first focus on vectors as building blocks of most data structures you'll b
 
 A **vector** is one of the simplest type of data you can work with in `R`. "A vector or a one-dimensional array simply represents a collection of information stored in a specific order" (Imai 2017: 14). It is essentially a list of data of a single type (e.g. numerical, character, or logical). 
 
-To create a vector, we use the function `c()` (``concatenate'') to combine separate data points. The general format for creating a vector in R is as follows:
+To create a vector, we use the function `c()` ("concatenate") to combine separate data points. The general format for creating a vector in R is as follows:
 `name_of_vector <- c("what you want to put into the vector")`
 
 Suppose, we have data on the population in millions for the five most populous countries in 2016. The data come from the World Bank.
@@ -246,7 +246,7 @@ pop <- c(pop1, pop2)
 pop
 ```
 
-First, lets check which variable type our population data were stored in. The output below tells us that the object `pop` is of class *numeric*, and has the dimensions `[1:10]`, that is 10 elements in one dimension.
+First, let's check which variable type our population data were stored in. The output below tells us that the object `pop` is of class *numeric*, and has the dimensions `[1:10]`, that is 10 elements in one dimension.
 ```{r}
 str(pop)
 ```
@@ -257,7 +257,7 @@ cname <- c("CHN", "IND", "USA", "IDN", "BRA")
 str(cname)
 ```
 
-Now, lets code a *logical* variable that shows whether the country is in Asia or not. Note that `R` recognizes both `TRUE` and `T` (and `FALSE` and `F`) as logical values. 
+Now, let's code a *logical* variable that shows whether the country is in Asia or not. Note that `R` recognizes both `TRUE` and `T` (and `FALSE` and `F`) as logical values. 
 ```{r}
 asia <- c(TRUE, TRUE, F, T, F)
 str(asia)
@@ -276,7 +276,7 @@ Sometimes you have to do a work around, like switching to a character first, and
 
 We won't go into this too much here; just remember: Google is your friend!
 
-Let's convert the factor variable `regime` into a character. Also, for practice, lets convert the `asia` variable to character and back to logical.
+Let's convert the factor variable `regime` into a character. Also, for practice, let's convert the `asia` variable to character and back to logical.
 ```{r}
 regime <- as.character(regime)
 str(regime)
@@ -349,7 +349,7 @@ mean(pop)
 
 ```
 
-### Accessing elements of vectors - Indexing
+### Accessing elements of vectors - Indexing I
 There are many ways to access elements that are stored in an object. Here, we will focus on a method called *indexing*, using square brackets as an operator.
 
 Below, we use square brackets and the index `1` to access the first element of the top 5 population vector and the corresponding country name vector.
@@ -458,7 +458,7 @@ pop1[names(pop1) == "BRA"]
 ### Operating on multiple vectors simultaneously
 We did not work with data frames yet, but remember that our data input is ordered. The first element of the `pop1` vector corresponds with the first element of the `cname`, `regime`, and `asia` vectors. We can use this to run more sophisticated queries on our data.
 
-Suppose, we wanted to know the regime type of Indonesia. Given that our vectors are ordered, we can use indexing to extract the data. First, lets see what happens if we run a simple logical query.
+Suppose, we wanted to know the regime type of Indonesia. Given that our vectors are ordered, we can use indexing to extract the data. First, let's see what happens if we run a simple logical query.
 ```{r}
 cname == "IDN"
 regime[cname == "IDN"]
@@ -531,7 +531,7 @@ setwd("c:/path/to/your/directory") #in windows
 ### Working with R Projects
 
 Another option that allows you to circumvent the folder structure mess to some degree are R Projects.
-We highly recommend working in Projects because they are easily integrated with Git - something you will discover in the lecture tomorrow!
+We highly recommend working in Projects because they are easily integrated with Git - something you will discover in the lecture next week!
 
 ---
 
@@ -590,7 +590,7 @@ ncol(mydata) # Number of columns
 dim(mydata) # Rows first then columns.
 ```
 
-### Accessing elements of a data frame - Indexing 2
+### Accessing elements of a data frame - Indexing II
 As a rule, whenever we use two-dimensional indexing in `R`, the order is: `[row, column]`. To access the first row of the data frame, we specify the row we want to see and leave the column slot following the comma empty.
 ```{r}
 mydata[1, ]
@@ -632,7 +632,7 @@ mydata$nconflict
 ```
 
 ### `table()` function
-The `table()` function can be used to tabularize one or more variables. For example, lets find out how many observations (i.e. individual countries) we have per region.
+The `table()` function can be used to tabularize one or more variables. For example, let's find out how many observations (i.e. individual countries) we have per region.
 ```{r}
 table(mydata$region)
 ```
@@ -678,7 +678,7 @@ sum(vec, na.rm = T)
 ```
 
 ## Adding observations
-First, lets add another observation to the data. Suppose we wanted to add an observation for Germany, which will be a missing value. We can use the same operations we used for vectors to add data. Here, we will use the `rbind()` function to do so. `rbind()` stands for "row bind." Save the output in a new data frame!
+First, let's add another observation to the data. Suppose we wanted to add an observation for Germany, which will be a missing value. We can use the same operations we used for vectors to add data. Here, we will use the `rbind()` function to do so. `rbind()` stands for "row bind." Save the output in a new data frame!
 ```{r}
 obs <- c("Germany", "Europe", NA, NA, NA)
 mydata_new <- rbind(mydata, obs)
@@ -736,7 +736,7 @@ Warning: NAs introduced by coercion
 [1]  1  2 NA
 ```
 
-Since we will be utilizing widely used packages and functions in the course of the semester, the errors that you may come across in the process of completing your assignments will be common for other R users. Most errors occur because of typos. A Google search of the error message can take you a long way as well. Most of the times the first entry on **stackoverflow.com** will solve the problem.   
+Since we will be utilizing widely used packages and functions in the course of the semester, the errors that you may come across in the process of completing your assignments will be common for other R users. Most errors occur because of typos. A Google search of the error message can take you a long way as well. Most of the times the first entry on **[stackoverflow.com](https://stackoverflow.com/)** will solve the problem.   
 
 ---
 
@@ -785,15 +785,15 @@ When structuring your scripts, remember a few things
 
 In summary, we can say: always use easy to interpret names and don’t use whitespaces in file or variable names! Some *good* examples:
 
-* my_file.R
-* my_vector <- c(1,2,3)
-* this_function()
+* `my_file.R`
+* `my_vector <- c(1,2,3)`
+* `this_function()`
 
 ## Spacing
 
 It is somewhat easier to read if you generally leave a space after a comma
 
-* my_function(1:10, c(2, 4))
+* `my_function(1:10, c(2, 4))`
 
 ## Repetition
 

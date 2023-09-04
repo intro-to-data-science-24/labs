@@ -13,7 +13,7 @@
 
 <title>Introduction</title>
 
-<script src="1-intro-lab_files/header-attrs-2.16/header-attrs.js"></script>
+<script src="1-intro-lab_files/header-attrs-2.23/header-attrs.js"></script>
 <script src="1-intro-lab_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="1-intro-lab_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="1-intro-lab_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="1-intro-lab_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="1-intro-lab_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="1-intro-lab_files/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="1-intro-lab_files/navigation-1.1/tabsets.js"></script>
@@ -92,11 +92,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 code span.al { color: #ef2929; } /* Alert */
 code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #c4a000; } /* Attribute */
+code span.at { color: #204a87; } /* Attribute */
 code span.bn { color: #0000cf; } /* BaseN */
 code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4e9a06; } /* Char */
-code span.cn { color: #000000; } /* Constant */
+code span.cn { color: #8f5902; } /* Constant */
 code span.co { color: #8f5902; font-style: italic; } /* Comment */
 code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
 code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
@@ -105,14 +105,14 @@ code span.dv { color: #0000cf; } /* DecVal */
 code span.er { color: #a40000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #0000cf; } /* Float */
-code span.fu { color: #000000; } /* Function */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
 code span.im { } /* Import */
 code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
 code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
 code span.ot { color: #8f5902; } /* Other */
 code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code span.sc { color: #000000; } /* SpecialChar */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
 code span.ss { color: #4e9a06; } /* SpecialString */
 code span.st { color: #4e9a06; } /* String */
 code span.va { color: #000000; } /* Variable */
@@ -198,8 +198,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -207,16 +207,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -374,9 +367,9 @@ Otherwise, register <a href="https://github.com/">here</a>.</p>
 R. Think of <em>RStudio</em> as a front that allows us to interact,
 compile, and render R code in a more instinctive way. The following
 image shows what the standard RStudio interface looks like:</p>
-<div class="figure">
-<img src="R-Studio.png" alt="" />
-<p class="caption">RStudio Interface</p>
+<div class="float">
+<img src="R-Studio.png" alt="RStudio Interface" />
+<div class="figcaption">RStudio Interface</div>
 </div>
 <ol style="list-style-type: decimal">
 <li><p><strong>Console</strong>: The <em>console</em> provides a means
@@ -403,7 +396,7 @@ will be displayed here.</p></li>
 <hr />
 </div>
 <div id="getting-help" class="section level2">
-<h2>Getting Help 🔎</h2>
+<h2>Getting Help 🔍</h2>
 <p>The key to learning <code>R</code> is: <strong>Google</strong>! We
 can give you an overview over basic <code>R</code> functions, but to
 really learn <code>R</code> you will have to actively use it yourself,
@@ -482,9 +475,9 @@ portion of the code and then run it using the operations above.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span><span class="sc">*</span><span class="dv">9</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="dv">4</span><span class="sc">*</span><span class="dv">9</span></span></code></pre></div>
 <pre><code>## [1] 36</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="dv">144</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="dv">144</span>)</span></code></pre></div>
 <pre><code>## [1] 12</code></pre>
 </div>
 <div id="logical-operators" class="section level2">
@@ -537,17 +530,17 @@ portion of the code and then run it using the operations above.</p>
 </table>
 <p>Logical operators are incredibly helpful for any type of exploratory
 analysis, data cleaning and/or visualization task.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> <span class="sc">&gt;</span> <span class="dv">2</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="dv">4</span> <span class="sc">&gt;</span> <span class="dv">2</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> <span class="sc">&lt;=</span> <span class="dv">2</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="dv">4</span> <span class="sc">&lt;=</span> <span class="dv">2</span></span></code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
 </div>
 </div>
 <div id="objects-in-r" class="section level1">
 <h1>Objects in R</h1>
 <p><code>R</code> stores information as an <em>object</em>. You can name
-objects whatever you like. Just remember to not use names that are
-reserved for build-in functions or functions in the packages you use,
+objects whatever you like. Just remember not to use names that are
+reserved for built-in functions or functions in the packages you use,
 such as <code>sum</code>, <code>mean</code>, or <code>abs</code>. Most
 of the time, <code>R</code> will let you use these as names, but it
 leads to confusion in your code.</p>
@@ -571,21 +564,23 @@ Any code following <code>#</code> will not be executed.</li>
 <p>Below, <code>R</code> stores the result of the calculation in an
 object named <code>result</code>. We can access the value by referring
 to the object name.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="dv">5</span><span class="sc">/</span><span class="dv">3</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>result</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="dv">5</span><span class="sc">/</span><span class="dv">3</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>result</span></code></pre></div>
 <pre><code>## [1] 1.666667</code></pre>
 <p>If we assign a different value to the object, the value of the object
 will be changed.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="dv">5-3</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>result</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="dv">5-3</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>result</span></code></pre></div>
 <pre><code>## [1] 2</code></pre>
 </div>
 <div id="data-types-in-r" class="section level2">
 <h2>Data Types in R</h2>
 <p>There are four main variable types you should be familiar with:</p>
 <ul>
-<li><strong>Numerical</strong>: Any number. <strong>Integer</strong> is
-a numerical variable without any decimals.</li>
+<li><strong>Numerical</strong>: Any number. An <strong>integer</strong>
+is a numerical variable <em>without</em> any decimals, while a
+<strong>double</strong> is a numerical variable <em>with</em>
+decimals.</li>
 <li><strong>Character</strong>: This is what Stata (and other
 programming languages such as Python) calls a string. We typically store
 any alphanumeric data that is not ordered as a character vector.</li>
@@ -609,32 +604,32 @@ i.e. an ordered categorical variable.</li>
 apply to the different structures.</p>
 <div id="vectors" class="section level3">
 <h3>Vectors</h3>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>my_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>my_character_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Welcome&quot;</span>, <span class="st">&quot;everyone&quot;</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(my_vector)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>my_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>my_character_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Welcome&quot;</span>, <span class="st">&quot;everyone&quot;</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="fu">length</span>(my_vector)</span></code></pre></div>
 <pre><code>## [1] 3</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(my_character_vector)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">str</span>(my_character_vector)</span></code></pre></div>
 <pre><code>##  chr [1:2] &quot;Welcome&quot; &quot;everyone&quot;</code></pre>
 </div>
 <div id="matrices" class="section level3">
 <h3>Matrices</h3>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>my_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">nrow=</span><span class="dv">3</span>, <span class="at">ncol=</span><span class="dv">3</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(my_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>my_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">nrow=</span><span class="dv">3</span>, <span class="at">ncol=</span><span class="dv">3</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="fu">dim</span>(my_matrix)</span></code></pre></div>
 <pre><code>## [1] 3 3</code></pre>
 </div>
 <div id="lists" class="section level3">
 <h3>Lists</h3>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span>, <span class="st">&quot;a&quot;</span>, <span class="cn">TRUE</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>my_list[<span class="dv">2</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span>, <span class="st">&quot;a&quot;</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>my_list[<span class="dv">2</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] &quot;a&quot;</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>my_list[[<span class="dv">2</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>my_list[[<span class="dv">2</span>]]</span></code></pre></div>
 <pre><code>## [1] &quot;a&quot;</code></pre>
 </div>
 <div id="data-frames" class="section level3">
 <h3>Data Frames</h3>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>my_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>], <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">y =</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">20</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>my_df</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>my_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>], <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">y =</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">20</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>my_df</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["x"],"name":[2],"type":["int"],"align":["right"]},{"label":["y"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"a","2":"1","3":"11"},{"1":"b","2":"2","3":"12"},{"1":"c","2":"3","3":"13"},{"1":"d","2":"4","3":"14"},{"1":"e","2":"5","3":"15"},{"1":"f","2":"6","3":"16"},{"1":"g","2":"7","3":"17"},{"1":"h","2":"8","3":"18"},{"1":"i","2":"9","3":"19"},{"1":"j","2":"10","3":"20"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -652,17 +647,17 @@ names(my_df)</code></pre>
 </div>
 <div id="factors" class="section level3">
 <h3>Factors</h3>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># direct creation of factors</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>my_factor <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;single&quot;</span>,<span class="st">&quot;single&quot;</span>,<span class="st">&quot;married&quot;</span>,<span class="st">&quot;married&quot;</span>,<span class="st">&quot;single&quot;</span>))</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># turning vectors into factors</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>my_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;single&quot;</span>,<span class="st">&quot;single&quot;</span>,<span class="st">&quot;married&quot;</span>,<span class="st">&quot;married&quot;</span>,<span class="st">&quot;single&quot;</span>)</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>my_factor <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(my_vector)</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(my_factor)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="co"># direct creation of factors</span></span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>my_factor <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;single&quot;</span>,<span class="st">&quot;single&quot;</span>,<span class="st">&quot;married&quot;</span>,<span class="st">&quot;married&quot;</span>,<span class="st">&quot;single&quot;</span>))</span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a><span class="co"># turning vectors into factors</span></span>
+<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a>my_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;single&quot;</span>,<span class="st">&quot;single&quot;</span>,<span class="st">&quot;married&quot;</span>,<span class="st">&quot;married&quot;</span>,<span class="st">&quot;single&quot;</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" tabindex="-1"></a>my_factor <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(my_vector)</span>
+<span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a><span class="fu">levels</span>(my_factor)</span></code></pre></div>
 <pre><code>## [1] &quot;married&quot; &quot;single&quot;</code></pre>
 <p>If you are thrilled by object classes in R by now, <a
-href="https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/">here
+href="https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures.html">here
 is more</a>.</p>
 <hr />
 </div>
@@ -678,37 +673,38 @@ represents a collection of information stored in a specific order” (Imai
 2017: 14). It is essentially a list of data of a single type
 (e.g. numerical, character, or logical).</p>
 <p>To create a vector, we use the function <code>c()</code>
-(`<code>concatenate'') to combine separate data points. The general format for creating a vector in R is as follows:</code>name_of_vector
-&lt;- c(“what you want to put into the vector”)`</p>
+(“concatenate”) to combine separate data points. The general format for
+creating a vector in R is as follows:
+<code>name_of_vector &lt;- c("what you want to put into the vector")</code></p>
 <p>Suppose, we have data on the population in millions for the five most
 populous countries in 2016. The data come from the World Bank.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>pop1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1379</span>, <span class="dv">1324</span>, <span class="dv">323</span>, <span class="dv">261</span>, <span class="dv">208</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>pop1</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>pop1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1379</span>, <span class="dv">1324</span>, <span class="dv">323</span>, <span class="dv">261</span>, <span class="dv">208</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>pop1</span></code></pre></div>
 <pre><code>## [1] 1379 1324  323  261  208</code></pre>
 <p>We can use the function <code>c()</code> to combine two vectors.
 Suppose we had data on 5 additional countries.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>pop2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">194</span>, <span class="dv">187</span>, <span class="dv">161</span>, <span class="dv">142</span>, <span class="dv">127</span>)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">c</span>(pop1, pop2)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>pop</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>pop2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">194</span>, <span class="dv">187</span>, <span class="dv">161</span>, <span class="dv">142</span>, <span class="dv">127</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">c</span>(pop1, pop2)</span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>pop</span></code></pre></div>
 <pre><code>##  [1] 1379 1324  323  261  208  194  187  161  142  127</code></pre>
-<p>First, lets check which variable type our population data were stored
-in. The output below tells us that the object <code>pop</code> is of
-class <em>numeric</em>, and has the dimensions <code>[1:10]</code>, that
-is 10 elements in one dimension.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(pop)</span></code></pre></div>
+<p>First, let’s check which variable type our population data were
+stored in. The output below tells us that the object <code>pop</code> is
+of class <em>numeric</em>, and has the dimensions <code>[1:10]</code>,
+that is 10 elements in one dimension.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="fu">str</span>(pop)</span></code></pre></div>
 <pre><code>##  num [1:10] 1379 1324 323 261 208 ...</code></pre>
 <p>Suppose, we wanted to add information on the country names. We can
 enter these data in <em>character</em> format. To save time, we will
 only do this for the five most populous countries.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>cname <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;CHN&quot;</span>, <span class="st">&quot;IND&quot;</span>, <span class="st">&quot;USA&quot;</span>, <span class="st">&quot;IDN&quot;</span>, <span class="st">&quot;BRA&quot;</span>)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cname)</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>cname <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;CHN&quot;</span>, <span class="st">&quot;IND&quot;</span>, <span class="st">&quot;USA&quot;</span>, <span class="st">&quot;IDN&quot;</span>, <span class="st">&quot;BRA&quot;</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a><span class="fu">str</span>(cname)</span></code></pre></div>
 <pre><code>##  chr [1:5] &quot;CHN&quot; &quot;IND&quot; &quot;USA&quot; &quot;IDN&quot; &quot;BRA&quot;</code></pre>
-<p>Now, lets code a <em>logical</em> variable that shows whether the
+<p>Now, let’s code a <em>logical</em> variable that shows whether the
 country is in Asia or not. Note that <code>R</code> recognizes both
 <code>TRUE</code> and <code>T</code> (and <code>FALSE</code> and
 <code>F</code>) as logical values.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>asia <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>, F, T, F)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(asia)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a>asia <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>, F, T, F)</span>
+<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a><span class="fu">str</span>(asia)</span></code></pre></div>
 <pre><code>##  logi [1:5] TRUE TRUE FALSE TRUE FALSE</code></pre>
 <p>Lastly, we define a factor variable for the regime type of a country
 in 2016. This variable can take on one of four values (based on data
@@ -716,9 +712,9 @@ from the Economist Intelligence Unit): Full Democracy, Flawed Democracy,
 Hybrid Regimes, and Autocracy. Note that empirically, we don’t have a
 “hybrid category” here. We could define an empty factor level, but we
 will skip this step here.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>regime <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Autocracy&quot;</span>, <span class="st">&quot;FlawedDem&quot;</span>, <span class="st">&quot;FullDem&quot;</span>, <span class="st">&quot;FlawedDem&quot;</span>, <span class="st">&quot;FlawedDem&quot;</span>)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>regime <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(regime)</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(regime)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a>regime <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Autocracy&quot;</span>, <span class="st">&quot;FlawedDem&quot;</span>, <span class="st">&quot;FullDem&quot;</span>, <span class="st">&quot;FlawedDem&quot;</span>, <span class="st">&quot;FlawedDem&quot;</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a>regime <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(regime)</span>
+<span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a><span class="fu">str</span>(regime)</span></code></pre></div>
 <pre><code>##  Factor w/ 3 levels &quot;Autocracy&quot;,&quot;FlawedDem&quot;,..: 1 2 3 2 2</code></pre>
 <p>Data types are important! <code>R</code> will not perform certain
 operations if you don’t get the variable type right. The good news is
@@ -730,16 +726,16 @@ commands: <code>myvar &lt;- as.numeric(as.character(myvar))</code>.</p>
 <p>We won’t go into this too much here; just remember: Google is your
 friend!</p>
 <p>Let’s convert the factor variable <code>regime</code> into a
-character. Also, for practice, lets convert the <code>asia</code>
+character. Also, for practice, let’s convert the <code>asia</code>
 variable to character and back to logical.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>regime <span class="ot">&lt;-</span> <span class="fu">as.character</span>(regime)</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(regime)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a>regime <span class="ot">&lt;-</span> <span class="fu">as.character</span>(regime)</span>
+<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a><span class="fu">str</span>(regime)</span></code></pre></div>
 <pre><code>##  chr [1:5] &quot;Autocracy&quot; &quot;FlawedDem&quot; &quot;FullDem&quot; &quot;FlawedDem&quot; &quot;FlawedDem&quot;</code></pre>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>asia <span class="ot">&lt;-</span> <span class="fu">as.character</span>(asia)</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(asia)</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a>asia <span class="ot">&lt;-</span> <span class="fu">as.character</span>(asia)</span>
+<span id="cb42-2"><a href="#cb42-2" tabindex="-1"></a><span class="fu">str</span>(asia)</span></code></pre></div>
 <pre><code>##  chr [1:5] &quot;TRUE&quot; &quot;TRUE&quot; &quot;FALSE&quot; &quot;TRUE&quot; &quot;FALSE&quot;</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>asia <span class="ot">&lt;-</span> <span class="fu">as.logical</span>(asia)</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(asia)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a>asia <span class="ot">&lt;-</span> <span class="fu">as.logical</span>(asia)</span>
+<span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a><span class="fu">str</span>(asia)</span></code></pre></div>
 <pre><code>##  logi [1:5] TRUE TRUE FALSE TRUE FALSE</code></pre>
 <p><strong>Exercise 1</strong>: Why won’t <code>R</code> let us do the
 following?</p>
@@ -747,10 +743,10 @@ following?</p>
 <p><code>no_good_either &lt;- c(one, two, three)</code></p>
 <p><strong>Exercise 2</strong>: What’s the difference? (Bonus: What do
 you think is the class of the output vector?)</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>diff <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="cn">TRUE</span>,<span class="st">&quot;TRUE&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a>diff <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="cn">TRUE</span>,<span class="st">&quot;TRUE&quot;</span>)</span></code></pre></div>
 <p><strong>Exercise 3</strong>: What is the class of the following
 vector?</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>)</span></code></pre></div>
 <div id="vector-operations" class="section level3">
 <h3>Vector operations</h3>
 <p>You can do a variety of things like have <code>R</code> print out
@@ -761,15 +757,15 @@ of a vector manipulation operation, <code>R</code> can probably do
 it.</p>
 <p>We can do arithmatic operations on vectors! Let’s use the vector of
 population counts we created earlier and double it.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>pop1</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a>pop1</span></code></pre></div>
 <pre><code>## [1] 1379 1324  323  261  208</code></pre>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>pop1_double <span class="ot">&lt;-</span> pop1 <span class="sc">*</span> <span class="dv">2</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>pop1_double</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a>pop1_double <span class="ot">&lt;-</span> pop1 <span class="sc">*</span> <span class="dv">2</span></span>
+<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a>pop1_double</span></code></pre></div>
 <pre><code>## [1] 2758 2648  646  522  416</code></pre>
 <p><strong>Exercise 4</strong>: What do you think this will do?</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> pop1 <span class="sc">+</span> pop2</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> pop1 <span class="sc">+</span> pop2</span></code></pre></div>
 <p><strong>Exercise 5</strong>: And this?</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>pop_c <span class="ot">&lt;-</span> <span class="fu">c</span>(pop1, pop2)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" tabindex="-1"></a>pop_c <span class="ot">&lt;-</span> <span class="fu">c</span>(pop1, pop2)</span></code></pre></div>
 </div>
 <div id="functions" class="section level3">
 <h3>Functions</h3>
@@ -817,60 +813,60 @@ allow us to compute measures of location and dispersion of our data.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(pop)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a><span class="fu">min</span>(pop)</span></code></pre></div>
 <pre><code>## [1] 127</code></pre>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(pop)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" tabindex="-1"></a><span class="fu">max</span>(pop)</span></code></pre></div>
 <pre><code>## [1] 1379</code></pre>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(pop)</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" tabindex="-1"></a><span class="fu">mean</span>(pop)</span></code></pre></div>
 <pre><code>## [1] 430.6</code></pre>
 <p><strong>Exercise 6</strong>: Using functions in <code>R</code>, how
 else could we compute the mean population value?</p>
 </div>
-<div id="accessing-elements-of-vectors---indexing"
+<div id="accessing-elements-of-vectors---indexing-i"
 class="section level3">
-<h3>Accessing elements of vectors - Indexing</h3>
+<h3>Accessing elements of vectors - Indexing I</h3>
 <p>There are many ways to access elements that are stored in an object.
 Here, we will focus on a method called <em>indexing</em>, using square
 brackets as an operator.</p>
 <p>Below, we use square brackets and the index <code>1</code> to access
 the first element of the top 5 population vector and the corresponding
 country name vector.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>pop1[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" tabindex="-1"></a>pop1[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [1] 1379</code></pre>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>cname[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" tabindex="-1"></a>cname[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [1] &quot;CHN&quot;</code></pre>
 <p>We can use indexing to access multiple elements of a vector. For
 example, below we use indexing to implicitly print the second and fifth
 elements of the population and the country name vectors,
 respectively.</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>pop[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" tabindex="-1"></a>pop[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>)]</span></code></pre></div>
 <pre><code>## [1] 1324  208</code></pre>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>cname[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" tabindex="-1"></a>cname[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>)]</span></code></pre></div>
 <pre><code>## [1] &quot;IND&quot; &quot;BRA&quot;</code></pre>
 <p>We can assign the first element of the population vector to a new
 object called <code>first</code>.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>first <span class="ot">&lt;-</span> pop[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" tabindex="-1"></a>first <span class="ot">&lt;-</span> pop[<span class="dv">1</span>]</span></code></pre></div>
 <p>Below, we make a copy of the country name vector and delete the
 <em>last</em> element. Note, that we can use the <code>length()</code>
 function to achieve the highest level of <em>generalizability</em> in
 our code. Using <code>length()</code>, we do not need to know the index
 of the last element of out vector to drop the last element.</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>cname_copy <span class="ot">&lt;-</span> cname</span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Option 1: Dropping the 5th element</span></span>
-<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>cname_copy[<span class="sc">-</span><span class="dv">5</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" tabindex="-1"></a>cname_copy <span class="ot">&lt;-</span> cname</span>
+<span id="cb69-2"><a href="#cb69-2" tabindex="-1"></a><span class="do">## Option 1: Dropping the 5th element</span></span>
+<span id="cb69-3"><a href="#cb69-3" tabindex="-1"></a>cname_copy[<span class="sc">-</span><span class="dv">5</span>]</span></code></pre></div>
 <pre><code>## [1] &quot;CHN&quot; &quot;IND&quot; &quot;USA&quot; &quot;IDN&quot;</code></pre>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Option 2 (for generalizability): Getting the last element and dropping it.</span></span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(cname_copy)</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a><span class="do">## Option 2 (for generalizability): Getting the last element and dropping it.</span></span>
+<span id="cb71-2"><a href="#cb71-2" tabindex="-1"></a><span class="fu">length</span>(cname_copy)</span></code></pre></div>
 <pre><code>## [1] 5</code></pre>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>cname_copy[<span class="sc">-</span><span class="fu">length</span>(cname_copy)]</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" tabindex="-1"></a>cname_copy[<span class="sc">-</span><span class="fu">length</span>(cname_copy)]</span></code></pre></div>
 <pre><code>## [1] &quot;CHN&quot; &quot;IND&quot; &quot;USA&quot; &quot;IDN&quot;</code></pre>
 <p>Indexing can be used to alter values in a vector. Suppose, we notice
 that we wrongly entered the second element of the regime type vector (or
 the regime type changed).</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>regime</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" tabindex="-1"></a>regime</span></code></pre></div>
 <pre><code>## [1] &quot;Autocracy&quot; &quot;FlawedDem&quot; &quot;FullDem&quot;   &quot;FlawedDem&quot; &quot;FlawedDem&quot;</code></pre>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>regime[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="st">&quot;FullDem&quot;</span></span>
-<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>regime</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" tabindex="-1"></a>regime[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="st">&quot;FullDem&quot;</span></span>
+<span id="cb77-2"><a href="#cb77-2" tabindex="-1"></a>regime</span></code></pre></div>
 <pre><code>## [1] &quot;Autocracy&quot; &quot;FullDem&quot;   &quot;FullDem&quot;   &quot;FlawedDem&quot; &quot;FlawedDem&quot;</code></pre>
 <p><strong>Exercise 7</strong>: We made even more mistakes when entering
 the data! We want to subtract 10 from the third and fifth element of the
@@ -911,44 +907,44 @@ functions from base <code>R</code>.</p>
 </tbody>
 </table>
 <p>Let’s create a vector of indices for our top 5 population data.</p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>cindex <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="fu">length</span>(pop1), <span class="at">by =</span> <span class="dv">1</span>)</span>
-<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>cindex</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" tabindex="-1"></a>cindex <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="fu">length</span>(pop1), <span class="at">by =</span> <span class="dv">1</span>)</span>
+<span id="cb79-2"><a href="#cb79-2" tabindex="-1"></a>cindex</span></code></pre></div>
 <pre><code>## [1] 1 2 3 4 5</code></pre>
 <p>Suppose we wanted to only print a sequence of even numbers between 2
 and 10. We can do so by adjusting the <code>by</code> operator.</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>## [1]  2  4  6  8 10</code></pre>
 <p>We can use the <code>rep()</code> function to repeat data.</p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(<span class="dv">30</span>, <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" tabindex="-1"></a><span class="fu">rep</span>(<span class="dv">30</span>, <span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## [1] 30 30 30 30 30</code></pre>
 <p>Suppose, we wanted to record whether we had completed the data
 collection process for the top 10 most populous countries. First,
 suppose we completed the process on every second country.</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>completed <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;yes&quot;</span>,<span class="st">&quot;no&quot;</span>), <span class="dv">5</span>)</span>
-<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>completed</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" tabindex="-1"></a>completed <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;yes&quot;</span>,<span class="st">&quot;no&quot;</span>), <span class="dv">5</span>)</span>
+<span id="cb85-2"><a href="#cb85-2" tabindex="-1"></a>completed</span></code></pre></div>
 <pre><code>##  [1] &quot;yes&quot; &quot;no&quot;  &quot;yes&quot; &quot;no&quot;  &quot;yes&quot; &quot;no&quot;  &quot;yes&quot; &quot;no&quot;  &quot;yes&quot; &quot;no&quot;</code></pre>
 <p>Now suppose that we have completed the data collection process for
 the first 5 countries, but not the latter 5 countries (we don’t have
 their names, location, or regime type yet).</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>completed2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;yes&quot;</span>,<span class="st">&quot;no&quot;</span>), <span class="at">each =</span> <span class="dv">5</span>)</span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>completed2</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" tabindex="-1"></a>completed2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;yes&quot;</span>,<span class="st">&quot;no&quot;</span>), <span class="at">each =</span> <span class="dv">5</span>)</span>
+<span id="cb87-2"><a href="#cb87-2" tabindex="-1"></a>completed2</span></code></pre></div>
 <pre><code>##  [1] &quot;yes&quot; &quot;yes&quot; &quot;yes&quot; &quot;yes&quot; &quot;yes&quot; &quot;no&quot;  &quot;no&quot;  &quot;no&quot;  &quot;no&quot;  &quot;no&quot;</code></pre>
 <p>We can give our data informative labels. Let’s use the country names
 vector as labels for our top 5 population vector.</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pop1)</span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" tabindex="-1"></a><span class="fu">names</span>(pop1)</span></code></pre></div>
 <pre><code>## NULL</code></pre>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>cname</span></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" tabindex="-1"></a>cname</span></code></pre></div>
 <pre><code>## [1] &quot;CHN&quot; &quot;IND&quot; &quot;USA&quot; &quot;IDN&quot; &quot;BRA&quot;</code></pre>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pop1) <span class="ot">&lt;-</span> cname</span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pop1)</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" tabindex="-1"></a><span class="fu">names</span>(pop1) <span class="ot">&lt;-</span> cname</span>
+<span id="cb93-2"><a href="#cb93-2" tabindex="-1"></a><span class="fu">names</span>(pop1)</span></code></pre></div>
 <pre><code>## [1] &quot;CHN&quot; &quot;IND&quot; &quot;USA&quot; &quot;IDN&quot; &quot;BRA&quot;</code></pre>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>pop1</span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" tabindex="-1"></a>pop1</span></code></pre></div>
 <pre><code>##  CHN  IND  USA  IDN  BRA 
 ## 1379 1324  323  261  208</code></pre>
 <p>We can use labels to access data using indexing and logical
 operators. Suppose, we wanted to access the population count for Brazil
 in our top 5 population data.</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>pop1[<span class="fu">names</span>(pop1) <span class="sc">==</span> <span class="st">&quot;BRA&quot;</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" tabindex="-1"></a>pop1[<span class="fu">names</span>(pop1) <span class="sc">==</span> <span class="st">&quot;BRA&quot;</span>]</span></code></pre></div>
 <pre><code>## BRA 
 ## 208</code></pre>
 <p><strong>Exercise 8</strong> Access all top 5 population ratings that
@@ -967,25 +963,25 @@ corresponds with the first element of the <code>cname</code>,
 run more sophisticated queries on our data.</p>
 <p>Suppose, we wanted to know the regime type of Indonesia. Given that
 our vectors are ordered, we can use indexing to extract the data. First,
-lets see what happens if we run a simple logical query.</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>cname <span class="sc">==</span> <span class="st">&quot;IDN&quot;</span></span></code></pre></div>
+let’s see what happens if we run a simple logical query.</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" tabindex="-1"></a>cname <span class="sc">==</span> <span class="st">&quot;IDN&quot;</span></span></code></pre></div>
 <pre><code>## [1] FALSE FALSE FALSE  TRUE FALSE</code></pre>
 <div class="sourceCode" id="cb101"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>regime[cname <span class="sc">==</span> <span class="st">&quot;IDN&quot;</span>]</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" tabindex="-1"></a>regime[cname <span class="sc">==</span> <span class="st">&quot;IDN&quot;</span>]</span></code></pre></div>
 <pre><code>## [1] &quot;FlawedDem&quot;</code></pre>
 <p>We can also use the <code>which()</code> function that returns the
 index of the vector element.</p>
 <div class="sourceCode" id="cb103"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(cname <span class="sc">==</span> <span class="st">&quot;IDN&quot;</span>)</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" tabindex="-1"></a><span class="fu">which</span>(cname <span class="sc">==</span> <span class="st">&quot;IDN&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 4</code></pre>
 <div class="sourceCode" id="cb105"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>regime[<span class="fu">which</span>(cname <span class="sc">==</span> <span class="st">&quot;IDN&quot;</span>)]</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" tabindex="-1"></a>regime[<span class="fu">which</span>(cname <span class="sc">==</span> <span class="st">&quot;IDN&quot;</span>)]</span></code></pre></div>
 <pre><code>## [1] &quot;FlawedDem&quot;</code></pre>
 <p>Using logical statements, we can run more complex queries. Below, we
 print the population count for all Asian countries within the top 5 most
 populous countries that are not autocracies.</p>
 <div class="sourceCode" id="cb107"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>pop1[asia <span class="sc">==</span> T <span class="sc">&amp;</span> regime <span class="sc">!=</span> <span class="st">&quot;Autocracy&quot;</span>]</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" tabindex="-1"></a>pop1[asia <span class="sc">==</span> T <span class="sc">&amp;</span> regime <span class="sc">!=</span> <span class="st">&quot;Autocracy&quot;</span>]</span></code></pre></div>
 <pre><code>##  IND  IDN 
 ## 1324  261</code></pre>
 <hr />
@@ -1007,12 +1003,12 @@ the package. <strong>As a good practice I recommend running the code to
 install packages only in your R console, not in the code
 editor.</strong> You can install a package with the following syntax</p>
 <div class="sourceCode" id="cb109"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;name_of_your_package&quot;</span>) <span class="co">#note that the quotation marks are mandatory at this stage</span></span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;name_of_your_package&quot;</span>) <span class="co">#note that the quotation marks are mandatory at this stage</span></span></code></pre></div>
 <p>Once the package has been installed, you just need to “call it” every
 time you want to use it in a file by running:</p>
 <div class="sourceCode" id="cb110"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;name_of_your_package&quot;</span>) <span class="co">#either of this lines will require the package</span></span>
-<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(name_of_your_package) <span class="co">#library understands the code with, or without, quotation marks</span></span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;name_of_your_package&quot;</span>) <span class="co">#either of this lines will require the package</span></span>
+<span id="cb110-2"><a href="#cb110-2" tabindex="-1"></a><span class="fu">library</span>(name_of_your_package) <span class="co">#library understands the code with, or without, quotation marks</span></span></code></pre></div>
 <p><strong>It is extremely important that you do not have any lines
 installing packages for your assignments because the file will fail to
 knit</strong></p>
@@ -1026,9 +1022,9 @@ of R. Normally, when you open <em>RStudio</em> it will have a default
 directory (a folder in your computer). You can check you directory by
 running <code>getwd()</code> in your console:</p>
 <div class="sourceCode" id="cb111"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="co">#this is the default in my case</span></span>
-<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span>
-<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a><span class="co">#[1] &quot;/Users/l.oswald&quot;</span></span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" tabindex="-1"></a><span class="co">#this is the default in my case</span></span>
+<span id="cb111-2"><a href="#cb111-2" tabindex="-1"></a><span class="fu">getwd</span>()</span>
+<span id="cb111-3"><a href="#cb111-3" tabindex="-1"></a><span class="co">#[1] &quot;/Users/l.oswald&quot;</span></span></code></pre></div>
 <p><strong>When your RStudio is closed and you open a file from your
 finder in MacOS or file explorer in Windows, the default working
 directory will be the folder where the file is hosted</strong></p>
@@ -1040,8 +1036,8 @@ change your working directory under Session &gt; Set Working Directory
 &gt; Choose Directory.</p>
 <p>You can also use the <code>setwd()</code> function:</p>
 <div class="sourceCode" id="cb112"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;/path/to/your/directory&quot;</span>) <span class="co">#in macOS</span></span>
-<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;c:/path/to/your/directory&quot;</span>) <span class="co">#in windows</span></span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;/path/to/your/directory&quot;</span>) <span class="co">#in macOS</span></span>
+<span id="cb112-2"><a href="#cb112-2" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;c:/path/to/your/directory&quot;</span>) <span class="co">#in windows</span></span></code></pre></div>
 <hr />
 </div>
 <div id="working-with-r-projects" class="section level3">
@@ -1049,7 +1045,7 @@ class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="#cb1
 <p>Another option that allows you to circumvent the folder structure
 mess to some degree are R Projects. We highly recommend working in
 Projects because they are easily integrated with Git - something you
-will discover in the lecture tomorrow!</p>
+will discover in the lecture next week!</p>
 <hr />
 <p>Time for more <em>examples</em>!</p>
 <p>Below, we will use use the <code>foreign</code> package to import a
@@ -1060,8 +1056,8 @@ While packages need to be installed only once, the
 use a particular package. On many machines, the <code>foreign</code>
 package is pre-installed. We install it above for practice purposes.</p>
 <div class="sourceCode" id="cb113"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;foreign&quot;) #alternatively use &quot;Install&quot; button </span></span>
-<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(foreign)</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" tabindex="-1"></a><span class="co">#install.packages(&quot;foreign&quot;) #alternatively use &quot;Install&quot; button </span></span>
+<span id="cb113-2"><a href="#cb113-2" tabindex="-1"></a><span class="fu">library</span>(foreign)</span></code></pre></div>
 <p>In this example, we will use a subset of data from the <a
 href="https://www.acleddata.com/">Armed Conflict Location &amp; Event
 Data Project (ACLED)</a>, which offers real-time data and analysis on
@@ -1079,8 +1075,8 @@ available to import just about any non-native format. One of the
 essential libraries is called <code>foreign</code> and includes
 functions to import .csv, .dta (Stata), .dat, ,.sav (SPSS), etc.</p>
 <div class="sourceCode" id="cb114"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/ACLED_countries.csv&quot;</span>,</span>
-<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">stringsAsFactors =</span> F)</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" tabindex="-1"></a>mydata <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/ACLED_countries.csv&quot;</span>,</span>
+<span id="cb114-2"><a href="#cb114-2" tabindex="-1"></a>                   <span class="at">stringsAsFactors =</span> F)</span></code></pre></div>
 </div>
 </div>
 <div id="data-frames-1" class="section level1">
@@ -1093,7 +1089,7 @@ class they are stored in. Note: <code>int</code> stands for
 <code>integer</code> and is a special case of the class
 <code>numeric</code>.</p>
 <div class="sourceCode" id="cb115"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mydata)</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" tabindex="-1"></a><span class="fu">str</span>(mydata)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    103 obs. of  5 variables:
 ##  $ country                : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Angola&quot; ...
 ##  $ region                 : chr  &quot;Southern Asia&quot; &quot;Europe&quot; &quot;Northern Africa&quot; &quot;Middle Africa&quot; ...
@@ -1103,7 +1099,7 @@ class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="#cb1
 <p>If we are only interested in what the variables are called, we can
 use the <code>names()</code> function.</p>
 <div class="sourceCode" id="cb117"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(mydata)</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" tabindex="-1"></a><span class="fu">names</span>(mydata)</span></code></pre></div>
 <pre><code>## [1] &quot;country&quot;                 &quot;region&quot;                 
 ## [3] &quot;nconflicts&quot;              &quot;nconflict_no_fatalities&quot;
 ## [5] &quot;fatalities&quot;</code></pre>
@@ -1113,15 +1109,15 @@ combinations of vectors, we can do the same for variable names inside
 data frames. Suppose we want to change the variable
 <code>nconflicts</code>.</p>
 <div class="sourceCode" id="cb119"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(mydata)[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="st">&quot;nconflict&quot;</span></span>
-<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(mydata)</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" tabindex="-1"></a><span class="fu">names</span>(mydata)[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="st">&quot;nconflict&quot;</span></span>
+<span id="cb119-2"><a href="#cb119-2" tabindex="-1"></a><span class="fu">names</span>(mydata)</span></code></pre></div>
 <pre><code>## [1] &quot;country&quot;                 &quot;region&quot;                 
 ## [3] &quot;nconflict&quot;               &quot;nconflict_no_fatalities&quot;
 ## [5] &quot;fatalities&quot;</code></pre>
 <p>We can use the <code>summary()</code> function to get a first look at
 the data.</p>
 <div class="sourceCode" id="cb121"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mydata)</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" tabindex="-1"></a><span class="fu">summary</span>(mydata)</span></code></pre></div>
 <pre><code>##    country             region            nconflict      
 ##  Length:103         Length:103         Min.   :    1.0  
 ##  Class :character   Class :character   1st Qu.:  315.5  
@@ -1138,23 +1134,23 @@ class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="#cb1
 ##  Max.   :63665           Max.   :119973.0</code></pre>
 <p>A data frame has two dimensions: rows and columns.</p>
 <div class="sourceCode" id="cb123"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(mydata) <span class="co"># Number of rows</span></span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" tabindex="-1"></a><span class="fu">nrow</span>(mydata) <span class="co"># Number of rows</span></span></code></pre></div>
 <pre><code>## [1] 103</code></pre>
 <div class="sourceCode" id="cb125"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(mydata) <span class="co"># Number of columns</span></span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" tabindex="-1"></a><span class="fu">ncol</span>(mydata) <span class="co"># Number of columns</span></span></code></pre></div>
 <pre><code>## [1] 5</code></pre>
 <div class="sourceCode" id="cb127"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(mydata) <span class="co"># Rows first then columns.</span></span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" tabindex="-1"></a><span class="fu">dim</span>(mydata) <span class="co"># Rows first then columns.</span></span></code></pre></div>
 <pre><code>## [1] 103   5</code></pre>
-<div id="accessing-elements-of-a-data-frame---indexing-2"
+<div id="accessing-elements-of-a-data-frame---indexing-ii"
 class="section level3">
-<h3>Accessing elements of a data frame - Indexing 2</h3>
+<h3>Accessing elements of a data frame - Indexing II</h3>
 <p>As a rule, whenever we use two-dimensional indexing in
 <code>R</code>, the order is: <code>[row, column]</code>. To access the
 first row of the data frame, we specify the row we want to see and leave
 the column slot following the comma empty.</p>
 <div class="sourceCode" id="cb129"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>mydata[<span class="dv">1</span>, ]</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" tabindex="-1"></a>mydata[<span class="dv">1</span>, ]</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["region"],"name":[2],"type":["chr"],"align":["left"]},{"label":["nconflict"],"name":[3],"type":["int"],"align":["right"]},{"label":["nconflict_no_fatalities"],"name":[4],"type":["int"],"align":["right"]},{"label":["fatalities"],"name":[5],"type":["int"],"align":["right"]}],"data":[{"1":"Afghanistan","2":"Southern Asia","3":"40765","4":"23946","5":"119973","_rn_":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -1164,7 +1160,7 @@ class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="#cb1
 multiple rows (or columns) at once. Below we print out the first and
 second row of the dataframe.</p>
 <div class="sourceCode" id="cb130"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a>mydata[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), ]</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1" tabindex="-1"></a>mydata[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), ]</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["region"],"name":[2],"type":["chr"],"align":["left"]},{"label":["nconflict"],"name":[3],"type":["int"],"align":["right"]},{"label":["nconflict_no_fatalities"],"name":[4],"type":["int"],"align":["right"]},{"label":["fatalities"],"name":[5],"type":["int"],"align":["right"]}],"data":[{"1":"Afghanistan","2":"Southern Asia","3":"40765","4":"23946","5":"119973","_rn_":"1"},{"1":"Albania","2":"Europe","3":"582","4":"581","5":"1","_rn_":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -1174,7 +1170,7 @@ class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="#cb1
 maximum value with a <code>:</code>. Below we print out the first five
 rows of the dataframe.</p>
 <div class="sourceCode" id="cb131"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a>mydata[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,]</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" tabindex="-1"></a>mydata[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,]</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["region"],"name":[2],"type":["chr"],"align":["left"]},{"label":["nconflict"],"name":[3],"type":["int"],"align":["right"]},{"label":["nconflict_no_fatalities"],"name":[4],"type":["int"],"align":["right"]},{"label":["fatalities"],"name":[5],"type":["int"],"align":["right"]}],"data":[{"1":"Afghanistan","2":"Southern Asia","3":"40765","4":"23946","5":"119973","_rn_":"1"},{"1":"Albania","2":"Europe","3":"582","4":"581","5":"1","_rn_":"2"},{"1":"Algeria","2":"Northern Africa","3":"7362","4":"5321","5":"8451","_rn_":"3"},{"1":"Angola","2":"Middle Africa","3":"1108","4":"728","5":"13788","_rn_":"4"},{"1":"Armenia","2":"Caucasus and Central Asia","3":"3118","4":"3110","5":"8","_rn_":"5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -1183,7 +1179,7 @@ class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="#cb1
 <p>If we try to access a data point that is out of bounds,
 <code>R</code> returns the value <code>NULL</code>.</p>
 <div class="sourceCode" id="cb132"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a>mydata[<span class="dv">3</span>,<span class="dv">7</span>]</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1" tabindex="-1"></a>mydata[<span class="dv">3</span>,<span class="dv">7</span>]</span></code></pre></div>
 <pre><code>## NULL</code></pre>
 <p><strong>Exercise 10</strong> Access the element of the dataframe
 <code>mydata</code> that is stored in row 1, column 1.</p>
@@ -1195,10 +1191,10 @@ class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="#cb1
 <p>The <code>$</code> operator in <code>R</code> is used to specify a
 variable within a data frame. This is an alternative to indexing.</p>
 <div class="sourceCode" id="cb134"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(<span class="fu">colnames</span>(mydata) <span class="sc">==</span> <span class="st">&quot;nconflict&quot;</span>)</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" tabindex="-1"></a><span class="fu">which</span>(<span class="fu">colnames</span>(mydata) <span class="sc">==</span> <span class="st">&quot;nconflict&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 3</code></pre>
 <div class="sourceCode" id="cb136"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" aria-hidden="true" tabindex="-1"></a>mydata[,<span class="dv">3</span>]</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" tabindex="-1"></a>mydata[,<span class="dv">3</span>]</span></code></pre></div>
 <pre><code>##   [1] 40765   582  7362  1108  3118 12627  1861 16802   293   215   459    52
 ##  [13]   765  2105  7760  1919  2621  4625   912   411   312 14519   112 10260
 ##  [25]    50   191   190  5122   215   197  1446   858  1312  1121   151 67561
@@ -1209,7 +1205,7 @@ class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="#cb1
 ##  [85]  3855 12528 70734    68   782  7420   321  5756     1 10334    21  4866
 ##  [97] 30131     4   102   503 45298  1148  5891</code></pre>
 <div class="sourceCode" id="cb138"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>nconflict</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" tabindex="-1"></a>mydata<span class="sc">$</span>nconflict</span></code></pre></div>
 <pre><code>##   [1] 40765   582  7362  1108  3118 12627  1861 16802   293   215   459    52
 ##  [13]   765  2105  7760  1919  2621  4625   912   411   312 14519   112 10260
 ##  [25]    50   191   190  5122   215   197  1446   858  1312  1121   151 67561
@@ -1223,10 +1219,10 @@ class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="#cb1
 <div id="table-function" class="section level3">
 <h3><code>table()</code> function</h3>
 <p>The <code>table()</code> function can be used to tabularize one or
-more variables. For example, lets find out how many observations
+more variables. For example, let’s find out how many observations
 (i.e. individual countries) we have per region.</p>
 <div class="sourceCode" id="cb140"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(mydata<span class="sc">$</span>region)</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1" tabindex="-1"></a><span class="fu">table</span>(mydata<span class="sc">$</span>region)</span></code></pre></div>
 <pre><code>## 
 ## Caucasus and Central Asia            Eastern Africa                    Europe 
 ##                         8                        13                        15 
@@ -1240,11 +1236,11 @@ class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="#cb1
 For example, below, we show how many countries have above average number
 of conflict events per region.</p>
 <div class="sourceCode" id="cb142"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mydata<span class="sc">$</span>nconflict)</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1" tabindex="-1"></a><span class="fu">summary</span>(mydata<span class="sc">$</span>nconflict)</span></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##     1.0   315.5  1250.0  6216.3  5993.5 70734.0</code></pre>
 <div class="sourceCode" id="cb144"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(mydata<span class="sc">$</span>region, mydata<span class="sc">$</span>nconflict <span class="sc">&gt;</span> <span class="fu">mean</span>(mydata<span class="sc">$</span>nconflict))</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1" tabindex="-1"></a><span class="fu">table</span>(mydata<span class="sc">$</span>region, mydata<span class="sc">$</span>nconflict <span class="sc">&gt;</span> <span class="fu">mean</span>(mydata<span class="sc">$</span>nconflict))</span></code></pre></div>
 <pre><code>##                            
 ##                             FALSE TRUE
 ##   Caucasus and Central Asia     7    1
@@ -1274,32 +1270,32 @@ function <code>seq()</code>.</p>
 <p><code>NA</code> is how <code>R</code> denotes missing values. For
 certain functions, <code>NA</code>s cause problems.</p>
 <div class="sourceCode" id="cb146"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>, <span class="dv">3</span>)</span>
-<span id="cb146-2"><a href="#cb146-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(vec) <span class="co">#Result is NA!</span></span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>, <span class="dv">3</span>)</span>
+<span id="cb146-2"><a href="#cb146-2" tabindex="-1"></a><span class="fu">mean</span>(vec) <span class="co">#Result is NA!</span></span></code></pre></div>
 <pre><code>## [1] NA</code></pre>
 <div class="sourceCode" id="cb148"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(vec) <span class="co">#Result is NA!</span></span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="#cb148-1" tabindex="-1"></a><span class="fu">sum</span>(vec) <span class="co">#Result is NA!</span></span></code></pre></div>
 <pre><code>## [1] NA</code></pre>
 <p>We can tell <code>R</code> to remove the NA and execute the function
 on the remainder of the data.</p>
 <div class="sourceCode" id="cb150"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(vec, <span class="at">na.rm =</span> T)</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1" tabindex="-1"></a><span class="fu">mean</span>(vec, <span class="at">na.rm =</span> T)</span></code></pre></div>
 <pre><code>## [1] 2.5</code></pre>
 <div class="sourceCode" id="cb152"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(vec, <span class="at">na.rm =</span> T)</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" tabindex="-1"></a><span class="fu">sum</span>(vec, <span class="at">na.rm =</span> T)</span></code></pre></div>
 <pre><code>## [1] 10</code></pre>
 </div>
 <div id="adding-observations" class="section level2">
 <h2>Adding observations</h2>
-<p>First, lets add another observation to the data. Suppose we wanted to
-add an observation for Germany, which will be a missing value. We can
+<p>First, let’s add another observation to the data. Suppose we wanted
+to add an observation for Germany, which will be a missing value. We can
 use the same operations we used for vectors to add data. Here, we will
 use the <code>rbind()</code> function to do so. <code>rbind()</code>
 stands for “row bind.” Save the output in a new data frame!</p>
 <div class="sourceCode" id="cb154"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a>obs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Germany&quot;</span>, <span class="st">&quot;Europe&quot;</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>)</span>
-<span id="cb154-2"><a href="#cb154-2" aria-hidden="true" tabindex="-1"></a>mydata_new <span class="ot">&lt;-</span> <span class="fu">rbind</span>(mydata, obs)</span>
-<span id="cb154-3"><a href="#cb154-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(mydata_new)</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" tabindex="-1"></a>obs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Germany&quot;</span>, <span class="st">&quot;Europe&quot;</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>)</span>
+<span id="cb154-2"><a href="#cb154-2" tabindex="-1"></a>mydata_new <span class="ot">&lt;-</span> <span class="fu">rbind</span>(mydata, obs)</span>
+<span id="cb154-3"><a href="#cb154-3" tabindex="-1"></a><span class="fu">dim</span>(mydata_new)</span></code></pre></div>
 <pre><code>## [1] 104   5</code></pre>
 </div>
 <div id="adding-variables" class="section level2">
@@ -1312,8 +1308,8 @@ fatalities by country, we can calculate the number of conflict events
 we can directly assign the new variable to the data frame
 <code>mydata_new</code>.</p>
 <div class="sourceCode" id="cb156"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="#cb156-1" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>nconflict_fatalities <span class="ot">&lt;-</span> mydata<span class="sc">$</span>nconflict <span class="sc">-</span> mydata<span class="sc">$</span>nconflict_no_fatalities</span>
-<span id="cb156-2"><a href="#cb156-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mydata, <span class="dv">3</span>) <span class="co">#prints out the first 3 rows of the data frame</span></span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="#cb156-1" tabindex="-1"></a>mydata<span class="sc">$</span>nconflict_fatalities <span class="ot">&lt;-</span> mydata<span class="sc">$</span>nconflict <span class="sc">-</span> mydata<span class="sc">$</span>nconflict_no_fatalities</span>
+<span id="cb156-2"><a href="#cb156-2" tabindex="-1"></a><span class="fu">head</span>(mydata, <span class="dv">3</span>) <span class="co">#prints out the first 3 rows of the data frame</span></span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["region"],"name":[2],"type":["chr"],"align":["left"]},{"label":["nconflict"],"name":[3],"type":["int"],"align":["right"]},{"label":["nconflict_no_fatalities"],"name":[4],"type":["int"],"align":["right"]},{"label":["fatalities"],"name":[5],"type":["int"],"align":["right"]},{"label":["nconflict_fatalities"],"name":[6],"type":["int"],"align":["right"]}],"data":[{"1":"Afghanistan","2":"Southern Asia","3":"40765","4":"23946","5":"119973","6":"16819","_rn_":"1"},{"1":"Albania","2":"Europe","3":"582","4":"581","5":"1","6":"1","_rn_":"2"},{"1":"Algeria","2":"Northern Africa","3":"7362","4":"5321","5":"8451","6":"2041","_rn_":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -1324,7 +1320,7 @@ computed as the sum of fatalities (<code>fatalities</code> variable)
 divided by the number of conflicts (<code>nconflict</code>
 variable).</p>
 <div class="sourceCode" id="cb157"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="#cb157-1" aria-hidden="true" tabindex="-1"></a>mydata<span class="sc">$</span>av_fatalities <span class="ot">&lt;-</span> mydata<span class="sc">$</span>fatalities<span class="sc">/</span>mydata<span class="sc">$</span>nconflict</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="#cb157-1" tabindex="-1"></a>mydata<span class="sc">$</span>av_fatalities <span class="ot">&lt;-</span> mydata<span class="sc">$</span>fatalities<span class="sc">/</span>mydata<span class="sc">$</span>nconflict</span></code></pre></div>
 </div>
 <div id="subsetting-data" class="section level2">
 <h2>Subsetting data</h2>
@@ -1334,11 +1330,11 @@ first subsetting our dataset to only include countries in the region,
 then looking up the maximum value for <code>nconflict</code>. Below, we
 assign the output to a new object called <code>mydata_na</code>.</p>
 <div class="sourceCode" id="cb158"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="#cb158-1" aria-hidden="true" tabindex="-1"></a>mydata_na <span class="ot">&lt;-</span> mydata[mydata<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;Northern Africa&quot;</span>,]</span>
-<span id="cb158-2"><a href="#cb158-2" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(mydata_na<span class="sc">$</span>nconflict)</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="#cb158-1" tabindex="-1"></a>mydata_na <span class="ot">&lt;-</span> mydata[mydata<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;Northern Africa&quot;</span>,]</span>
+<span id="cb158-2"><a href="#cb158-2" tabindex="-1"></a><span class="fu">max</span>(mydata_na<span class="sc">$</span>nconflict)</span></code></pre></div>
 <pre><code>## [1] 12528</code></pre>
 <div class="sourceCode" id="cb160"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="#cb160-1" aria-hidden="true" tabindex="-1"></a>mydata_na<span class="sc">$</span>country[mydata_na<span class="sc">$</span>nconflict <span class="sc">==</span> <span class="fu">max</span>(mydata_na<span class="sc">$</span>nconflict)]</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="#cb160-1" tabindex="-1"></a>mydata_na<span class="sc">$</span>country[mydata_na<span class="sc">$</span>nconflict <span class="sc">==</span> <span class="fu">max</span>(mydata_na<span class="sc">$</span>nconflict)]</span></code></pre></div>
 <pre><code>## [1] &quot;Sudan&quot;</code></pre>
 </div>
 </div>
@@ -1362,8 +1358,8 @@ obvious choice.</p>
 For example when you try to add two character strings, you will get the
 following error:</p>
 <div class="sourceCode" id="cb164"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;hello&quot;</span> <span class="sc">+</span> <span class="st">&quot;world&quot;</span></span>
-<span id="cb164-2"><a href="#cb164-2" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> <span class="st">&quot;hello&quot;</span> <span class="sc">+</span> <span class="st">&quot;world&quot;</span><span class="sc">:</span> non<span class="sc">-</span>numeric argument to binary operator</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="#cb164-1" tabindex="-1"></a><span class="st">&quot;hello&quot;</span> <span class="sc">+</span> <span class="st">&quot;world&quot;</span></span>
+<span id="cb164-2"><a href="#cb164-2" tabindex="-1"></a>Error <span class="cf">in</span> <span class="st">&quot;hello&quot;</span> <span class="sc">+</span> <span class="st">&quot;world&quot;</span><span class="sc">:</span> non<span class="sc">-</span>numeric argument to binary operator</span></code></pre></div>
 <p>Normally, when something has gone wrong with your program, <em>R</em>
 will notify you of an error in the <strong>console</strong>. There are
 errors that will prevent the code from running, while others will only
@@ -1371,15 +1367,17 @@ produce <strong>warning</strong> messages. In the following case, the
 code will run, but you will notice that the string
 <strong>“three”</strong> is turned into a NA.</p>
 <div class="sourceCode" id="cb165"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(<span class="fu">c</span>(<span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;three&quot;</span>))</span>
-<span id="cb165-2"><a href="#cb165-2" aria-hidden="true" tabindex="-1"></a>Warning<span class="sc">:</span> NAs introduced by coercion</span>
-<span id="cb165-3"><a href="#cb165-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>]  <span class="dv">1</span>  <span class="dv">2</span> <span class="cn">NA</span></span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="#cb165-1" tabindex="-1"></a><span class="fu">as.numeric</span>(<span class="fu">c</span>(<span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;three&quot;</span>))</span>
+<span id="cb165-2"><a href="#cb165-2" tabindex="-1"></a>Warning<span class="sc">:</span> NAs introduced by coercion</span>
+<span id="cb165-3"><a href="#cb165-3" tabindex="-1"></a>[<span class="dv">1</span>]  <span class="dv">1</span>  <span class="dv">2</span> <span class="cn">NA</span></span></code></pre></div>
 <p>Since we will be utilizing widely used packages and functions in the
 course of the semester, the errors that you may come across in the
 process of completing your assignments will be common for other R users.
 Most errors occur because of typos. A Google search of the error message
 can take you a long way as well. Most of the times the first entry on
-<strong>stackoverflow.com</strong> will solve the problem.</p>
+<strong><a
+href="https://stackoverflow.com/">stackoverflow.com</a></strong> will
+solve the problem.</p>
 <hr />
 </div>
 <div id="the-double-colon-operator" class="section level2">
@@ -1395,20 +1393,20 @@ is likely that this will not be a problem during the course, we can try
 to employ the following convention <code>package_name::function()</code>
 to ensure that we will not encounter errors in our knitting process:</p>
 <div class="sourceCode" id="cb166"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="#cb166-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>()</span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="#cb166-1" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>()</span></code></pre></div>
 <hr />
 <p>Let’s look at what happens when we load <code>tidyverse</code>.</p>
 <div class="sourceCode" id="cb167"><pre
-class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb167-2"><a href="#cb167-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb167-3"><a href="#cb167-3" aria-hidden="true" tabindex="-1"></a><span class="co">#── Attaching packages ──────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 #──</span></span>
-<span id="cb167-4"><a href="#cb167-4" aria-hidden="true" tabindex="-1"></a><span class="co">#✓ ggplot2 3.3.2     ✓ purrr   0.3.4</span></span>
-<span id="cb167-5"><a href="#cb167-5" aria-hidden="true" tabindex="-1"></a><span class="co">#✓ tibble  3.0.3     ✓ dplyr   1.0.2</span></span>
-<span id="cb167-6"><a href="#cb167-6" aria-hidden="true" tabindex="-1"></a><span class="co">#✓ tidyr   1.1.2     ✓ stringr 1.4.0</span></span>
-<span id="cb167-7"><a href="#cb167-7" aria-hidden="true" tabindex="-1"></a><span class="co">#✓ readr   1.3.1     ✓ forcats 0.5.0</span></span>
-<span id="cb167-8"><a href="#cb167-8" aria-hidden="true" tabindex="-1"></a><span class="co">#── Conflicts ─────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() #──</span></span>
-<span id="cb167-9"><a href="#cb167-9" aria-hidden="true" tabindex="-1"></a><span class="co">#x dplyr::filter() masks stats::filter()</span></span>
-<span id="cb167-10"><a href="#cb167-10" aria-hidden="true" tabindex="-1"></a><span class="co">#x dplyr::lag()    masks stats::lag()</span></span></code></pre></div>
+class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="#cb167-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb167-2"><a href="#cb167-2" tabindex="-1"></a></span>
+<span id="cb167-3"><a href="#cb167-3" tabindex="-1"></a><span class="co">#── Attaching packages ──────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 #──</span></span>
+<span id="cb167-4"><a href="#cb167-4" tabindex="-1"></a><span class="co">#✓ ggplot2 3.3.2     ✓ purrr   0.3.4</span></span>
+<span id="cb167-5"><a href="#cb167-5" tabindex="-1"></a><span class="co">#✓ tibble  3.0.3     ✓ dplyr   1.0.2</span></span>
+<span id="cb167-6"><a href="#cb167-6" tabindex="-1"></a><span class="co">#✓ tidyr   1.1.2     ✓ stringr 1.4.0</span></span>
+<span id="cb167-7"><a href="#cb167-7" tabindex="-1"></a><span class="co">#✓ readr   1.3.1     ✓ forcats 0.5.0</span></span>
+<span id="cb167-8"><a href="#cb167-8" tabindex="-1"></a><span class="co">#── Conflicts ─────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() #──</span></span>
+<span id="cb167-9"><a href="#cb167-9" tabindex="-1"></a><span class="co">#x dplyr::filter() masks stats::filter()</span></span>
+<span id="cb167-10"><a href="#cb167-10" tabindex="-1"></a><span class="co">#x dplyr::lag()    masks stats::lag()</span></span></code></pre></div>
 <p>You may notice that <em>R</em> points out some conflicts where some
 functions are being masked. The default in this machine will become the
 <code>filter()</code> from the <code>dplyr</code> package during this
@@ -1440,9 +1438,9 @@ a chance to execute your scripts without trouble)</li>
 use whitespaces in file or variable names! Some <em>good</em>
 examples:</p>
 <ul>
-<li>my_file.R</li>
-<li>my_vector &lt;- c(1,2,3)</li>
-<li>this_function()</li>
+<li><code>my_file.R</code></li>
+<li><code>my_vector &lt;- c(1,2,3)</code></li>
+<li><code>this_function()</code></li>
 </ul>
 </div>
 <div id="spacing" class="section level2">
@@ -1450,7 +1448,7 @@ examples:</p>
 <p>It is somewhat easier to read if you generally leave a space after a
 comma</p>
 <ul>
-<li>my_function(1:10, c(2, 4))</li>
+<li><code>my_function(1:10, c(2, 4))</code></li>
 </ul>
 </div>
 <div id="repetition" class="section level2">
@@ -1522,7 +1520,7 @@ class="footnote-back">↩︎</a></p></li>
 
 <!-- Add font awesome icons -->
 <p style="text-align: center;">
-    <a href="https://github.com/intro-to-data-science-21"  <i class="fab fa-github"></i><a>
+    <a href="https://github.com/intro-to-data-science-23"  <i class="fab fa-github"></i><a>
 </p>
 
 &nbsp;
