@@ -16,7 +16,7 @@
 
 ## Instructors
 
-The lab sessions to the course Introduction to Data Science by [Simon Munzert](https://simonmunzert.github.io/) at the [Hertie School, Berlin](https://www.hertie-school.org/en/), are taught by [Julian Kath](https://github.com/juka19) and [Tom Arend](https://www.hertie-school.org/en/research/faculty-and-researchers/profile/person/arend).
+The lab sessions to the course Introduction to Data Science by [Simon Munzert](https://simonmunzert.github.io/) at the [Hertie School, Berlin](https://www.hertie-school.org/en/), are taught by Hiba Ahmad and [Steve Kerr](https://github.com/smkerr).
 
 
 ## License
