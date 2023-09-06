@@ -243,7 +243,7 @@ library(foreign)
 
 
 ## --------------------------------------------------------------------------------------------
-mydata <- read.csv("data/ACLED_countries.csv",
+mydata <- read.csv("session-01-intro/data/ACLED_countries.csv",
                    stringsAsFactors = F)
 
 
