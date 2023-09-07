@@ -648,12 +648,12 @@ table(mydata$region, mydata$nconflict > mean(mydata$nconflict))
 
 ```
 
-**Exercise 13**: How would you find the maximum value for number of events using the `$` operator?
+**Exercise 13**: How would you find the maximum value for number of conflict events using the `$` operator?
 ```{r, echo = F}
 
 ```
 
-**Exercise 14**: Print the country that corresponds to the maximum world population value using the `$` operator and indexing!
+**Exercise 14**: Print the country that corresponds to the maximum value for conflict events using the `$` operator and indexing!
 ```{r, echo = F}
 
 ```
