@@ -24,7 +24,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ## Welcome back! `r emo::ji("flexed biceps")`
 
-This week we will be looking at a key component of the data science workflow: version control. More specifically, we will create your first repo on GitHub and see how we can use it to keep a record of all the changes that were ever made to your code. This is an essential component of collaborative coding efforts but can also be immensely beneficial to your own solo projects.
+This week we will be looking at a key component of the data science workflow: version control. More specifically, we will create your first repo on GitHub and see how we can use it to keep a record of all the changes that were ever made to your code. This is an essential component of collaborative coding efforts, but can also be immensely beneficial for your own solo projects.
 
 Today's session will follow the exact recipe suggested in Simon's lecture:
 
@@ -38,17 +38,17 @@ Today's session will follow the exact recipe suggested in Simon's lecture:
 
 Before we get into the nitty-gritty of this week's session, I would like to suggest you all [download GitHub Desktop](https://desktop.github.com/). It is a GUI that lets you interact with GitHub and might be an additional option if your do not want to rely on RStudio or the Command Line alone. Instructions to set it up and get it running can be found [here](https://docs.github.com/en/desktop/installing-and-configuring-github-desktop/overview/getting-started-with-github-desktop).
 
-There are a number of different GUIs that you can try out and play around with. Some are better than others. An additional free GUI like GitHub Desktop that I like is [GitKraken](https://www.gitkraken.com/).
+There are a number of different GUIs that you can try out and play around with. Some are better than others. An example of another free GUI like GitHub Desktop is [GitKraken](https://www.gitkraken.com/).
 
 ------------------------------------------------------------------------
 
 # Project Management `r emo::ji("mage")`
 
-Before getting to know Git(Hub) it is useful to have a look at R-projects and how you should structure them. Version Control is only useful if your projects can be understood **by a wide range of collaborators**.
+Before getting to know Git(Hub), it is useful to have a look at R-projects and how you should structure them. Version Control is only useful if your projects can be understood **by a wide range of collaborators**.
 
 First of all, you should always use RStudio projects. They allow you to keep all the files associated with a project together --- input data, R scripts, analytical results, figures etc. When you open a Project you will find a .Rproj file. This file contains all the meta information relevant to your project: settings, working directory, open scripts, encoding etc. If you are curious what exactly lies within it, I suggest you open the .Rproj file with a text editor.
 
-However, projects are only as useful as the organization within them. As we saw in the lecture a structure like the following one would be a good starting point. This overview can be adapted to requirements inherent to any given project. It might be interesting to spend a little more time looking into the different folders and what they should contains.
+However, projects are only as useful as the organization within them. As we saw in the lecture, a structure like the following one would be a good starting point. This overview can be adapted to requirements inherent to any given project. It might be interesting to spend a little more time looking into the different folders and what they should contain.
 
     .
     +-- src
