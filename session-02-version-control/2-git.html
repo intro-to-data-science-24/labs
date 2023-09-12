@@ -13,7 +13,7 @@
 
 <title>Version Control</title>
 
-<script src="2-git_files/header-attrs-2.16/header-attrs.js"></script>
+<script src="2-git_files/header-attrs-2.23/header-attrs.js"></script>
 <script src="2-git_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="2-git_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="2-git_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="2-git_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="2-git_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="2-git_files/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="2-git_files/navigation-1.1/tabsets.js"></script>
@@ -92,11 +92,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 code span.al { color: #ef2929; } /* Alert */
 code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #c4a000; } /* Attribute */
+code span.at { color: #204a87; } /* Attribute */
 code span.bn { color: #0000cf; } /* BaseN */
 code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4e9a06; } /* Char */
-code span.cn { color: #000000; } /* Constant */
+code span.cn { color: #8f5902; } /* Constant */
 code span.co { color: #8f5902; font-style: italic; } /* Comment */
 code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
 code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
@@ -105,14 +105,14 @@ code span.dv { color: #0000cf; } /* DecVal */
 code span.er { color: #a40000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #0000cf; } /* Float */
-code span.fu { color: #000000; } /* Function */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
 code span.im { } /* Import */
 code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
 code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
 code span.ot { color: #8f5902; } /* Other */
 code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code span.sc { color: #000000; } /* SpecialChar */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
 code span.ss { color: #4e9a06; } /* SpecialString */
 code span.st { color: #4e9a06; } /* String */
 code span.va { color: #000000; } /* Variable */
@@ -199,8 +199,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -208,16 +208,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -336,7 +329,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Version Control</h1>
-<h3 class="subtitle">Getting used to Git(hub) with R</h3>
+<h3 class="subtitle">Getting used to Git(Hub) with R</h3>
 
 </div>
 
@@ -345,27 +338,26 @@ div.tocify {
 <div id="welcome-back" class="section level2">
 <h2>Welcome back! 💪</h2>
 <p>This week we will be looking at a key component of the data science
-workflow: version control. More specifically we will create your first
-repo on Github and see how we can use it to keep a record of all the
+workflow: version control. More specifically, we will create your first
+repo on GitHub and see how we can use it to keep a record of all the
 changes that were ever made to your code. This is an essential component
-of collaborative coding efforts, but can also be immensely beneficial to
+of collaborative coding efforts but can also be immensely beneficial to
 your own solo projects.</p>
 <p>Today’s session will follow the exact recipe suggested in Simon’s
 lecture:</p>
-<ul>
-<li>Create a new repo on Github and initialize it</li>
+<ol style="list-style-type: decimal">
+<li>Create a new repo on GitHub and initialize it</li>
 <li>Clone this repo to your local machine</li>
-<li>Make some changes to a file (we’ll review some code from last
-week)</li>
+<li>Make some changes to a file</li>
 <li>Stage these local changes</li>
 <li>Commit them to our Git history with a helpful message</li>
 <li>Pull from the GitHub repo just in case anyone else made changes too
 (not expected here, but good practice).</li>
-<li>Pushed our changes to the GitHub repo.</li>
-</ul>
+<li>Push our changes to the GitHub repo.</li>
+</ol>
 <p>Before we get into the nitty-gritty of this week’s session, I would
 like to suggest you all <a href="https://desktop.github.com/">download
-Github Desktop</a>. It is a GUI that lets you interact with GitHub and
+GitHub Desktop</a>. It is a GUI that lets you interact with GitHub and
 might be an additional option if your do not want to rely on RStudio or
 the Command Line alone. Instructions to set it up and get it running can
 be found <a
@@ -391,7 +383,10 @@ encoding etc. If you are curious what exactly lies within it, I suggest
 you open the .Rproj file with a text editor.</p>
 <p>However, projects are only as useful as the organization within them.
 As we saw in the lecture a structure like the following one would be a
-good starting point.</p>
+good starting point. This overview can be adapted to requirements
+inherent to any given project. It might be interesting to spend a little
+more time looking into the different folders and what they should
+contains.</p>
 <pre><code>.
 +-- src
 +-- output
@@ -403,11 +398,25 @@ good starting point.</p>
 |
 +-- README.md
 +-- run_analyses.R 
-+-- .gitignore
-</code></pre>
-<p>The overview can be adapted to requirements inherent to any given
-project. It might be interesting to spend a little more time looking
-into the different folders and what they should contains.</p>
++-- .gitignore</code></pre>
+<p>We can visualize the folder structure of our repository using the
+<code>fs</code> package’s <code>dir_tree()</code> function.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>fs<span class="sc">::</span><span class="fu">dir_tree</span>(<span class="at">path =</span> here<span class="sc">::</span><span class="fu">here</span>(), <span class="at">recurse =</span> <span class="cn">FALSE</span>) <span class="co"># set recurse=TRUE to view sub-levels</span></span></code></pre></div>
+<pre><code>## /Users/steve/Documents/GitHub/labs
+## ├── README.md
+## ├── archive
+## ├── labs.Rproj
+## ├── practice-scripts
+## ├── session-01-intro
+## ├── session-02-version-control
+## ├── session-03-tidyverse
+## ├── session-04-functions
+## ├── session-05-databases
+## ├── session-06-webdata
+## ├── session-07-web-scraping
+## ├── session-08-modelling
+## ├── session-09-visualization
+## └── session-10-shiny</code></pre>
 <div id="data-folder" class="section level3">
 <h3>Data Folder</h3>
 <p>The data folder is, as the name suggests, where your data goes. The
@@ -417,7 +426,7 @@ online relational database, or needs to be accessed through an API. In
 such cases the raw folder can be dispensed with.</p>
 <p>Once you have shaped your data into a format that suits your
 analysis, the data should be stored in the “processed” folder. If you
-need to perform certain intermediate steps it might also be an idea to
+need to perform certain intermediate steps, it might also be an idea to
 create a dedicated “temp” folder.</p>
 </div>
 <div id="src-folder" class="section level3">
@@ -425,23 +434,24 @@ create a dedicated “temp” folder.</p>
 <p>This is the folder that should contain your code. You should aim to
 emulate the workflow of standard data science project within this
 folder. It is best to separate different aspects of your project into
-separate scripts. The names of these scripts should be named so as to
-make it clear what step of the project they represent
-(i.e. “2-preprocess-data”, “3-descriptives” etc.). These scripts should
-sequentially be executed through a main runner script. This can be done
-calling the <code>source()</code> function.</p>
+separate scripts. The scripts should be named so as to make it clear
+what step of the project they represent (i.e. “2-preprocess-data”,
+“3-descriptives” etc.). These scripts should be structured in such a way
+that they could be executed sequentially through a main script that runs
+them. A script can be run by calling the <code>source()</code>
+function.</p>
 </div>
 <div id="relative-paths" class="section level3">
 <h3>relative paths</h3>
-<p>Within a given script you should always use relative paths. To access
-your processed data folder you can use the following file path
-<code>"./data/processed.RDa"</code>. The “.” represents your current
-working directory, which is set automatically when you open a new
-R-project.</p>
+<p>Within a given script you should always use relative file paths. To
+access your processed data folder you can use the following file path
+<code>"./data/processed.RDa"</code>. The <code>.</code> represents your
+current working directory, which is set automatically when you open a
+new R-project.</p>
 <p>For more in depth guides and explanations you can look <a
 href="https://www.r-bloggers.com/2018/08/structuring-r-projects/">here</a>.
 If you feel like you want to practice this you can find more material <a
-href="https://github.com/intro-to-data-science-21/labs/tree/main/practice-scripts/01-file-management.R">here</a>.
+href="https://github.com/intro-to-data-science-23/labs/blob/main/practice-scripts/01-file-management.R">here</a>.
 And there is even a package dedicated to file referencing <a
 href="https://cran.r-project.org/web/packages/here/vignettes/here.html">here</a>.</p>
 <hr />
@@ -457,20 +467,20 @@ steps:</p>
 account.</p></li>
 <li><p>Install Git (or update version) using the Command Line.</p></li>
 </ol>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> git</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span></code></pre></div>
-<pre><code>## /usr/bin/git
-## git version 2.30.1 (Apple Git-130)</code></pre>
 <div class="sourceCode" id="cb4"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install git</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install gh</span></code></pre></div>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">which</span> git</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span></code></pre></div>
+<pre><code>## /usr/bin/git
+## git version 2.39.2 (Apple Git-143)</code></pre>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">brew</span> install git</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="ex">brew</span> install gh</span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Enter Credentials for Git</li>
 </ol>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">&#39;its-me&#39;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">&#39;my-email@adress.eu&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">&#39;its-me&#39;</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">&#39;my-email@adress.eu&#39;</span></span></code></pre></div>
 </div>
 <div id="suggested-workflow" class="section level1">
 <h1>Suggested Workflow 🏄</h1>
@@ -481,9 +491,10 @@ that you should follow under most circumstances. At each stage you can
 find the instructions for working through both the Command Line and
 through RStudio. <strong>Be aware</strong> however that these are
 <strong>separate</strong> processes that should not be mixed. Either you
-use the shell for version control or you use RStudio.</p>
+use the shell for version control or you use RStudio or you use GitHub
+Desktop.</p>
 <div id="create-a-new-repo-on-github" class="section level3">
-<h3>1. Create a new repo on Github</h3>
+<h3>1. Create a new repo on GitHub</h3>
 <ul>
 <li><p>Go to <a href="https://github.com">your github page</a> and make
 sure you are logged in.</p></li>
@@ -500,8 +511,8 @@ text is good for the README).</li>
 <li>For everything else, just accept the default.</li>
 </ul></li>
 </ul>
-<p>Great, now that you created a new repo on Github, it is important to
-note that you <strong>should always</strong> create a repo
+<p>Great, now that you have created a new repo on GitHub, it is
+important to note that you <strong>should always</strong> create a repo
 <strong>prior</strong> to starting your work in RStudio.</p>
 <hr />
 </div>
@@ -522,14 +533,14 @@ class="uri">https://github.com/tom-arend/my_first_repo.git</a>.</p>
 displays the working directory. <code>$ cd</code> is the command to
 change directory.</p>
 <p>Clone a repo into your chosen directory.</p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/phd_hertie/teaching/IDS_fall_21 </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/tom-arend/my_first_repo.git</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="bu">cd</span> ~/phd_hertie/teaching/IDS_fall_21 </span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/tom-arend/my_first_repo.git</span></code></pre></div>
 <p>Check whether it worked:</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/phd_hertie/teaching/IDS_fall_21/my_first_repo</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="bu">cd</span> ~/phd_hertie/teaching/IDS_fall_21/my_first_repo</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fu">git</span> log</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div>
 </div>
 <div id="using-rstudio" class="section level4">
 <h4>Using Rstudio</h4>
@@ -553,7 +564,7 @@ you get are three things in one:</p>
 projects have exactly this set-up.</p>
 </div>
 <div id="using-github-desktop" class="section level4">
-<h4>Using Github Desktop</h4>
+<h4>Using GitHub Desktop</h4>
 <p>Here is a short gif on how to clone a repo with GitHub Desktop:</p>
 <p><img src="pics/github_desktop_cloning.gif" width="85%" style="display: block; margin: auto;" /></p>
 </div>
@@ -574,27 +585,27 @@ we just cloned.</p></li>
 <li><p>First load/install necessary packages (the tidyverse suffices
 here)</p></li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set-up your script ------------------------------------------------------</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(c(&quot;tidyverse&quot;, &quot;gapminder&quot;, &quot;pacman&quot;)) # uncomment if already installed</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, gapminder)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># Set-up your script ------------------------------------------------------</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co"># install.packages(c(&quot;tidyverse&quot;, &quot;gapminder&quot;, &quot;pacman&quot;)) # uncomment if already installed</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, gapminder)</span></code></pre></div>
 <ul>
 <li>Then load the data you want to work with into R.</li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load your Data into R ---------------------------------------------------</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(gapminder)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># Load your Data into R ---------------------------------------------------</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="fu">data</span>(gapminder)</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="fu">head</span>(gapminder)</span></code></pre></div>
 <ul>
 <li>Finally, start cleaning your data.</li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean your Data ---------------------------------------------------------</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>gapminder_clean <span class="ot">&lt;-</span> gapminder <span class="sc">%&gt;%</span> </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">life_exp =</span> lifeExp, <span class="at">gdp_per_cap =</span> gdpPercap) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gdp =</span> pop <span class="sc">*</span> gdp_per_cap)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># Clean your Data ---------------------------------------------------------</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>gapminder_clean <span class="ot">&lt;-</span> gapminder <span class="sc">%&gt;%</span> </span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">life_exp =</span> lifeExp, <span class="at">gdp_per_cap =</span> gdpPercap) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gdp =</span> pop <span class="sc">*</span> gdp_per_cap)</span></code></pre></div>
 <ul>
-<li>For good measure let’s also update our Readme.</li>
+<li>For good measure let’s also update our README</li>
 </ul>
 </div>
 <div id="section-1" class="section level3 unlisted unnumbered">
@@ -605,29 +616,30 @@ here)</p></li>
 class="section level3 tabset tabset-fade tabset-pills">
 <h3 class="tabset tabset-fade tabset-pills">4. Stage your Changes and
 Commit</h3>
-<p>Before we get on to the next step, it is a goo idea to save this
-newly created script and give it a name. Do the same thing for the
+<p>Before we get on to the next step, it is a good idea to save this
+newly created script and give it a name. Also save changes made to the
 README file. Now that your changes are saved locally we need to let Git
 know.</p>
 <div id="using-the-command-line-1" class="section level4">
 <h4>Using the Command Line</h4>
 <p>Stage (“add”) a file or group of files. This allows you to stage
 specific individual files such as the README file for example.</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add NAME-OF-FILE-OR-FOLDER</span></code></pre></div>
-<p>Alternatively you could stage all files (whether updated or not):</p>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add <span class="at">-A</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">git</span> add NAME-OF-FILE-OR-FOLDER</span></code></pre></div>
+<p>Alternatively, you could stage all files (whether updated or
+not):</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">git</span> add <span class="at">-A</span></span></code></pre></div>
 <p>Or you could stage updated files only (modified or deleted, but not
 new):</p>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add <span class="at">-u</span></span></code></pre></div>
-<p>Finally you can also only stage new files (not updated ones).</p>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span></code></pre></div>
-<p>Having done so, you are now ready to commit these changes!</p>
 <div class="sourceCode" id="cb15"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;Helpful message&quot;</span></span></code></pre></div>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">git</span> add <span class="at">-u</span></span></code></pre></div>
+<p>Finally, you can also only stage new files (not updated ones).</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">git</span> add .</span></code></pre></div>
+<p>Having done so, you are now ready to commit these changes!</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;Helpful message&quot;</span></span></code></pre></div>
 <p>As you can imagine, the command shell with its different options (and
 there are more beyond the staging phase), can be quicker and more
 flexible than your GUI interface, especially for experienced users.</p>
@@ -647,12 +659,12 @@ what you did. (Do not neglect this, as it helps both you and your
 collaborators to understand your changes.)</li>
 </ul>
 <p>This method has the clear advantage of being extremely intuitive.
-However you are limited to selecting and stageing individual files.</p>
+However you are limited to selecting and staging individual files.</p>
 </div>
 <div id="using-github-desktop-1" class="section level4">
 <h4>Using GitHub Desktop</h4>
-<p>Changed or added files are automatically staged in Github Desktop.
-The GUI also displays (wehere possible) the changes that were done.</p>
+<p>Changed or added files are automatically staged in GitHub Desktop.
+The GUI also displays (where possible) the changes that were made</p>
 <p>You only really need to commit the changes with a nice little summary
 or message.</p>
 <p><img src="pics/github_desktop_stage_commit.gif" width="85%" style="display: block; margin: auto;" /></p>
@@ -671,17 +683,17 @@ The most important thing to remember is that you should always
 <strong>pull</strong> before you <strong>push</strong>. The reason for
 this is that in collaborative projects someone else might have pushed
 changes to the same file you were working on. This can lead to conflicts
-that should be avoided.</p>
+that should be avoided, if possible.</p>
 <div id="using-the-command-line-2" class="section level4">
 <h4>Using the Command Line</h4>
 <p>There are only two commands you need to remember here and they are
 pretty intuitive:</p>
 <p>To pull from the main repo:</p>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div>
 <p>And to push your commits:</p>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div>
 </div>
 <div id="using-rstudio-2" class="section level4">
 <h4>Using RStudio</h4>
@@ -695,8 +707,8 @@ pull and push your commit.</p>
 arrow pointing upwards to <strong>push</strong> your commits.</p>
 </div>
 <div id="using-github-desktop-2" class="section level4">
-<h4>Using Github Desktop</h4>
-<p>It is not really straightforward to pull before pushing with Github
+<h4>Using GitHub Desktop</h4>
+<p>It is not really straightforward to pull before pushing with GitHub
 Desktop. Given that there is no prominent pull button, you need to
 actively remember to do so prior to pressing the blue push button.</p>
 <p><img src="pics/github_desktop_pull_and_push.gif" width="85%" style="display: block; margin: auto;" /></p>
@@ -705,8 +717,8 @@ actively remember to do so prior to pressing the blue push button.</p>
 <div id="section-3" class="section level3 unlisted unnumbered">
 <h3 class="unlisted unnumbered"></h3>
 <p>At some point during either of these processes you will be prompted
-to enter your Github credentials and password. It might be that this
-works or it might be that you receiver the following error message:</p>
+to enter your GitHub credentials and password. It might be that this
+works or it might be that you receive the following error message:</p>
 <blockquote>
 <p>remote: Support for password authentication was removed on August 13,
 2021. Please use a personal access token instead.</p>
@@ -715,11 +727,11 @@ works or it might be that you receiver the following error message:</p>
 <div class="center">
 <p><strong>Attention!</strong></p>
 </div>
-<p>Github no longer supports simply using user-name and password as a
-way of authenticating yourself. You now have to identify yourself using
+<p>GitHub no longer supports simply using your username and password to
+authenticate yourself. You now have to identify yourself using
 <em>Personal Access Tokens</em>. You can cache these with <a
 href="#https">HTTPS</a> or you can use <a
-href="%22https://happygitwithr.com/ssh-keys.html%22">SSH keys</a>.</p>
+href="https://happygitwithr.com/ssh-keys.html">SSH keys</a>.</p>
 </div>
 <hr />
 </div>
@@ -729,22 +741,23 @@ href="%22https://happygitwithr.com/ssh-keys.html%22">SSH keys</a>.</p>
 to practice! So let us get back to our working example with
 my_first_repo and the initial_script.</p>
 <ol style="list-style-type: decimal">
-<li>Go to Github and create a new repo called: exercises_1</li>
-<li>Make sure to include a description for the README</li>
+<li>Go to GitHub and create a new repo called:
+<code>exercises_1</code>.</li>
+<li>Make sure to include a description for the README.</li>
 <li>Clone that repo to your local machine using your preferred
-method</li>
-<li>Change the README file to read: “Hello Github!”</li>
+method.</li>
+<li>Change the README file to read: “Hello GitHub!”</li>
 <li>Save the README.</li>
 <li>Stage and Commit your changes (Do not forget the message along your
-commit!)</li>
-<li>First Pull from origin (Not necessary here, but it is good to
-develop the right habits)</li>
-<li>Then push your commit.</li>
+commit!).</li>
+<li>First, Pull from origin (Not necessary here, but it is good to
+develop the right habits).</li>
+<li>Then Push your commit.</li>
 </ol>
 </div>
 </div>
 <div id="branches" class="section level1">
-<h1>Branches 🌴</h1>
+<h1>Branches 🎄</h1>
 <hr />
 <p>A really cool feature of version control with Git are
 <em>Branches</em>.</p>
@@ -753,34 +766,34 @@ out a whole new idea without affecting your main (i.e. “master”)
 branch.</p>
 <p>Only once you (and your collaborators) are 100% satisfied, would you
 merge it back into the master branch.</p>
-<p>Okey, time to play around with branches a little bit!</p>
+<p>Okay, time to play around with branches a little bit!</p>
 <div id="section-4"
 class="section level3 unlisted unnumbered tabset tabset-fade tabset-pills">
 <h3 class="unlisted unnumbered tabset tabset-fade tabset-pills"></h3>
 <div id="using-the-command-line-3" class="section level4">
 <h4>Using the Command Line</h4>
 <p>Create a new branch on your local machine and switch to it:</p>
-<div class="sourceCode" id="cb18"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> NAME-OF-YOUR-NEW-BRANCH</span></code></pre></div>
-<p>Push the new branch to GitHub:</p>
-<div class="sourceCode" id="cb19"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin NAME-OF-YOUR-NEW-BRANCH</span></code></pre></div>
-<p>List all branches on your local machine:</p>
 <div class="sourceCode" id="cb20"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch</span></code></pre></div>
-<p>Switch back to (e.g.) the master branch:</p>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> NAME-OF-YOUR-NEW-BRANCH</span></code></pre></div>
+<p>Push the new branch to GitHub:</p>
 <div class="sourceCode" id="cb21"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git checkout master</span></code></pre></div>
-<p>Delete a branch</p>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">git</span> push origin NAME-OF-YOUR-NEW-BRANCH</span></code></pre></div>
+<p>List all branches on your local machine:</p>
 <div class="sourceCode" id="cb22"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git branch <span class="at">-d</span> NAME-OF-YOUR-FAILED-BRANCH</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> git push origin :NAME-OF-YOUR-FAILED-BRANCH</span></code></pre></div>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">git</span> branch</span></code></pre></div>
+<p>Switch back to (e.g.) the master branch:</p>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="ex">$</span> git checkout master</span></code></pre></div>
+<p>Delete a branch</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="ex">$</span> git branch <span class="at">-d</span> NAME-OF-YOUR-FAILED-BRANCH</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="ex">$</span> git push origin :NAME-OF-YOUR-FAILED-BRANCH</span></code></pre></div>
 </div>
 <div id="using-rstudio-3" class="section level4">
 <h4>Using RStudio</h4>
 <p>Creating a new branch within RStudio is very easy.</p>
 <ol style="list-style-type: decimal">
-<li>Under the git tab in the environment pane you click on the pink
+<li>Under the Git tab in the environment pane you click on the pink
 L-shaped symbol on the right.</li>
 <li>This will launch a new branch that you can name.</li>
 <li>Switching branches can be accomplished through the drop-down menu
@@ -788,8 +801,8 @@ next to it.</li>
 </ol>
 </div>
 <div id="using-github-desktop-3" class="section level4">
-<h4>Using Github Desktop</h4>
-<p>Given the point-&amp;-click nature of Github Desktop, it is very easy
+<h4>Using GitHub Desktop</h4>
+<p>Given the point-&amp;-click nature of GitHub Desktop, it is very easy
 to open a new branch. Here is how it is done:</p>
 <p><img src="pics/github_desktop_open_new_branch.gif" width="85%" style="display: block; margin: auto;" /></p>
 </div>
@@ -803,10 +816,10 @@ class="section level3 unlisted unnumbered tabset tabset-fade tabset-pills">
 <h1>Pull Requests 🙏</h1>
 <hr />
 <p>Once you are satisfied that the feature, analysis or whatever it was
-that you did in your branch, has been completed, you need to notify and
-ask your collaborators (or yourself) to approve the changes. This is
+that you did in your branch, has been completed, you need to notify your
+collaborators and ask them (or yourself) to approve the changes. This is
 done through Pull Requests.</p>
-<p>Pull Requests are best managed directly on Github. As a reminder on
+<p>Pull Requests are best managed directly on GitHub. As a reminder on
 how you open pull requests, here is the GIF from the lecture again:</p>
 <p><img src="pics/github-rstudio-pr.gif" width="85%" style="display: block; margin: auto;" /></p>
 </div>
@@ -836,17 +849,17 @@ this section!</p>
 <li>Switch to this branch and create a new script.</li>
 <li>Copy the three code chunks from <a href="#code">this section</a>
 into the newly created script.</li>
-<li>Next, and using the tidyverse, subset our cleaned df to include only
+<li>Next, and using the tidyverse, subset our cleaned df to only include
 countries in the Americas.</li>
-<li>Finally, also add a new categorical variable using
-<code>mutate()</code> that qualifies whether a country is rich or poor!
-(Hint use the variable gdp_per_cap and <code>ìf_else()</code>)</li>
+<li>Finally, add a new categorical variable using <code>mutate()</code>
+that qualifies whether a country is rich or poor! (Hint use the variable
+gdp_per_cap and <code>ìf_else()</code>)</li>
 <li>Save the script!</li>
-<li>Stage your changes and commit them. (Make sure you are commiting
+<li>Stage your changes and commit them. (Make sure you are committing
 them within our “data-manipulation-idea” branch.)</li>
 <li>Go to your repo online and open a pull request.</li>
 <li>Review and merge this pull request.</li>
-<li>Delet the now obsolete branch.</li>
+<li>Delete the now obsolete branch.</li>
 </ol>
 <hr />
 </div>
@@ -856,12 +869,12 @@ them within our “data-manipulation-idea” branch.)</li>
 <div id="https" class="section level3 tabset tabset-fade tabset-pills">
 <h3 class="tabset tabset-fade tabset-pills">Caching credentials with
 HTTPS</h3>
-<p>Github recommends that you generate a <em>Personal Access Token</em>
+<p>GitHub recommends that you generate a <em>Personal Access Token</em>
 and cache it using HTTPS. Luckily for us this can be achieved in a few
 simple steps.</p>
 <div id="using-the-command-line-4" class="section level4">
 <h4>Using the Command Line</h4>
-<p>You need to go to your Github Account. Then select your logo in the
+<p>You need to go to your GitHub Account. Then select your logo in the
 top right &gt; Settings &gt; Developer Settings &gt; Personal Access
 tokens</p>
 <p>There you can create a new <em>PAT</em>. It is suggested that you
@@ -872,8 +885,8 @@ select the following categories under scope: <code>repo</code>,
 <strong>save a copy of this Token</strong> somewhere secure. Once you
 leave the site you will lose the token!</p>
 <p>Finally enter the following command:</p>
-<div class="sourceCode" id="cb23"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gh</span> auth login</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="ex">gh</span> auth login</span></code></pre></div>
 <p>In order select: GitHub.com &gt; HTTPS &gt; Yes &gt; Paste an
 authentication token</p>
 <p>Then you simply need to paste your <em>PAT</em> and you should no
@@ -881,16 +894,16 @@ longer be challenged for your github credentials.</p>
 </div>
 <div id="using-rstudio-4" class="section level4">
 <h4>Using RStudio</h4>
-<p>Luckily for R users there are two packages that essentially automate
+<p>Luckily for R users, there are two packages that essentially automate
 this process for us:</p>
 <p>The <code>usethis</code> package has a function that takes you
-immediately to the relevant GitHub page and preselects the recommended
+immediately to the relevant GitHub page and pre-selects the recommended
 scopes (what github calls settings) for you.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">create_github_token</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">create_github_token</span>()</span></code></pre></div>
 <p>It should look like this:</p>
 <p><img src="pics/PAT_github_web.png" width="75%" style="display: block; margin: auto;" /></p>
 <p>Next you can use <code>gitcreds</code> to cache your credentials.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>gitcreds<span class="sc">::</span><span class="fu">gitcreds_set</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a>gitcreds<span class="sc">::</span><span class="fu">gitcreds_set</span>()</span></code></pre></div>
 <p>It will ask you for your PAT (or if you already cached credentials,
 whether you want to change them) and store it for you.</p>
 <p>Now you should be able to <strong>pull</strong> and
@@ -915,7 +928,7 @@ PAT.</p>
 
 <!-- Add font awesome icons -->
 <p style="text-align: center;">
-    <a href="https://github.com/intro-to-data-science-21"  <i class="fab fa-github"></i><a>
+    <a href="https://github.com/intro-to-data-science-23"  <i class="fab fa-github"></i><a>
 </p>
 
 &nbsp;
