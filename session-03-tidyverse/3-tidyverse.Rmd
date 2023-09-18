@@ -895,3 +895,83 @@ Drop rows containing NAs in `...` columns.
 
 Fill in NAs in `...` columns with most recent non-NA values.
 
+## Pipes `r emo::ji("sunglasses")`
+
+### The beauty of pipes
+
+- The forward-pipe operator `%>%` pipes the left-hand side values forward into expressions on the right-hand side.
+- It serves the natural way of reading ("do this, then this, then this, ...").
+- We replace `f(x)` with `x %>% f()`.
+- It avoids nested function calls.
+- It minimizes the need for local variables and function definitions.
+
+**The pipe way**
+```{r, eval = FALSE}
+Alex %>%
+  wake_up(7) %>%
+  shower(temp = 38) %>%
+  breakfast(c("coffee", "croissant")) %>%
+  walk(step_function()) %>%
+  bvg(
+    train = "U2",
+    destination = "Stadtmitte"
+  ) %>%
+  hertie(course = "Intro to DS")
+```
+
+**The classic way**
+```{r, eval = FALSE}
+hertie(
+  bvg(
+    walk(
+      breakfast(
+        shower(
+          wake_up(
+            Alex, 7
+          ),
+          temp = 38
+        ),
+        c("coffee", "croissant")
+      ),
+      step_function()
+    ),
+    train = "U2",
+    destination = "Stadtmitte"
+  ),
+  course = "Intro to DS"
+)
+```
+
+**The classic way, nightmare edition**
+```{r, eval = FALSE}
+alex_awake <- wake_up(Alex, 7)
+alex_showered <- shower(alex_awake, 
+                        temp = 38)
+alex_replete <- breakfast(alex_showered, 
+                          c("coffee", "croissant"))
+alex_underway <- walk(alex_replete, 
+                      step_function())
+alex_on_train <- bvg(alex_underway, 
+                         train = "U2", 
+                         destination = "Stadtmitte")
+alex_hertie <- hertie(alex_on_train, 
+                      course = "Intro to DS")
+```
+
+### Piping etiquette
+
+- Pipes are not very handy when you need to manipulate more than one object at a time. Reserve pipes for a sequence of steps applied to one primary object.
+- Don't use the pipe when there are meaningful intermediate objects that can be given informative names (and that are used later on).
+- `%>%` should always have a space before it, and should usually be followed by a new line.
+
+
+### The base R pipe: |>
+
+The magrittr pipe has proven so successful and popular that the R core team [recently added](https://stat.ethz.ch/R-manual/R-devel/library/base/html/pipeOp.html) a "native" pipe operator to base R (version 4.1), denoted `|>`. Here's how it works:
+
+```r
+mtcars |> subset(cyl == 4) |> head()
+mtcars |> subset(cyl == 4) |> (\(x) lm(mpg ~ disp, data = x))()
+```
+
+Now, should we use the "magrittr" pipe or the native pipe? The native pipe might make more sense in the long term, since it avoids dependencies and might be more efficient. Check out [this Stackoverflow post](https://stackoverflow.com/questions/67633022/what-are-the-differences-between-rs-new-native-pipe-and-the-magrittr-pipe) for a discussion of differences.

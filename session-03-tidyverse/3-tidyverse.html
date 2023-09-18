@@ -524,13 +524,13 @@ create from the data stored in cell values.</p>
 <span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>stocks</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-0.8027797","3":"2.5563487","4":"-2.215378"},{"1":"2009-01-02","2":"0.8927609","3":"0.1828949","4":"-2.649444"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-0.4519743","3":"0.700973","4":"1.178590"},{"1":"2009-01-02","2":"0.1347205","3":"-1.876250","4":"-5.414461"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="sc">-</span>time, <span class="at">names_to=</span><span class="st">&quot;stock&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;price&quot;</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["stock"],"name":[2],"type":["chr"],"align":["left"]},{"label":["price"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"X","3":"-0.8027797"},{"1":"2009-01-01","2":"Y","3":"2.5563487"},{"1":"2009-01-01","2":"Z","3":"-2.2153776"},{"1":"2009-01-02","2":"X","3":"0.8927609"},{"1":"2009-01-02","2":"Y","3":"0.1828949"},{"1":"2009-01-02","2":"Z","3":"-2.6494441"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["stock"],"name":[2],"type":["chr"],"align":["left"]},{"label":["price"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"X","3":"-0.4519743"},{"1":"2009-01-01","2":"Y","3":"0.7009730"},{"1":"2009-01-01","2":"Z","3":"1.1785905"},{"1":"2009-01-02","2":"X","3":"0.1347205"},{"1":"2009-01-02","2":"Y","3":"-1.8762502"},{"1":"2009-01-02","2":"Z","3":"-5.4144605"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Let’s quickly save the “tidy” (i.e. long) stocks data frame</p>
@@ -549,13 +549,13 @@ presentations, or papers.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>tidy_stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>stock, <span class="at">values_from =</span> price)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-0.8027797","3":"2.5563487","4":"-2.215378"},{"1":"2009-01-02","2":"0.8927609","3":"0.1828949","4":"-2.649444"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-0.4519743","3":"0.700973","4":"1.178590"},{"1":"2009-01-02","2":"0.1347205","3":"-1.876250","4":"-5.414461"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>tidy_stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>time, <span class="at">values_from =</span> price)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["stock"],"name":[1],"type":["chr"],"align":["left"]},{"label":["2009-01-01"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2009-01-02"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"X","2":"-0.8027797","3":"0.8927609"},{"1":"Y","2":"2.5563487","3":"0.1828949"},{"1":"Z","2":"-2.2153776","3":"-2.6494441"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["stock"],"name":[1],"type":["chr"],"align":["left"]},{"label":["2009-01-01"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2009-01-02"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"X","2":"-0.4519743","3":"0.1347205"},{"1":"Y","2":"0.7009730","3":"-1.8762502"},{"1":"Z","2":"1.1785905","3":"-5.4144605"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Note that the second example; which has combined different pivoting
@@ -650,14 +650,14 @@ common occurence with survey data).</p>
 <span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>gdp </span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["yr"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["mnth"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["dy"],"name":[3],"type":["int"],"align":["right"]},{"label":["gdp"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016","2":"1","3":"1","4":"99.39257"},{"1":"2016","2":"1","3":"2","4":"100.58606"},{"1":"2016","2":"1","3":"3","4":"99.40990"},{"1":"2016","2":"1","3":"4","4":"101.67164"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["yr"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["mnth"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["dy"],"name":[3],"type":["int"],"align":["right"]},{"label":["gdp"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016","2":"1","3":"1","4":"99.41993"},{"1":"2016","2":"1","3":"2","4":"98.99025"},{"1":"2016","2":"1","3":"3","4":"100.51066"},{"1":"2016","2":"1","3":"4","4":"101.97588"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="do">## Combine &quot;yr&quot;, &quot;mnth&quot;, and &quot;dy&quot; into one &quot;date&quot; column</span></span>
 <span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>gdp <span class="sc">%&gt;%</span> <span class="fu">unite</span>(date, <span class="fu">c</span>(<span class="st">&quot;yr&quot;</span>, <span class="st">&quot;mnth&quot;</span>, <span class="st">&quot;dy&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"99.39257"},{"1":"2016-1-2","2":"100.58606"},{"1":"2016-1-3","2":"99.40990"},{"1":"2016-1-4","2":"101.67164"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"99.41993"},{"1":"2016-1-2","2":"98.99025"},{"1":"2016-1-3","2":"100.51066"},{"1":"2016-1-4","2":"101.97588"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Note that <code>unite</code> will automatically create a character
@@ -666,7 +666,7 @@ variable. You can see this better if we convert it to a tibble.</p>
 <span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>gdp_u</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"99.39257"},{"1":"2016-1-2","2":"100.58606"},{"1":"2016-1-3","2":"99.40990"},{"1":"2016-1-4","2":"101.67164"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"99.41993"},{"1":"2016-1-2","2":"98.99025"},{"1":"2016-1-3","2":"100.51066"},{"1":"2016-1-4","2":"101.97588"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>If you want to convert it to something else (e.g. date or numeric)
@@ -678,7 +678,7 @@ helpful date conversion functions.</p>
 <span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>gdp_u <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">ymd</span>(date))</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["date"],"align":["right"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-01-01","2":"99.39257"},{"1":"2016-01-02","2":"100.58606"},{"1":"2016-01-03","2":"99.40990"},{"1":"2016-01-04","2":"101.67164"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["date"],"align":["right"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-01-01","2":"99.41993"},{"1":"2016-01-02","2":"98.99025"},{"1":"2016-01-03","2":"100.51066"},{"1":"2016-01-04","2":"101.97588"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Let’s move on to another important tidyverse package!</p>
@@ -1397,6 +1397,93 @@ or variable combinations in existing data frames. Base R alternative:
 <h3><code>fill(data, ..., direction = c("down", "up"))</code></h3>
 <p>Fill in NAs in <code>...</code> columns with most recent non-NA
 values.</p>
+</div>
+</div>
+<div id="pipes" class="section level2">
+<h2>Pipes 😎</h2>
+<div id="the-beauty-of-pipes" class="section level3">
+<h3>The beauty of pipes</h3>
+<ul>
+<li>The forward-pipe operator <code>%&gt;%</code> pipes the left-hand
+side values forward into expressions on the right-hand side.</li>
+<li>It serves the natural way of reading (“do this, then this, then
+this, …”).</li>
+<li>We replace <code>f(x)</code> with <code>x %&gt;% f()</code>.</li>
+<li>It avoids nested function calls.</li>
+<li>It minimizes the need for local variables and function
+definitions.</li>
+</ul>
+<p><strong>The pipe way</strong></p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a>Alex <span class="sc">%&gt;%</span></span>
+<span id="cb63-2"><a href="#cb63-2" tabindex="-1"></a>  <span class="fu">wake_up</span>(<span class="dv">7</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb63-3"><a href="#cb63-3" tabindex="-1"></a>  <span class="fu">shower</span>(<span class="at">temp =</span> <span class="dv">38</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb63-4"><a href="#cb63-4" tabindex="-1"></a>  <span class="fu">breakfast</span>(<span class="fu">c</span>(<span class="st">&quot;coffee&quot;</span>, <span class="st">&quot;croissant&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb63-5"><a href="#cb63-5" tabindex="-1"></a>  <span class="fu">walk</span>(<span class="fu">step_function</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb63-6"><a href="#cb63-6" tabindex="-1"></a>  <span class="fu">bvg</span>(</span>
+<span id="cb63-7"><a href="#cb63-7" tabindex="-1"></a>    <span class="at">train =</span> <span class="st">&quot;U2&quot;</span>,</span>
+<span id="cb63-8"><a href="#cb63-8" tabindex="-1"></a>    <span class="at">destination =</span> <span class="st">&quot;Stadtmitte&quot;</span></span>
+<span id="cb63-9"><a href="#cb63-9" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb63-10"><a href="#cb63-10" tabindex="-1"></a>  <span class="fu">hertie</span>(<span class="at">course =</span> <span class="st">&quot;Intro to DS&quot;</span>)</span></code></pre></div>
+<p><strong>The classic way</strong></p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" tabindex="-1"></a><span class="fu">hertie</span>(</span>
+<span id="cb64-2"><a href="#cb64-2" tabindex="-1"></a>  <span class="fu">bvg</span>(</span>
+<span id="cb64-3"><a href="#cb64-3" tabindex="-1"></a>    <span class="fu">walk</span>(</span>
+<span id="cb64-4"><a href="#cb64-4" tabindex="-1"></a>      <span class="fu">breakfast</span>(</span>
+<span id="cb64-5"><a href="#cb64-5" tabindex="-1"></a>        <span class="fu">shower</span>(</span>
+<span id="cb64-6"><a href="#cb64-6" tabindex="-1"></a>          <span class="fu">wake_up</span>(</span>
+<span id="cb64-7"><a href="#cb64-7" tabindex="-1"></a>            Alex, <span class="dv">7</span></span>
+<span id="cb64-8"><a href="#cb64-8" tabindex="-1"></a>          ),</span>
+<span id="cb64-9"><a href="#cb64-9" tabindex="-1"></a>          <span class="at">temp =</span> <span class="dv">38</span></span>
+<span id="cb64-10"><a href="#cb64-10" tabindex="-1"></a>        ),</span>
+<span id="cb64-11"><a href="#cb64-11" tabindex="-1"></a>        <span class="fu">c</span>(<span class="st">&quot;coffee&quot;</span>, <span class="st">&quot;croissant&quot;</span>)</span>
+<span id="cb64-12"><a href="#cb64-12" tabindex="-1"></a>      ),</span>
+<span id="cb64-13"><a href="#cb64-13" tabindex="-1"></a>      <span class="fu">step_function</span>()</span>
+<span id="cb64-14"><a href="#cb64-14" tabindex="-1"></a>    ),</span>
+<span id="cb64-15"><a href="#cb64-15" tabindex="-1"></a>    <span class="at">train =</span> <span class="st">&quot;U2&quot;</span>,</span>
+<span id="cb64-16"><a href="#cb64-16" tabindex="-1"></a>    <span class="at">destination =</span> <span class="st">&quot;Stadtmitte&quot;</span></span>
+<span id="cb64-17"><a href="#cb64-17" tabindex="-1"></a>  ),</span>
+<span id="cb64-18"><a href="#cb64-18" tabindex="-1"></a>  <span class="at">course =</span> <span class="st">&quot;Intro to DS&quot;</span></span>
+<span id="cb64-19"><a href="#cb64-19" tabindex="-1"></a>)</span></code></pre></div>
+<p><strong>The classic way, nightmare edition</strong></p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" tabindex="-1"></a>alex_awake <span class="ot">&lt;-</span> <span class="fu">wake_up</span>(Alex, <span class="dv">7</span>)</span>
+<span id="cb65-2"><a href="#cb65-2" tabindex="-1"></a>alex_showered <span class="ot">&lt;-</span> <span class="fu">shower</span>(alex_awake, </span>
+<span id="cb65-3"><a href="#cb65-3" tabindex="-1"></a>                        <span class="at">temp =</span> <span class="dv">38</span>)</span>
+<span id="cb65-4"><a href="#cb65-4" tabindex="-1"></a>alex_replete <span class="ot">&lt;-</span> <span class="fu">breakfast</span>(alex_showered, </span>
+<span id="cb65-5"><a href="#cb65-5" tabindex="-1"></a>                          <span class="fu">c</span>(<span class="st">&quot;coffee&quot;</span>, <span class="st">&quot;croissant&quot;</span>))</span>
+<span id="cb65-6"><a href="#cb65-6" tabindex="-1"></a>alex_underway <span class="ot">&lt;-</span> <span class="fu">walk</span>(alex_replete, </span>
+<span id="cb65-7"><a href="#cb65-7" tabindex="-1"></a>                      <span class="fu">step_function</span>())</span>
+<span id="cb65-8"><a href="#cb65-8" tabindex="-1"></a>alex_on_train <span class="ot">&lt;-</span> <span class="fu">bvg</span>(alex_underway, </span>
+<span id="cb65-9"><a href="#cb65-9" tabindex="-1"></a>                         <span class="at">train =</span> <span class="st">&quot;U2&quot;</span>, </span>
+<span id="cb65-10"><a href="#cb65-10" tabindex="-1"></a>                         <span class="at">destination =</span> <span class="st">&quot;Stadtmitte&quot;</span>)</span>
+<span id="cb65-11"><a href="#cb65-11" tabindex="-1"></a>alex_hertie <span class="ot">&lt;-</span> <span class="fu">hertie</span>(alex_on_train, </span>
+<span id="cb65-12"><a href="#cb65-12" tabindex="-1"></a>                      <span class="at">course =</span> <span class="st">&quot;Intro to DS&quot;</span>)</span></code></pre></div>
+</div>
+<div id="piping-etiquette" class="section level3">
+<h3>Piping etiquette</h3>
+<ul>
+<li>Pipes are not very handy when you need to manipulate more than one
+object at a time. Reserve pipes for a sequence of steps applied to one
+primary object.</li>
+<li>Don’t use the pipe when there are meaningful intermediate objects
+that can be given informative names (and that are used later on).</li>
+<li><code>%&gt;%</code> should always have a space before it, and should
+usually be followed by a new line.</li>
+</ul>
+</div>
+<div id="the-base-r-pipe" class="section level3">
+<h3>The base R pipe: |&gt;</h3>
+<p>The magrittr pipe has proven so successful and popular that the R
+core team <a
+href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/pipeOp.html">recently
+added</a> a “native” pipe operator to base R (version 4.1), denoted
+<code>|&gt;</code>. Here’s how it works:</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" tabindex="-1"></a>mtcars <span class="sc">|&gt;</span> <span class="fu">subset</span>(cyl <span class="sc">==</span> <span class="dv">4</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span>
+<span id="cb66-2"><a href="#cb66-2" tabindex="-1"></a>mtcars <span class="sc">|&gt;</span> <span class="fu">subset</span>(cyl <span class="sc">==</span> <span class="dv">4</span>) <span class="sc">|&gt;</span> (\(x) <span class="fu">lm</span>(mpg <span class="sc">~</span> disp, <span class="at">data =</span> x))()</span></code></pre></div>
+<p>Now, should we use the “magrittr” pipe or the native pipe? The native
+pipe might make more sense in the long term, since it avoids
+dependencies and might be more efficient. Check out <a
+href="https://stackoverflow.com/questions/67633022/what-are-the-differences-between-rs-new-native-pipe-and-the-magrittr-pipe">this
+Stackoverflow post</a> for a discussion of differences.</p>
 </div>
 </div>
 </div>
