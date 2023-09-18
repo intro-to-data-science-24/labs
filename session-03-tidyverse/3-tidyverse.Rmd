@@ -34,9 +34,7 @@ Read more on this [here](http://varianceexplained.org/r/teach-tidyverse/) if you
 * Base R is extremely flexible and powerful (and stable).
 * There are some things that you'll have to venture outside of the tidyverse for.
 * A combination of tidyverse and base R is often the best solution to a problem.
-* Excellent base R data manipulation tutorials:
-
-[here](https://www.rspatial.org/intr/index.html) and [here](https://github.com/matloff/fasteR).
+* Excellent base R data manipulation tutorials: [here](https://www.rspatial.org/intr/index.html) and [here](https://github.com/matloff/fasteR).
 
 ---
 
@@ -542,18 +540,182 @@ left_join(
 
 Make sure you know what "year.x" and "year.y" are. Again, it pays to be specific.
 
-
-
-## Actually learning R `r emo::ji("backpack")`
+# Actually learning R `r emo::ji("backpack")`
 
 Let us remind you again, the key to learning `R` is: **Google**! We can only give you an overview over basic `R` functions, but to really learn `R` you will have to actively use it yourself, trouble shoot, ask questions, and google! It is very likely that someone else has had the exact same or just *similar enough* issue before and that the R community has answered it with 5+ different solutions years ago. `r emo::ji("wink")`
 
 ---
 
+# Coding style `r emo::ji("art")`
+
+## Why adhere to a particular style of coding?
+
+- It reduces the number of arbitrary decisions you have to consciously make during coding. We make an arbitrary decision (convention) once, not always ad hoc.
+- It provides consistency.
+- It makes code easier to write.
+- It makes code easier to read, especially in the long term (i.e. two days after you've closed a script).
+
+## What are questions of style?
+
+- Questions of style are a matter of opinion.
+- We will mostly follow Hadley Wickham’s opinion as expressed in the "[tidyverse style guide](https://style.tidyverse.org/)".
+- We'll consider how to
+  - name,
+  - comment,
+  - structure, and
+  - write.
+  
+## Naming things 
+  
+### Naming files
+
+- Code file names should be meaningful and end in `.R`.
+- Avoid using special characters in file names. Stick with numbers, letters, dashes (`-`), and underscores (`_`).
+- Some examples:
+
+```bash
+# Good
+fit_models.R
+utility_functions.R
+
+# Bad
+fit models.R
+foo.r
+stuff.r
+```
+
+- If files should be run in a particular order, prefix them with numbers: 
+
+```bash
+00_download.R
+01_explore.R
+...
+09_model.R
+10_visualize.R
+```
+
+### Naming objects and variables
+
+- There are various conventions of how to write phrases without spaces or punctuation. Some of these have been adapted in programming, such as [camelCase](https://en.wikipedia.org/wiki/Camel_case), [PascalCase](https://techterms.com/definition/pascalcase), or [snake_case](https://en.wikipedia.org/wiki/Snake_case).
+- The [`tidyverse`](https://style.tidyverse.org/syntax.html#object-names) way: Object and variable names should use only lowercase letters, numbers, and underscores.
+- Examples:
+
+```bash
+# Good
+day_one # snake_case
+day_1 # snake_case
+
+# Less good
+dayOne # camelCase
+DayOne # PascalCase
+day.one # dot.case
+
+# Dysfunctional
+day-one # kebab-case
+```
+
+### Naming functions
+
+- In addition to following the general advice for object names, strive to use verbs for function names:
+
+```bash
+# Good
+add_row()
+permute()
+
+# Bad
+row_adder()
+permutation()
+```
+- Also, try avoiding function names that already exist, in particular those that come with a loaded package.
+- This often implies a trade-off between shortness and uniqueness. In any case, you would try to avoid situations that force you disambiguate functions with the same name (as in `dplyr::select`; see ["R packages"](https://r-pkgs.org/dependencies-mindset-background.html#sec-dependencies-namespace)).
+- Check out this [Wikipedia page](https://en.wikipedia.org/wiki/Naming_convention_(programming)) or this [Stackoverflow post](https://stackoverflow.com/questions/17326185/what-are-the-different-kinds-of-cases) for more background on naming conventions in programming!
+- For more good advice on how to name stuff, see [this legendary presentation](http://www2.stat.duke.edu/~rcs46/lectures_2015/01-markdown-git/slides/naming-slides/naming-slides.pdf) by Jenny Bryan.
+
+## Commenting on things `r emo::ji("comment")`
+
+### Why comment on things at all? 
+
+- It’s often tempting to set up a project assuming that you will be the only person working on it, e.g. as homework. But that's almost never true. 
+- You have project partners, co-authors, principals.
+- Even if not, there's someone else who you always have to keep happy: Future-you.
+- Comment often to make Future-you happy about Past-you by document what Present-You is doing/thinking/planning to do.
+
+
+### General advice
+
+- Each line of a comment should begin with the comment symbol and a single space: `# `
+- Use comments to record important findings and analysis decisions.
+- If you need comments to explain what your code is doing, consider rewriting your code to be clearer. 
+- But: comments can work well as "sub-headlines".
+- If you discover that you have more comments than code, consider switching to R Markdown.
+- (Longer) comments generally work better if they get their own line.
+
+```{r, eval = FALSE}
+# define job status
+dat$at_work <- dat$job %in% c(2, 3)
+dat$at_work <- dat$job %in% c(2, 3) # define job status
+```
+
+### Giving structure
+
+- Use commented lines together with dashes to break up your file into easily readable chunks.
+- RStudio automatically detects these chunks and turns them into sections in the script outline.
+
+```{r, eval = FALSE}
+# Input/output ---------------------
+
+# input
+c("data/survey2021.csv")
+
+#  output
+c("survey_2021_cleaned.RData",
+  "resp_ids.csv")
+
+# Load data ------------------------
+
+# Plot data ------------------------
+```
+
+## Other stuff `r emo::ji("package")`
+
+- Use **spaces** generously, but not too generously. Always put a space after a comma, never before, just like in regular English.
+- Use `<-`, not `=`, for **assignment**.
+- For **logical operators**, prefer `TRUE` and `FALSE` over `T` and `F`.
+- To facilitate readability, **keep your lines short**. Strive to limit your code to about 80 characters per line.
+- If a **function call is too long** to fit on a single line, use one line each for the function name, each argument, and the closing bracket.
+- Use **pipes**. When you use them, they should always have a space before it, and should usually be followed by a new line.
+
+ 
+**Spacing**
+ 
+```{r, eval = FALSE} 
+# Good
+mean(x, na.rm = TRUE)
+height <- (feet * 12) + inches
+
+# Bad
+mean(x,na.rm=TRUE) 
+mean ( x, na.rm = TRUE )
+height<-feet*12+inches
+``` 
+
+**Piping**
+ 
+```{r, eval = FALSE} 
+babynames %>%
+  filter(name %>% equals("Kim")) %>%
+  group_by(year, sex) %>%
+  summarize(total = sum(n)) %>%
+  qplot(year, total, color = sex, data = ., 
+        geom = "line") %>%
+  add(ggtitle('People named "Kim"')) %>%
+  print
+``` 
+
+
+---
+
 # Sources {-}
 
-This tutorial is partly based on [_R for Data Science_](http://r4ds.had.co.nz/), section 5.2, [_Quantitative Politics with R_](http://qpolr.com/data.html/), chapter 3; as well as the [Tidyverse Session](https://github.com/uo-ec607/lectures/tree/master/05-tidyverse) in the course Data Science for Economists by Grant McDermott. 
-
-
-
-
+This tutorial is partly based on [_R for Data Science_](https://r4ds.hadley.nz/), section 5.2, [_Quantitative Politics with R_](http://qpolr.com/data.html/), chapter 3; as well as the [Tidyverse Session](https://github.com/uo-ec607/lectures/tree/master/05-tidyverse) in the course Data Science for Economists by Grant McDermott. 
