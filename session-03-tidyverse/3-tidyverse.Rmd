@@ -621,7 +621,7 @@ This approach is recommended for its succinctness and ease of reading, similar t
 You can check out additional functionalities of the different `*_join()` functions such as new arguments for handling `multiple` matches and `unmatched` rows, as well as for defining the `relationship` between data frames in [R for Data Science, 2nd Edition] (https://r4ds.hadley.nz/joins).
 
 
-## Actually learning R `r emo::ji("backpack")`
+# Actually learning R `r emo::ji("backpack")`
 
 Let us remind you again, the key to learning `R` is: **Google**! We can only give you an overview over basic `R` functions, but to really learn `R` you will have to actively use it yourself, trouble shoot, ask questions, and google! It is very likely that someone else has had the exact same or just *similar enough* issue before and that the R community has answered it with 5+ different solutions years ago. `r emo::ji("wink")`
 
@@ -801,4 +801,97 @@ babynames %>%
 
 This tutorial is partly based on [_R for Data Science_](https://r4ds.hadley.nz/), section 5.2, [_Quantitative Politics with R_](http://qpolr.com/data.html/), chapter 3, the [Tidyverse Session](https://github.com/uo-ec607/lectures/tree/master/05-tidyverse) in the course Data Science for Economists by Grant McDermott, and [_Teaching the Tidyverse in 2023_](https://www.tidyverse.org/blog/2023/08/teach-tidyverse-23/).
 
+---
+
+# Appendix
+
+## Other dplyr goodies `r emo::ji("gift")`
+
+### `slice()`
+
+Subset rows by position rather than filtering by values. There's also `slice_sample()` to randomly select rows, `slice_head()` and `slice_tail()`to select first or last rows, and more.
+
+```{r}
+starwars %>% slice(c(1, 5))
+```
+
+### `pull()`
+
+Extract a column from as a data frame as a vector or scalar.
+
+```{r}
+starwars %>% filter(gender=="feminine") %>% pull(height)
+```
+
+### `count()`, `n()`, `distinct()`
+
+Count, number and isolate unique observations.
+
+```{r}
+starwars %>% count(species) %>% head(6)
+starwars %>% distinct(species) %>% pull() %>% sort() %>% magrittr::extract(1:5) 
+```
+
+You could also use a combination of `mutate()`, `group_by()`, and `n()`, e.g. `starwars %>% group_by(species) %>% mutate(num = n())`.
+
+### `where()`
+
+Select the variables for which a function returns true.
+
+```{r}
+starwars %>% select(where(is.numeric)) %>% names()
+```
+
+### `across()`
+
+Summarize or mutate multiple variables in the same way. More information [here](https://dplyr.tidyverse.org/reference/across.html).
+
+```{r}
+starwars %>% 
+  mutate(across(where(is.numeric), scale)) %>% 
+  head(3)
+```
+
+### `case_when()`
+
+Vectorize multiple `if_else()` (or base R `ifelse()`) statements.
+
+```{r}
+starwars %>% 
+  mutate( 
+    height_cat = case_when(
+      height < 160 ~ "tiny",
+      height >= 160 & height < 190 ~ "medium",
+      height >= 190 & height < 220 ~ "tall",
+      height >= 220 ~ "giant"
+    )
+  ) %>%
+  pull(height_cat) %>% table()
+```
+
+### Window functions
+
+There are also a whole class of [window functions](https://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html) for getting leads and lags, ranking, creating cumulative aggregates, etc. See `vignette("window-functions")`.
+
+## Other tidyr goodies `r emo::ji("broom")`
+
+### `crossing()`
+
+Get the full combination of a group of variables.
+
+```{r cross1}
+crossing(side = c("left", "right"), height = c("top", "bottom"))
+```
+
+### `expand()` and `complete()`
+
+See `?expand()` and `?complete()` for more specialized functions that allow you to fill in (implicit) missing data or variable combinations in existing data frames. Base R alternative: `expand.grid()`.
+
+### `drop_na(data, ...)`
+
+Drop rows containing NAs in `...` columns.
+
+### `fill(data, ..., direction = c("down", "up"))`
+
+Fill in NAs in `...` columns with most recent non-NA values.
 

@@ -524,13 +524,13 @@ create from the data stored in cell values.</p>
 <span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>stocks</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-0.4067126","3":"-0.1019251","4":"0.4280542"},{"1":"2009-01-02","2":"-1.2456477","3":"-0.7094741","4":"-5.8351295"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-0.8027797","3":"2.5563487","4":"-2.215378"},{"1":"2009-01-02","2":"0.8927609","3":"0.1828949","4":"-2.649444"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="sc">-</span>time, <span class="at">names_to=</span><span class="st">&quot;stock&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;price&quot;</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["stock"],"name":[2],"type":["chr"],"align":["left"]},{"label":["price"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"X","3":"-0.4067126"},{"1":"2009-01-01","2":"Y","3":"-0.1019251"},{"1":"2009-01-01","2":"Z","3":"0.4280542"},{"1":"2009-01-02","2":"X","3":"-1.2456477"},{"1":"2009-01-02","2":"Y","3":"-0.7094741"},{"1":"2009-01-02","2":"Z","3":"-5.8351295"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["stock"],"name":[2],"type":["chr"],"align":["left"]},{"label":["price"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"X","3":"-0.8027797"},{"1":"2009-01-01","2":"Y","3":"2.5563487"},{"1":"2009-01-01","2":"Z","3":"-2.2153776"},{"1":"2009-01-02","2":"X","3":"0.8927609"},{"1":"2009-01-02","2":"Y","3":"0.1828949"},{"1":"2009-01-02","2":"Z","3":"-2.6494441"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Let’s quickly save the “tidy” (i.e. long) stocks data frame</p>
@@ -549,13 +549,13 @@ presentations, or papers.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>tidy_stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>stock, <span class="at">values_from =</span> price)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-0.4067126","3":"-0.1019251","4":"0.4280542"},{"1":"2009-01-02","2":"-1.2456477","3":"-0.7094741","4":"-5.8351295"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-0.8027797","3":"2.5563487","4":"-2.215378"},{"1":"2009-01-02","2":"0.8927609","3":"0.1828949","4":"-2.649444"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>tidy_stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>time, <span class="at">values_from =</span> price)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["stock"],"name":[1],"type":["chr"],"align":["left"]},{"label":["2009-01-01"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2009-01-02"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"X","2":"-0.4067126","3":"-1.2456477"},{"1":"Y","2":"-0.1019251","3":"-0.7094741"},{"1":"Z","2":"0.4280542","3":"-5.8351295"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["stock"],"name":[1],"type":["chr"],"align":["left"]},{"label":["2009-01-01"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2009-01-02"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"X","2":"-0.8027797","3":"0.8927609"},{"1":"Y","2":"2.5563487","3":"0.1828949"},{"1":"Z","2":"-2.2153776","3":"-2.6494441"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Note that the second example; which has combined different pivoting
@@ -650,14 +650,14 @@ common occurence with survey data).</p>
 <span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>gdp </span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["yr"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["mnth"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["dy"],"name":[3],"type":["int"],"align":["right"]},{"label":["gdp"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016","2":"1","3":"1","4":"100.32164"},{"1":"2016","2":"1","3":"2","4":"95.25820"},{"1":"2016","2":"1","3":"3","4":"99.17140"},{"1":"2016","2":"1","3":"4","4":"99.85098"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["yr"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["mnth"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["dy"],"name":[3],"type":["int"],"align":["right"]},{"label":["gdp"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016","2":"1","3":"1","4":"99.39257"},{"1":"2016","2":"1","3":"2","4":"100.58606"},{"1":"2016","2":"1","3":"3","4":"99.40990"},{"1":"2016","2":"1","3":"4","4":"101.67164"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="do">## Combine &quot;yr&quot;, &quot;mnth&quot;, and &quot;dy&quot; into one &quot;date&quot; column</span></span>
 <span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>gdp <span class="sc">%&gt;%</span> <span class="fu">unite</span>(date, <span class="fu">c</span>(<span class="st">&quot;yr&quot;</span>, <span class="st">&quot;mnth&quot;</span>, <span class="st">&quot;dy&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"100.32164"},{"1":"2016-1-2","2":"95.25820"},{"1":"2016-1-3","2":"99.17140"},{"1":"2016-1-4","2":"99.85098"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"99.39257"},{"1":"2016-1-2","2":"100.58606"},{"1":"2016-1-3","2":"99.40990"},{"1":"2016-1-4","2":"101.67164"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Note that <code>unite</code> will automatically create a character
@@ -666,7 +666,7 @@ variable. You can see this better if we convert it to a tibble.</p>
 <span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>gdp_u</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"100.32164"},{"1":"2016-1-2","2":"95.25820"},{"1":"2016-1-3","2":"99.17140"},{"1":"2016-1-4","2":"99.85098"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"99.39257"},{"1":"2016-1-2","2":"100.58606"},{"1":"2016-1-3","2":"99.40990"},{"1":"2016-1-4","2":"101.67164"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>If you want to convert it to something else (e.g. date or numeric)
@@ -678,7 +678,7 @@ helpful date conversion functions.</p>
 <span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>gdp_u <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">ymd</span>(date))</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["date"],"align":["right"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-01-01","2":"100.32164"},{"1":"2016-01-02","2":"95.25820"},{"1":"2016-01-03","2":"99.17140"},{"1":"2016-01-04","2":"99.85098"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["date"],"align":["right"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-01-01","2":"99.39257"},{"1":"2016-01-02","2":"100.58606"},{"1":"2016-01-03","2":"99.40990"},{"1":"2016-01-04","2":"101.67164"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Let’s move on to another important tidyverse package!</p>
@@ -1044,8 +1044,9 @@ reading, similar to logical statements.</p>
 as for defining the <code>relationship</code> between data frames in [R
 for Data Science, 2nd Edition] (<a href="https://r4ds.hadley.nz/joins"
 class="uri">https://r4ds.hadley.nz/joins</a>).</p>
-<div id="actually-learning-r" class="section level2">
-<h2>Actually learning R 🎒</h2>
+</div>
+<div id="actually-learning-r" class="section level1">
+<h1>Actually learning R 🎒</h1>
 <p>Let us remind you again, the key to learning <code>R</code> is:
 <strong>Google</strong>! We can only give you an overview over basic
 <code>R</code> functions, but to really learn <code>R</code> you will
@@ -1054,7 +1055,6 @@ google! It is very likely that someone else has had the exact same or
 just <em>similar enough</em> issue before and that the R community has
 answered it with 5+ different solutions years ago. 😉</p>
 <hr />
-</div>
 </div>
 <div id="coding-style" class="section level1">
 <h1>Coding style 🎨</h1>
@@ -1284,6 +1284,121 @@ Session</a> in the course Data Science for Economists by Grant
 McDermott, and <a
 href="https://www.tidyverse.org/blog/2023/08/teach-tidyverse-23/"><em>Teaching
 the Tidyverse in 2023</em></a>.</p>
+<hr />
+</div>
+<div id="appendix" class="section level1">
+<h1>Appendix</h1>
+<div id="other-dplyr-goodies" class="section level2">
+<h2>Other dplyr goodies 🎁</h2>
+<div id="slice" class="section level3">
+<h3><code>slice()</code></h3>
+<p>Subset rows by position rather than filtering by values. There’s also
+<code>slice_sample()</code> to randomly select rows,
+<code>slice_head()</code> and <code>slice_tail()</code>to select first
+or last rows, and more.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>))</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["int"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["skin_color"],"name":[5],"type":["chr"],"align":["left"]},{"label":["eye_color"],"name":[6],"type":["chr"],"align":["left"]},{"label":["birth_year"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[8],"type":["chr"],"align":["left"]},{"label":["gender"],"name":[9],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[10],"type":["chr"],"align":["left"]},{"label":["species"],"name":[11],"type":["chr"],"align":["left"]},{"label":["films"],"name":[12],"type":["list"],"align":["right"]},{"label":["vehicles"],"name":[13],"type":["list"],"align":["right"]},{"label":["starships"],"name":[14],"type":["list"],"align":["right"]}],"data":[{"1":"Luke Skywalker","2":"172","3":"77","4":"blond","5":"fair","6":"blue","7":"19","8":"male","9":"masculine","10":"Tatooine","11":"Human","12":"<chr [5]>","13":"<chr [2]>","14":"<chr [2]>"},{"1":"Leia Organa","2":"150","3":"49","4":"brown","5":"light","6":"brown","7":"19","8":"female","9":"feminine","10":"Alderaan","11":"Human","12":"<chr [5]>","13":"<chr [1]>","14":"<chr [0]>"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="pull" class="section level3">
+<h3><code>pull()</code></h3>
+<p>Extract a column from as a data frame as a vector or scalar.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> <span class="fu">filter</span>(gender<span class="sc">==</span><span class="st">&quot;feminine&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(height)</span></code></pre></div>
+<pre><code>##  [1] 150 165 150 163 178 184 157 170 166 165 168 213 167  96 178  NA 165</code></pre>
+</div>
+<div id="count-n-distinct" class="section level3">
+<h3><code>count()</code>, <code>n()</code>, <code>distinct()</code></h3>
+<p>Count, number and isolate unique observations.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> <span class="fu">count</span>(species) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">6</span>)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["species"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Aleena","2":"1"},{"1":"Besalisk","2":"1"},{"1":"Cerean","2":"1"},{"1":"Chagrian","2":"1"},{"1":"Clawdite","2":"1"},{"1":"Droid","2":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(species) <span class="sc">%&gt;%</span> <span class="fu">pull</span>() <span class="sc">%&gt;%</span> <span class="fu">sort</span>() <span class="sc">%&gt;%</span> magrittr<span class="sc">::</span><span class="fu">extract</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) </span></code></pre></div>
+<pre><code>## [1] &quot;Aleena&quot;   &quot;Besalisk&quot; &quot;Cerean&quot;   &quot;Chagrian&quot; &quot;Clawdite&quot;</code></pre>
+<p>You could also use a combination of <code>mutate()</code>,
+<code>group_by()</code>, and <code>n()</code>,
+e.g. <code>starwars %&gt;% group_by(species) %&gt;% mutate(num = n())</code>.</p>
+</div>
+<div id="where" class="section level3">
+<h3><code>where()</code></h3>
+<p>Select the variables for which a function returns true.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span> <span class="fu">names</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;height&quot;     &quot;mass&quot;       &quot;birth_year&quot;</code></pre>
+</div>
+<div id="across" class="section level3">
+<h3><code>across()</code></h3>
+<p>Summarize or mutate multiple variables in the same way. More
+information <a
+href="https://dplyr.tidyverse.org/reference/across.html">here</a>.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> </span>
+<span id="cb59-2"><a href="#cb59-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), scale)) <span class="sc">%&gt;%</span> </span>
+<span id="cb59-3"><a href="#cb59-3" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl[,1]"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl[,1]"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["skin_color"],"name":[5],"type":["chr"],"align":["left"]},{"label":["eye_color"],"name":[6],"type":["chr"],"align":["left"]},{"label":["birth_year"],"name":[7],"type":["dbl[,1]"],"align":["right"]},{"label":["sex"],"name":[8],"type":["chr"],"align":["left"]},{"label":["gender"],"name":[9],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[10],"type":["chr"],"align":["left"]},{"label":["species"],"name":[11],"type":["chr"],"align":["left"]},{"label":["films"],"name":[12],"type":["list"],"align":["right"]},{"label":["vehicles"],"name":[13],"type":["list"],"align":["right"]},{"label":["starships"],"name":[14],"type":["list"],"align":["right"]}],"data":[{"1":"Luke Skywalker","2":"-0.06781696","3":"-0.1198643","4":"blond","5":"fair","6":"blue","7":"-0.4432379","8":"male","9":"masculine","10":"Tatooine","11":"Human","12":"<chr [5]>","13":"<chr [2]>","14":"<chr [2]>"},{"1":"C-3PO","2":"-0.21161731","3":"-0.1316667","4":"NA","5":"gold","6":"yellow","7":"0.1579589","8":"none","9":"masculine","10":"Tatooine","11":"Droid","12":"<chr [6]>","13":"<chr [0]>","14":"<chr [0]>"},{"1":"R2-D2","2":"-2.25358235","3":"-0.3854181","4":"NA","5":"white, blue","6":"red","7":"-0.3527352","8":"none","9":"masculine","10":"Naboo","11":"Droid","12":"<chr [7]>","13":"<chr [0]>","14":"<chr [0]>"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="case_when" class="section level3">
+<h3><code>case_when()</code></h3>
+<p>Vectorize multiple <code>if_else()</code> (or base R
+<code>ifelse()</code>) statements.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> </span>
+<span id="cb60-2"><a href="#cb60-2" tabindex="-1"></a>  <span class="fu">mutate</span>( </span>
+<span id="cb60-3"><a href="#cb60-3" tabindex="-1"></a>    <span class="at">height_cat =</span> <span class="fu">case_when</span>(</span>
+<span id="cb60-4"><a href="#cb60-4" tabindex="-1"></a>      height <span class="sc">&lt;</span> <span class="dv">160</span> <span class="sc">~</span> <span class="st">&quot;tiny&quot;</span>,</span>
+<span id="cb60-5"><a href="#cb60-5" tabindex="-1"></a>      height <span class="sc">&gt;=</span> <span class="dv">160</span> <span class="sc">&amp;</span> height <span class="sc">&lt;</span> <span class="dv">190</span> <span class="sc">~</span> <span class="st">&quot;medium&quot;</span>,</span>
+<span id="cb60-6"><a href="#cb60-6" tabindex="-1"></a>      height <span class="sc">&gt;=</span> <span class="dv">190</span> <span class="sc">&amp;</span> height <span class="sc">&lt;</span> <span class="dv">220</span> <span class="sc">~</span> <span class="st">&quot;tall&quot;</span>,</span>
+<span id="cb60-7"><a href="#cb60-7" tabindex="-1"></a>      height <span class="sc">&gt;=</span> <span class="dv">220</span> <span class="sc">~</span> <span class="st">&quot;giant&quot;</span></span>
+<span id="cb60-8"><a href="#cb60-8" tabindex="-1"></a>    )</span>
+<span id="cb60-9"><a href="#cb60-9" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb60-10"><a href="#cb60-10" tabindex="-1"></a>  <span class="fu">pull</span>(height_cat) <span class="sc">%&gt;%</span> <span class="fu">table</span>()</span></code></pre></div>
+<pre><code>## .
+##  giant medium   tall   tiny 
+##      5     45     18     13</code></pre>
+</div>
+<div id="window-functions" class="section level3">
+<h3>Window functions</h3>
+<p>There are also a whole class of <a
+href="https://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html">window
+functions</a> for getting leads and lags, ranking, creating cumulative
+aggregates, etc. See <code>vignette("window-functions")</code>.</p>
+</div>
+</div>
+<div id="other-tidyr-goodies" class="section level2">
+<h2>Other tidyr goodies 🧹</h2>
+<div id="crossing" class="section level3">
+<h3><code>crossing()</code></h3>
+<p>Get the full combination of a group of variables.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" tabindex="-1"></a><span class="fu">crossing</span>(<span class="at">side =</span> <span class="fu">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;right&quot;</span>), <span class="at">height =</span> <span class="fu">c</span>(<span class="st">&quot;top&quot;</span>, <span class="st">&quot;bottom&quot;</span>))</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["side"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"left","2":"bottom"},{"1":"left","2":"top"},{"1":"right","2":"bottom"},{"1":"right","2":"top"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="expand-and-complete" class="section level3">
+<h3><code>expand()</code> and <code>complete()</code></h3>
+<p>See <code>?expand()</code> and <code>?complete()</code> for more
+specialized functions that allow you to fill in (implicit) missing data
+or variable combinations in existing data frames. Base R alternative:
+<code>expand.grid()</code>.</p>
+</div>
+<div id="drop_nadata-..." class="section level3">
+<h3><code>drop_na(data, ...)</code></h3>
+<p>Drop rows containing NAs in <code>...</code> columns.</p>
+</div>
+<div id="filldata-...-direction-cdown-up" class="section level3">
+<h3><code>fill(data, ..., direction = c("down", "up"))</code></h3>
+<p>Fill in NAs in <code>...</code> columns with most recent non-NA
+values.</p>
+</div>
+</div>
 </div>
 
 &nbsp;
