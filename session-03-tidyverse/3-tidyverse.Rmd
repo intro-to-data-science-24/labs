@@ -799,4 +799,6 @@ babynames %>%
 
 # Sources {-}
 
-This tutorial is partly based on [_R for Data Science_](https://r4ds.hadley.nz/), section 5.2, [_Quantitative Politics with R_](http://qpolr.com/data.html/), chapter 3; as well as the [Tidyverse Session](https://github.com/uo-ec607/lectures/tree/master/05-tidyverse) in the course Data Science for Economists by Grant McDermott. 
+This tutorial is partly based on [_R for Data Science_](https://r4ds.hadley.nz/), section 5.2, [_Quantitative Politics with R_](http://qpolr.com/data.html/), chapter 3, the [Tidyverse Session](https://github.com/uo-ec607/lectures/tree/master/05-tidyverse) in the course Data Science for Economists by Grant McDermott, and [_Teaching the Tidyverse in 2023_](https://www.tidyverse.org/blog/2023/08/teach-tidyverse-23/).
+
+
