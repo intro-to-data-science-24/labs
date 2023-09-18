@@ -116,7 +116,7 @@ We'll use several of these additional packages during the remainder of this cour
 E.g. The **lubridate** package for working with dates and the **rvest** package for webscraping. However, these packages will have to be loaded separately!
 
 ```{r, fig.align='center', echo=F, out.width ="80%"}
-knitr::include_graphics("kacheln3.png")
+knitr::include_graphics("pics/kacheln3.png")
 ```
 
 Underlying these packages are two key ideas: 
@@ -132,7 +132,6 @@ You saw this in detail in the lecture.
 What is the pipe operator? What exactly does it do? And why might that be useful?
 ```
 
-
 PS — The pipe is originally from the [**magrittr**](https://magrittr.tidyverse.org/) package, which can do some other cool things if you're inclined to explore.
 
 ---
@@ -146,7 +145,7 @@ Generally, we will encounter data in a tidy format. Tidy data refers to a way of
 3. Each type of observational unit forms a table
 
 ```{r, fig.align='center', echo=F, out.width = "70%"}
-knitr::include_graphics("tidy_data.png")
+knitr::include_graphics("pics/tidy_data.png")
 ```
 
 
@@ -178,6 +177,10 @@ Key tidyr verbs are:
 
 `pivot_longer()` makes datasets longer by increasing the number of rows and decreasing the number of columns. As with any tidyverse function, your first argument will be the dataframe to be transposed. The next key argument requires you to specify one or more columns that you want to "lengthen". Next, you will have to specify the name of the new column for the information stored in the wide column names. The next important argument specifies the name of the column to create from the data stored in cell values. 
 
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("pics/pivot_longer.png")
+```
+
 Let's see how this works in practice:
 
 ```{r}
@@ -203,6 +206,10 @@ tidy_stocks <- stocks %>%
 ## `pivot_wider()`
 
 `pivot_wider()` is the opposite of `pivot_longer()`: it makes a dataset wider by increasing the number of columns and decreasing the number of rows. It’s relatively rare to need `pivot_wider()` to make data for analysis, but it’s often useful for creating summary and descriptive tables for presentations, or papers.
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("pics/pivot_wider.png")
+```
 
 
 ```{r pivot_wider1, dependson="tidy_stocks"}
