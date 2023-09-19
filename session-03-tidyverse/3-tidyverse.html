@@ -354,8 +354,7 @@ base R alternatives.</p>
 tidyverse for.</li>
 <li>A combination of tidyverse and base R is often the best solution to
 a problem.</li>
-<li>Excellent base R data manipulation tutorials: <a
-href="https://www.rspatial.org/intr/index.html">here</a> and <a
+<li>Excellent base R data manipulation tutorial <a
 href="https://github.com/matloff/fasteR">here</a>.</li>
 </ul>
 <hr />
@@ -383,11 +382,12 @@ class="uri">https://github.com/tom-arend/my_first_repo.git</a>.</p>
 <h3>Make changes to the file</h3>
 <p>Once you navigate to the folder that you decided to save the
 assignment in, you can see the initial folder organisation. For now
-there should only be the .github, the assignment-#.Rmd, the
-assignment-#.html and the README.md file. To work on your assignment,
-you should open and change the .Rmd file. Write your solution code into
-the appropriate area. Once you are satisified with the assignment (or
-just in regular intervals when working on it) knit your markdown and
+there should only be the <code>.gitignore</code>, the
+<code>assignment-#.Rmd</code>, the <code>assignment-#.html</code> and
+the <code>README.md</code> files. To work on your assignment, you should
+open and change the .Rmd file. Write your solution code into the
+appropriate area. Once you are satisfied with the assignment (or just in
+regular intervals when working on it) knit your markdown and
 <strong>pull</strong> and <strong>push</strong> your changes to the
 repo. We’ll now go review how to do this.</p>
 </div>
@@ -437,6 +437,16 @@ manipulation.</p>
 <p>Why is it called the tidy<em>verse</em>? Let’s load the tidyverse
 meta-package and check the output.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.2     ✔ readr     2.1.4
+## ✔ forcats   1.0.0     ✔ stringr   1.5.0
+## ✔ ggplot2   3.4.3     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+## ✔ purrr     1.0.1     
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 <p>We see that we have actually loaded a number of packages (which could
 also be loaded individually): <strong>ggplot2</strong>,
 <strong>tibble</strong>, <strong>dplyr</strong>, etc. We can also see
@@ -444,8 +454,8 @@ information about the package versions and some <a
 href="https://raw.githack.com/uo-ec607/lectures/master/04-rlang/04-rlang.html#59">namespace
 conflicts</a>.</p>
 <p>The tidyverse actually comes with a lot more packages than those that
-are just loaded automatically.<sup>1</sup></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">tidyverse_packages</span>()</span></code></pre></div>
+are just loaded automatically.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">tidyverse_packages</span>()</span></code></pre></div>
 <pre><code>##  [1] &quot;broom&quot;         &quot;conflicted&quot;    &quot;cli&quot;           &quot;dbplyr&quot;       
 ##  [5] &quot;dplyr&quot;         &quot;dtplyr&quot;        &quot;forcats&quot;       &quot;ggplot2&quot;      
 ##  [9] &quot;googledrive&quot;   &quot;googlesheets4&quot; &quot;haven&quot;         &quot;hms&quot;          
@@ -456,22 +466,113 @@ are just loaded automatically.<sup>1</sup></p>
 ## [29] &quot;tidyr&quot;         &quot;xml2&quot;          &quot;tidyverse&quot;</code></pre>
 <p>We’ll use several of these additional packages during the remainder
 of this course.</p>
-<p>E.g. The <strong>lubridate</strong> package for working with dates
-and the <strong>rvest</strong> package for webscraping. However, these
-packages will have to be loaded separately!</p>
+<p>E.g. The <strong>hms</strong> package for working with times and the
+<strong>rvest</strong> package for webscraping. However, these packages
+will have to be loaded separately!</p>
 <p><img src="pics/kacheln3.png" width="80%" style="display: block; margin: auto;" /></p>
 <p>Underlying these packages are two key ideas:</p>
 <hr />
 <div id="the-pipe-operator" class="section level2">
-<h2>1. The pipe <code>|&gt;</code> operator</h2>
-<p>You saw this in detail in the lecture.</p>
-<p><strong>Excercise 1</strong></p>
+<h2>1. The pipe <code>%&gt;%</code> operator</h2>
+<p>You were introduced to the pipe operator in the previous lab.</p>
+<p><strong>Exercise 1</strong></p>
 <pre><code>What is the pipe operator? What exactly does it do? And why might that be useful?</code></pre>
-<p>PS — The pipe is originally from the <a
-href="https://magrittr.tidyverse.org/"><strong>magrittr</strong></a>
-package, which can do some other cool things if you’re inclined to
-explore.</p>
+<div id="the-beauty-of-pipes" class="section level3 tabset">
+<h3 class="tabset">The beauty of pipes</h3>
+<ul>
+<li>The forward-pipe operator <code>%&gt;%</code> pipes the left-hand
+side values forward into expressions on the right-hand side.</li>
+<li>It serves the natural way of reading (“do this, then this, then
+this, …”).</li>
+<li>We replace <code>f(x)</code> with <code>x %&gt;% f()</code>.</li>
+<li>It avoids nested function calls.</li>
+<li>It minimizes the need for local variables and function
+definitions.</li>
+</ul>
+<div id="the-pipe-way" class="section level4">
+<h4>The pipe way</h4>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>Alex <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">wake_up</span>(<span class="dv">7</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="fu">shower</span>(<span class="at">temp =</span> <span class="dv">38</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="fu">breakfast</span>(<span class="fu">c</span>(<span class="st">&quot;coffee&quot;</span>, <span class="st">&quot;croissant&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="fu">walk</span>(<span class="fu">step_function</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="fu">bvg</span>(</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>    <span class="at">train =</span> <span class="st">&quot;U2&quot;</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>    <span class="at">destination =</span> <span class="st">&quot;Stadtmitte&quot;</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  <span class="fu">hertie</span>(<span class="at">course =</span> <span class="st">&quot;Intro to DS&quot;</span>)</span></code></pre></div>
+</div>
+<div id="the-classic-way" class="section level4">
+<h4>The classic way</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">hertie</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">bvg</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>    <span class="fu">walk</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>      <span class="fu">breakfast</span>(</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>        <span class="fu">shower</span>(</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>          <span class="fu">wake_up</span>(</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>            Alex, <span class="dv">7</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>          ),</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>          <span class="at">temp =</span> <span class="dv">38</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>        ),</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>        <span class="fu">c</span>(<span class="st">&quot;coffee&quot;</span>, <span class="st">&quot;croissant&quot;</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>      ),</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>      <span class="fu">step_function</span>()</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>    ),</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>    <span class="at">train =</span> <span class="st">&quot;U2&quot;</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>    <span class="at">destination =</span> <span class="st">&quot;Stadtmitte&quot;</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>  ),</span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>  <span class="at">course =</span> <span class="st">&quot;Intro to DS&quot;</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="the-classic-way-nightmare-edition" class="section level4">
+<h4>The classic way, nightmare edition</h4>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>alex_awake <span class="ot">&lt;-</span> <span class="fu">wake_up</span>(Alex, <span class="dv">7</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>alex_showered <span class="ot">&lt;-</span> <span class="fu">shower</span>(alex_awake, </span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>                        <span class="at">temp =</span> <span class="dv">38</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>alex_replete <span class="ot">&lt;-</span> <span class="fu">breakfast</span>(alex_showered, </span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>                          <span class="fu">c</span>(<span class="st">&quot;coffee&quot;</span>, <span class="st">&quot;croissant&quot;</span>))</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>alex_underway <span class="ot">&lt;-</span> <span class="fu">walk</span>(alex_replete, </span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>                      <span class="fu">step_function</span>())</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>alex_on_train <span class="ot">&lt;-</span> <span class="fu">bvg</span>(alex_underway, </span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>                         <span class="at">train =</span> <span class="st">&quot;U2&quot;</span>, </span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>                         <span class="at">destination =</span> <span class="st">&quot;Stadtmitte&quot;</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>alex_hertie <span class="ot">&lt;-</span> <span class="fu">hertie</span>(alex_on_train, </span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>                      <span class="at">course =</span> <span class="st">&quot;Intro to DS&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="piping-etiquette" class="section level3">
+<h3>Piping etiquette</h3>
+<ul>
+<li>Pipes are not very handy when you need to manipulate more than one
+object at a time. Reserve pipes for a sequence of steps applied to one
+primary object.</li>
+<li>Don’t use the pipe when there are meaningful intermediate objects
+that can be given informative names (and that are used later on).</li>
+<li><code>%&gt;%</code> should always have a space before it, and should
+usually be followed by a new line.</li>
+</ul>
+</div>
+<div id="the-base-r-pipe" class="section level3">
+<h3>The base R pipe: <code>|&gt;</code></h3>
+<p>The magrittr pipe has proven so successful and popular that the R
+core team <a
+href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/pipeOp.html">recently
+added</a> a “native” pipe operator to base R (version 4.1), denoted
+<code>|&gt;</code>. Here’s how it works:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>mtcars <span class="sc">|&gt;</span> <span class="fu">subset</span>(cyl <span class="sc">==</span> <span class="dv">4</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>mtcars <span class="sc">|&gt;</span> <span class="fu">subset</span>(cyl <span class="sc">==</span> <span class="dv">4</span>) <span class="sc">|&gt;</span> (\(x) <span class="fu">lm</span>(mpg <span class="sc">~</span> disp, <span class="at">data =</span> x))()</span></code></pre></div>
+<p>Now, should we use the “magrittr” pipe or the native pipe? The native
+pipe might make more sense in the long term, since it avoids
+dependencies and might be more efficient. Check out <a
+href="https://stackoverflow.com/questions/67633022/what-are-the-differences-between-rs-new-native-pipe-and-the-magrittr-pipe">this
+Stackoverflow post</a> and <a
+href="https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/">this
+Tidyverse blog post</a> for a discussion of differences.</p>
+<p>You can update your settings, if you’d like RStudio to default to the
+native pipe operator <code>|&gt;</code>.
+<img src="pics/rstudio_pipe_settings.png" width="70%" style="display: block; margin: auto;" /></p>
 <hr />
+</div>
 </div>
 <div id="tidy-data" class="section level2">
 <h2>2. Tidy Data 🗂</h2>
@@ -483,7 +584,7 @@ to a way of mapping the structure of a data set. In a tidy data set:</p>
 <li>Each type of observational unit forms a table</li>
 </ol>
 <p><img src="pics/tidy_data.png" width="70%" style="display: block; margin: auto;" /></p>
-<p><strong>Excercise 2</strong></p>
+<p><strong>Exercise 2</strong></p>
 <pre><code>Think about what you might have learned about panel surveys (surveys fielded to the same set of participants at multiple points of time). Why could this be a problem for the general assumptions of tidy data and what possible data formats can you end up with?</code></pre>
 <hr />
 </div>
@@ -495,12 +596,12 @@ to a way of mapping the structure of a data set. In a tidy data set:</p>
 <p>Key tidyr verbs are:</p>
 <ol style="list-style-type: decimal">
 <li><p><code>pivot_longer</code>: Pivot wide data into long format
-(i.e. “melt”).<sup>1</sup></p></li>
+(i.e. “melt”).</p></li>
 <li><p><code>pivot_wider</code>: Pivot long data into wide format
-(i.e. “cast”).<sup>2</sup></p></li>
+(i.e. “cast”).</p></li>
 <li><p><code>separate</code>: Separate (i.e. split) one column into
-multiple columns (new syntax: separate_wider_position() and
-separate_wider_delim())</p></li>
+multiple columns (new syntax: <code>separate_wider_position()</code> and
+<code>separate_wider_delim()</code>)</p></li>
 <li><p><code>unite</code>: Unite (i.e. combine) multiple columns into
 one.</p></li>
 </ol>
@@ -516,28 +617,28 @@ names. The next important argument specifies the name of the column to
 create from the data stored in cell values.</p>
 <p><img src="pics/pivot_longer.png" width="664" style="display: block; margin: auto;" /></p>
 <p>Let’s see how this works in practice:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>stocks <span class="ot">=</span> <span class="fu">data.frame</span>( <span class="do">## Could use &quot;tibble&quot; instead of &quot;data.frame&quot; if you prefer</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="at">time =</span> <span class="fu">as.Date</span>(<span class="st">&#39;2009-01-01&#39;</span>) <span class="sc">+</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>,</span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">X =</span> <span class="fu">rnorm</span>(<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="at">Y =</span> <span class="fu">rnorm</span>(<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>),</span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="at">Z =</span> <span class="fu">rnorm</span>(<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">4</span>)</span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  )</span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>stocks</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>stocks <span class="ot">=</span> <span class="fu">data.frame</span>( <span class="do">## Could use &quot;tibble&quot; instead of &quot;data.frame&quot; if you prefer</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  <span class="at">time =</span> <span class="fu">as.Date</span>(<span class="st">&#39;2009-01-01&#39;</span>) <span class="sc">+</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>  <span class="at">X =</span> <span class="fu">rnorm</span>(<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>  <span class="at">Y =</span> <span class="fu">rnorm</span>(<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>),</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>  <span class="at">Z =</span> <span class="fu">rnorm</span>(<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">4</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>  )</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>stocks</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"1.134695","3":"-1.492910","4":"3.289631"},{"1":"2009-01-02","2":"0.935102","3":"1.361547","4":"1.120230"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-1.333791","3":"1.4914369","4":"3.104032"},{"1":"2009-01-02","2":"-1.284047","3":"-0.7125077","4":"1.448426"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>stocks <span class="sc">|&gt;</span> <span class="fu">pivot_longer</span>(<span class="sc">-</span>time, <span class="at">names_to=</span><span class="st">&quot;stock&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;price&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>stocks <span class="sc">|&gt;</span> <span class="fu">pivot_longer</span>(<span class="sc">-</span>time, <span class="at">names_to=</span><span class="st">&quot;stock&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;price&quot;</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["stock"],"name":[2],"type":["chr"],"align":["left"]},{"label":["price"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"X","3":"1.134695"},{"1":"2009-01-01","2":"Y","3":"-1.492910"},{"1":"2009-01-01","2":"Z","3":"3.289631"},{"1":"2009-01-02","2":"X","3":"0.935102"},{"1":"2009-01-02","2":"Y","3":"1.361547"},{"1":"2009-01-02","2":"Z","3":"1.120230"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["stock"],"name":[2],"type":["chr"],"align":["left"]},{"label":["price"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"X","3":"-1.3337907"},{"1":"2009-01-01","2":"Y","3":"1.4914369"},{"1":"2009-01-01","2":"Z","3":"3.1040324"},{"1":"2009-01-02","2":"X","3":"-1.2840466"},{"1":"2009-01-02","2":"Y","3":"-0.7125077"},{"1":"2009-01-02","2":"Z","3":"1.4484264"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Let’s quickly save the “tidy” (i.e. long) stocks data frame</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="do">## Write out the argument names this time: i.e. &quot;names_to=&quot; and &quot;values_to=&quot;</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>tidy_stocks <span class="ot">&lt;-</span> stocks <span class="sc">|&gt;</span> </span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>time, <span class="at">names_to=</span><span class="st">&quot;stock&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;price&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="do">## Write out the argument names this time: i.e. &quot;names_to=&quot; and &quot;values_to=&quot;</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>tidy_stocks <span class="ot">&lt;-</span> stocks <span class="sc">|&gt;</span> </span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>time, <span class="at">names_to=</span><span class="st">&quot;stock&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;price&quot;</span>)</span></code></pre></div>
 </div>
 <div id="pivot_wider" class="section level2">
 <h2><code>pivot_wider()</code></h2>
@@ -548,23 +649,23 @@ rare to need <code>pivot_wider()</code> to make data for analysis, but
 it’s often useful for creating summary and descriptive tables for
 presentations, or papers.</p>
 <p><img src="pics/pivot_wider.png" width="787" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>tidy_stocks <span class="sc">|&gt;</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>stock, <span class="at">values_from =</span> price)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>tidy_stocks <span class="sc">|&gt;</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>stock, <span class="at">values_from =</span> price)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"1.134695","3":"-1.492910","4":"3.289631"},{"1":"2009-01-02","2":"0.935102","3":"1.361547","4":"1.120230"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-1.333791","3":"1.4914369","4":"3.104032"},{"1":"2009-01-02","2":"-1.284047","3":"-0.7125077","4":"1.448426"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>tidy_stocks <span class="sc">|&gt;</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>time, <span class="at">values_from =</span> price)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>tidy_stocks <span class="sc">|&gt;</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>time, <span class="at">values_from =</span> price)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["stock"],"name":[1],"type":["chr"],"align":["left"]},{"label":["2009-01-01"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2009-01-02"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"X","2":"1.134695","3":"0.935102"},{"1":"Y","2":"-1.492910","3":"1.361547"},{"1":"Z","2":"3.289631","3":"1.120230"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["stock"],"name":[1],"type":["chr"],"align":["left"]},{"label":["2009-01-01"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2009-01-02"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"X","2":"-1.333791","3":"-1.2840466"},{"1":"Y","2":"1.491437","3":"-0.7125077"},{"1":"Z","2":"3.104032","3":"1.4484264"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Note that the second example; which has combined different pivoting
 arguments; has effectively transposed the data.</p>
 </div>
 <div id="optional-tidyrseparate" class="section level2">
-<h2>optional: <code>tidyr::separate()</code> 💔</h2>
+<h2>Optional: <code>tidyr::separate()</code> 💔</h2>
 <p><code>separate()</code> is used to separate a single data frame or
 column into multiple columns. It has been superseded in favour of
 <code>separate_wider_position()</code> (splits at fixed widths) and
@@ -573,17 +674,17 @@ two functions make the two uses more obvious, the API is more polished,
 and the handling of problems is better. The superseded
 <code>separate</code> function will not go away, but will only receive
 critical bug fixes.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>economists <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">name =</span> <span class="fu">c</span>(<span class="st">&quot;Adam.Smith&quot;</span>, <span class="st">&quot;Paul.Samuelson&quot;</span>, <span class="st">&quot;Milton.Friedman&quot;</span>))</span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>economists</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>economists <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">name =</span> <span class="fu">c</span>(<span class="st">&quot;Adam.Smith&quot;</span>, <span class="st">&quot;Esther.Duflo&quot;</span>, <span class="st">&quot;Milton.Friedman&quot;</span>))</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>economists</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"Adam.Smith"},{"1":"Paul.Samuelson"},{"1":"Milton.Friedman"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"Adam.Smith"},{"1":"Esther.Duflo"},{"1":"Milton.Friedman"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>economists <span class="sc">|&gt;</span> <span class="fu">separate</span>(name, <span class="fu">c</span>(<span class="st">&quot;first_name&quot;</span>, <span class="st">&quot;last_name&quot;</span>)) </span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>economists <span class="sc">|&gt;</span> <span class="fu">separate</span>(name, <span class="fu">c</span>(<span class="st">&quot;first_name&quot;</span>, <span class="st">&quot;last_name&quot;</span>)) </span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"Adam","2":"Smith"},{"1":"Paul","2":"Samuelson"},{"1":"Milton","2":"Friedman"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"Adam","2":"Smith"},{"1":"Esther","2":"Duflo"},{"1":"Milton","2":"Friedman"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>This command is pretty smart. But to avoid ambiguity, you can also
@@ -591,50 +692,50 @@ specify the separation character with
 <code>separate(..., sep=".")</code>.</p>
 <p>Now let’s try to achieve the same results using the new syntax
 <code>separate_wider_delim</code>:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>economists <span class="sc">|&gt;</span></span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  <span class="fu">separate_wider_delim</span>(</span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>    <span class="at">cols =</span> name,</span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>    <span class="at">delim =</span> <span class="st">&quot;.&quot;</span>,</span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>    <span class="at">names =</span> <span class="fu">c</span>(<span class="st">&quot;first_name&quot;</span>, <span class="st">&quot;last_name&quot;</span>)</span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>economists <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>  <span class="fu">separate_wider_delim</span>(</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>    <span class="at">cols =</span> name,</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>    <span class="at">delim =</span> <span class="st">&quot;.&quot;</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>    <span class="at">names =</span> <span class="fu">c</span>(<span class="st">&quot;first_name&quot;</span>, <span class="st">&quot;last_name&quot;</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>  )</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"Adam","2":"Smith"},{"1":"Paul","2":"Samuelson"},{"1":"Milton","2":"Friedman"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"Adam","2":"Smith"},{"1":"Esther","2":"Duflo"},{"1":"Milton","2":"Friedman"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>In order to use <code>separate_wider_position</code>, the position of
 the characters plays a crucial role. Let’s add another column to our
 dataframe:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>economists<span class="sc">$</span>attribute <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;m-34&quot;</span>, <span class="st">&quot;m-23&quot;</span>, <span class="st">&quot;f-38&quot;</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>economists</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>economists<span class="sc">$</span>attribute <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;m-34&quot;</span>, <span class="st">&quot;m-23&quot;</span>, <span class="st">&quot;f-38&quot;</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>economists</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["attribute"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"Adam.Smith","2":"m-34"},{"1":"Paul.Samuelson","2":"m-23"},{"1":"Milton.Friedman","2":"f-38"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["attribute"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"Adam.Smith","2":"m-34"},{"1":"Esther.Duflo","2":"m-23"},{"1":"Milton.Friedman","2":"f-38"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>economists <span class="sc">|&gt;</span></span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>  <span class="fu">separate_wider_position</span>(attribute, <span class="fu">c</span>(<span class="at">sex =</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="at">age =</span> <span class="dv">2</span>) </span>
-<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>    )</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>economists <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>  <span class="fu">separate_wider_position</span>(attribute, <span class="fu">c</span>(<span class="at">sex =</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="at">age =</span> <span class="dv">2</span>) </span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>    )</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["sex"],"name":[2],"type":["chr"],"align":["left"]},{"label":["age"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Adam.Smith","2":"m","3":"34"},{"1":"Paul.Samuelson","2":"m","3":"23"},{"1":"Milton.Friedman","2":"f","3":"38"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["sex"],"name":[2],"type":["chr"],"align":["left"]},{"label":["age"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Adam.Smith","2":"m","3":"34"},{"1":"Esther.Duflo","2":"m","3":"23"},{"1":"Milton.Friedman","2":"f","3":"38"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p><code>separate_rows</code> is another related function, for splitting
 up cells that contain multiple fields or observations (a frustratingly
 common occurence with survey data).</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>jobs <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>  <span class="at">name =</span> <span class="fu">c</span>(<span class="st">&quot;Jack&quot;</span>, <span class="st">&quot;Jill&quot;</span>),</span>
-<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>  <span class="at">occupation =</span> <span class="fu">c</span>(<span class="st">&quot;Homemaker&quot;</span>, <span class="st">&quot;Philosopher, Philanthropist, Troublemaker&quot;</span>) </span>
-<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>  ) </span>
-<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>jobs</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>jobs <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>  <span class="at">name =</span> <span class="fu">c</span>(<span class="st">&quot;Jack&quot;</span>, <span class="st">&quot;Jill&quot;</span>),</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>  <span class="at">occupation =</span> <span class="fu">c</span>(<span class="st">&quot;Homemaker&quot;</span>, <span class="st">&quot;Philosopher, Philanthropist, Troublemaker&quot;</span>) </span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>  ) </span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a>jobs</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["occupation"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"Jack","2":"Homemaker"},{"1":"Jill","2":"Philosopher, Philanthropist, Troublemaker"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="do">## Now split out Jill&#39;s various occupations into different rows</span></span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>jobs <span class="sc">|&gt;</span> <span class="fu">separate_rows</span>(occupation)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="do">## Now split out Jill&#39;s various occupations into different rows</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>jobs <span class="sc">|&gt;</span> <span class="fu">separate_rows</span>(occupation)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["occupation"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"Jack","2":"Homemaker"},{"1":"Jill","2":"Philosopher"},{"1":"Jill","2":"Philanthropist"},{"1":"Jill","2":"Troublemaker"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -642,33 +743,33 @@ common occurence with survey data).</p>
 </div>
 </div>
 <div id="optional-tidyrunite" class="section level2">
-<h2>optional: <code>tidyr::unite()</code> ❤️</h2>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>gdp <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>  <span class="at">yr =</span> <span class="fu">rep</span>(<span class="dv">2016</span>, <span class="at">times =</span> <span class="dv">4</span>),</span>
-<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>  <span class="at">mnth =</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="at">times =</span> <span class="dv">4</span>),</span>
-<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>  <span class="at">dy =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,</span>
-<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>  <span class="at">gdp =</span> <span class="fu">rnorm</span>(<span class="dv">4</span>, <span class="at">mean =</span> <span class="dv">100</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span>
-<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>  )</span>
-<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>gdp </span></code></pre></div>
+<h2>Optional: <code>tidyr::unite()</code> ❤️</h2>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>gdp <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>  <span class="at">yr =</span> <span class="fu">rep</span>(<span class="dv">2016</span>, <span class="at">times =</span> <span class="dv">4</span>),</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>  <span class="at">mnth =</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="at">times =</span> <span class="dv">4</span>),</span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a>  <span class="at">dy =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a>  <span class="at">gdp =</span> <span class="fu">rnorm</span>(<span class="dv">4</span>, <span class="at">mean =</span> <span class="dv">100</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a>  )</span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a>gdp </span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["yr"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["mnth"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["dy"],"name":[3],"type":["int"],"align":["right"]},{"label":["gdp"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016","2":"1","3":"1","4":"97.02574"},{"1":"2016","2":"1","3":"2","4":"101.93806"},{"1":"2016","2":"1","3":"3","4":"99.21903"},{"1":"2016","2":"1","3":"4","4":"101.28530"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["yr"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["mnth"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["dy"],"name":[3],"type":["int"],"align":["right"]},{"label":["gdp"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016","2":"1","3":"1","4":"97.80450"},{"1":"2016","2":"1","3":"2","4":"96.09756"},{"1":"2016","2":"1","3":"3","4":"99.88778"},{"1":"2016","2":"1","3":"4","4":"97.87132"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="do">## Combine &quot;yr&quot;, &quot;mnth&quot;, and &quot;dy&quot; into one &quot;date&quot; column</span></span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>gdp <span class="sc">|&gt;</span> <span class="fu">unite</span>(date, <span class="fu">c</span>(<span class="st">&quot;yr&quot;</span>, <span class="st">&quot;mnth&quot;</span>, <span class="st">&quot;dy&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="do">## Combine &quot;yr&quot;, &quot;mnth&quot;, and &quot;dy&quot; into one &quot;date&quot; column</span></span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>gdp <span class="sc">|&gt;</span> <span class="fu">unite</span>(date, <span class="fu">c</span>(<span class="st">&quot;yr&quot;</span>, <span class="st">&quot;mnth&quot;</span>, <span class="st">&quot;dy&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"97.02574"},{"1":"2016-1-2","2":"101.93806"},{"1":"2016-1-3","2":"99.21903"},{"1":"2016-1-4","2":"101.28530"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"97.80450"},{"1":"2016-1-2","2":"96.09756"},{"1":"2016-1-3","2":"99.88778"},{"1":"2016-1-4","2":"97.87132"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Note that <code>unite</code> will automatically create a character
 variable. You can see this better if we convert it to a tibble.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>gdp_u <span class="ot">=</span> gdp <span class="sc">|&gt;</span> <span class="fu">unite</span>(date, <span class="fu">c</span>(<span class="st">&quot;yr&quot;</span>, <span class="st">&quot;mnth&quot;</span>, <span class="st">&quot;dy&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>()</span>
-<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>gdp_u</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>gdp_u <span class="ot">=</span> gdp <span class="sc">|&gt;</span> <span class="fu">unite</span>(date, <span class="fu">c</span>(<span class="st">&quot;yr&quot;</span>, <span class="st">&quot;mnth&quot;</span>, <span class="st">&quot;dy&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>()</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>gdp_u</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"97.02574"},{"1":"2016-1-2","2":"101.93806"},{"1":"2016-1-3","2":"99.21903"},{"1":"2016-1-4","2":"101.28530"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"97.80450"},{"1":"2016-1-2","2":"96.09756"},{"1":"2016-1-3","2":"99.88778"},{"1":"2016-1-4","2":"97.87132"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>If you want to convert it to something else (e.g. date or numeric)
@@ -676,14 +777,34 @@ then you will need to modify it using <code>mutate</code>. See below for
 an example, using the <a
 href="https://lubridate.tidyverse.org/">lubridate</a> package’s super
 helpful date conversion functions.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>gdp_u <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">ymd</span>(date))</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>gdp_u <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">ymd</span>(date))</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["date"],"align":["right"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-01-01","2":"97.02574"},{"1":"2016-01-02","2":"101.93806"},{"1":"2016-01-03","2":"99.21903"},{"1":"2016-01-04","2":"101.28530"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["date"],"align":["right"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-01-01","2":"97.80450"},{"1":"2016-01-02","2":"96.09756"},{"1":"2016-01-03","2":"99.88778"},{"1":"2016-01-04","2":"97.87132"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>Let’s move on to another important tidyverse package!</p>
+</div>
+<div id="optional-other-tidyr-functions" class="section level2">
+<h2>Optional: Other <code>tidyr</code> functions</h2>
+<p><code>crossing()</code>: Get the full combination of a group of
+variables.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="fu">crossing</span>(<span class="at">side =</span> <span class="fu">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;right&quot;</span>), <span class="at">height =</span> <span class="fu">c</span>(<span class="st">&quot;top&quot;</span>, <span class="st">&quot;bottom&quot;</span>))</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["side"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"left","2":"bottom"},{"1":"left","2":"top"},{"1":"right","2":"bottom"},{"1":"right","2":"top"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p><code>expand()</code> and <code>complete()</code>: See
+<code>?expand()</code> and <code>?complete()</code> for more specialized
+functions that allow you to fill in (implicit) missing data or variable
+combinations in existing data frames. Base R alternative:
+<code>expand.grid()</code>.</p>
+<p><code>drop_na(data, ...)</code>: Drop rows containing NAs in
+<code>...</code> columns.</p>
+<p><code>fill(data, ..., direction = c("down", "up"))</code>: Fill in
+NAs in <code>...</code> columns with most recent non-NA values.</p>
+<p>Now on to another important tidyverse package!</p>
 <hr />
 </div>
 </div>
@@ -735,17 +856,17 @@ the data set there were eight variables attached to every observation.
 Do you recall them? If you do not, there is no problem. You can utilize
 <code>names()</code> to retrieve the names of the variables in a data
 frame.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">names</span>(penguins)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="fu">names</span>(penguins)</span></code></pre></div>
 <pre><code>## [1] &quot;species&quot;           &quot;island&quot;            &quot;bill_length_mm&quot;   
 ## [4] &quot;bill_depth_mm&quot;     &quot;flipper_length_mm&quot; &quot;body_mass_g&quot;      
 ## [7] &quot;sex&quot;               &quot;year&quot;</code></pre>
 <p>Say we are only interested in the species, island, and year variables
 of these data, we can utilize the following syntax:</p>
 <p><code>select(data, columns)</code></p>
-<p><strong>Excercise 3</strong> <em>The following code chunk would
-select the variables we need. Can you adapt it, so that we keep the
-body_mass_g and sex variables as well?</em></p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(penguins, species, island, year)</span></code></pre></div>
+<p><strong>Exercise 3</strong> <em>The following code chunk would select
+the variables we need. Can you adapt it, so that we keep the body_mass_g
+and sex variables as well?</em></p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(penguins, species, island, year)</span></code></pre></div>
 <p>Good to know: To <strong>drop</strong> variables, use <code>-</code>
 before the variable name, i.e. select(penguins, -year) to drop the year
 column (select everything but the year column).</p>
@@ -770,28 +891,33 @@ to</li>
 </ul>
 <p>Say we are interested in retrieving the observations from the year
 2007. We would do:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(penguins, year <span class="sc">==</span> <span class="dv">2007</span>)</span></code></pre></div>
-<p><strong>Excercise 4</strong> Can you adapt the code to retrieve all
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(penguins, year <span class="sc">==</span> <span class="dv">2007</span>)</span></code></pre></div>
+<p><strong>Exercise 4</strong> Can you adapt the code to retrieve all
 the observations of Chinstrap penguins from 2007</p>
-<p><strong>Excercise 5</strong> We can leverage the pipe operator to
+<p><strong>Exercise 5</strong> We can leverage the pipe operator to
 sequence our code in a logical manner. Can you adapt the following code
-chunck with the pipe and conditional logical operators we discussed?</p>
-<pre><code>only_2009 &lt;- dplyr::filter(penguins, year == 2009)
-only_2009_chinstraps &lt;- dplyr::filter(only_2009, species == &quot;Chinstrap&quot;)
-only_2009_chinstraps_species_sex_year &lt;- dplyr::select(only_2009_chinstraps, species, sex, year)
-final_df &lt;- only_2009_chinstraps_species_sex_year
-final_df #to print it in our console</code></pre>
+chunk with the pipe and conditional logical operators we discussed?</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a>only_2009 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(penguins, year <span class="sc">==</span> <span class="dv">2009</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>only_2009_chinstraps <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(only_2009, species <span class="sc">==</span> <span class="st">&quot;Chinstrap&quot;</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>only_2009_chinstraps_species_sex_year <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(only_2009_chinstraps, species, sex, year)</span>
+<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a>final_df <span class="ot">&lt;-</span> only_2009_chinstraps_species_sex_year</span>
+<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a>final_df <span class="co">#to print it in our console</span></span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["species"],"name":[1],"type":["fct"],"align":["left"]},{"label":["sex"],"name":[2],"type":["fct"],"align":["left"]},{"label":["year"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"Chinstrap","2":"female","3":"2009"},{"1":"Chinstrap","2":"male","3":"2009"},{"1":"Chinstrap","2":"female","3":"2009"},{"1":"Chinstrap","2":"male","3":"2009"},{"1":"Chinstrap","2":"male","3":"2009"},{"1":"Chinstrap","2":"female","3":"2009"},{"1":"Chinstrap","2":"female","3":"2009"},{"1":"Chinstrap","2":"male","3":"2009"},{"1":"Chinstrap","2":"female","3":"2009"},{"1":"Chinstrap","2":"male","3":"2009"},{"1":"Chinstrap","2":"female","3":"2009"},{"1":"Chinstrap","2":"male","3":"2009"},{"1":"Chinstrap","2":"female","3":"2009"},{"1":"Chinstrap","2":"male","3":"2009"},{"1":"Chinstrap","2":"male","3":"2009"},{"1":"Chinstrap","2":"female","3":"2009"},{"1":"Chinstrap","2":"male","3":"2009"},{"1":"Chinstrap","2":"female","3":"2009"},{"1":"Chinstrap","2":"female","3":"2009"},{"1":"Chinstrap","2":"male","3":"2009"},{"1":"Chinstrap","2":"female","3":"2009"},{"1":"Chinstrap","2":"male","3":"2009"},{"1":"Chinstrap","2":"male","3":"2009"},{"1":"Chinstrap","2":"female","3":"2009"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 </div>
 <div id="mutate" class="section level2">
 <h2><code>mutate()</code> 🌂☂️</h2>
 <p><code>mutate()</code> lets us create, modify, and delete columns. The
 most common use for now will be to create new variables based on
 existing ones. Say we are working with a U.S. American client and they
-feel more confortable with assessing the weight of the penguins in
+feel more comfortable with assessing the weight of the penguins in
 pounds. We would utilize <code>mutate()</code> as such:</p>
 <p><code>mutate(new_var_name = manipulated old_var(s))</code></p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
-<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">body_mass_lbs =</span> body_mass_g<span class="sc">/</span><span class="fl">453.6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">body_mass_lbs =</span> body_mass_g<span class="sc">/</span><span class="fl">453.6</span>)</span></code></pre></div>
 </div>
 <div id="group_by-and-summarize" class="section level2">
 <h2><code>group_by()</code> and <code>summarize()</code></h2>
@@ -801,17 +927,17 @@ data frame. It will have one (or more) rows for each combination of
 grouping variables; if there are no grouping variables, the output will
 have a single row summarising all observations in the input. For
 example:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="co"># compare this output with the one below</span></span>
-<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
-<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">heaviest_penguin =</span> <span class="fu">max</span>(body_mass_g, <span class="at">na.rm =</span> T)) </span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="co"># compare this output with the one below</span></span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">heaviest_penguin =</span> <span class="fu">max</span>(body_mass_g, <span class="at">na.rm =</span> T)) </span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["heaviest_penguin"],"name":[1],"type":["int"],"align":["right"]}],"data":[{"1":"6300"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
-<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
-<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">heaviest_penguin =</span> <span class="fu">max</span>(body_mass_g, <span class="at">na.rm =</span> T))</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">heaviest_penguin =</span> <span class="fu">max</span>(body_mass_g, <span class="at">na.rm =</span> T))</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["species"],"name":[1],"type":["fct"],"align":["left"]},{"label":["heaviest_penguin"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Adelie","2":"4775"},{"1":"Chinstrap","2":"4800"},{"1":"Gentoo","2":"6300"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -824,27 +950,27 @@ groups in a .by argument, passing them directly in the
 whereas the ones used with <code>group_by</code> do. You can read more
 about both these approaches in <a href="https://r4ds.hadley.nz">R for
 Data Science, 2nd edition</a>.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
-<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">heaviest_penguin =</span> <span class="fu">max</span>(body_mass_g, <span class="at">na.rm =</span> T), <span class="at">.by =</span> species)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">heaviest_penguin =</span> <span class="fu">max</span>(body_mass_g, <span class="at">na.rm =</span> T), <span class="at">.by =</span> species)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["species"],"name":[1],"type":["fct"],"align":["left"]},{"label":["heaviest_penguin"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Adelie","2":"4775"},{"1":"Gentoo","2":"6300"},{"1":"Chinstrap","2":"4800"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
-<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">heaviest_penguin =</span> <span class="fu">max</span>(body_mass_g, <span class="at">na.rm =</span> T), <span class="at">.by =</span> <span class="fu">c</span>(species, sex))</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb37-2"><a href="#cb37-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">heaviest_penguin =</span> <span class="fu">max</span>(body_mass_g, <span class="at">na.rm =</span> T), <span class="at">.by =</span> <span class="fu">c</span>(species, sex))</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["species"],"name":[1],"type":["fct"],"align":["left"]},{"label":["sex"],"name":[2],"type":["fct"],"align":["left"]},{"label":["heaviest_penguin"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"Adelie","2":"male","3":"4775"},{"1":"Adelie","2":"female","3":"3900"},{"1":"Adelie","2":"NA","3":"4250"},{"1":"Gentoo","2":"female","3":"5200"},{"1":"Gentoo","2":"male","3":"6300"},{"1":"Gentoo","2":"NA","3":"4875"},{"1":"Chinstrap","2":"female","3":"4150"},{"1":"Chinstrap","2":"male","3":"4800"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p><strong>Excercise 6</strong> Can you get the weight of the lightest
+<p><strong>Exercise 6</strong> Can you get the weight of the lightest
 penguin of each species? You can use <code>min()</code>. What happens
 when in addition to species you also group by year
 <code>group_by(species, year)</code>?</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
-<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(species, year) <span class="sc">|&gt;</span></span>
-<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">lightest_penguin =</span> <span class="fu">min</span>(body_mass_g, <span class="at">na.rm =</span> T))</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(species, year) <span class="sc">|&gt;</span></span>
+<span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">lightest_penguin =</span> <span class="fu">min</span>(body_mass_g, <span class="at">na.rm =</span> T))</span></code></pre></div>
 </div>
 <div id="arrange" class="section level2">
 <h2><code>arrange()</code> 🥚🐣🐥</h2>
@@ -854,65 +980,104 @@ selected columns in ascending order. You can use the <code>desc()</code>
 argument inside to arrange in descending order. The following chunk
 arranges the data frame based on the length of the penguins’ bill. You
 hint tab contains the code for the descending order alternative.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
-<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(bill_length_mm)</span></code></pre></div>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
-<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(bill_length_mm))</span></code></pre></div>
-<p><strong>Excercise 6</strong> Can you create a data frame arranged by
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb39-2"><a href="#cb39-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(bill_length_mm)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(bill_length_mm))</span></code></pre></div>
+<p><strong>Exercise 6</strong> Can you create a data frame arranged by
 body_mass_g of the penguins observed in the “Dream” island?</p>
 <p><strong>Quiz</strong></p>
 <ol style="list-style-type: decimal">
-<li>Which verb allows you to index columns?</li>
-</ol>
+<li><p>Which verb allows you to index columns?</p>
 <ul>
-<li>select()</li>
-<li>filter()</li>
-<li>summarize()</li>
-<li>group_by()</li>
-</ul>
-<ol start="2" style="list-style-type: decimal">
-<li>Which verb allows you to index rows?</li>
-</ol>
+<li><code>select()</code></li>
+<li><code>filter()</code></li>
+<li><code>summarize()</code></li>
+<li><code>group_by()</code></li>
+</ul></li>
+<li><p>Which verb allows you to index rows?</p>
 <ul>
-<li>select()</li>
-<li>filter()</li>
-<li>summarize()</li>
-<li>group_by()</li>
-</ul>
-<ol start="3" style="list-style-type: decimal">
-<li><p>How long was the longest observed bill of a Gentoo penguin in
-2008?</p></li>
-<li><p>How long was the shortest observed bill of a Gentoo penguin in
-2008?</p></li>
+<li><code>select()</code></li>
+<li><code>filter()</code></li>
+<li><code>summarize()</code></li>
+<li><code>group_by()</code></li>
+</ul></li>
+<li><p>How <strong>long</strong> was the <strong>longest</strong>
+observed bill of a <strong>Gentoo</strong> penguin in
+<strong>2008</strong>?</p></li>
+<li><p>How <strong>deep</strong> was the <strong>deepest</strong>
+observed bill of a <strong>Chinstrap</strong> penguin in
+<strong>2009</strong>?</p></li>
 </ol>
 </div>
 <div id="optional-other-dplyr-functions" class="section level2">
-<h2>optional: Other dplyr functions</h2>
+<h2>Optional: Other <code>dplyr</code> functions</h2>
 <p><code>ungroup()</code>: For ungrouping data after using the
-<code>group_by()</code> command - Particularly useful with the
-<code>summarise</code> and <code>mutate</code> commands, as we’ve
-already seen.</p>
+<code>group_by()</code> command</p>
+<ul>
+<li>Particularly useful with the <code>summarise</code> and
+<code>mutate</code> commands, as we’ve already seen.</li>
+</ul>
 <p><code>slice()</code>: Subset rows by position rather than filtering
-by values. - E.g. <code>penguins |&gt; slice(c(1, 5))</code></p>
+by values.</p>
+<ul>
+<li>E.g. <code>penguins |&gt; slice(c(1, 5))</code></li>
+</ul>
 <p><code>pull()</code>: Extract a column from as a data frame as a
-vector or scalar. - E.g.
-<code>penguins |&gt; filter(gender=="female") |&gt; pull(height)</code></p>
+vector or scalar.</p>
+<ul>
+<li>E.g.
+<code>penguins |&gt; filter(sex == "female") |&gt; pull(flipper_length)</code></li>
+</ul>
 <p><code>count()</code> and <code>distinct()</code>: Number and isolate
-unique observations. - E.g. <code>penguins |&gt; count(species)</code>,
-or <code>penguins |&gt; distinct(species)</code> - You could also use a
-combination of <code>mutate</code>, <code>group_by</code>, and
-<code>n()</code>,
-e.g. <code>penguins |&gt; group_by(species) |&gt; mutate(num = n())</code>.</p>
-<p>The final set of dplyr verbs we’d like you to know are the family of
-join operations. These are important enough that we want to go over some
-concepts in a bit more depth.</p>
+unique observations.</p>
+<ul>
+<li>E.g. <code>penguins |&gt; count(species)</code>, or
+<code>penguins |&gt; distinct(species)</code></li>
+<li>You could also use a combination of <code>mutate</code>,
+<code>group_by</code>, and <code>n()</code>,
+e.g. <code>penguins |&gt; group_by(species) |&gt; summarize(num = n())</code>.</li>
+</ul>
+<p><code>where()</code>: Select the variables for which a function
+returns true.</p>
+<ul>
+<li>E.g.
+<code>penguins |&gt; select(where(is.numeric)) |&gt; names()</code></li>
+</ul>
+<p><code>across()</code>: Summarize or mutate multiple variables in the
+same way. More information <a
+href="https://dplyr.tidyverse.org/reference/across.html">here</a>.</p>
+<ul>
+<li>E.g.
+<code>penguins |&gt; mutate(across(where(is.numeric), scale)) |&gt; head(3)</code></li>
+</ul>
+<p><code>case_when()</code>: Vectorize multiple <code>if_else()</code>
+(or base R <code>ifelse()</code>) statements.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> <span class="fu">mutate</span>( </span>
+<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a>    <span class="at">flipper_length_cat =</span> <span class="fu">case_when</span>(</span>
+<span id="cb41-3"><a href="#cb41-3" tabindex="-1"></a>      flipper_length_mm <span class="sc">&lt;</span> <span class="dv">190</span> <span class="sc">~</span> <span class="st">&quot;small&quot;</span>,</span>
+<span id="cb41-4"><a href="#cb41-4" tabindex="-1"></a>      flipper_length_mm <span class="sc">&gt;=</span> <span class="dv">190</span> <span class="sc">&amp;</span> flipper_length_mm <span class="sc">&lt;</span> <span class="dv">210</span> <span class="sc">~</span> <span class="st">&quot;medium&quot;</span>,</span>
+<span id="cb41-5"><a href="#cb41-5" tabindex="-1"></a>      flipper_length_mm <span class="sc">&gt;=</span> <span class="dv">210</span>  <span class="sc">~</span> <span class="st">&quot;large&quot;</span></span>
+<span id="cb41-6"><a href="#cb41-6" tabindex="-1"></a>    )</span>
+<span id="cb41-7"><a href="#cb41-7" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb41-8"><a href="#cb41-8" tabindex="-1"></a>  <span class="fu">pull</span>(flipper_length_cat) <span class="sc">|&gt;</span> <span class="fu">table</span>()</span></code></pre></div>
+<pre><code>## 
+##  large medium  small 
+##    114    151     77</code></pre>
+<p><strong>Window functions</strong>: There are also a whole class of <a
+href="https://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html">window
+functions</a> for getting leads and lags, ranking, creating cumulative
+aggregates, etc. See <code>vignette("window-functions")</code>.</p>
+<p>The final set of <code>dplyr</code> verbs we’d like you to know are
+the family of <code>*_join</code> operations. These are important enough
+that we want to go over some concepts in a bit more depth.</p>
 <p>However - note that we will cover relational data structures (and
 SQL) in even more depth in a separate lab session!</p>
 <hr />
 </div>
 </div>
-<div id="joins-with-dplyr-optional" class="section level1">
-<h1>Joins with <code>dplyr</code> (optional)</h1>
+<div id="optional-joins-with-dplyr" class="section level1">
+<h1>Optional: Joins with <code>dplyr</code></h1>
 <p>One of the mainstays of the dplyr package is merging data with the
 family <a
 href="https://cran.r-project.org/web/packages/dplyr/vignettes/two-table.html">join
@@ -937,9 +1102,9 @@ console.</p>
 href="https://stat545.com/bit001_dplyr-cheatsheet.html#left_joinsuperheroes-publishers">left
 join</a> on the flights and planes datasets. - <em>Note</em>: I’m going
 subset columns after the join, but only to keep text on the slide.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a><span class="fu">left_join</span>(flights, planes) <span class="sc">|&gt;</span></span>
-<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a>  <span class="fu">select</span>(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model)<span class="sc">|&gt;</span></span>
-<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>) <span class="do">## Just to save vertical space in output</span></span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="fu">left_join</span>(flights, planes) <span class="sc">|&gt;</span></span>
+<span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a>  <span class="fu">select</span>(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model)<span class="sc">|&gt;</span></span>
+<span id="cb43-3"><a href="#cb43-3" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>) <span class="do">## Just to save vertical space in output</span></span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["year"],"name":[1],"type":["int"],"align":["right"]},{"label":["month"],"name":[2],"type":["int"],"align":["right"]},{"label":["day"],"name":[3],"type":["int"],"align":["right"]},{"label":["dep_time"],"name":[4],"type":["int"],"align":["right"]},{"label":["arr_time"],"name":[5],"type":["int"],"align":["right"]},{"label":["carrier"],"name":[6],"type":["chr"],"align":["left"]},{"label":["flight"],"name":[7],"type":["int"],"align":["right"]},{"label":["tailnum"],"name":[8],"type":["chr"],"align":["left"]},{"label":["type"],"name":[9],"type":["chr"],"align":["left"]},{"label":["model"],"name":[10],"type":["chr"],"align":["left"]}],"data":[{"1":"2013","2":"1","3":"1","4":"517","5":"830","6":"UA","7":"1545","8":"N14228","9":"NA","10":"NA"},{"1":"2013","2":"1","3":"1","4":"533","5":"850","6":"UA","7":"1714","8":"N24211","9":"NA","10":"NA"},{"1":"2013","2":"1","3":"1","4":"542","5":"923","6":"AA","7":"1141","8":"N619AA","9":"NA","10":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -958,13 +1123,13 @@ refers to the <em>year of flight</em>, in the other it refers to
 <p>You just need to be more explicit in your join call by using the
 <code>by =</code> argument. - You can also rename any ambiguous columns
 to avoid confusion.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a><span class="fu">left_join</span>(</span>
-<span id="cb37-2"><a href="#cb37-2" tabindex="-1"></a>  flights,</span>
-<span id="cb37-3"><a href="#cb37-3" tabindex="-1"></a>  planes <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">year_built =</span> year), <span class="do">## Not necessary w/ below line, but helpful</span></span>
-<span id="cb37-4"><a href="#cb37-4" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">&quot;tailnum&quot;</span> <span class="do">## Be specific about the joining column</span></span>
-<span id="cb37-5"><a href="#cb37-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb37-6"><a href="#cb37-6" tabindex="-1"></a>  <span class="fu">select</span>(year, month, day, dep_time, arr_time, carrier, flight, tailnum, year_built, type, model) <span class="sc">|&gt;</span></span>
-<span id="cb37-7"><a href="#cb37-7" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a><span class="fu">left_join</span>(</span>
+<span id="cb45-2"><a href="#cb45-2" tabindex="-1"></a>  flights,</span>
+<span id="cb45-3"><a href="#cb45-3" tabindex="-1"></a>  planes <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">year_built =</span> year), <span class="do">## Not necessary w/ below line, but helpful</span></span>
+<span id="cb45-4"><a href="#cb45-4" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">&quot;tailnum&quot;</span> <span class="do">## Be specific about the joining column</span></span>
+<span id="cb45-5"><a href="#cb45-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb45-6"><a href="#cb45-6" tabindex="-1"></a>  <span class="fu">select</span>(year, month, day, dep_time, arr_time, carrier, flight, tailnum, year_built, type, model) <span class="sc">|&gt;</span></span>
+<span id="cb45-7"><a href="#cb45-7" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>) </span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["year"],"name":[1],"type":["int"],"align":["right"]},{"label":["month"],"name":[2],"type":["int"],"align":["right"]},{"label":["day"],"name":[3],"type":["int"],"align":["right"]},{"label":["dep_time"],"name":[4],"type":["int"],"align":["right"]},{"label":["arr_time"],"name":[5],"type":["int"],"align":["right"]},{"label":["carrier"],"name":[6],"type":["chr"],"align":["left"]},{"label":["flight"],"name":[7],"type":["int"],"align":["right"]},{"label":["tailnum"],"name":[8],"type":["chr"],"align":["left"]},{"label":["year_built"],"name":[9],"type":["int"],"align":["right"]},{"label":["type"],"name":[10],"type":["chr"],"align":["left"]},{"label":["model"],"name":[11],"type":["chr"],"align":["left"]}],"data":[{"1":"2013","2":"1","3":"1","4":"517","5":"830","6":"UA","7":"1545","8":"N14228","9":"1999","10":"Fixed wing multi engine","11":"737-824"},{"1":"2013","2":"1","3":"1","4":"533","5":"850","6":"UA","7":"1714","8":"N24211","9":"1998","10":"Fixed wing multi engine","11":"737-824"},{"1":"2013","2":"1","3":"1","4":"542","5":"923","6":"AA","7":"1141","8":"N619AA","9":"1990","10":"Fixed wing multi engine","11":"757-223"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -973,13 +1138,13 @@ to avoid confusion.</p>
 <p>Note what happens if we again specify the join column… but don’t
 rename the ambiguous “year” column in at least one of the given data
 frames.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="fu">left_join</span>(</span>
-<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a>  flights,</span>
-<span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a>  planes, <span class="do">## Not renaming &quot;year&quot; to &quot;year_built&quot; this time</span></span>
-<span id="cb38-4"><a href="#cb38-4" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">&quot;tailnum&quot;</span></span>
-<span id="cb38-5"><a href="#cb38-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb38-6"><a href="#cb38-6" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">&quot;year&quot;</span>), month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) <span class="sc">|&gt;</span></span>
-<span id="cb38-7"><a href="#cb38-7" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a><span class="fu">left_join</span>(</span>
+<span id="cb46-2"><a href="#cb46-2" tabindex="-1"></a>  flights,</span>
+<span id="cb46-3"><a href="#cb46-3" tabindex="-1"></a>  planes, <span class="do">## Not renaming &quot;year&quot; to &quot;year_built&quot; this time</span></span>
+<span id="cb46-4"><a href="#cb46-4" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">&quot;tailnum&quot;</span></span>
+<span id="cb46-5"><a href="#cb46-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb46-6"><a href="#cb46-6" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">&quot;year&quot;</span>), month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) <span class="sc">|&gt;</span></span>
+<span id="cb46-7"><a href="#cb46-7" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["year.x"],"name":[1],"type":["int"],"align":["right"]},{"label":["year.y"],"name":[2],"type":["int"],"align":["right"]},{"label":["month"],"name":[3],"type":["int"],"align":["right"]},{"label":["day"],"name":[4],"type":["int"],"align":["right"]},{"label":["dep_time"],"name":[5],"type":["int"],"align":["right"]},{"label":["arr_time"],"name":[6],"type":["int"],"align":["right"]},{"label":["carrier"],"name":[7],"type":["chr"],"align":["left"]},{"label":["flight"],"name":[8],"type":["int"],"align":["right"]},{"label":["tailnum"],"name":[9],"type":["chr"],"align":["left"]},{"label":["type"],"name":[10],"type":["chr"],"align":["left"]},{"label":["model"],"name":[11],"type":["chr"],"align":["left"]}],"data":[{"1":"2013","2":"1999","3":"1","4":"1","5":"517","6":"830","7":"UA","8":"1545","9":"N14228","10":"Fixed wing multi engine","11":"737-824"},{"1":"2013","2":"1998","3":"1","4":"1","5":"533","6":"850","7":"UA","8":"1714","9":"N24211","10":"Fixed wing multi engine","11":"737-824"},{"1":"2013","2":"1990","3":"1","4":"1","5":"542","6":"923","7":"AA","8":"1141","9":"N619AA","10":"Fixed wing multi engine","11":"757-223"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -990,8 +1155,8 @@ be specific.</p>
 <p>Now let’s take another example using the palmerpenguins dataset we
 used earlier today. Suppose we have the following additional information
 on the three islands the penguins are from:</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>islands <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name =</span> <span class="fu">c</span>(<span class="st">&quot;Torgersen&quot;</span>, <span class="st">&quot;Biscoe&quot;</span>, <span class="st">&quot;Dream&quot;</span>), </span>
-<span id="cb39-2"><a href="#cb39-2" tabindex="-1"></a>                      <span class="at">coordinates =</span> <span class="fu">c</span>(<span class="st">&quot;64°46′S 64°5′W&quot;</span>,<span class="st">&quot;65°26′S 65°30′W&quot;</span>,<span class="st">&quot;64°44′S 64°14′W&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a>islands <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name =</span> <span class="fu">c</span>(<span class="st">&quot;Torgersen&quot;</span>, <span class="st">&quot;Biscoe&quot;</span>, <span class="st">&quot;Dream&quot;</span>), </span>
+<span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a>                      <span class="at">coordinates =</span> <span class="fu">c</span>(<span class="st">&quot;64°46′S 64°5′W&quot;</span>,<span class="st">&quot;65°26′S 65°30′W&quot;</span>,<span class="st">&quot;64°44′S 64°14′W&quot;</span>))</span></code></pre></div>
 <p>We want to merge these datasets using the column for island names,
 however the columns are named differently in both datasets. This is
 where dplyr’s new updates come in handy.</p>
@@ -1002,12 +1167,12 @@ that bring their functionality closer to data.table, SQL etc. One of
 them is the <code>join_by</code> function for the <code>by</code>
 argument.</p>
 <p>Previously, we’d merge these data frames as follows:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a><span class="fu">left_join</span>(</span>
-<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a>  penguins,</span>
-<span id="cb40-3"><a href="#cb40-3" tabindex="-1"></a>  islands,</span>
-<span id="cb40-4"><a href="#cb40-4" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;island&quot;</span> <span class="ot">=</span> <span class="st">&quot;name&quot;</span>)</span>
-<span id="cb40-5"><a href="#cb40-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb40-6"><a href="#cb40-6" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a><span class="fu">left_join</span>(</span>
+<span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a>  penguins,</span>
+<span id="cb48-3"><a href="#cb48-3" tabindex="-1"></a>  islands,</span>
+<span id="cb48-4"><a href="#cb48-4" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;island&quot;</span> <span class="ot">=</span> <span class="st">&quot;name&quot;</span>)</span>
+<span id="cb48-5"><a href="#cb48-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb48-6"><a href="#cb48-6" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["species"],"name":[1],"type":["fct"],"align":["left"]},{"label":["island"],"name":[2],"type":["chr"],"align":["left"]},{"label":["bill_length_mm"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["bill_depth_mm"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["flipper_length_mm"],"name":[5],"type":["int"],"align":["right"]},{"label":["body_mass_g"],"name":[6],"type":["int"],"align":["right"]},{"label":["sex"],"name":[7],"type":["fct"],"align":["left"]},{"label":["year"],"name":[8],"type":["int"],"align":["right"]},{"label":["coordinates"],"name":[9],"type":["chr"],"align":["left"]}],"data":[{"1":"Adelie","2":"Torgersen","3":"39.1","4":"18.7","5":"181","6":"3750","7":"male","8":"2007","9":"64°46′S 64°5′W"},{"1":"Adelie","2":"Torgersen","3":"39.5","4":"17.4","5":"186","6":"3800","7":"female","8":"2007","9":"64°46′S 64°5′W"},{"1":"Adelie","2":"Torgersen","3":"40.3","4":"18.0","5":"195","6":"3250","7":"female","8":"2007","9":"64°46′S 64°5′W"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -1015,24 +1180,24 @@ argument.</p>
 </div>
 <p>With the <code>join_by</code> function, we would achieve the same
 results as follows:</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a><span class="fu">left_join</span>(</span>
-<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a>  penguins,</span>
-<span id="cb41-3"><a href="#cb41-3" tabindex="-1"></a>  islands,</span>
-<span id="cb41-4"><a href="#cb41-4" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">join_by</span>(island <span class="sc">==</span> name)</span>
-<span id="cb41-5"><a href="#cb41-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb41-6"><a href="#cb41-6" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a><span class="fu">left_join</span>(</span>
+<span id="cb49-2"><a href="#cb49-2" tabindex="-1"></a>  penguins,</span>
+<span id="cb49-3"><a href="#cb49-3" tabindex="-1"></a>  islands,</span>
+<span id="cb49-4"><a href="#cb49-4" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">join_by</span>(island <span class="sc">==</span> name)</span>
+<span id="cb49-5"><a href="#cb49-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb49-6"><a href="#cb49-6" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["species"],"name":[1],"type":["fct"],"align":["left"]},{"label":["island"],"name":[2],"type":["chr"],"align":["left"]},{"label":["bill_length_mm"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["bill_depth_mm"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["flipper_length_mm"],"name":[5],"type":["int"],"align":["right"]},{"label":["body_mass_g"],"name":[6],"type":["int"],"align":["right"]},{"label":["sex"],"name":[7],"type":["fct"],"align":["left"]},{"label":["year"],"name":[8],"type":["int"],"align":["right"]},{"label":["coordinates"],"name":[9],"type":["chr"],"align":["left"]}],"data":[{"1":"Adelie","2":"Torgersen","3":"39.1","4":"18.7","5":"181","6":"3750","7":"male","8":"2007","9":"64°46′S 64°5′W"},{"1":"Adelie","2":"Torgersen","3":"39.5","4":"17.4","5":"186","6":"3800","7":"female","8":"2007","9":"64°46′S 64°5′W"},{"1":"Adelie","2":"Torgersen","3":"40.3","4":"18.0","5":"195","6":"3250","7":"female","8":"2007","9":"64°46′S 64°5′W"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a><span class="co">#or simply</span></span>
-<span id="cb42-2"><a href="#cb42-2" tabindex="-1"></a><span class="fu">left_join</span>(</span>
-<span id="cb42-3"><a href="#cb42-3" tabindex="-1"></a>  penguins,</span>
-<span id="cb42-4"><a href="#cb42-4" tabindex="-1"></a>  islands,</span>
-<span id="cb42-5"><a href="#cb42-5" tabindex="-1"></a>  <span class="fu">join_by</span>(island <span class="sc">==</span> name)</span>
-<span id="cb42-6"><a href="#cb42-6" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb42-7"><a href="#cb42-7" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a><span class="co">#or simply</span></span>
+<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a><span class="fu">left_join</span>(</span>
+<span id="cb50-3"><a href="#cb50-3" tabindex="-1"></a>  penguins,</span>
+<span id="cb50-4"><a href="#cb50-4" tabindex="-1"></a>  islands,</span>
+<span id="cb50-5"><a href="#cb50-5" tabindex="-1"></a>  <span class="fu">join_by</span>(island <span class="sc">==</span> name)</span>
+<span id="cb50-6"><a href="#cb50-6" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb50-7"><a href="#cb50-7" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["species"],"name":[1],"type":["fct"],"align":["left"]},{"label":["island"],"name":[2],"type":["chr"],"align":["left"]},{"label":["bill_length_mm"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["bill_depth_mm"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["flipper_length_mm"],"name":[5],"type":["int"],"align":["right"]},{"label":["body_mass_g"],"name":[6],"type":["int"],"align":["right"]},{"label":["sex"],"name":[7],"type":["fct"],"align":["left"]},{"label":["year"],"name":[8],"type":["int"],"align":["right"]},{"label":["coordinates"],"name":[9],"type":["chr"],"align":["left"]}],"data":[{"1":"Adelie","2":"Torgersen","3":"39.1","4":"18.7","5":"181","6":"3750","7":"male","8":"2007","9":"64°46′S 64°5′W"},{"1":"Adelie","2":"Torgersen","3":"39.5","4":"17.4","5":"186","6":"3800","7":"female","8":"2007","9":"64°46′S 64°5′W"},{"1":"Adelie","2":"Torgersen","3":"40.3","4":"18.0","5":"195","6":"3250","7":"female","8":"2007","9":"64°46′S 64°5′W"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -1046,6 +1211,7 @@ reading, similar to logical statements.</p>
 as for defining the <code>relationship</code> between data frames in [R
 for Data Science, 2nd Edition] (<a href="https://r4ds.hadley.nz/joins"
 class="uri">https://r4ds.hadley.nz/joins</a>).</p>
+<hr />
 </div>
 <div id="actually-learning-r" class="section level1">
 <h1>Actually learning R 🎒</h1>
@@ -1058,11 +1224,26 @@ just <em>similar enough</em> issue before and that the R community has
 answered it with 5+ different solutions years ago. 😉</p>
 <hr />
 </div>
-<div id="coding-style" class="section level1">
-<h1>Coding style 🎨</h1>
+<div id="sources" class="section level1 unnumbered">
+<h1 class="unnumbered">Sources</h1>
+<p>This tutorial is partly based on <a
+href="https://r4ds.hadley.nz/"><em>R for Data Science</em></a>, section
+5.2, <a href="http://qpolr.com/data.html/"><em>Quantitative Politics
+with R</em></a>, chapter 3, the <a
+href="https://github.com/uo-ec607/lectures/tree/master/05-tidyverse">Tidyverse
+Session</a> in the course Data Science for Economists by Grant
+McDermott, and <a
+href="https://www.tidyverse.org/blog/2023/08/teach-tidyverse-23/"><em>Teaching
+the Tidyverse in 2023</em></a>.</p>
+<hr />
+</div>
+<div id="appendix" class="section level1">
+<h1>Appendix</h1>
+<div id="coding-style" class="section level2">
+<h2>Coding style 🎨</h2>
 <div id="why-adhere-to-a-particular-style-of-coding"
-class="section level2">
-<h2>Why adhere to a particular style of coding?</h2>
+class="section level3">
+<h3>Why adhere to a particular style of coding?</h3>
 <ul>
 <li>It reduces the number of arbitrary decisions you have to consciously
 make during coding. We make an arbitrary decision (convention) once, not
@@ -1073,8 +1254,8 @@ always ad hoc.</li>
 days after you’ve closed a script).</li>
 </ul>
 </div>
-<div id="what-are-questions-of-style" class="section level2">
-<h2>What are questions of style?</h2>
+<div id="what-are-questions-of-style" class="section level3">
+<h3>What are questions of style?</h3>
 <ul>
 <li>Questions of style are a matter of opinion.</li>
 <li>We will mostly follow Hadley Wickham’s opinion as expressed in the
@@ -1088,10 +1269,10 @@ days after you’ve closed a script).</li>
 </ul></li>
 </ul>
 </div>
-<div id="naming-things" class="section level2">
-<h2>Naming things</h2>
-<div id="naming-files" class="section level3">
-<h3>Naming files</h3>
+<div id="naming-things" class="section level3">
+<h3>Naming things</h3>
+<div id="naming-files" class="section level4">
+<h4>Naming files</h4>
 <ul>
 <li>Code file names should be meaningful and end in
 <code>.R</code>.</li>
@@ -1099,28 +1280,28 @@ days after you’ve closed a script).</li>
 letters, dashes (<code>-</code>), and underscores (<code>_</code>).</li>
 <li>Some examples:</li>
 </ul>
-<div class="sourceCode" id="cb43"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="co"># Good</span></span>
-<span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a><span class="ex">fit_models.R</span></span>
-<span id="cb43-3"><a href="#cb43-3" tabindex="-1"></a><span class="ex">utility_functions.R</span></span>
-<span id="cb43-4"><a href="#cb43-4" tabindex="-1"></a></span>
-<span id="cb43-5"><a href="#cb43-5" tabindex="-1"></a><span class="co"># Bad</span></span>
-<span id="cb43-6"><a href="#cb43-6" tabindex="-1"></a><span class="ex">fit</span> models.R</span>
-<span id="cb43-7"><a href="#cb43-7" tabindex="-1"></a><span class="ex">foo.r</span></span>
-<span id="cb43-8"><a href="#cb43-8" tabindex="-1"></a><span class="ex">stuff.r</span></span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a><span class="co"># Good</span></span>
+<span id="cb51-2"><a href="#cb51-2" tabindex="-1"></a><span class="ex">fit_models.R</span></span>
+<span id="cb51-3"><a href="#cb51-3" tabindex="-1"></a><span class="ex">utility_functions.R</span></span>
+<span id="cb51-4"><a href="#cb51-4" tabindex="-1"></a></span>
+<span id="cb51-5"><a href="#cb51-5" tabindex="-1"></a><span class="co"># Bad</span></span>
+<span id="cb51-6"><a href="#cb51-6" tabindex="-1"></a><span class="ex">fit</span> models.R</span>
+<span id="cb51-7"><a href="#cb51-7" tabindex="-1"></a><span class="ex">foo.r</span></span>
+<span id="cb51-8"><a href="#cb51-8" tabindex="-1"></a><span class="ex">stuff.r</span></span></code></pre></div>
 <ul>
 <li>If files should be run in a particular order, prefix them with
 numbers:</li>
 </ul>
-<div class="sourceCode" id="cb44"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a><span class="ex">00_download.R</span></span>
-<span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a><span class="ex">01_explore.R</span></span>
-<span id="cb44-3"><a href="#cb44-3" tabindex="-1"></a><span class="ex">...</span></span>
-<span id="cb44-4"><a href="#cb44-4" tabindex="-1"></a><span class="ex">09_model.R</span></span>
-<span id="cb44-5"><a href="#cb44-5" tabindex="-1"></a><span class="ex">10_visualize.R</span></span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a><span class="ex">00_download.R</span></span>
+<span id="cb52-2"><a href="#cb52-2" tabindex="-1"></a><span class="ex">01_explore.R</span></span>
+<span id="cb52-3"><a href="#cb52-3" tabindex="-1"></a><span class="ex">...</span></span>
+<span id="cb52-4"><a href="#cb52-4" tabindex="-1"></a><span class="ex">09_model.R</span></span>
+<span id="cb52-5"><a href="#cb52-5" tabindex="-1"></a><span class="ex">10_visualize.R</span></span></code></pre></div>
 </div>
-<div id="naming-objects-and-variables" class="section level3">
-<h3>Naming objects and variables</h3>
+<div id="naming-objects-and-variables" class="section level4">
+<h4>Naming objects and variables</h4>
 <ul>
 <li>There are various conventions of how to write phrases without spaces
 or punctuation. Some of these have been adapted in programming, such as
@@ -1133,33 +1314,33 @@ way: Object and variable names should use only lowercase letters,
 numbers, and underscores.</li>
 <li>Examples:</li>
 </ul>
-<div class="sourceCode" id="cb45"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a><span class="co"># Good</span></span>
-<span id="cb45-2"><a href="#cb45-2" tabindex="-1"></a><span class="ex">day_one</span> <span class="co"># snake_case</span></span>
-<span id="cb45-3"><a href="#cb45-3" tabindex="-1"></a><span class="ex">day_1</span> <span class="co"># snake_case</span></span>
-<span id="cb45-4"><a href="#cb45-4" tabindex="-1"></a></span>
-<span id="cb45-5"><a href="#cb45-5" tabindex="-1"></a><span class="co"># Less good</span></span>
-<span id="cb45-6"><a href="#cb45-6" tabindex="-1"></a><span class="ex">dayOne</span> <span class="co"># camelCase</span></span>
-<span id="cb45-7"><a href="#cb45-7" tabindex="-1"></a><span class="ex">DayOne</span> <span class="co"># PascalCase</span></span>
-<span id="cb45-8"><a href="#cb45-8" tabindex="-1"></a><span class="ex">day.one</span> <span class="co"># dot.case</span></span>
-<span id="cb45-9"><a href="#cb45-9" tabindex="-1"></a></span>
-<span id="cb45-10"><a href="#cb45-10" tabindex="-1"></a><span class="co"># Dysfunctional</span></span>
-<span id="cb45-11"><a href="#cb45-11" tabindex="-1"></a><span class="ex">day-one</span> <span class="co"># kebab-case</span></span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" tabindex="-1"></a><span class="co"># Good</span></span>
+<span id="cb53-2"><a href="#cb53-2" tabindex="-1"></a><span class="ex">day_one</span> <span class="co"># snake_case</span></span>
+<span id="cb53-3"><a href="#cb53-3" tabindex="-1"></a><span class="ex">day_1</span> <span class="co"># snake_case</span></span>
+<span id="cb53-4"><a href="#cb53-4" tabindex="-1"></a></span>
+<span id="cb53-5"><a href="#cb53-5" tabindex="-1"></a><span class="co"># Less good</span></span>
+<span id="cb53-6"><a href="#cb53-6" tabindex="-1"></a><span class="ex">dayOne</span> <span class="co"># camelCase</span></span>
+<span id="cb53-7"><a href="#cb53-7" tabindex="-1"></a><span class="ex">DayOne</span> <span class="co"># PascalCase</span></span>
+<span id="cb53-8"><a href="#cb53-8" tabindex="-1"></a><span class="ex">day.one</span> <span class="co"># dot.case</span></span>
+<span id="cb53-9"><a href="#cb53-9" tabindex="-1"></a></span>
+<span id="cb53-10"><a href="#cb53-10" tabindex="-1"></a><span class="co"># Dysfunctional</span></span>
+<span id="cb53-11"><a href="#cb53-11" tabindex="-1"></a><span class="ex">day-one</span> <span class="co"># kebab-case</span></span></code></pre></div>
 </div>
-<div id="naming-functions" class="section level3">
-<h3>Naming functions</h3>
+<div id="naming-functions" class="section level4">
+<h4>Naming functions</h4>
 <ul>
 <li>In addition to following the general advice for object names, strive
 to use verbs for function names:</li>
 </ul>
-<div class="sourceCode" id="cb46"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a><span class="co"># Good</span></span>
-<span id="cb46-2"><a href="#cb46-2" tabindex="-1"></a><span class="fu">add_row()</span></span>
-<span id="cb46-3"><a href="#cb46-3" tabindex="-1"></a><span class="fu">permute()</span></span>
-<span id="cb46-4"><a href="#cb46-4" tabindex="-1"></a></span>
-<span id="cb46-5"><a href="#cb46-5" tabindex="-1"></a><span class="co"># Bad</span></span>
-<span id="cb46-6"><a href="#cb46-6" tabindex="-1"></a><span class="fu">row_adder()</span></span>
-<span id="cb46-7"><a href="#cb46-7" tabindex="-1"></a><span class="fu">permutation()</span></span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a><span class="co"># Good</span></span>
+<span id="cb54-2"><a href="#cb54-2" tabindex="-1"></a><span class="fu">add_row()</span></span>
+<span id="cb54-3"><a href="#cb54-3" tabindex="-1"></a><span class="fu">permute()</span></span>
+<span id="cb54-4"><a href="#cb54-4" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="#cb54-5" tabindex="-1"></a><span class="co"># Bad</span></span>
+<span id="cb54-6"><a href="#cb54-6" tabindex="-1"></a><span class="fu">row_adder()</span></span>
+<span id="cb54-7"><a href="#cb54-7" tabindex="-1"></a><span class="fu">permutation()</span></span></code></pre></div>
 <ul>
 <li>Also, try avoiding function names that already exist, in particular
 those that come with a loaded package.</li>
@@ -1179,10 +1360,10 @@ legendary presentation</a> by Jenny Bryan.</li>
 </ul>
 </div>
 </div>
-<div id="commenting-on-things" class="section level2">
-<h2>Commenting on things 💬</h2>
-<div id="why-comment-on-things-at-all" class="section level3">
-<h3>Why comment on things at all?</h3>
+<div id="commenting-on-things" class="section level3">
+<h3>Commenting on things 💬</h3>
+<div id="why-comment-on-things-at-all" class="section level4">
+<h4>Why comment on things at all?</h4>
 <ul>
 <li>It’s often tempting to set up a project assuming that you will be
 the only person working on it, e.g. as homework. But that’s almost never
@@ -1194,8 +1375,8 @@ Future-you.</li>
 what Present-You is doing/thinking/planning to do.</li>
 </ul>
 </div>
-<div id="general-advice" class="section level3">
-<h3>General advice</h3>
+<div id="general-advice" class="section level4">
+<h4>General advice</h4>
 <ul>
 <li>Each line of a comment should begin with the comment symbol and a
 single space: <code>#</code></li>
@@ -1209,34 +1390,34 @@ switching to R Markdown.</li>
 <li>(Longer) comments generally work better if they get their own
 line.</li>
 </ul>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a><span class="co"># define job status</span></span>
-<span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a>dat<span class="sc">$</span>at_work <span class="ot">&lt;-</span> dat<span class="sc">$</span>job <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>)</span>
-<span id="cb47-3"><a href="#cb47-3" tabindex="-1"></a>dat<span class="sc">$</span>at_work <span class="ot">&lt;-</span> dat<span class="sc">$</span>job <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>) <span class="co"># define job status</span></span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a><span class="co"># define job status</span></span>
+<span id="cb55-2"><a href="#cb55-2" tabindex="-1"></a>dat<span class="sc">$</span>at_work <span class="ot">&lt;-</span> dat<span class="sc">$</span>job <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb55-3"><a href="#cb55-3" tabindex="-1"></a>dat<span class="sc">$</span>at_work <span class="ot">&lt;-</span> dat<span class="sc">$</span>job <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>) <span class="co"># define job status</span></span></code></pre></div>
 </div>
-<div id="giving-structure" class="section level3">
-<h3>Giving structure</h3>
+<div id="giving-structure" class="section level4">
+<h4>Giving structure</h4>
 <ul>
 <li>Use commented lines together with dashes to break up your file into
 easily readable chunks.</li>
 <li>RStudio automatically detects these chunks and turns them into
 sections in the script outline.</li>
 </ul>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a><span class="co"># Input/output ---------------------</span></span>
-<span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a></span>
-<span id="cb48-3"><a href="#cb48-3" tabindex="-1"></a><span class="co"># input</span></span>
-<span id="cb48-4"><a href="#cb48-4" tabindex="-1"></a><span class="fu">c</span>(<span class="st">&quot;data/survey2021.csv&quot;</span>)</span>
-<span id="cb48-5"><a href="#cb48-5" tabindex="-1"></a></span>
-<span id="cb48-6"><a href="#cb48-6" tabindex="-1"></a><span class="co">#  output</span></span>
-<span id="cb48-7"><a href="#cb48-7" tabindex="-1"></a><span class="fu">c</span>(<span class="st">&quot;survey_2021_cleaned.RData&quot;</span>,</span>
-<span id="cb48-8"><a href="#cb48-8" tabindex="-1"></a>  <span class="st">&quot;resp_ids.csv&quot;</span>)</span>
-<span id="cb48-9"><a href="#cb48-9" tabindex="-1"></a></span>
-<span id="cb48-10"><a href="#cb48-10" tabindex="-1"></a><span class="co"># Load data ------------------------</span></span>
-<span id="cb48-11"><a href="#cb48-11" tabindex="-1"></a></span>
-<span id="cb48-12"><a href="#cb48-12" tabindex="-1"></a><span class="co"># Plot data ------------------------</span></span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" tabindex="-1"></a><span class="co"># Input/output ---------------------</span></span>
+<span id="cb56-2"><a href="#cb56-2" tabindex="-1"></a></span>
+<span id="cb56-3"><a href="#cb56-3" tabindex="-1"></a><span class="co"># input</span></span>
+<span id="cb56-4"><a href="#cb56-4" tabindex="-1"></a><span class="fu">c</span>(<span class="st">&quot;data/survey2021.csv&quot;</span>)</span>
+<span id="cb56-5"><a href="#cb56-5" tabindex="-1"></a></span>
+<span id="cb56-6"><a href="#cb56-6" tabindex="-1"></a><span class="co">#  output</span></span>
+<span id="cb56-7"><a href="#cb56-7" tabindex="-1"></a><span class="fu">c</span>(<span class="st">&quot;survey_2021_cleaned.RData&quot;</span>,</span>
+<span id="cb56-8"><a href="#cb56-8" tabindex="-1"></a>  <span class="st">&quot;resp_ids.csv&quot;</span>)</span>
+<span id="cb56-9"><a href="#cb56-9" tabindex="-1"></a></span>
+<span id="cb56-10"><a href="#cb56-10" tabindex="-1"></a><span class="co"># Load data ------------------------</span></span>
+<span id="cb56-11"><a href="#cb56-11" tabindex="-1"></a></span>
+<span id="cb56-12"><a href="#cb56-12" tabindex="-1"></a><span class="co"># Plot data ------------------------</span></span></code></pre></div>
 </div>
 </div>
-<div id="other-stuff" class="section level2">
-<h2>Other stuff 📦</h2>
+<div id="other-stuff" class="section level3">
+<h3>Other stuff 📦</h3>
 <ul>
 <li>Use <strong>spaces</strong> generously, but not too generously.
 Always put a space after a comma, never before, just like in regular
@@ -1255,237 +1436,23 @@ have a space before it, and should usually be followed by a new
 line.</li>
 </ul>
 <p><strong>Spacing</strong></p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a><span class="co"># Good</span></span>
-<span id="cb49-2"><a href="#cb49-2" tabindex="-1"></a><span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb49-3"><a href="#cb49-3" tabindex="-1"></a>height <span class="ot">&lt;-</span> (feet <span class="sc">*</span> <span class="dv">12</span>) <span class="sc">+</span> inches</span>
-<span id="cb49-4"><a href="#cb49-4" tabindex="-1"></a></span>
-<span id="cb49-5"><a href="#cb49-5" tabindex="-1"></a><span class="co"># Bad</span></span>
-<span id="cb49-6"><a href="#cb49-6" tabindex="-1"></a><span class="fu">mean</span>(x,<span class="at">na.rm=</span><span class="cn">TRUE</span>) </span>
-<span id="cb49-7"><a href="#cb49-7" tabindex="-1"></a><span class="fu">mean</span> ( x, <span class="at">na.rm =</span> <span class="cn">TRUE</span> )</span>
-<span id="cb49-8"><a href="#cb49-8" tabindex="-1"></a>height<span class="ot">&lt;-</span>feet<span class="sc">*</span><span class="dv">12</span><span class="sc">+</span>inches</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a><span class="co"># Good</span></span>
+<span id="cb57-2"><a href="#cb57-2" tabindex="-1"></a><span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb57-3"><a href="#cb57-3" tabindex="-1"></a>height <span class="ot">&lt;-</span> (feet <span class="sc">*</span> <span class="dv">12</span>) <span class="sc">+</span> inches</span>
+<span id="cb57-4"><a href="#cb57-4" tabindex="-1"></a></span>
+<span id="cb57-5"><a href="#cb57-5" tabindex="-1"></a><span class="co"># Bad</span></span>
+<span id="cb57-6"><a href="#cb57-6" tabindex="-1"></a><span class="fu">mean</span>(x,<span class="at">na.rm=</span><span class="cn">TRUE</span>) </span>
+<span id="cb57-7"><a href="#cb57-7" tabindex="-1"></a><span class="fu">mean</span> ( x, <span class="at">na.rm =</span> <span class="cn">TRUE</span> )</span>
+<span id="cb57-8"><a href="#cb57-8" tabindex="-1"></a>height<span class="ot">&lt;-</span>feet<span class="sc">*</span><span class="dv">12</span><span class="sc">+</span>inches</span></code></pre></div>
 <p><strong>Piping</strong></p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a>babynames <span class="sc">|&gt;</span></span>
-<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">|&gt;</span> <span class="fu">equals</span>(<span class="st">&quot;Kim&quot;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb50-3"><a href="#cb50-3" tabindex="-1"></a>  <span class="fu">group_by</span>(year, sex) <span class="sc">|&gt;</span></span>
-<span id="cb50-4"><a href="#cb50-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total =</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span></span>
-<span id="cb50-5"><a href="#cb50-5" tabindex="-1"></a>  <span class="fu">qplot</span>(year, total, <span class="at">color =</span> sex, <span class="at">data =</span> ., </span>
-<span id="cb50-6"><a href="#cb50-6" tabindex="-1"></a>        <span class="at">geom =</span> <span class="st">&quot;line&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb50-7"><a href="#cb50-7" tabindex="-1"></a>  <span class="fu">add</span>(<span class="fu">ggtitle</span>(<span class="st">&#39;People named &quot;Kim&quot;&#39;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb50-8"><a href="#cb50-8" tabindex="-1"></a>  print</span></code></pre></div>
-<hr />
-</div>
-</div>
-<div id="sources" class="section level1 unnumbered">
-<h1 class="unnumbered">Sources</h1>
-<p>This tutorial is partly based on <a
-href="https://r4ds.hadley.nz/"><em>R for Data Science</em></a>, section
-5.2, <a href="http://qpolr.com/data.html/"><em>Quantitative Politics
-with R</em></a>, chapter 3, the <a
-href="https://github.com/uo-ec607/lectures/tree/master/05-tidyverse">Tidyverse
-Session</a> in the course Data Science for Economists by Grant
-McDermott, and <a
-href="https://www.tidyverse.org/blog/2023/08/teach-tidyverse-23/"><em>Teaching
-the Tidyverse in 2023</em></a>.</p>
-<hr />
-</div>
-<div id="appendix" class="section level1">
-<h1>Appendix</h1>
-<div id="other-dplyr-goodies" class="section level2">
-<h2>Other dplyr goodies 🎁</h2>
-<div id="slice" class="section level3">
-<h3><code>slice()</code></h3>
-<p>Subset rows by position rather than filtering by values. There’s also
-<code>slice_sample()</code> to randomly select rows,
-<code>slice_head()</code> and <code>slice_tail()</code>to select first
-or last rows, and more.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a>starwars <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>))</span></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["int"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["skin_color"],"name":[5],"type":["chr"],"align":["left"]},{"label":["eye_color"],"name":[6],"type":["chr"],"align":["left"]},{"label":["birth_year"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[8],"type":["chr"],"align":["left"]},{"label":["gender"],"name":[9],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[10],"type":["chr"],"align":["left"]},{"label":["species"],"name":[11],"type":["chr"],"align":["left"]},{"label":["films"],"name":[12],"type":["list"],"align":["right"]},{"label":["vehicles"],"name":[13],"type":["list"],"align":["right"]},{"label":["starships"],"name":[14],"type":["list"],"align":["right"]}],"data":[{"1":"Luke Skywalker","2":"172","3":"77","4":"blond","5":"fair","6":"blue","7":"19","8":"male","9":"masculine","10":"Tatooine","11":"Human","12":"<chr [5]>","13":"<chr [2]>","14":"<chr [2]>"},{"1":"Leia Organa","2":"150","3":"49","4":"brown","5":"light","6":"brown","7":"19","8":"female","9":"feminine","10":"Alderaan","11":"Human","12":"<chr [5]>","13":"<chr [1]>","14":"<chr [0]>"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-</div>
-<div id="pull" class="section level3">
-<h3><code>pull()</code></h3>
-<p>Extract a column from as a data frame as a vector or scalar.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>starwars <span class="sc">|&gt;</span> <span class="fu">filter</span>(gender<span class="sc">==</span><span class="st">&quot;feminine&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(height)</span></code></pre></div>
-<pre><code>##  [1] 150 165 150 163 178 184 157 170 166 165 168 213 167  96 178  NA 165</code></pre>
-</div>
-<div id="count-n-distinct" class="section level3">
-<h3><code>count()</code>, <code>n()</code>, <code>distinct()</code></h3>
-<p>Count, number and isolate unique observations.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a>starwars <span class="sc">|&gt;</span> <span class="fu">count</span>(species) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">6</span>)</span></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["species"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Aleena","2":"1"},{"1":"Besalisk","2":"1"},{"1":"Cerean","2":"1"},{"1":"Chagrian","2":"1"},{"1":"Clawdite","2":"1"},{"1":"Droid","2":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a>starwars <span class="sc">|&gt;</span> <span class="fu">distinct</span>(species) <span class="sc">|&gt;</span> <span class="fu">pull</span>() <span class="sc">|&gt;</span> <span class="fu">sort</span>() <span class="sc">|&gt;</span> magrittr<span class="sc">::</span><span class="fu">extract</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) </span></code></pre></div>
-<pre><code>## [1] &quot;Aleena&quot;   &quot;Besalisk&quot; &quot;Cerean&quot;   &quot;Chagrian&quot; &quot;Clawdite&quot;</code></pre>
-<p>You could also use a combination of <code>mutate()</code>,
-<code>group_by()</code>, and <code>n()</code>,
-e.g. <code>starwars |&gt; group_by(species) |&gt; mutate(num = n())</code>.</p>
-</div>
-<div id="where" class="section level3">
-<h3><code>where()</code></h3>
-<p>Select the variables for which a function returns true.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a>starwars <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">|&gt;</span> <span class="fu">names</span>()</span></code></pre></div>
-<pre><code>## [1] &quot;height&quot;     &quot;mass&quot;       &quot;birth_year&quot;</code></pre>
-</div>
-<div id="across" class="section level3">
-<h3><code>across()</code></h3>
-<p>Summarize or mutate multiple variables in the same way. More
-information <a
-href="https://dplyr.tidyverse.org/reference/across.html">here</a>.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>starwars <span class="sc">|&gt;</span> </span>
-<span id="cb59-2"><a href="#cb59-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), scale)) <span class="sc">|&gt;</span> </span>
-<span id="cb59-3"><a href="#cb59-3" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl[,1]"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl[,1]"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["skin_color"],"name":[5],"type":["chr"],"align":["left"]},{"label":["eye_color"],"name":[6],"type":["chr"],"align":["left"]},{"label":["birth_year"],"name":[7],"type":["dbl[,1]"],"align":["right"]},{"label":["sex"],"name":[8],"type":["chr"],"align":["left"]},{"label":["gender"],"name":[9],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[10],"type":["chr"],"align":["left"]},{"label":["species"],"name":[11],"type":["chr"],"align":["left"]},{"label":["films"],"name":[12],"type":["list"],"align":["right"]},{"label":["vehicles"],"name":[13],"type":["list"],"align":["right"]},{"label":["starships"],"name":[14],"type":["list"],"align":["right"]}],"data":[{"1":"Luke Skywalker","2":"-0.06781696","3":"-0.1198643","4":"blond","5":"fair","6":"blue","7":"-0.4432379","8":"male","9":"masculine","10":"Tatooine","11":"Human","12":"<chr [5]>","13":"<chr [2]>","14":"<chr [2]>"},{"1":"C-3PO","2":"-0.21161731","3":"-0.1316667","4":"NA","5":"gold","6":"yellow","7":"0.1579589","8":"none","9":"masculine","10":"Tatooine","11":"Droid","12":"<chr [6]>","13":"<chr [0]>","14":"<chr [0]>"},{"1":"R2-D2","2":"-2.25358235","3":"-0.3854181","4":"NA","5":"white, blue","6":"red","7":"-0.3527352","8":"none","9":"masculine","10":"Naboo","11":"Droid","12":"<chr [7]>","13":"<chr [0]>","14":"<chr [0]>"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-</div>
-<div id="case_when" class="section level3">
-<h3><code>case_when()</code></h3>
-<p>Vectorize multiple <code>if_else()</code> (or base R
-<code>ifelse()</code>) statements.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" tabindex="-1"></a>starwars <span class="sc">|&gt;</span> </span>
-<span id="cb60-2"><a href="#cb60-2" tabindex="-1"></a>  <span class="fu">mutate</span>( </span>
-<span id="cb60-3"><a href="#cb60-3" tabindex="-1"></a>    <span class="at">height_cat =</span> <span class="fu">case_when</span>(</span>
-<span id="cb60-4"><a href="#cb60-4" tabindex="-1"></a>      height <span class="sc">&lt;</span> <span class="dv">160</span> <span class="sc">~</span> <span class="st">&quot;tiny&quot;</span>,</span>
-<span id="cb60-5"><a href="#cb60-5" tabindex="-1"></a>      height <span class="sc">&gt;=</span> <span class="dv">160</span> <span class="sc">&amp;</span> height <span class="sc">&lt;</span> <span class="dv">190</span> <span class="sc">~</span> <span class="st">&quot;medium&quot;</span>,</span>
-<span id="cb60-6"><a href="#cb60-6" tabindex="-1"></a>      height <span class="sc">&gt;=</span> <span class="dv">190</span> <span class="sc">&amp;</span> height <span class="sc">&lt;</span> <span class="dv">220</span> <span class="sc">~</span> <span class="st">&quot;tall&quot;</span>,</span>
-<span id="cb60-7"><a href="#cb60-7" tabindex="-1"></a>      height <span class="sc">&gt;=</span> <span class="dv">220</span> <span class="sc">~</span> <span class="st">&quot;giant&quot;</span></span>
-<span id="cb60-8"><a href="#cb60-8" tabindex="-1"></a>    )</span>
-<span id="cb60-9"><a href="#cb60-9" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb60-10"><a href="#cb60-10" tabindex="-1"></a>  <span class="fu">pull</span>(height_cat) <span class="sc">|&gt;</span> <span class="fu">table</span>()</span></code></pre></div>
-<pre><code>## 
-##  giant medium   tall   tiny 
-##      5     45     18     13</code></pre>
-</div>
-<div id="window-functions" class="section level3">
-<h3>Window functions</h3>
-<p>There are also a whole class of <a
-href="https://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html">window
-functions</a> for getting leads and lags, ranking, creating cumulative
-aggregates, etc. See <code>vignette("window-functions")</code>.</p>
-</div>
-</div>
-<div id="other-tidyr-goodies" class="section level2">
-<h2>Other tidyr goodies 🧹</h2>
-<div id="crossing" class="section level3">
-<h3><code>crossing()</code></h3>
-<p>Get the full combination of a group of variables.</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" tabindex="-1"></a><span class="fu">crossing</span>(<span class="at">side =</span> <span class="fu">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;right&quot;</span>), <span class="at">height =</span> <span class="fu">c</span>(<span class="st">&quot;top&quot;</span>, <span class="st">&quot;bottom&quot;</span>))</span></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["side"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"left","2":"bottom"},{"1":"left","2":"top"},{"1":"right","2":"bottom"},{"1":"right","2":"top"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-</div>
-<div id="expand-and-complete" class="section level3">
-<h3><code>expand()</code> and <code>complete()</code></h3>
-<p>See <code>?expand()</code> and <code>?complete()</code> for more
-specialized functions that allow you to fill in (implicit) missing data
-or variable combinations in existing data frames. Base R alternative:
-<code>expand.grid()</code>.</p>
-</div>
-<div id="drop_nadata-..." class="section level3">
-<h3><code>drop_na(data, ...)</code></h3>
-<p>Drop rows containing NAs in <code>...</code> columns.</p>
-</div>
-<div id="filldata-...-direction-cdown-up" class="section level3">
-<h3><code>fill(data, ..., direction = c("down", "up"))</code></h3>
-<p>Fill in NAs in <code>...</code> columns with most recent non-NA
-values.</p>
-</div>
-</div>
-<div id="pipes" class="section level2">
-<h2>Pipes 😎</h2>
-<div id="the-beauty-of-pipes" class="section level3">
-<h3>The beauty of pipes</h3>
-<ul>
-<li>The forward-pipe operator <code>|&gt;</code> pipes the left-hand
-side values forward into expressions on the right-hand side.</li>
-<li>It serves the natural way of reading (“do this, then this, then
-this, …”).</li>
-<li>We replace <code>f(x)</code> with <code>x |&gt; f()</code>.</li>
-<li>It avoids nested function calls.</li>
-<li>It minimizes the need for local variables and function
-definitions.</li>
-</ul>
-<p><strong>The pipe way</strong></p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a>Alex <span class="sc">|&gt;</span></span>
-<span id="cb63-2"><a href="#cb63-2" tabindex="-1"></a>  <span class="fu">wake_up</span>(<span class="dv">7</span>) <span class="sc">|&gt;</span></span>
-<span id="cb63-3"><a href="#cb63-3" tabindex="-1"></a>  <span class="fu">shower</span>(<span class="at">temp =</span> <span class="dv">38</span>) <span class="sc">|&gt;</span></span>
-<span id="cb63-4"><a href="#cb63-4" tabindex="-1"></a>  <span class="fu">breakfast</span>(<span class="fu">c</span>(<span class="st">&quot;coffee&quot;</span>, <span class="st">&quot;croissant&quot;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb63-5"><a href="#cb63-5" tabindex="-1"></a>  <span class="fu">walk</span>(<span class="fu">step_function</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb63-6"><a href="#cb63-6" tabindex="-1"></a>  <span class="fu">bvg</span>(</span>
-<span id="cb63-7"><a href="#cb63-7" tabindex="-1"></a>    <span class="at">train =</span> <span class="st">&quot;U2&quot;</span>,</span>
-<span id="cb63-8"><a href="#cb63-8" tabindex="-1"></a>    <span class="at">destination =</span> <span class="st">&quot;Stadtmitte&quot;</span></span>
-<span id="cb63-9"><a href="#cb63-9" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb63-10"><a href="#cb63-10" tabindex="-1"></a>  <span class="fu">hertie</span>(<span class="at">course =</span> <span class="st">&quot;Intro to DS&quot;</span>)</span></code></pre></div>
-<p><strong>The classic way</strong></p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" tabindex="-1"></a><span class="fu">hertie</span>(</span>
-<span id="cb64-2"><a href="#cb64-2" tabindex="-1"></a>  <span class="fu">bvg</span>(</span>
-<span id="cb64-3"><a href="#cb64-3" tabindex="-1"></a>    <span class="fu">walk</span>(</span>
-<span id="cb64-4"><a href="#cb64-4" tabindex="-1"></a>      <span class="fu">breakfast</span>(</span>
-<span id="cb64-5"><a href="#cb64-5" tabindex="-1"></a>        <span class="fu">shower</span>(</span>
-<span id="cb64-6"><a href="#cb64-6" tabindex="-1"></a>          <span class="fu">wake_up</span>(</span>
-<span id="cb64-7"><a href="#cb64-7" tabindex="-1"></a>            Alex, <span class="dv">7</span></span>
-<span id="cb64-8"><a href="#cb64-8" tabindex="-1"></a>          ),</span>
-<span id="cb64-9"><a href="#cb64-9" tabindex="-1"></a>          <span class="at">temp =</span> <span class="dv">38</span></span>
-<span id="cb64-10"><a href="#cb64-10" tabindex="-1"></a>        ),</span>
-<span id="cb64-11"><a href="#cb64-11" tabindex="-1"></a>        <span class="fu">c</span>(<span class="st">&quot;coffee&quot;</span>, <span class="st">&quot;croissant&quot;</span>)</span>
-<span id="cb64-12"><a href="#cb64-12" tabindex="-1"></a>      ),</span>
-<span id="cb64-13"><a href="#cb64-13" tabindex="-1"></a>      <span class="fu">step_function</span>()</span>
-<span id="cb64-14"><a href="#cb64-14" tabindex="-1"></a>    ),</span>
-<span id="cb64-15"><a href="#cb64-15" tabindex="-1"></a>    <span class="at">train =</span> <span class="st">&quot;U2&quot;</span>,</span>
-<span id="cb64-16"><a href="#cb64-16" tabindex="-1"></a>    <span class="at">destination =</span> <span class="st">&quot;Stadtmitte&quot;</span></span>
-<span id="cb64-17"><a href="#cb64-17" tabindex="-1"></a>  ),</span>
-<span id="cb64-18"><a href="#cb64-18" tabindex="-1"></a>  <span class="at">course =</span> <span class="st">&quot;Intro to DS&quot;</span></span>
-<span id="cb64-19"><a href="#cb64-19" tabindex="-1"></a>)</span></code></pre></div>
-<p><strong>The classic way, nightmare edition</strong></p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" tabindex="-1"></a>alex_awake <span class="ot">&lt;-</span> <span class="fu">wake_up</span>(Alex, <span class="dv">7</span>)</span>
-<span id="cb65-2"><a href="#cb65-2" tabindex="-1"></a>alex_showered <span class="ot">&lt;-</span> <span class="fu">shower</span>(alex_awake, </span>
-<span id="cb65-3"><a href="#cb65-3" tabindex="-1"></a>                        <span class="at">temp =</span> <span class="dv">38</span>)</span>
-<span id="cb65-4"><a href="#cb65-4" tabindex="-1"></a>alex_replete <span class="ot">&lt;-</span> <span class="fu">breakfast</span>(alex_showered, </span>
-<span id="cb65-5"><a href="#cb65-5" tabindex="-1"></a>                          <span class="fu">c</span>(<span class="st">&quot;coffee&quot;</span>, <span class="st">&quot;croissant&quot;</span>))</span>
-<span id="cb65-6"><a href="#cb65-6" tabindex="-1"></a>alex_underway <span class="ot">&lt;-</span> <span class="fu">walk</span>(alex_replete, </span>
-<span id="cb65-7"><a href="#cb65-7" tabindex="-1"></a>                      <span class="fu">step_function</span>())</span>
-<span id="cb65-8"><a href="#cb65-8" tabindex="-1"></a>alex_on_train <span class="ot">&lt;-</span> <span class="fu">bvg</span>(alex_underway, </span>
-<span id="cb65-9"><a href="#cb65-9" tabindex="-1"></a>                         <span class="at">train =</span> <span class="st">&quot;U2&quot;</span>, </span>
-<span id="cb65-10"><a href="#cb65-10" tabindex="-1"></a>                         <span class="at">destination =</span> <span class="st">&quot;Stadtmitte&quot;</span>)</span>
-<span id="cb65-11"><a href="#cb65-11" tabindex="-1"></a>alex_hertie <span class="ot">&lt;-</span> <span class="fu">hertie</span>(alex_on_train, </span>
-<span id="cb65-12"><a href="#cb65-12" tabindex="-1"></a>                      <span class="at">course =</span> <span class="st">&quot;Intro to DS&quot;</span>)</span></code></pre></div>
-</div>
-<div id="piping-etiquette" class="section level3">
-<h3>Piping etiquette</h3>
-<ul>
-<li>Pipes are not very handy when you need to manipulate more than one
-object at a time. Reserve pipes for a sequence of steps applied to one
-primary object.</li>
-<li>Don’t use the pipe when there are meaningful intermediate objects
-that can be given informative names (and that are used later on).</li>
-<li><code>|&gt;</code> should always have a space before it, and should
-usually be followed by a new line.</li>
-</ul>
-</div>
-<div id="the-base-r-pipe" class="section level3">
-<h3>The base R pipe: |&gt;</h3>
-<p>The magrittr pipe has proven so successful and popular that the R
-core team <a
-href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/pipeOp.html">recently
-added</a> a “native” pipe operator to base R (version 4.1), denoted
-<code>|&gt;</code>. Here’s how it works:</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" tabindex="-1"></a>mtcars <span class="sc">|&gt;</span> <span class="fu">subset</span>(cyl <span class="sc">==</span> <span class="dv">4</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span>
-<span id="cb66-2"><a href="#cb66-2" tabindex="-1"></a>mtcars <span class="sc">|&gt;</span> <span class="fu">subset</span>(cyl <span class="sc">==</span> <span class="dv">4</span>) <span class="sc">|&gt;</span> (\(x) <span class="fu">lm</span>(mpg <span class="sc">~</span> disp, <span class="at">data =</span> x))()</span></code></pre></div>
-<p>Now, should we use the “magrittr” pipe or the native pipe? The native
-pipe might make more sense in the long term, since it avoids
-dependencies and might be more efficient. Check out <a
-href="https://stackoverflow.com/questions/67633022/what-are-the-differences-between-rs-new-native-pipe-and-the-magrittr-pipe">this
-Stackoverflow post</a> for a discussion of differences.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" tabindex="-1"></a>babynames <span class="sc">|&gt;</span></span>
+<span id="cb58-2"><a href="#cb58-2" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">|&gt;</span> <span class="fu">equals</span>(<span class="st">&quot;Kim&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb58-3"><a href="#cb58-3" tabindex="-1"></a>  <span class="fu">group_by</span>(year, sex) <span class="sc">|&gt;</span></span>
+<span id="cb58-4"><a href="#cb58-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total =</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span></span>
+<span id="cb58-5"><a href="#cb58-5" tabindex="-1"></a>  <span class="fu">qplot</span>(year, total, <span class="at">color =</span> sex, <span class="at">data =</span> ., </span>
+<span id="cb58-6"><a href="#cb58-6" tabindex="-1"></a>        <span class="at">geom =</span> <span class="st">&quot;line&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb58-7"><a href="#cb58-7" tabindex="-1"></a>  <span class="fu">add</span>(<span class="fu">ggtitle</span>(<span class="st">&#39;People named &quot;Kim&quot;&#39;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb58-8"><a href="#cb58-8" tabindex="-1"></a>  print</span></code></pre></div>
 </div>
 </div>
 </div>
