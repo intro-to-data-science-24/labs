@@ -40,7 +40,7 @@ Read more on this [here](http://varianceexplained.org/r/teach-tidyverse/) if you
 
 # Review git and Github `r emo::ji("surfer")`
 
-Last week how git and Github can be used to optimize, record and reproduce your workflow. With the upcoming submission, I thought we might again go through some of the most important steps together. 
+Last week we discussed how git and Github can be used to optimize, record and reproduce your workflow. With the upcoming submission, we thought we might go through some of the most important steps together again. 
 
 ### Cloning a repo to your local machine
 
@@ -88,8 +88,7 @@ In general, the `tidyverse` is a collection of R packages that share an underlyi
 
 In this lab, you will learn to:
 
-* review pulling and pushing to `git` and `Github`.
-* understand what we mean with `tidy data`
+* understand what we mean by `tidy data`
 * restructure data with a set of `tidyr` functions
 * identify the purpose of a set of `dplyr` functions
 
@@ -195,8 +194,8 @@ alex_hertie <- hertie(alex_on_train,
 
 ### Piping etiquette
 
-- Pipes are not very handy when you need to manipulate more than one object at a time. Reserve pipes for a sequence of steps applied to one primary object.
-- Don't use the pipe when there are meaningful intermediate objects that can be given informative names (and that are used later on).
+- Pipes are not very handy when you need to manipulate **more than one object** at a time. Reserve pipes for a sequence of steps applied to one primary object.
+- Don't use the pipe when there are **meaningful intermediate objects** that can be given informative names (and that are used later on).
 - `%>%` should always have a space before it, and should usually be followed by a new line.
 
 
@@ -251,7 +250,6 @@ Key tidyr verbs are:
 
 3. `separate`: Separate (i.e. split) one column into multiple columns (new syntax: `separate_wider_position()` and `separate_wider_delim()`)
 
-
 4. `unite`: Unite (i.e. combine) multiple columns into one.
 
 
@@ -273,7 +271,7 @@ stocks = data.frame( ## Could use "tibble" instead of "data.frame" if you prefer
   Z = rnorm(2, 0, 4)
   )
 stocks
-stocks |> pivot_longer(-time, names_to="stock", values_to="price")
+stocks |> pivot_longer(-time, names_to = "stock", values_to = "price")
 ```
 
 Let's quickly save the "tidy" (i.e. long) stocks data frame  
@@ -281,7 +279,7 @@ Let's quickly save the "tidy" (i.e. long) stocks data frame
 ```{r}
 ## Write out the argument names this time: i.e. "names_to=" and "values_to="
 tidy_stocks <- stocks |> 
-  pivot_longer(-time, names_to="stock", values_to="price")
+  pivot_longer(-time, names_to = "stock", values_to = "price")
 ```
 
 
@@ -295,8 +293,9 @@ knitr::include_graphics("pics/pivot_wider.png")
 
 
 ```{r pivot_wider1, dependson="tidy_stocks"}
-tidy_stocks |> pivot_wider(names_from=stock, values_from = price)
-tidy_stocks |> pivot_wider(names_from=time, values_from = price)
+tidy_stocks
+tidy_stocks |> pivot_wider(names_from = stock, values_from = price)
+tidy_stocks |> pivot_wider(names_from = time, values_from = price)
 ```
 
 Note that the second example; which has combined different pivoting arguments; has effectively transposed the data.
@@ -304,15 +303,14 @@ Note that the second example; which has combined different pivoting arguments; h
 
 ## Optional: `tidyr::separate()` `r emo::ji("broken_heart")`
 
-`separate()` is used to separate a single data frame or column into multiple columns. It has been superseded in favour of `separate_wider_position()` (splits at fixed widths) and `separate_wider_delim()` (splits by delimiter) because the two functions make the two uses more obvious, the API is more polished, and the handling of problems is better. The superseded `separate` function will not go away, but will only receive critical bug fixes.
+`separate()` is used to separate a single column into multiple columns. It has been superseded in favour of `separate_wider_position()` (splits at fixed widths) and `separate_wider_delim()` (splits by delimiter) because the two functions make the two uses more obvious, the API is more polished, and the handling of problems is better. The superseded `separate` function will not go away, but will only receive critical bug fixes.
 
 ```{r sep1}
 economists = data.frame(name = c("Adam.Smith", "Esther.Duflo", "Milton.Friedman"))
-economists
-economists |> separate(name, c("first_name", "last_name")) 
+econ_sep <- economists |> separate(name, c("first_name", "last_name")) 
 ```
 
-This command is pretty smart. But to avoid ambiguity, you can also specify the separation character with `separate(..., sep=".")`.
+This command is pretty smart. But to avoid ambiguity, you can also specify the separation character with `separate(..., sep=".")`. Note that "." is a special character in regular expressions (we study this in Session 6), and has to be "escaped" using 2 backslashes ("\\.") for R to treat it as just a dot.
 
 Now let's try to achieve the same results using the new syntax `separate_wider_delim`:
 
@@ -328,7 +326,7 @@ economists |>
 In order to use `separate_wider_position`, the position of the characters plays a crucial role. Let's add another column to our dataframe: 
 
 ```{r}
-economists$attribute <- c("m-34", "m-23", "f-38")
+economists$attribute <- c("m-34", "f-23", "m-38")
 economists
 economists |>
   separate_wider_position(attribute, c(sex = 1, 1, age = 2) 
@@ -363,10 +361,9 @@ gdp
 gdp |> unite(date, c("yr", "mnth", "dy"), sep = "-")
 ```
 
-Note that `unite` will automatically create a character variable. You can see this better if we convert it to a tibble. 
+Note that `unite` will automatically create a **character** variable. You can see this better if we convert it to a tibble. 
 ```{r unite2}
 gdp_u = gdp |> unite(date, c("yr", "mnth", "dy"), sep = "-") |> as_tibble()
-gdp_u
 ```
 
 If you want to convert it to something else (e.g. date or numeric) then you will need to modify it using `mutate`. See below for an example, using the [lubridate](https://lubridate.tidyverse.org/) package's super helpful date conversion functions.
@@ -398,12 +395,12 @@ Now on to another important tidyverse package!
 
 A second fundamental package of the tidyverse is called `dplyr`. In this section you'll learn and practice examples using some functions in `dplyr` to work with data. Those are: 
 
-- `select()`: keep or exclude some columns
-- `filter()`: keep rows that satisfy your conditions
-- `mutate()`: add columns from existing data or edit existing columns
-- `group_by()`: lets you define groups within your data set
-- `summarize()`: get summary statistics
-- `arrange()`: reorders the rows according to single or multiple variables
+- `select()`: Select (i.e. subset) columns by their names (keep or exclude some columns)
+- `mutate()`: Create new columns or edit existing ones
+- `filter()`: Filter (i.e. subset) rows based on their values (keep rows that satisfy your conditions)
+- `summarize()`: Collapse multiple rows into a single summary value (summary statistics)
+- `arrange()`: Arrange (i.e. reorder) rows based on their values (reorder rows according to single or multiple variables)
+- `group_by()`: Define groups within your data set
 
 
 ```{r, echo=FALSE}
@@ -438,7 +435,9 @@ Say we are only interested in the species, island, and year variables of these d
 
 
 **Exercise 3**
-*The following code chunk would select the variables we need. Can you adapt it, so that we keep the body_mass_g and sex variables as well?*
+```
+The following code chunk would select the variables we need. Can you adapt it, so that we keep the body_mass_g and sex variables as well?
+```
 ```{r,, eval=F}
 dplyr::select(penguins, species, island, year)
 ```
@@ -466,7 +465,9 @@ dplyr::filter(penguins, year == 2007)
 
 
 **Exercise 4**
-Can you adapt the code to retrieve all the observations of Chinstrap penguins from 2007
+```
+Can you adapt the code to retrieve all the observations of Chinstrap penguins from 2007?
+```
 ```{r, echo=FALSE, eval=F}
 # you just need to utilize & and type the logical operator for the species
 dplyr::filter(penguins, year == 2007 & species == "Chinstrap")
@@ -474,14 +475,16 @@ dplyr::filter(penguins, year == 2007 & species == "Chinstrap")
 
 
 **Exercise 5**
+```
 We can leverage the pipe operator to sequence our code in a logical manner. Can you adapt the following code chunk with the pipe and conditional logical operators we discussed?
-
+```
 ```{r}
 only_2009 <- dplyr::filter(penguins, year == 2009)
 only_2009_chinstraps <- dplyr::filter(only_2009, species == "Chinstrap")
 only_2009_chinstraps_species_sex_year <- dplyr::select(only_2009_chinstraps, species, sex, year)
 final_df <- only_2009_chinstraps_species_sex_year
 final_df #to print it in our console
+ 
 ```
 
 ```{r, echo=FALSE, eval=F}
@@ -519,7 +522,7 @@ penguins |>
   dplyr::summarize(heaviest_penguin = max(body_mass_g, na.rm = T))
 ```
 
-There is also an alternate approach to calculating grouped summary statistics called per-operation grouping. This allows you to define groups in a .by argument, passing them directly in the `summarise()` call. These groups don't persist in the output whereas the ones used with `group_by` do. You can read more about both these approaches in [R for Data Science, 2nd edition](https://r4ds.hadley.nz).
+There is also an alternate approach to calculating grouped summary statistics called per-operation grouping. This allows you to define groups in a `.by` argument, passing them directly in the `summarize()` call. These groups don't persist in the output whereas the ones used with `group_by` do. You can read more about both these approaches in [R for Data Science, 2nd edition](https://r4ds.hadley.nz).
 
 ```{r}
 penguins |>
@@ -531,9 +534,10 @@ penguins |>
 
 
 **Exercise 6**
+```
 Can you get the weight of the lightest penguin of each species? You can use `min()`. What happens when in addition to species you also group by year `group_by(species, year)`?
-
-```{r, eval = F}
+```
+```{r, eval = F, echo = FALSE}
 penguins |>
   dplyr::group_by(species, year) |>
   dplyr::summarize(lightest_penguin = min(body_mass_g, na.rm = T))
@@ -555,9 +559,10 @@ penguins |>
 
 ```
 
-**Exercise 6**
+**Exercise 7**
+```
 Can you create a data frame arranged by body_mass_g of the penguins observed in the "Dream" island?
-
+```
 ```{r, echo = FALSE, eval=F}
 penguins |>
   dplyr::filter(island == "Dream") |>
@@ -566,23 +571,39 @@ penguins |>
 
 
 **Quiz**
-
+```
 1. Which verb allows you to index columns?
+```
     * `select()`
     * `filter()`
     * `summarize()`
     * `group_by()`
 
+```
 2. Which verb allows you to index rows?
+```
     * `select()`
     * `filter()`
     * `summarize()`
     * `group_by()`
 
-3. How **long** was the **longest** observed bill of a **Gentoo** penguin in **2008**? 
+```
+3. How long was the longest observed bill of a **Gentoo** penguin in **2008**? 
+```
+```{r, echo = FALSE, eval=F}
+penguins %>% 
+  filter(species == "Gentoo" & year == 2008) %>% 
+  summarize(deepest_bill = max(bill_depth_mm))
+```
 
-4. How **deep** was the **deepest** observed bill of a **Chinstrap** penguin in **2009**? 
-
+```
+4. How deep was the deepest observed bill of a **Chinstrap** penguin in **2009**? 
+```
+```{r, echo = FALSE, eval=F}
+penguins %>% 
+  filter(species == "Chinstrap" & year == 2009) %>% 
+  summarize(deepest_bill = max(bill_depth_mm))
+```
 
 ## Optional: Other `dplyr` functions
 
@@ -596,7 +617,7 @@ penguins |>
 - E.g. `penguins |> slice(c(1, 5))`
 
 
-`pull()`: Extract a column from as a data frame as a vector or scalar.
+`pull()`: Extract a column from a data frame as a vector or scalar.
 
 - E.g. `penguins |> filter(sex == "female") |> pull(flipper_length)`
 
@@ -616,6 +637,7 @@ penguins |>
 
 `case_when()`: Vectorize multiple `if_else()` (or base R `ifelse()`) statements.
 ```{r}
+#multiple conditional statements
 penguins |> mutate( 
     flipper_length_cat = case_when(
       flipper_length_mm < 190 ~ "small",
@@ -630,7 +652,7 @@ penguins |> mutate(
 
 The final set of `dplyr` verbs we'd like you to know are the family of `*_join` operations. These are important enough that we want to go over some concepts in a bit more depth.
 
-However - note that we will cover relational data structures (and SQL) in even more depth in a separate lab session! 
+However - note that we will cover them in session 5 on relational data structures (and SQL) in even more depth in a separate lab session! 
 
 ---
 
@@ -648,21 +670,21 @@ One of the mainstays of the dplyr package is merging data with the family [join 
 
 (You might find it helpful to to see visual depictions of the different join operations [here](https://r4ds.had.co.nz/relational-data.html).)
 
-For the simple examples that I'm going to show here, we'll need some data sets that come bundled with the [**nycflights13**](http://github.com/hadley/nycflights13) package. 
+For the simple examples that we're going to show here, we'll need some data sets that come bundled with the [**nycflights13**](http://github.com/hadley/nycflights13) package. 
 - Load it now and then inspect these data frames in your own console.
 
 ```{r, echo = F}
 library(nycflights13)
-#flights 
-#planes
+flights 
+planes
 ```
 
 Let's perform a [left join](https://stat545.com/bit001_dplyr-cheatsheet.html#left_joinsuperheroes-publishers) on the flights and planes datasets. 
-- *Note*: I'm going subset columns after the join, but only to keep text on the slide.
+- *Note*: I'm going subset columns after the join, but only to keep text on the screen.
 
 ```{r}
 left_join(flights, planes) |>
-  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model)|>
+  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) |>
   head(3) ## Just to save vertical space in output
 ```
 
@@ -815,7 +837,7 @@ stuff.r
 #### Naming objects and variables
 
 - There are various conventions of how to write phrases without spaces or punctuation. Some of these have been adapted in programming, such as [camelCase](https://en.wikipedia.org/wiki/Camel_case), [PascalCase](https://techterms.com/definition/pascalcase), or [snake_case](https://en.wikipedia.org/wiki/Snake_case).
-- The [`tidyverse`](https://style.tidyverse.org/syntax.html#object-names) way: Object and variable names should use only lowercase letters, numbers, and underscores.
+- The [`tidyverse`](https://style.tidyverse.org/syntax.html#object-names) way: Object, variable, and function names should use only lowercase letters, numbers, and underscores.
 - Examples:
 
 ```bash
@@ -834,7 +856,7 @@ day-one # kebab-case
 
 #### Naming functions
 
-- In addition to following the general advice for object names, strive to use verbs for function names:
+- In addition to following the general advice for naming functions, strive to use verbs for them:
 
 ```bash
 # Good
@@ -857,7 +879,7 @@ permutation()
 - It’s often tempting to set up a project assuming that you will be the only person working on it, e.g. as homework. But that's almost never true. 
 - You have project partners, co-authors, principals.
 - Even if not, there's someone else who you always have to keep happy: Future-you.
-- Comment often to make Future-you happy about Past-you by document what Present-You is doing/thinking/planning to do.
+- Comment often to make Future-you happy about Past-you by documenting what Present-You is doing/thinking/planning to do.
 
 
 #### General advice
