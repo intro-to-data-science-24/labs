@@ -463,7 +463,7 @@ packages will have to be loaded separately!</p>
 <p>Underlying these packages are two key ideas:</p>
 <hr />
 <div id="the-pipe-operator" class="section level2">
-<h2>1. The pipe <code>%&gt;%</code> operator</h2>
+<h2>1. The pipe <code>|&gt;</code> operator</h2>
 <p>You saw this in detail in the lecture.</p>
 <p><strong>Excercise 1</strong></p>
 <pre><code>What is the pipe operator? What exactly does it do? And why might that be useful?</code></pre>
@@ -525,18 +525,18 @@ create from the data stored in cell values.</p>
 <span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>stocks</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-0.2588564","3":"3.083293","4":"8.024459"},{"1":"2009-01-02","2":"-1.4663813","3":"-3.313273","4":"-1.562806"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"1.134695","3":"-1.492910","4":"3.289631"},{"1":"2009-01-02","2":"0.935102","3":"1.361547","4":"1.120230"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="sc">-</span>time, <span class="at">names_to=</span><span class="st">&quot;stock&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;price&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>stocks <span class="sc">|&gt;</span> <span class="fu">pivot_longer</span>(<span class="sc">-</span>time, <span class="at">names_to=</span><span class="st">&quot;stock&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;price&quot;</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["stock"],"name":[2],"type":["chr"],"align":["left"]},{"label":["price"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"X","3":"-0.2588564"},{"1":"2009-01-01","2":"Y","3":"3.0832931"},{"1":"2009-01-01","2":"Z","3":"8.0244587"},{"1":"2009-01-02","2":"X","3":"-1.4663813"},{"1":"2009-01-02","2":"Y","3":"-3.3132730"},{"1":"2009-01-02","2":"Z","3":"-1.5628058"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["stock"],"name":[2],"type":["chr"],"align":["left"]},{"label":["price"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"X","3":"1.134695"},{"1":"2009-01-01","2":"Y","3":"-1.492910"},{"1":"2009-01-01","2":"Z","3":"3.289631"},{"1":"2009-01-02","2":"X","3":"0.935102"},{"1":"2009-01-02","2":"Y","3":"1.361547"},{"1":"2009-01-02","2":"Z","3":"1.120230"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Let’s quickly save the “tidy” (i.e. long) stocks data frame</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="do">## Write out the argument names this time: i.e. &quot;names_to=&quot; and &quot;values_to=&quot;</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>tidy_stocks <span class="ot">&lt;-</span> stocks <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>tidy_stocks <span class="ot">&lt;-</span> stocks <span class="sc">|&gt;</span> </span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>time, <span class="at">names_to=</span><span class="st">&quot;stock&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;price&quot;</span>)</span></code></pre></div>
 </div>
 <div id="pivot_wider" class="section level2">
@@ -548,16 +548,16 @@ rare to need <code>pivot_wider()</code> to make data for analysis, but
 it’s often useful for creating summary and descriptive tables for
 presentations, or papers.</p>
 <p><img src="pics/pivot_wider.png" width="787" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>tidy_stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>stock, <span class="at">values_from =</span> price)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>tidy_stocks <span class="sc">|&gt;</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>stock, <span class="at">values_from =</span> price)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"-0.2588564","3":"3.083293","4":"8.024459"},{"1":"2009-01-02","2":"-1.4663813","3":"-3.313273","4":"-1.562806"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["time"],"name":[1],"type":["date"],"align":["right"]},{"label":["X"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2009-01-01","2":"1.134695","3":"-1.492910","4":"3.289631"},{"1":"2009-01-02","2":"0.935102","3":"1.361547","4":"1.120230"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>tidy_stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>time, <span class="at">values_from =</span> price)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>tidy_stocks <span class="sc">|&gt;</span> <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>time, <span class="at">values_from =</span> price)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["stock"],"name":[1],"type":["chr"],"align":["left"]},{"label":["2009-01-01"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2009-01-02"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"X","2":"-0.2588564","3":"-1.466381"},{"1":"Y","2":"3.0832931","3":"-3.313273"},{"1":"Z","2":"8.0244587","3":"-1.562806"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["stock"],"name":[1],"type":["chr"],"align":["left"]},{"label":["2009-01-01"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2009-01-02"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"X","2":"1.134695","3":"0.935102"},{"1":"Y","2":"-1.492910","3":"1.361547"},{"1":"Z","2":"3.289631","3":"1.120230"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Note that the second example; which has combined different pivoting
@@ -580,7 +580,7 @@ critical bug fixes.</p>
 {"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"Adam.Smith"},{"1":"Paul.Samuelson"},{"1":"Milton.Friedman"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>economists <span class="sc">%&gt;%</span> <span class="fu">separate</span>(name, <span class="fu">c</span>(<span class="st">&quot;first_name&quot;</span>, <span class="st">&quot;last_name&quot;</span>)) </span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>economists <span class="sc">|&gt;</span> <span class="fu">separate</span>(name, <span class="fu">c</span>(<span class="st">&quot;first_name&quot;</span>, <span class="st">&quot;last_name&quot;</span>)) </span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"Adam","2":"Smith"},{"1":"Paul","2":"Samuelson"},{"1":"Milton","2":"Friedman"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -591,7 +591,7 @@ specify the separation character with
 <code>separate(..., sep=".")</code>.</p>
 <p>Now let’s try to achieve the same results using the new syntax
 <code>separate_wider_delim</code>:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>economists <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>economists <span class="sc">|&gt;</span></span>
 <span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  <span class="fu">separate_wider_delim</span>(</span>
 <span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>    <span class="at">cols =</span> name,</span>
 <span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>    <span class="at">delim =</span> <span class="st">&quot;.&quot;</span>,</span>
@@ -612,7 +612,7 @@ dataframe:</p>
 {"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["attribute"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"Adam.Smith","2":"m-34"},{"1":"Paul.Samuelson","2":"m-23"},{"1":"Milton.Friedman","2":"f-38"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>economists <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>economists <span class="sc">|&gt;</span></span>
 <span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>  <span class="fu">separate_wider_position</span>(attribute, <span class="fu">c</span>(<span class="at">sex =</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="at">age =</span> <span class="dv">2</span>) </span>
 <span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>    )</span></code></pre></div>
 <div data-pagedtable="false">
@@ -634,7 +634,7 @@ common occurence with survey data).</p>
   </script>
 </div>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="do">## Now split out Jill&#39;s various occupations into different rows</span></span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>jobs <span class="sc">%&gt;%</span> <span class="fu">separate_rows</span>(occupation)</span></code></pre></div>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>jobs <span class="sc">|&gt;</span> <span class="fu">separate_rows</span>(occupation)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["occupation"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"Jack","2":"Homemaker"},{"1":"Jill","2":"Philosopher"},{"1":"Jill","2":"Philanthropist"},{"1":"Jill","2":"Troublemaker"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -652,23 +652,23 @@ common occurence with survey data).</p>
 <span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>gdp </span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["yr"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["mnth"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["dy"],"name":[3],"type":["int"],"align":["right"]},{"label":["gdp"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016","2":"1","3":"1","4":"101.38667"},{"1":"2016","2":"1","3":"2","4":"100.80312"},{"1":"2016","2":"1","3":"3","4":"96.70412"},{"1":"2016","2":"1","3":"4","4":"99.58153"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["yr"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["mnth"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["dy"],"name":[3],"type":["int"],"align":["right"]},{"label":["gdp"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016","2":"1","3":"1","4":"97.02574"},{"1":"2016","2":"1","3":"2","4":"101.93806"},{"1":"2016","2":"1","3":"3","4":"99.21903"},{"1":"2016","2":"1","3":"4","4":"101.28530"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="do">## Combine &quot;yr&quot;, &quot;mnth&quot;, and &quot;dy&quot; into one &quot;date&quot; column</span></span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>gdp <span class="sc">%&gt;%</span> <span class="fu">unite</span>(date, <span class="fu">c</span>(<span class="st">&quot;yr&quot;</span>, <span class="st">&quot;mnth&quot;</span>, <span class="st">&quot;dy&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>)</span></code></pre></div>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>gdp <span class="sc">|&gt;</span> <span class="fu">unite</span>(date, <span class="fu">c</span>(<span class="st">&quot;yr&quot;</span>, <span class="st">&quot;mnth&quot;</span>, <span class="st">&quot;dy&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"101.38667"},{"1":"2016-1-2","2":"100.80312"},{"1":"2016-1-3","2":"96.70412"},{"1":"2016-1-4","2":"99.58153"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"97.02574"},{"1":"2016-1-2","2":"101.93806"},{"1":"2016-1-3","2":"99.21903"},{"1":"2016-1-4","2":"101.28530"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Note that <code>unite</code> will automatically create a character
 variable. You can see this better if we convert it to a tibble.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>gdp_u <span class="ot">=</span> gdp <span class="sc">%&gt;%</span> <span class="fu">unite</span>(date, <span class="fu">c</span>(<span class="st">&quot;yr&quot;</span>, <span class="st">&quot;mnth&quot;</span>, <span class="st">&quot;dy&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>()</span>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>gdp_u <span class="ot">=</span> gdp <span class="sc">|&gt;</span> <span class="fu">unite</span>(date, <span class="fu">c</span>(<span class="st">&quot;yr&quot;</span>, <span class="st">&quot;mnth&quot;</span>, <span class="st">&quot;dy&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>()</span>
 <span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>gdp_u</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"101.38667"},{"1":"2016-1-2","2":"100.80312"},{"1":"2016-1-3","2":"96.70412"},{"1":"2016-1-4","2":"99.58153"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["chr"],"align":["left"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-1-1","2":"97.02574"},{"1":"2016-1-2","2":"101.93806"},{"1":"2016-1-3","2":"99.21903"},{"1":"2016-1-4","2":"101.28530"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>If you want to convert it to something else (e.g. date or numeric)
@@ -677,10 +677,10 @@ an example, using the <a
 href="https://lubridate.tidyverse.org/">lubridate</a> package’s super
 helpful date conversion functions.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>gdp_u <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">ymd</span>(date))</span></code></pre></div>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>gdp_u <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">ymd</span>(date))</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["date"],"name":[1],"type":["date"],"align":["right"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-01-01","2":"101.38667"},{"1":"2016-01-02","2":"100.80312"},{"1":"2016-01-03","2":"96.70412"},{"1":"2016-01-04","2":"99.58153"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["date"],"name":[1],"type":["date"],"align":["right"]},{"label":["gdp"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016-01-01","2":"97.02574"},{"1":"2016-01-02","2":"101.93806"},{"1":"2016-01-03","2":"99.21903"},{"1":"2016-01-04","2":"101.28530"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Let’s move on to another important tidyverse package!</p>
@@ -790,7 +790,7 @@ existing ones. Say we are working with a U.S. American client and they
 feel more confortable with assessing the weight of the penguins in
 pounds. We would utilize <code>mutate()</code> as such:</p>
 <p><code>mutate(new_var_name = manipulated old_var(s))</code></p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
 <span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">body_mass_lbs =</span> body_mass_g<span class="sc">/</span><span class="fl">453.6</span>)</span></code></pre></div>
 </div>
 <div id="group_by-and-summarize" class="section level2">
@@ -802,15 +802,15 @@ grouping variables; if there are no grouping variables, the output will
 have a single row summarising all observations in the input. For
 example:</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="co"># compare this output with the one below</span></span>
-<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span></span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
 <span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">heaviest_penguin =</span> <span class="fu">max</span>(body_mass_g, <span class="at">na.rm =</span> T)) </span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["heaviest_penguin"],"name":[1],"type":["int"],"align":["right"]}],"data":[{"1":"6300"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span></span>
-<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
 <span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">heaviest_penguin =</span> <span class="fu">max</span>(body_mass_g, <span class="at">na.rm =</span> T))</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -824,14 +824,14 @@ groups in a .by argument, passing them directly in the
 whereas the ones used with <code>group_by</code> do. You can read more
 about both these approaches in <a href="https://r4ds.hadley.nz">R for
 Data Science, 2nd edition</a>.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
 <span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">heaviest_penguin =</span> <span class="fu">max</span>(body_mass_g, <span class="at">na.rm =</span> T), <span class="at">.by =</span> species)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["species"],"name":[1],"type":["fct"],"align":["left"]},{"label":["heaviest_penguin"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Adelie","2":"4775"},{"1":"Gentoo","2":"6300"},{"1":"Chinstrap","2":"4800"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
 <span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">heaviest_penguin =</span> <span class="fu">max</span>(body_mass_g, <span class="at">na.rm =</span> T), <span class="at">.by =</span> <span class="fu">c</span>(species, sex))</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -842,8 +842,8 @@ Data Science, 2nd edition</a>.</p>
 penguin of each species? You can use <code>min()</code>. What happens
 when in addition to species you also group by year
 <code>group_by(species, year)</code>?</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span></span>
-<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(species, year) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(species, year) <span class="sc">|&gt;</span></span>
 <span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">lightest_penguin =</span> <span class="fu">min</span>(body_mass_g, <span class="at">na.rm =</span> T))</span></code></pre></div>
 </div>
 <div id="arrange" class="section level2">
@@ -854,9 +854,9 @@ selected columns in ascending order. You can use the <code>desc()</code>
 argument inside to arrange in descending order. The following chunk
 arranges the data frame based on the length of the penguins’ bill. You
 hint tab contains the code for the descending order alternative.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
 <span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(bill_length_mm)</span></code></pre></div>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>penguins <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
 <span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(bill_length_mm))</span></code></pre></div>
 <p><strong>Excercise 6</strong> Can you create a data frame arranged by
 body_mass_g of the penguins observed in the “Dream” island?</p>
@@ -893,16 +893,16 @@ body_mass_g of the penguins observed in the “Dream” island?</p>
 <code>summarise</code> and <code>mutate</code> commands, as we’ve
 already seen.</p>
 <p><code>slice()</code>: Subset rows by position rather than filtering
-by values. - E.g. <code>penguins %&gt;% slice(c(1, 5))</code></p>
+by values. - E.g. <code>penguins |&gt; slice(c(1, 5))</code></p>
 <p><code>pull()</code>: Extract a column from as a data frame as a
 vector or scalar. - E.g.
-<code>penguins %&gt;% filter(gender=="female") %&gt;% pull(height)</code></p>
+<code>penguins |&gt; filter(gender=="female") |&gt; pull(height)</code></p>
 <p><code>count()</code> and <code>distinct()</code>: Number and isolate
-unique observations. - E.g. <code>penguins %&gt;% count(species)</code>,
-or <code>penguins %&gt;% distinct(species)</code> - You could also use a
+unique observations. - E.g. <code>penguins |&gt; count(species)</code>,
+or <code>penguins |&gt; distinct(species)</code> - You could also use a
 combination of <code>mutate</code>, <code>group_by</code>, and
 <code>n()</code>,
-e.g. <code>penguins %&gt;% group_by(species) %&gt;% mutate(num = n())</code>.</p>
+e.g. <code>penguins |&gt; group_by(species) |&gt; mutate(num = n())</code>.</p>
 <p>The final set of dplyr verbs we’d like you to know are the family of
 join operations. These are important enough that we want to go over some
 concepts in a bit more depth.</p>
@@ -937,8 +937,8 @@ console.</p>
 href="https://stat545.com/bit001_dplyr-cheatsheet.html#left_joinsuperheroes-publishers">left
 join</a> on the flights and planes datasets. - <em>Note</em>: I’m going
 subset columns after the join, but only to keep text on the slide.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a><span class="fu">left_join</span>(flights, planes) <span class="sc">%&gt;%</span></span>
-<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a>  <span class="fu">select</span>(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model)<span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a><span class="fu">left_join</span>(flights, planes) <span class="sc">|&gt;</span></span>
+<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a>  <span class="fu">select</span>(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model)<span class="sc">|&gt;</span></span>
 <span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>) <span class="do">## Just to save vertical space in output</span></span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -960,10 +960,10 @@ refers to the <em>year of flight</em>, in the other it refers to
 to avoid confusion.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a><span class="fu">left_join</span>(</span>
 <span id="cb37-2"><a href="#cb37-2" tabindex="-1"></a>  flights,</span>
-<span id="cb37-3"><a href="#cb37-3" tabindex="-1"></a>  planes <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">year_built =</span> year), <span class="do">## Not necessary w/ below line, but helpful</span></span>
+<span id="cb37-3"><a href="#cb37-3" tabindex="-1"></a>  planes <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">year_built =</span> year), <span class="do">## Not necessary w/ below line, but helpful</span></span>
 <span id="cb37-4"><a href="#cb37-4" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">&quot;tailnum&quot;</span> <span class="do">## Be specific about the joining column</span></span>
-<span id="cb37-5"><a href="#cb37-5" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb37-6"><a href="#cb37-6" tabindex="-1"></a>  <span class="fu">select</span>(year, month, day, dep_time, arr_time, carrier, flight, tailnum, year_built, type, model) <span class="sc">%&gt;%</span></span>
+<span id="cb37-5"><a href="#cb37-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb37-6"><a href="#cb37-6" tabindex="-1"></a>  <span class="fu">select</span>(year, month, day, dep_time, arr_time, carrier, flight, tailnum, year_built, type, model) <span class="sc">|&gt;</span></span>
 <span id="cb37-7"><a href="#cb37-7" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>) </span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -977,8 +977,8 @@ frames.</p>
 <span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a>  flights,</span>
 <span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a>  planes, <span class="do">## Not renaming &quot;year&quot; to &quot;year_built&quot; this time</span></span>
 <span id="cb38-4"><a href="#cb38-4" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">&quot;tailnum&quot;</span></span>
-<span id="cb38-5"><a href="#cb38-5" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb38-6"><a href="#cb38-6" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">&quot;year&quot;</span>), month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) <span class="sc">%&gt;%</span></span>
+<span id="cb38-5"><a href="#cb38-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb38-6"><a href="#cb38-6" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">&quot;year&quot;</span>), month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) <span class="sc">|&gt;</span></span>
 <span id="cb38-7"><a href="#cb38-7" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -1006,7 +1006,7 @@ argument.</p>
 <span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a>  penguins,</span>
 <span id="cb40-3"><a href="#cb40-3" tabindex="-1"></a>  islands,</span>
 <span id="cb40-4"><a href="#cb40-4" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;island&quot;</span> <span class="ot">=</span> <span class="st">&quot;name&quot;</span>)</span>
-<span id="cb40-5"><a href="#cb40-5" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb40-5"><a href="#cb40-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb40-6"><a href="#cb40-6" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -1019,7 +1019,7 @@ results as follows:</p>
 <span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a>  penguins,</span>
 <span id="cb41-3"><a href="#cb41-3" tabindex="-1"></a>  islands,</span>
 <span id="cb41-4"><a href="#cb41-4" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">join_by</span>(island <span class="sc">==</span> name)</span>
-<span id="cb41-5"><a href="#cb41-5" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb41-5"><a href="#cb41-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb41-6"><a href="#cb41-6" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -1031,7 +1031,7 @@ results as follows:</p>
 <span id="cb42-3"><a href="#cb42-3" tabindex="-1"></a>  penguins,</span>
 <span id="cb42-4"><a href="#cb42-4" tabindex="-1"></a>  islands,</span>
 <span id="cb42-5"><a href="#cb42-5" tabindex="-1"></a>  <span class="fu">join_by</span>(island <span class="sc">==</span> name)</span>
-<span id="cb42-6"><a href="#cb42-6" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb42-6"><a href="#cb42-6" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb42-7"><a href="#cb42-7" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -1264,13 +1264,13 @@ line.</li>
 <span id="cb49-7"><a href="#cb49-7" tabindex="-1"></a><span class="fu">mean</span> ( x, <span class="at">na.rm =</span> <span class="cn">TRUE</span> )</span>
 <span id="cb49-8"><a href="#cb49-8" tabindex="-1"></a>height<span class="ot">&lt;-</span>feet<span class="sc">*</span><span class="dv">12</span><span class="sc">+</span>inches</span></code></pre></div>
 <p><strong>Piping</strong></p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a>babynames <span class="sc">%&gt;%</span></span>
-<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">%&gt;%</span> <span class="fu">equals</span>(<span class="st">&quot;Kim&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb50-3"><a href="#cb50-3" tabindex="-1"></a>  <span class="fu">group_by</span>(year, sex) <span class="sc">%&gt;%</span></span>
-<span id="cb50-4"><a href="#cb50-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total =</span> <span class="fu">sum</span>(n)) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a>babynames <span class="sc">|&gt;</span></span>
+<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">|&gt;</span> <span class="fu">equals</span>(<span class="st">&quot;Kim&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb50-3"><a href="#cb50-3" tabindex="-1"></a>  <span class="fu">group_by</span>(year, sex) <span class="sc">|&gt;</span></span>
+<span id="cb50-4"><a href="#cb50-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total =</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span></span>
 <span id="cb50-5"><a href="#cb50-5" tabindex="-1"></a>  <span class="fu">qplot</span>(year, total, <span class="at">color =</span> sex, <span class="at">data =</span> ., </span>
-<span id="cb50-6"><a href="#cb50-6" tabindex="-1"></a>        <span class="at">geom =</span> <span class="st">&quot;line&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb50-7"><a href="#cb50-7" tabindex="-1"></a>  <span class="fu">add</span>(<span class="fu">ggtitle</span>(<span class="st">&#39;People named &quot;Kim&quot;&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb50-6"><a href="#cb50-6" tabindex="-1"></a>        <span class="at">geom =</span> <span class="st">&quot;line&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb50-7"><a href="#cb50-7" tabindex="-1"></a>  <span class="fu">add</span>(<span class="fu">ggtitle</span>(<span class="st">&#39;People named &quot;Kim&quot;&#39;</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb50-8"><a href="#cb50-8" tabindex="-1"></a>  print</span></code></pre></div>
 <hr />
 </div>
@@ -1298,7 +1298,7 @@ the Tidyverse in 2023</em></a>.</p>
 <code>slice_sample()</code> to randomly select rows,
 <code>slice_head()</code> and <code>slice_tail()</code>to select first
 or last rows, and more.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a>starwars <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>))</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["int"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["skin_color"],"name":[5],"type":["chr"],"align":["left"]},{"label":["eye_color"],"name":[6],"type":["chr"],"align":["left"]},{"label":["birth_year"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[8],"type":["chr"],"align":["left"]},{"label":["gender"],"name":[9],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[10],"type":["chr"],"align":["left"]},{"label":["species"],"name":[11],"type":["chr"],"align":["left"]},{"label":["films"],"name":[12],"type":["list"],"align":["right"]},{"label":["vehicles"],"name":[13],"type":["list"],"align":["right"]},{"label":["starships"],"name":[14],"type":["list"],"align":["right"]}],"data":[{"1":"Luke Skywalker","2":"172","3":"77","4":"blond","5":"fair","6":"blue","7":"19","8":"male","9":"masculine","10":"Tatooine","11":"Human","12":"<chr [5]>","13":"<chr [2]>","14":"<chr [2]>"},{"1":"Leia Organa","2":"150","3":"49","4":"brown","5":"light","6":"brown","7":"19","8":"female","9":"feminine","10":"Alderaan","11":"Human","12":"<chr [5]>","13":"<chr [1]>","14":"<chr [0]>"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -1308,28 +1308,28 @@ or last rows, and more.</p>
 <div id="pull" class="section level3">
 <h3><code>pull()</code></h3>
 <p>Extract a column from as a data frame as a vector or scalar.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> <span class="fu">filter</span>(gender<span class="sc">==</span><span class="st">&quot;feminine&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(height)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>starwars <span class="sc">|&gt;</span> <span class="fu">filter</span>(gender<span class="sc">==</span><span class="st">&quot;feminine&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(height)</span></code></pre></div>
 <pre><code>##  [1] 150 165 150 163 178 184 157 170 166 165 168 213 167  96 178  NA 165</code></pre>
 </div>
 <div id="count-n-distinct" class="section level3">
 <h3><code>count()</code>, <code>n()</code>, <code>distinct()</code></h3>
 <p>Count, number and isolate unique observations.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> <span class="fu">count</span>(species) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a>starwars <span class="sc">|&gt;</span> <span class="fu">count</span>(species) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">6</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["species"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Aleena","2":"1"},{"1":"Besalisk","2":"1"},{"1":"Cerean","2":"1"},{"1":"Chagrian","2":"1"},{"1":"Clawdite","2":"1"},{"1":"Droid","2":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(species) <span class="sc">%&gt;%</span> <span class="fu">pull</span>() <span class="sc">%&gt;%</span> <span class="fu">sort</span>() <span class="sc">%&gt;%</span> magrittr<span class="sc">::</span><span class="fu">extract</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a>starwars <span class="sc">|&gt;</span> <span class="fu">distinct</span>(species) <span class="sc">|&gt;</span> <span class="fu">pull</span>() <span class="sc">|&gt;</span> <span class="fu">sort</span>() <span class="sc">|&gt;</span> magrittr<span class="sc">::</span><span class="fu">extract</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) </span></code></pre></div>
 <pre><code>## [1] &quot;Aleena&quot;   &quot;Besalisk&quot; &quot;Cerean&quot;   &quot;Chagrian&quot; &quot;Clawdite&quot;</code></pre>
 <p>You could also use a combination of <code>mutate()</code>,
 <code>group_by()</code>, and <code>n()</code>,
-e.g. <code>starwars %&gt;% group_by(species) %&gt;% mutate(num = n())</code>.</p>
+e.g. <code>starwars |&gt; group_by(species) |&gt; mutate(num = n())</code>.</p>
 </div>
 <div id="where" class="section level3">
 <h3><code>where()</code></h3>
 <p>Select the variables for which a function returns true.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span> <span class="fu">names</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a>starwars <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">|&gt;</span> <span class="fu">names</span>()</span></code></pre></div>
 <pre><code>## [1] &quot;height&quot;     &quot;mass&quot;       &quot;birth_year&quot;</code></pre>
 </div>
 <div id="across" class="section level3">
@@ -1337,8 +1337,8 @@ e.g. <code>starwars %&gt;% group_by(species) %&gt;% mutate(num = n())</code>.</
 <p>Summarize or mutate multiple variables in the same way. More
 information <a
 href="https://dplyr.tidyverse.org/reference/across.html">here</a>.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> </span>
-<span id="cb59-2"><a href="#cb59-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), scale)) <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>starwars <span class="sc">|&gt;</span> </span>
+<span id="cb59-2"><a href="#cb59-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), scale)) <span class="sc">|&gt;</span> </span>
 <span id="cb59-3"><a href="#cb59-3" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -1350,7 +1350,7 @@ href="https://dplyr.tidyverse.org/reference/across.html">here</a>.</p>
 <h3><code>case_when()</code></h3>
 <p>Vectorize multiple <code>if_else()</code> (or base R
 <code>ifelse()</code>) statements.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" tabindex="-1"></a>starwars <span class="sc">|&gt;</span> </span>
 <span id="cb60-2"><a href="#cb60-2" tabindex="-1"></a>  <span class="fu">mutate</span>( </span>
 <span id="cb60-3"><a href="#cb60-3" tabindex="-1"></a>    <span class="at">height_cat =</span> <span class="fu">case_when</span>(</span>
 <span id="cb60-4"><a href="#cb60-4" tabindex="-1"></a>      height <span class="sc">&lt;</span> <span class="dv">160</span> <span class="sc">~</span> <span class="st">&quot;tiny&quot;</span>,</span>
@@ -1358,9 +1358,9 @@ href="https://dplyr.tidyverse.org/reference/across.html">here</a>.</p>
 <span id="cb60-6"><a href="#cb60-6" tabindex="-1"></a>      height <span class="sc">&gt;=</span> <span class="dv">190</span> <span class="sc">&amp;</span> height <span class="sc">&lt;</span> <span class="dv">220</span> <span class="sc">~</span> <span class="st">&quot;tall&quot;</span>,</span>
 <span id="cb60-7"><a href="#cb60-7" tabindex="-1"></a>      height <span class="sc">&gt;=</span> <span class="dv">220</span> <span class="sc">~</span> <span class="st">&quot;giant&quot;</span></span>
 <span id="cb60-8"><a href="#cb60-8" tabindex="-1"></a>    )</span>
-<span id="cb60-9"><a href="#cb60-9" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb60-10"><a href="#cb60-10" tabindex="-1"></a>  <span class="fu">pull</span>(height_cat) <span class="sc">%&gt;%</span> <span class="fu">table</span>()</span></code></pre></div>
-<pre><code>## .
+<span id="cb60-9"><a href="#cb60-9" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb60-10"><a href="#cb60-10" tabindex="-1"></a>  <span class="fu">pull</span>(height_cat) <span class="sc">|&gt;</span> <span class="fu">table</span>()</span></code></pre></div>
+<pre><code>## 
 ##  giant medium   tall   tiny 
 ##      5     45     18     13</code></pre>
 </div>
@@ -1406,25 +1406,25 @@ values.</p>
 <div id="the-beauty-of-pipes" class="section level3">
 <h3>The beauty of pipes</h3>
 <ul>
-<li>The forward-pipe operator <code>%&gt;%</code> pipes the left-hand
+<li>The forward-pipe operator <code>|&gt;</code> pipes the left-hand
 side values forward into expressions on the right-hand side.</li>
 <li>It serves the natural way of reading (“do this, then this, then
 this, …”).</li>
-<li>We replace <code>f(x)</code> with <code>x %&gt;% f()</code>.</li>
+<li>We replace <code>f(x)</code> with <code>x |&gt; f()</code>.</li>
 <li>It avoids nested function calls.</li>
 <li>It minimizes the need for local variables and function
 definitions.</li>
 </ul>
 <p><strong>The pipe way</strong></p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a>Alex <span class="sc">%&gt;%</span></span>
-<span id="cb63-2"><a href="#cb63-2" tabindex="-1"></a>  <span class="fu">wake_up</span>(<span class="dv">7</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb63-3"><a href="#cb63-3" tabindex="-1"></a>  <span class="fu">shower</span>(<span class="at">temp =</span> <span class="dv">38</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb63-4"><a href="#cb63-4" tabindex="-1"></a>  <span class="fu">breakfast</span>(<span class="fu">c</span>(<span class="st">&quot;coffee&quot;</span>, <span class="st">&quot;croissant&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb63-5"><a href="#cb63-5" tabindex="-1"></a>  <span class="fu">walk</span>(<span class="fu">step_function</span>()) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a>Alex <span class="sc">|&gt;</span></span>
+<span id="cb63-2"><a href="#cb63-2" tabindex="-1"></a>  <span class="fu">wake_up</span>(<span class="dv">7</span>) <span class="sc">|&gt;</span></span>
+<span id="cb63-3"><a href="#cb63-3" tabindex="-1"></a>  <span class="fu">shower</span>(<span class="at">temp =</span> <span class="dv">38</span>) <span class="sc">|&gt;</span></span>
+<span id="cb63-4"><a href="#cb63-4" tabindex="-1"></a>  <span class="fu">breakfast</span>(<span class="fu">c</span>(<span class="st">&quot;coffee&quot;</span>, <span class="st">&quot;croissant&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb63-5"><a href="#cb63-5" tabindex="-1"></a>  <span class="fu">walk</span>(<span class="fu">step_function</span>()) <span class="sc">|&gt;</span></span>
 <span id="cb63-6"><a href="#cb63-6" tabindex="-1"></a>  <span class="fu">bvg</span>(</span>
 <span id="cb63-7"><a href="#cb63-7" tabindex="-1"></a>    <span class="at">train =</span> <span class="st">&quot;U2&quot;</span>,</span>
 <span id="cb63-8"><a href="#cb63-8" tabindex="-1"></a>    <span class="at">destination =</span> <span class="st">&quot;Stadtmitte&quot;</span></span>
-<span id="cb63-9"><a href="#cb63-9" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb63-9"><a href="#cb63-9" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb63-10"><a href="#cb63-10" tabindex="-1"></a>  <span class="fu">hertie</span>(<span class="at">course =</span> <span class="st">&quot;Intro to DS&quot;</span>)</span></code></pre></div>
 <p><strong>The classic way</strong></p>
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" tabindex="-1"></a><span class="fu">hertie</span>(</span>
@@ -1468,7 +1468,7 @@ object at a time. Reserve pipes for a sequence of steps applied to one
 primary object.</li>
 <li>Don’t use the pipe when there are meaningful intermediate objects
 that can be given informative names (and that are used later on).</li>
-<li><code>%&gt;%</code> should always have a space before it, and should
+<li><code>|&gt;</code> should always have a space before it, and should
 usually be followed by a new line.</li>
 </ul>
 </div>

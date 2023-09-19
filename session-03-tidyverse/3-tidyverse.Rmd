@@ -123,7 +123,7 @@ Underlying these packages are two key ideas:
 
 --- 
 
-## 1. The pipe `%>%` operator 
+## 1. The pipe `|>` operator 
 
 You saw this in detail in the lecture.
 
@@ -191,14 +191,14 @@ stocks = data.frame( ## Could use "tibble" instead of "data.frame" if you prefer
   Z = rnorm(2, 0, 4)
   )
 stocks
-stocks %>% pivot_longer(-time, names_to="stock", values_to="price")
+stocks |> pivot_longer(-time, names_to="stock", values_to="price")
 ```
 
 Let's quickly save the "tidy" (i.e. long) stocks data frame  
 
 ```{r}
 ## Write out the argument names this time: i.e. "names_to=" and "values_to="
-tidy_stocks <- stocks %>% 
+tidy_stocks <- stocks |> 
   pivot_longer(-time, names_to="stock", values_to="price")
 ```
 
@@ -213,8 +213,8 @@ knitr::include_graphics("pics/pivot_wider.png")
 
 
 ```{r pivot_wider1, dependson="tidy_stocks"}
-tidy_stocks %>% pivot_wider(names_from=stock, values_from = price)
-tidy_stocks %>% pivot_wider(names_from=time, values_from = price)
+tidy_stocks |> pivot_wider(names_from=stock, values_from = price)
+tidy_stocks |> pivot_wider(names_from=time, values_from = price)
 ```
 
 Note that the second example; which has combined different pivoting arguments; has effectively transposed the data.
@@ -227,7 +227,7 @@ Note that the second example; which has combined different pivoting arguments; h
 ```{r sep1}
 economists = data.frame(name = c("Adam.Smith", "Paul.Samuelson", "Milton.Friedman"))
 economists
-economists %>% separate(name, c("first_name", "last_name")) 
+economists |> separate(name, c("first_name", "last_name")) 
 ```
 
 This command is pretty smart. But to avoid ambiguity, you can also specify the separation character with `separate(..., sep=".")`.
@@ -235,7 +235,7 @@ This command is pretty smart. But to avoid ambiguity, you can also specify the s
 Now let's try to achieve the same results using the new syntax `separate_wider_delim`:
 
 ```{r}
-economists %>%
+economists |>
   separate_wider_delim(
     cols = name,
     delim = ".",
@@ -248,7 +248,7 @@ In order to use `separate_wider_position`, the position of the characters plays 
 ```{r}
 economists$attribute <- c("m-34", "m-23", "f-38")
 economists
-economists %>%
+economists |>
   separate_wider_position(attribute, c(sex = 1, 1, age = 2) 
     )
 ```
@@ -263,7 +263,7 @@ jobs = data.frame(
   ) 
 jobs
 ## Now split out Jill's various occupations into different rows
-jobs %>% separate_rows(occupation)
+jobs |> separate_rows(occupation)
 ```
 
 
@@ -278,12 +278,12 @@ gdp = data.frame(
   )
 gdp 
 ## Combine "yr", "mnth", and "dy" into one "date" column
-gdp %>% unite(date, c("yr", "mnth", "dy"), sep = "-")
+gdp |> unite(date, c("yr", "mnth", "dy"), sep = "-")
 ```
 
 Note that `unite` will automatically create a character variable. You can see this better if we convert it to a tibble. 
 ```{r unite2}
-gdp_u = gdp %>% unite(date, c("yr", "mnth", "dy"), sep = "-") %>% as_tibble()
+gdp_u = gdp |> unite(date, c("yr", "mnth", "dy"), sep = "-") |> as_tibble()
 gdp_u
 ```
 
@@ -291,7 +291,7 @@ If you want to convert it to something else (e.g. date or numeric) then you will
 
 ```{r unite3, message=F}
 library(lubridate)
-gdp_u %>% mutate(date = ymd(date))
+gdp_u |> mutate(date = ymd(date))
 ```
 
 Let's move on to another important tidyverse package!
@@ -389,8 +389,8 @@ final_df #to print it in our console
 ```
 
 ```{r, echo=FALSE, eval=F}
-penguins %>%
-  dplyr::filter(year == 2009 & species == "Chinstrap") %>%
+penguins |>
+  dplyr::filter(year == 2009 & species == "Chinstrap") |>
   dplyr::select(species, sex, year)
 ```
 
@@ -402,7 +402,7 @@ penguins %>%
 ```mutate(new_var_name = manipulated old_var(s))```
 
 ```{r,, eval=F}
-penguins %>%
+penguins |>
   dplyr::mutate(body_mass_lbs = body_mass_g/453.6)
 ```
 
@@ -413,23 +413,23 @@ These two verbs `group_by()` and `summarize()` tend to go together. When combine
 
 ```{r}
 # compare this output with the one below
-penguins %>%
+penguins |>
   dplyr::summarize(heaviest_penguin = max(body_mass_g, na.rm = T)) 
 ```
 
 ```{r}
-penguins %>%
-  dplyr::group_by(species) %>%
+penguins |>
+  dplyr::group_by(species) |>
   dplyr::summarize(heaviest_penguin = max(body_mass_g, na.rm = T))
 ```
 
 There is also an alternate approach to calculating grouped summary statistics called per-operation grouping. This allows you to define groups in a .by argument, passing them directly in the `summarise()` call. These groups don't persist in the output whereas the ones used with `group_by` do. You can read more about both these approaches in [R for Data Science, 2nd edition](https://r4ds.hadley.nz).
 
 ```{r}
-penguins %>%
+penguins |>
   dplyr::summarise(heaviest_penguin = max(body_mass_g, na.rm = T), .by = species)
 
-penguins %>%
+penguins |>
   dplyr::summarise(heaviest_penguin = max(body_mass_g, na.rm = T), .by = c(species, sex))
 ```
 
@@ -438,8 +438,8 @@ penguins %>%
 Can you get the weight of the lightest penguin of each species? You can use `min()`. What happens when in addition to species you also group by year `group_by(species, year)`?
 
 ```{r, eval = F}
-penguins %>%
-  dplyr::group_by(species, year) %>%
+penguins |>
+  dplyr::group_by(species, year) |>
   dplyr::summarize(lightest_penguin = min(body_mass_g, na.rm = T))
 ```
 
@@ -448,13 +448,13 @@ penguins %>%
 The `arrange()` verb is pretty self-explanatory. `arrange()` orders the rows of a data frame by the values of selected columns in ascending order. You can use the `desc()` argument inside to arrange in descending order. The following chunk arranges the data frame based on the length of the penguins' bill. You hint tab contains the code for the descending order alternative. 
 
 ```{r, eval=F}
-penguins %>%
+penguins |>
   dplyr::arrange(bill_length_mm)
 
 ```
 
 ```{r, eval=F}
-penguins %>%
+penguins |>
   dplyr::arrange(desc(bill_length_mm))
 
 ```
@@ -463,8 +463,8 @@ penguins %>%
 Can you create a data frame arranged by body_mass_g of the penguins observed in the "Dream" island?
 
 ```{r, echo = FALSE, eval=F}
-penguins %>%
-  dplyr::filter(island == "Dream") %>%
+penguins |>
+  dplyr::filter(island == "Dream") |>
   dplyr::arrange(body_mass_g)
 ```
 
@@ -496,16 +496,16 @@ penguins %>%
 
 
 `slice()`: Subset rows by position rather than filtering by values.
-- E.g. `penguins %>% slice(c(1, 5))`
+- E.g. `penguins |> slice(c(1, 5))`
 
 
 `pull()`: Extract a column from as a data frame as a vector or scalar.
-- E.g. `penguins %>% filter(gender=="female") %>% pull(height)`
+- E.g. `penguins |> filter(gender=="female") |> pull(height)`
 
 
 `count()` and `distinct()`: Number and isolate unique observations.
-- E.g. `penguins %>% count(species)`, or `penguins %>% distinct(species)`
-- You could also use a combination of `mutate`, `group_by`, and `n()`, e.g. `penguins %>% group_by(species) %>% mutate(num = n())`.
+- E.g. `penguins |> count(species)`, or `penguins |> distinct(species)`
+- You could also use a combination of `mutate`, `group_by`, and `n()`, e.g. `penguins |> group_by(species) |> mutate(num = n())`.
 
 The final set of dplyr verbs we'd like you to know are the family of join operations. These are important enough that we want to go over some concepts in a bit more depth.
 
@@ -540,8 +540,8 @@ Let's perform a [left join](https://stat545.com/bit001_dplyr-cheatsheet.html#lef
 - *Note*: I'm going subset columns after the join, but only to keep text on the slide.
 
 ```{r}
-left_join(flights, planes) %>%
-  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model)%>%
+left_join(flights, planes) |>
+  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model)|>
   head(3) ## Just to save vertical space in output
 ```
 
@@ -563,10 +563,10 @@ You just need to be more explicit in your join call by using the `by = ` argumen
 ```{r}
 left_join(
   flights,
-  planes %>% rename(year_built = year), ## Not necessary w/ below line, but helpful
+  planes |> rename(year_built = year), ## Not necessary w/ below line, but helpful
   by = "tailnum" ## Be specific about the joining column
-  ) %>%
-  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, year_built, type, model) %>%
+  ) |>
+  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, year_built, type, model) |>
   head(3) 
 ```
 
@@ -576,8 +576,8 @@ left_join(
   flights,
   planes, ## Not renaming "year" to "year_built" this time
   by = "tailnum"
-  ) %>%
-  select(contains("year"), month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) %>%
+  ) |>
+  select(contains("year"), month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) |>
   head(3)
 ```
 
@@ -601,7 +601,7 @@ left_join(
   penguins,
   islands,
   by = c("island" = "name")
-  ) %>%
+  ) |>
   head(3)
 ```
 
@@ -611,7 +611,7 @@ left_join(
   penguins,
   islands,
   by = join_by(island == name)
-  ) %>%
+  ) |>
   head(3)
 
 #or simply
@@ -619,7 +619,7 @@ left_join(
   penguins,
   islands,
   join_by(island == name)
-  ) %>%
+  ) |>
   head(3)
 ```
 
@@ -791,13 +791,13 @@ height<-feet*12+inches
 **Piping**
  
 ```{r, eval = FALSE} 
-babynames %>%
-  filter(name %>% equals("Kim")) %>%
-  group_by(year, sex) %>%
-  summarize(total = sum(n)) %>%
+babynames |>
+  filter(name |> equals("Kim")) |>
+  group_by(year, sex) |>
+  summarize(total = sum(n)) |>
   qplot(year, total, color = sex, data = ., 
-        geom = "line") %>%
-  add(ggtitle('People named "Kim"')) %>%
+        geom = "line") |>
+  add(ggtitle('People named "Kim"')) |>
   print
 ``` 
 
@@ -819,7 +819,7 @@ This tutorial is partly based on [_R for Data Science_](https://r4ds.hadley.nz/)
 Subset rows by position rather than filtering by values. There's also `slice_sample()` to randomly select rows, `slice_head()` and `slice_tail()`to select first or last rows, and more.
 
 ```{r}
-starwars %>% slice(c(1, 5))
+starwars |> slice(c(1, 5))
 ```
 
 ### `pull()`
@@ -827,7 +827,7 @@ starwars %>% slice(c(1, 5))
 Extract a column from as a data frame as a vector or scalar.
 
 ```{r}
-starwars %>% filter(gender=="feminine") %>% pull(height)
+starwars |> filter(gender=="feminine") |> pull(height)
 ```
 
 ### `count()`, `n()`, `distinct()`
@@ -835,18 +835,18 @@ starwars %>% filter(gender=="feminine") %>% pull(height)
 Count, number and isolate unique observations.
 
 ```{r}
-starwars %>% count(species) %>% head(6)
-starwars %>% distinct(species) %>% pull() %>% sort() %>% magrittr::extract(1:5) 
+starwars |> count(species) |> head(6)
+starwars |> distinct(species) |> pull() |> sort() |> magrittr::extract(1:5) 
 ```
 
-You could also use a combination of `mutate()`, `group_by()`, and `n()`, e.g. `starwars %>% group_by(species) %>% mutate(num = n())`.
+You could also use a combination of `mutate()`, `group_by()`, and `n()`, e.g. `starwars |> group_by(species) |> mutate(num = n())`.
 
 ### `where()`
 
 Select the variables for which a function returns true.
 
 ```{r}
-starwars %>% select(where(is.numeric)) %>% names()
+starwars |> select(where(is.numeric)) |> names()
 ```
 
 ### `across()`
@@ -854,8 +854,8 @@ starwars %>% select(where(is.numeric)) %>% names()
 Summarize or mutate multiple variables in the same way. More information [here](https://dplyr.tidyverse.org/reference/across.html).
 
 ```{r}
-starwars %>% 
-  mutate(across(where(is.numeric), scale)) %>% 
+starwars |> 
+  mutate(across(where(is.numeric), scale)) |> 
   head(3)
 ```
 
@@ -864,7 +864,7 @@ starwars %>%
 Vectorize multiple `if_else()` (or base R `ifelse()`) statements.
 
 ```{r}
-starwars %>% 
+starwars |> 
   mutate( 
     height_cat = case_when(
       height < 160 ~ "tiny",
@@ -872,8 +872,8 @@ starwars %>%
       height >= 190 & height < 220 ~ "tall",
       height >= 220 ~ "giant"
     )
-  ) %>%
-  pull(height_cat) %>% table()
+  ) |>
+  pull(height_cat) |> table()
 ```
 
 ### Window functions
@@ -906,23 +906,23 @@ Fill in NAs in `...` columns with most recent non-NA values.
 
 ### The beauty of pipes
 
-- The forward-pipe operator `%>%` pipes the left-hand side values forward into expressions on the right-hand side.
+- The forward-pipe operator `|>` pipes the left-hand side values forward into expressions on the right-hand side.
 - It serves the natural way of reading ("do this, then this, then this, ...").
-- We replace `f(x)` with `x %>% f()`.
+- We replace `f(x)` with `x |> f()`.
 - It avoids nested function calls.
 - It minimizes the need for local variables and function definitions.
 
 **The pipe way**
 ```{r, eval = FALSE}
-Alex %>%
-  wake_up(7) %>%
-  shower(temp = 38) %>%
-  breakfast(c("coffee", "croissant")) %>%
-  walk(step_function()) %>%
+Alex |>
+  wake_up(7) |>
+  shower(temp = 38) |>
+  breakfast(c("coffee", "croissant")) |>
+  walk(step_function()) |>
   bvg(
     train = "U2",
     destination = "Stadtmitte"
-  ) %>%
+  ) |>
   hertie(course = "Intro to DS")
 ```
 
@@ -969,7 +969,7 @@ alex_hertie <- hertie(alex_on_train,
 
 - Pipes are not very handy when you need to manipulate more than one object at a time. Reserve pipes for a sequence of steps applied to one primary object.
 - Don't use the pipe when there are meaningful intermediate objects that can be given informative names (and that are used later on).
-- `%>%` should always have a space before it, and should usually be followed by a new line.
+- `|>` should always have a space before it, and should usually be followed by a new line.
 
 
 ### The base R pipe: |>
