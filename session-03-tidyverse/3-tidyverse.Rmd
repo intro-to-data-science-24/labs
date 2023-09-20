@@ -675,8 +675,8 @@ For the simple examples that we're going to show here, we'll need some data sets
 
 ```{r, echo = F}
 library(nycflights13)
-flights 
-planes
+#flights 
+#planes
 ```
 
 Let's perform a [left join](https://stat545.com/bit001_dplyr-cheatsheet.html#left_joinsuperheroes-publishers) on the flights and planes datasets. 
