@@ -468,11 +468,6 @@ dplyr::filter(penguins, year == 2007)
 ```
 Can you adapt the code to retrieve all the observations of Chinstrap penguins from 2007?
 ```
-```{r, echo=FALSE, eval=F}
-# you just need to utilize & and type the logical operator for the species
-dplyr::filter(penguins, year == 2007 & species == "Chinstrap")
-```
-
 
 **Exercise 5**
 ```
@@ -487,11 +482,6 @@ final_df #to print it in our console
  
 ```
 
-```{r, echo=FALSE, eval=F}
-penguins |>
-  dplyr::filter(year == 2009 & species == "Chinstrap") |>
-  dplyr::select(species, sex, year)
-```
 
 ## `mutate()` `r emo::ji("closed_umbrella")``r emo::ji("open_umbrella")`
 
@@ -537,11 +527,6 @@ penguins |>
 ```
 Can you get the weight of the lightest penguin of each species? You can use `min()`. What happens when in addition to species you also group by year `group_by(species, year)`?
 ```
-```{r, eval = F, echo = FALSE}
-penguins |>
-  dplyr::group_by(species, year) |>
-  dplyr::summarize(lightest_penguin = min(body_mass_g, na.rm = T))
-```
 
 ## `arrange()` `r emo::ji("egg")``r emo::ji("hatching_chick")``r emo::ji("hatched_chick")`
 
@@ -563,12 +548,6 @@ penguins |>
 ```
 Can you create a data frame arranged by body_mass_g of the penguins observed in the "Dream" island?
 ```
-```{r, echo = FALSE, eval=F}
-penguins |>
-  dplyr::filter(island == "Dream") |>
-  dplyr::arrange(body_mass_g)
-```
-
 
 **Quiz**
 ```
@@ -590,19 +569,9 @@ penguins |>
 ```
 3. How long was the longest observed bill of a **Gentoo** penguin in **2008**? 
 ```
-```{r, echo = FALSE, eval=F}
-penguins %>% 
-  filter(species == "Gentoo" & year == 2008) %>% 
-  summarize(deepest_bill = max(bill_depth_mm))
-```
 
 ```
 4. How deep was the deepest observed bill of a **Chinstrap** penguin in **2009**? 
-```
-```{r, echo = FALSE, eval=F}
-penguins %>% 
-  filter(species == "Chinstrap" & year == 2009) %>% 
-  summarize(deepest_bill = max(bill_depth_mm))
 ```
 
 ## Optional: Other `dplyr` functions
