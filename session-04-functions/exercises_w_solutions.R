@@ -70,12 +70,14 @@ study %>% select(where(is.character)) %>% map_df(tolower)
 # solutions are now also commented in line
 
 geod_dist <- function(lat1, lon1, lat2, lon2, earth.radius = 6371) {
+  
   # from degrees to radians
   deg2rad <- function(deg) return(deg*pi/180)
   lon1 <- deg2rad(lon1)
   lat1 <- deg2rad(lat1)
   lon2 <- deg2rad(lon2) # replace with lon2
   lat2 <- deg2rad(lat2)
+  
   # calculation
   delta.long <- (lon2 - lon1)
   delta.lat <- (lat2 - lat1)
