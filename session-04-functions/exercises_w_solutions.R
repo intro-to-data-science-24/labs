@@ -62,10 +62,10 @@ study$emoticons <- study$emotions |> replace_w_emoticons_vectorized()
 ## tidyvers solutions:
 study <- study |> 
   rowwise() |> # use rowwise(), otherwise the function will only evaluate the first argument
-  mutate(emoticons2 = replace_w_emoticons(emotions))
+  mutate(emoticons = replace_w_emoticons(emotions))
 
 study <- study |> 
-  mutate(emoticons = map_chr(emotions, replace_w_emoticons))
+  mutate(emoticons2 = map_chr(emotions, replace_w_emoticons))
 
 
 # Exercise 4 ####
