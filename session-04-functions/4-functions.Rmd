@@ -38,6 +38,7 @@ One of the more important objects in R for functional programming are lists. Sin
 Vectors can only hold a single data type.
 ```{r}
 vec <- c(a = "hello", b = 1)
+vec
 ```
 
 By comparison lists can hold many different data types at the same time.
@@ -50,7 +51,7 @@ When you think about, data.frames are also lists (or rather a list of columns).
 
 ```{r}
 library(gapminder)
-head(gapminder)
+head(gapminder) 
 ```
 
 You don't believe me?
@@ -161,8 +162,10 @@ if (this) {
   # do that
 } else if (that) {
   # do something else
+} else if (that) {
+  # do something else
 } else {
-  # 
+  # do something else
 }
 ```
 
@@ -175,7 +178,7 @@ zscale <- function(x){
   if (is.numeric(x)) {
   (x - mean(x, na.rm = T) / sd(x, na.rm = T))
   } else {
-    return(paste("Not a numeric input!"))
+    return("Not a numeric input!")
   }
 }
 ```
@@ -189,7 +192,7 @@ df$c <- zscale(df$c)
 df$d <- zscale(df$d)
 
 # you can also use your function with a pipe!
-df$d %>% zscale()
+df$d |> zscale()
 ```
 
 Note that there is still a lot of repetition in the example above. We can get rid of this repetition using what coders call iteration `r emo::ji("point_down")`.
@@ -199,8 +202,12 @@ Note that there is still a lot of repetition in the example above. We can get ri
 You feel that the variable on emotions in our study dataset is badly represented and you decide to replace it with Emoticons! You want to write a function to automate this task. Transform this pseudo code into an R function: 
 
 ```{r, eval=F}
-# hint: you'll want to replace netural with neutral
+# hint: you'll want to replace "netural" with "neutral"
 
+# write a function that takes a character element as input
+# if happy, then :) 
+# if sad, then :(
+# if neutral, then :|
 ```
 
 
@@ -324,7 +331,7 @@ mean(df$d)
 map(.x = df, ~ mean(.x, na.rm =T))
 
 # map function in tidyverse style
-df %>% map(mean)
+df |> map(mean)
 
 ```
 
@@ -339,7 +346,7 @@ The pattern of looping over a vector, doing something to each element and saving
 * `map_chr()` returns a character vector.
 
 
-##### **Exercise 3:**
+##### **Exercise 4:**
 Go back to the example above, since all of the means are numeric, it makes more sense to store them in a vector rather than a list. Which function should I use?
 
 ## Map2 `r emo::ji("double_exclamation_mark")`
@@ -354,7 +361,7 @@ knitr::include_graphics("pics/purr_f2_input.png")
 The function works exactly the same way as the `map*` functions for a single input. One caveat that applies only to `map2()` is that both inputs need to have the **same length**!
 
 
-##### **Exercise 4:**
+##### **Exercise 5:**
 Write a function that returns both the mean and the standard deviation for the numeric variables in our study data.
 ```{r}
 
@@ -362,7 +369,7 @@ Write a function that returns both the mean and the standard deviation for the n
 
 
 
-##### **Exercise 5:**
+##### **Exercise 6:**
 Iterate over the relevant columns.
 ```{r}
 
@@ -370,7 +377,7 @@ Iterate over the relevant columns.
 
 
 
-##### **Exercise 6:**
+##### **Exercise 7:**
 Use `map` and the `tolower` function to harmonise character values in the study dataframe.
 
 ```{r}
@@ -428,7 +435,7 @@ geod_dist <- function(lat1, lon1, lat2, lon2, earth.radius = 6371) {
   deg2rad <- function(deg) return(deg*pi/180)
   lon1 <- deg2rad(lon1)
   lat1 <- deg2rad(lat1)
-  lon2 <- deg2rad(long1)
+  lon2 <- deg2rad(long2)
   lat2 <- deg2rad(lat2)
   
   # calculation
@@ -665,21 +672,21 @@ political_df <-
 
 # wiki traffic data
 traffic_df <- 
-  get_traffic(legislature = "ger") %>% 
-  filter(date >= "2013-10-22" & date <= "2017-10-24") %>% 
-  group_by(pageid) %>% 
+  get_traffic(legislature = "ger") |> 
+  filter(date >= "2013-10-22" & date <= "2017-10-24") |> 
+  group_by(pageid) |> 
   summarize(traffic_mean = mean(traffic, na.rm = TRUE),
             traffic_max = max(traffic, na.rm = TRUE))
 
 # sessions served
 sessions_served_df <- 
   get_political(legislature = "deu") %% 
-  group_by(pageid) %>% 
+  group_by(pageid) |> 
   dplyr::summarize(sessions_served = n())
 
 # merge
 legislator_df <- 
-  left_join(political_df, sessions_served_df, by = "pageid") %>% 
+  left_join(political_df, sessions_served_df, by = "pageid") |> 
   left_join(traffic_df, by = "pageid") 
 
 # compute age
