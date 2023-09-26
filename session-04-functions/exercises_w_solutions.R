@@ -1,22 +1,49 @@
+# load packages
 pacman::p_load(tidyverse)
+
+# Keep in mind, there are multiple ways to solve problems with R. The solutions 
+# presented below may not be the only way to get the desired result.
 
 
 # Exercise 1 ####
-
+# base R solution:
 get_mode <- function(v) {
-  v <- v %>% na.omit()
-  uniq_v <- v %>% unique()
+  
+  v <- na.omit(v)
+  uniq_v <- unique(v)
+  
   return(uniq_v[which.max(tabulate(match(v, uniq_v)))])
+  
 }
 
+# tidyverse solution:
+get_mode <- function(v) {
+  
+  out <- v |> 
+    janitor::tabyl() |> 
+    filter(n == max(n)) |> 
+    pull(v)
+  
+  return(out)
+  
+}
+
+
 # Exercise 2 ####
-get_mode(study$bmi_3cat)
+get_mode(study$bmi_3cat) 
 
 
 # Exercise 3 ####
+# fix 'netural' typo
+study$emotions[study$emotions == 'netural'] <- 'neutral'# base R solution
 
-study$emotions[study$emotions == 'netural'] <- 'neutral'
+study <- study |> # tidyverse solution
+  mutate(
+    #emotions = stringr::str_replace(emotions, "netural", "neutal") # using stringr package (optional)
+    emotions = ifelse(emotions == "netural", "neutral", emotions)
+    ) 
 
+# write emoticon function
 replace_w_emoticons <- function(x) {
   if (x == "happy") {
     ":)"
@@ -27,23 +54,18 @@ replace_w_emoticons <- function(x) {
   }
 }
 
-# vectorize function:
-replace_w_emoticons_vectorized <- Vectorize(replace_w_emoticons)
+# vectorize the function to create an emoticons column
+## base R solution:
+replace_w_emoticons_vectorized <- Vectorize(replace_w_emoticons) 
+study$emoticons <- study$emotions |> replace_w_emoticons_vectorized() 
 
+## tidyvers solutions:
+study <- study |> 
+  rowwise() |> # use rowwise(), otherwise the function will only evaluate the first argument
+  mutate(emoticons2 = replace_w_emoticons(emotions))
 
-# to change the emotions column in the study dataframe, either use the vectorized function, a solution from below
-
-# 1
-study <- study %>% 
-  rowwise() %>% # otherwise the function will only evaluate the first argument
-  mutate(emoticons2 = replace_with_emoticons(emotions))
-
-# 2
-study <- study %>% 
-  mutate(emoticons = map_chr(emotions, replace_with_emoticons))
-
-# 3
-study$emoticons <- study$emotions %>% replace_w_emoticons_vectorized()
+study <- study |> 
+  mutate(emoticons = map_chr(emotions, replace_w_emoticons))
 
 
 # Exercise 4 ####
@@ -52,23 +74,21 @@ mean_sd <- function(x) {
 }
 
 # Exercise 5 ####
-map_df(study %>% select(where(is.numeric)), mean_sd) %>% 
+map_df(study |> select(where(is.numeric)), mean_sd) |> 
   cbind(
-    'col' = study %>% 
-      select(where(is.numeric)) %>% 
+    'col' = study |> 
+      select(where(is.numeric)) |> 
       colnames()
   )
 # or just use any other map
 
 # Exercise 6 ####
-study %>% select(where(is.character)) %>% map_df(tolower)
-
+study |> select(where(is.character)) |> map_df(tolower)
 
 
 # Debugging solutions ####
 
 # solutions are now also commented in line
-
 geod_dist <- function(lat1, lon1, lat2, lon2, earth.radius = 6371) {
   
   # from degrees to radians
@@ -91,25 +111,32 @@ geod_dist(lat1 = 49.5, lon1 = 8.4, lat2 = 52.5, lon2 = 13.4)
 
 
 # Take home debugging exercise ####
-
+# load packages
 library(tidyverse)
 library(legislatoR) 
 
-political_df <- left_join(x = get_political(legislature = 'deu') %>% filter(session == 18), 
+# get political data on German legislators
+political_df <- left_join(x = get_political(legislature = 'deu') |> filter(session == 18), 
             y = get_core(legislature = "deu"), by = "pageid")
 
-
-traffic_df <- get_traffic(legislature = "deu") %>% 
-  filter(date >= "2013-10-22" & date <= "2017-10-24") %>% 
-  group_by(pageid) %>% 
+# wiki traffic data
+traffic_df <- get_traffic(legislature = "deu") |> 
+  filter(date >= "2013-10-22" & date <= "2017-10-24") |> 
+  group_by(pageid) |> 
   summarize(traffic_mean = mean(traffic, na.rm = TRUE),
             traffic_max = max(traffic, na.rm = TRUE))
 
-sessions_served_df <- get_political(legislature = "deu") %>% 
-  group_by(pageid) %>% 
+# sessions served
+sessions_served_df <- get_political(legislature = "deu") |> 
+  group_by(pageid) |> 
   dplyr::summarize(sessions_served = n())
 
+# merge
+legislator_df <- 
+  left_join(political_df, sessions_served_df, by = "pageid") |> 
+  left_join(traffic_df, by = "pageid") 
 
+# compute age
 get_age <- function(birth, date_at) {
   date_at_fmt <- date_at
   birth_fmt <- birth
@@ -122,10 +149,9 @@ legislator_df$age_in_years <- round(get_age(legislator_df$birth, "2017-10-24"), 
 # plot top 10 pageviews
 legislator_df <- arrange(legislator_df, desc(traffic_mean))
 legislator_df$rank <- 1:nrow(legislator_df)
-legislator_df_table <- legislator_df %>% dplyr::select(rank, name, traffic_mean, traffic_max)
+legislator_df_table <- legislator_df |> dplyr::select(rank, name, traffic_mean, traffic_max)
 colnames(legislator_df_table) <- c("Rank", "Representative", "Mean", "Maximum")
 legislator_df_table <- head(legislator_df_table, 10)
-
 
 ggplot(legislator_df_table, aes(y = Mean, x = -Rank)) + 
   xlab("Rank") + ylab("Avg. daily page views") + 
@@ -135,7 +161,6 @@ ggplot(legislator_df_table, aes(y = Mean, x = -Rank)) +
   geom_text(aes(y = 10, label = Representative), hjust = 0, color = "white", size = 2) + 
   coord_flip() + 
   theme_minimal()
-
 
 # run model of page views as a function of sessions served, party, sex, and age in years
 legislator_df$traffic_log <- log(legislator_df$traffic_mean)
