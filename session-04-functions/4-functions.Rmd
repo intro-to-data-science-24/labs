@@ -38,13 +38,12 @@ One of the more important objects in R for functional programming are lists. Sin
 Vectors can only hold a single data type.
 ```{r}
 vec <- c(a = "hello", b = 1)
-vec
 ```
 
 By comparison lists can hold many different data types at the same time.
 
 ```{r}
-list(a = "hello", b = 1, c = mean)
+list <- list(a = "hello", b = 1, c = mean)
 ```
 
 When you think about, data.frames are also lists (or rather a list of columns).
@@ -181,6 +180,8 @@ zscale <- function(x){
     return("Not a numeric input!")
   }
 }
+
+zscale(df$a)
 ```
 
 Now we can apply our function to any variable that we would like to transform. It will run even if we apply it to a character input, but warn us that the input does not fit the required input.
@@ -217,7 +218,7 @@ You feel that the variable on emotions in our study dataset is badly represented
 
 Iteration helps you when you need to do the same thing to multiple inputs: repeating the same operation on different columns or on different datasets.
 
-On the one hand, you have for loops and while loops which are a great place to start because they make iteration very explicit. On the other hand, functional programming (FP) offers tools to extract out duplicated code, so each common for loop pattern gets its own function.
+On the one hand, you have `for` loops and `while` loops, which are a great place to start because they make iteration very explicit. On the other hand, functional programming (FP) offers tools to extract out duplicated code, so each common `for` loop pattern gets its own function.
 
 Remember the code above - it violates the rule of thumb that you should not copy-paste code more than twice.
 
@@ -227,12 +228,11 @@ df$a <- zscale(df$a)
 df$b <- zscale(df$b)
 df$c <- zscale(df$c)
 df$d <- zscale(df$d)
-
 ```
 
 ## For-loops
 
-To solve problems like this one with a for loop we need to think again about the following three components:
+To solve problems like this one with a `for` loop, we need to think again about the following three components:
 
 1. **Output:** we already have the output — it’s the same as the input because we are modifying data. If that is not the case, make sure to define a space where the output should go (e.g. an empty vector). If the length of your vector is unknown, you might be tempted to solve this problem by progressively growing the vector. However, this is not very efficient because in each iteration, R has to copy all the data from the previous iterations. In technical terms you get “quadratic” (O(n^2)) behaviour which means that a loop with three times as many elements would take nine (3^2) times as long to run. A better solution to save the results in a list, and then combine into a single vector after the loop is done. See more on this [here](https://r4ds.had.co.nz/iteration.html).
 
@@ -255,7 +255,7 @@ for (i in seq_along(df)) {       # seq_along() similar to length()
 }
 ```
 
-Remember, this only works for for-loops that manipulate existing inputs (ie. columns in a dataframe). If you want to save the output of your function in a different way, you need to define the object where you wish to store the output **ahead** of the function.
+Remember, this only works for `for` loops that manipulate existing inputs (ie. columns in a dataframe). If you want to save the output of your function in a different way, you need to define the object where you wish to store the output **ahead** of the function.
 
 ```{r}
 output_median <- vector("double", ncol(df))
@@ -265,11 +265,10 @@ for (i in seq_along(df)) {
 }
 
 output_median
-
 ```
 
 ## While-loops
-You should also be aware that there is a conditional version of for-loops called while loops. There uses are a little more niche and as such will not be covered in this lab. For those among you who are curious about them can find a pretty good tutorial [here](https://www.r-bloggers.com/2021/09/r-while-loop/).
+You should also be aware that there is a conditional version of for-loops called while loops. Their uses are a little more niche and as such will not be covered in this lab. For those among you who are curious about them, you can find a pretty good tutorial [here](https://www.r-bloggers.com/2021/09/r-while-loop/).
 
 ---
 
@@ -296,7 +295,8 @@ Three ways to pass functions to `map()`:
 1. pass directly to `map()`
 ```{r, results=FALSE}
 
-map(df, mean, na.rm = TRUE)                        
+map(df, mean, na.rm = TRUE) 
+
 ```
 
 2. use an anonymous function `\(x)`
@@ -312,7 +312,7 @@ map(df, \(x) {
 3. use `~`
 ```{r, results=FALSE}
 
-map(df, ~ mean(.x, na.rm = TRUE))
+map(.x = df, ~ mean(.x, na.rm = TRUE))
                         
 ```
 
@@ -348,6 +348,11 @@ The pattern of looping over a vector, doing something to each element and saving
 
 ##### **Exercise 4:**
 Go back to the example above, since all of the means are numeric, it makes more sense to store them in a vector rather than a list. Which function should I use?
+```{r}
+
+
+```
+
 
 ## Map2 `r emo::ji("double_exclamation_mark")`
 

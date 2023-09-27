@@ -13,7 +13,7 @@
 
 <title>Functional Programming</title>
 
-<script src="4-functions_files/header-attrs-2.23/header-attrs.js"></script>
+<script src="4-functions_files/header-attrs-2.24/header-attrs.js"></script>
 <script src="4-functions_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="4-functions_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
@@ -356,35 +356,21 @@ teach you how to:</p>
 lists. Since we only briefly touched upon them in Week 1, let’s go over
 them again in more detail.</p>
 <p>Vectors can only hold a single data type.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">a =</span> <span class="st">&quot;hello&quot;</span>, <span class="at">b =</span> <span class="dv">1</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>vec</span></code></pre></div>
-<pre><code>##       a       b 
-## &quot;hello&quot;     &quot;1&quot;</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">a =</span> <span class="st">&quot;hello&quot;</span>, <span class="at">b =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p>By comparison lists can hold many different data types at the same
 time.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">list</span>(<span class="at">a =</span> <span class="st">&quot;hello&quot;</span>, <span class="at">b =</span> <span class="dv">1</span>, <span class="at">c =</span> mean)</span></code></pre></div>
-<pre><code>## $a
-## [1] &quot;hello&quot;
-## 
-## $b
-## [1] 1
-## 
-## $c
-## function (x, ...) 
-## UseMethod(&quot;mean&quot;)
-## &lt;bytecode: 0x10e3d4078&gt;
-## &lt;environment: namespace:base&gt;</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="st">&quot;hello&quot;</span>, <span class="at">b =</span> <span class="dv">1</span>, <span class="at">c =</span> mean)</span></code></pre></div>
 <p>When you think about, data.frames are also lists (or rather a list of
 columns).</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">head</span>(gapminder) </span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">head</span>(gapminder) </span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["country"],"name":[1],"type":["fct"],"align":["left"]},{"label":["continent"],"name":[2],"type":["fct"],"align":["left"]},{"label":["year"],"name":[3],"type":["int"],"align":["right"]},{"label":["lifeExp"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["pop"],"name":[5],"type":["int"],"align":["right"]},{"label":["gdpPercap"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"Afghanistan","2":"Asia","3":"1952","4":"28.801","5":"8425333","6":"779.4453"},{"1":"Afghanistan","2":"Asia","3":"1957","4":"30.332","5":"9240934","6":"820.8530"},{"1":"Afghanistan","2":"Asia","3":"1962","4":"31.997","5":"10267083","6":"853.1007"},{"1":"Afghanistan","2":"Asia","3":"1967","4":"34.020","5":"11537966","6":"836.1971"},{"1":"Afghanistan","2":"Asia","3":"1972","4":"36.088","5":"13079460","6":"739.9811"},{"1":"Afghanistan","2":"Asia","3":"1977","4":"38.438","5":"14880372","6":"786.1134"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>You don’t believe me?</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">as.list</span>(<span class="fu">head</span>(gapminder))</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">as.list</span>(<span class="fu">head</span>(gapminder))</span></code></pre></div>
 <pre><code>## $country
 ## [1] Afghanistan Afghanistan Afghanistan Afghanistan Afghanistan Afghanistan
 ## 142 Levels: Afghanistan Albania Algeria Angola Argentina Australia ... Zimbabwe
@@ -435,17 +421,17 @@ of R for Data Science.</p>
 <h2>Basic Syntax</h2>
 <p>What does code look like that calls for writing a function? Something
 along these lines:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="at">a =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">5</span>, <span class="dv">2</span>),</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="at">b =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">100</span>, <span class="dv">15</span>),</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="at">c =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">2</span>, <span class="dv">1</span>),</span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>  <span class="at">d =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">36</span>, <span class="dv">7</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>)</span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>df<span class="sc">$</span>a <span class="ot">&lt;-</span> (df<span class="sc">$</span>a <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>a, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> <span class="fu">sd</span>(df<span class="sc">$</span>a, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>df<span class="sc">$</span>b <span class="ot">&lt;-</span> (df<span class="sc">$</span>b <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>b, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> <span class="fu">sd</span>(df<span class="sc">$</span>a, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co"># spot the mistake?</span></span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>df<span class="sc">$</span>c <span class="ot">&lt;-</span> (df<span class="sc">$</span>c <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>c, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> <span class="fu">sd</span>(df<span class="sc">$</span>c, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>df<span class="sc">$</span>d <span class="ot">&lt;-</span> (df<span class="sc">$</span>d <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>d, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> <span class="fu">sd</span>(df<span class="sc">$</span>d, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="at">a =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">5</span>, <span class="dv">2</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">b =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">100</span>, <span class="dv">15</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="at">c =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">2</span>, <span class="dv">1</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="at">d =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">36</span>, <span class="dv">7</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>)</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>df<span class="sc">$</span>a <span class="ot">&lt;-</span> (df<span class="sc">$</span>a <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>a, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> <span class="fu">sd</span>(df<span class="sc">$</span>a, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>df<span class="sc">$</span>b <span class="ot">&lt;-</span> (df<span class="sc">$</span>b <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>b, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> <span class="fu">sd</span>(df<span class="sc">$</span>a, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co"># spot the mistake?</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>df<span class="sc">$</span>c <span class="ot">&lt;-</span> (df<span class="sc">$</span>c <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>c, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> <span class="fu">sd</span>(df<span class="sc">$</span>c, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>df<span class="sc">$</span>d <span class="ot">&lt;-</span> (df<span class="sc">$</span>d <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>d, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> <span class="fu">sd</span>(df<span class="sc">$</span>d, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>There are three key steps to creating a new function:</p>
 <ol style="list-style-type: decimal">
 <li><p>Pick a <strong>name</strong> for the function. For us it could be
@@ -467,9 +453,9 @@ represented by a <code>{}</code> block that immediately follows the
 }</code></pre>
 <p>In our example, we could simplify the z-transformation of four
 variables with this function:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>zscale <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  (x <span class="sc">-</span> <span class="fu">mean</span>(x, <span class="at">na.rm =</span> T) <span class="sc">/</span> <span class="fu">sd</span>(x, <span class="at">na.rm =</span> T))</span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>zscale <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  (x <span class="sc">-</span> <span class="fu">mean</span>(x, <span class="at">na.rm =</span> T) <span class="sc">/</span> <span class="fu">sd</span>(x, <span class="at">na.rm =</span> T))</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>}</span></code></pre></div>
 <p>A word on <strong>function names</strong>. Generally, function names
 should be <em>verbs</em>, and arguments should be <em>nouns</em>. There
 are some exceptions: nouns are ok if the function computes a very well
@@ -482,10 +468,10 @@ are already taken by other packages. Nevertheless, avoiding the most
 common names from base R will avoid confusion.</p>
 <p>Let’s look at another example and work with a fictional experimental
 study dataset “study.csv” that was generated for this course.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>study <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;./study.csv&quot;</span>) </span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="fu">glimpse</span>(study)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>study <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;./study.csv&quot;</span>) </span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="fu">glimpse</span>(study)</span></code></pre></div>
 <pre><code>## Rows: 68
 ## Columns: 8
 ## $ age       &lt;dbl&gt; 32, 30, 32, 29, 24, 38, 25, 24, 48, 29, 22, 29, 24, 28, 24, …
@@ -531,23 +517,42 @@ denominate the body of the function, just as with unconditional
 functions.</p>
 <p>You could, for example, only transform numeric variables and code the
 function to warn you if you tried to scale a character variable.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>zscale <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.numeric</span>(x)) {</span>
-<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  (x <span class="sc">-</span> <span class="fu">mean</span>(x, <span class="at">na.rm =</span> T) <span class="sc">/</span> <span class="fu">sd</span>(x, <span class="at">na.rm =</span> T))</span>
-<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>    <span class="fu">return</span>(<span class="st">&quot;Not a numeric input!&quot;</span>)</span>
-<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>  }</span>
-<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>zscale <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.numeric</span>(x)) {</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  (x <span class="sc">-</span> <span class="fu">mean</span>(x, <span class="at">na.rm =</span> T) <span class="sc">/</span> <span class="fu">sd</span>(x, <span class="at">na.rm =</span> T))</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>    <span class="fu">return</span>(<span class="st">&quot;Not a numeric input!&quot;</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>  }</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>}</span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="fu">zscale</span>(df<span class="sc">$</span>a)</span></code></pre></div>
+<pre><code>##   [1]  1.33664887 -1.59732074  1.95650548  1.10221325  0.18958773  0.51256525
+##   [7] -0.31126815  0.16988689  0.57024102  1.29754840 -1.88767724  0.30189762
+##  [13] -0.05774407 -1.58363918  0.88103746 -0.37088614  1.78981800  1.15259204
+##  [19] -0.38359683 -0.78350267  0.35251867  0.71821977 -0.34652909 -0.13280712
+##  [25] -1.73827556  1.23665546 -0.69079888  1.30315402  0.10847766  0.45115351
+##  [31] -0.87479794 -0.91518728  0.26774836  0.43828142  1.24826032  0.84626285
+##  [37]  1.63832813  0.78396836  0.31484749 -0.75524035  0.06325178 -1.19163925
+##  [43] -0.05163342  1.14525891 -0.63003395  1.06435983  0.03235509 -0.66874180
+##  [49] -0.87151542 -1.46403912 -1.79870436 -0.20709559  1.79786251 -1.40466589
+##  [55]  1.82186008 -0.22105709 -1.31866401 -0.29300177 -0.14465961  0.07904185
+##  [61]  0.59043374  0.20701204 -0.76939558 -1.51424177  1.07132867 -0.01054106
+##  [67]  0.02245019  0.87731097  0.24270615 -2.53584226  0.35766023  0.03170626
+##  [73]  0.98891282 -1.25421069  1.22061623  0.87059474 -1.21975579 -0.91050595
+##  [79] -0.05457686  0.45466396 -0.86647774  0.27103346 -0.31730167 -1.00615854
+##  [85]  0.11342122  0.34177454 -1.89219707 -1.19601883  2.70265276  0.50155681
+##  [91]  0.23544488  0.75432460  0.04247408  0.12584346 -0.33269872 -0.13565253
+##  [97]  0.21563235 -1.63709375 -0.33560385 -0.52896704</code></pre>
 <p>Now we can apply our function to any variable that we would like to
 transform. It will run even if we apply it to a character input, but
 warn us that the input does not fit the required input.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>df<span class="sc">$</span>a <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>a)</span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>df<span class="sc">$</span>b <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>b)</span>
-<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>df<span class="sc">$</span>c <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>c)</span>
-<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>df<span class="sc">$</span>d <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>d)</span>
-<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co"># you can also use your function with a pipe!</span></span>
-<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>df<span class="sc">$</span>d <span class="sc">|&gt;</span> <span class="fu">zscale</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>df<span class="sc">$</span>a <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>a)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>df<span class="sc">$</span>b <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>b)</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>df<span class="sc">$</span>c <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>c)</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>df<span class="sc">$</span>d <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>d)</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="co"># you can also use your function with a pipe!</span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>df<span class="sc">$</span>d <span class="sc">|&gt;</span> <span class="fu">zscale</span>()</span></code></pre></div>
 <p>Note that there is still a lot of repetition in the example above. We
 can get rid of this repetition using what coders call iteration 👇.</p>
 <div id="exercise-3" class="section level5">
@@ -556,12 +561,12 @@ can get rid of this repetition using what coders call iteration 👇.</p>
 represented and you decide to replace it with Emoticons! You want to
 write a function to automate this task. Transform this pseudo code into
 an R function:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># hint: you&#39;ll want to replace &quot;netural&quot; with &quot;neutral&quot;</span></span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="co"># write a function that takes a character element as input</span></span>
-<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co"># if happy, then :) </span></span>
-<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co"># if sad, then :(</span></span>
-<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co"># if neutral, then :|</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># hint: you&#39;ll want to replace &quot;netural&quot; with &quot;neutral&quot;</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="co"># write a function that takes a character element as input</span></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co"># if happy, then :) </span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co"># if sad, then :(</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co"># if neutral, then :|</span></span></code></pre></div>
 <hr />
 </div>
 </div>
@@ -571,21 +576,22 @@ an R function:</p>
 <p>Iteration helps you when you need to do the same thing to multiple
 inputs: repeating the same operation on different columns or on
 different datasets.</p>
-<p>On the one hand, you have for loops and while loops which are a great
-place to start because they make iteration very explicit. On the other
-hand, functional programming (FP) offers tools to extract out duplicated
-code, so each common for loop pattern gets its own function.</p>
+<p>On the one hand, you have <code>for</code> loops and
+<code>while</code> loops, which are a great place to start because they
+make iteration very explicit. On the other hand, functional programming
+(FP) offers tools to extract out duplicated code, so each common
+<code>for</code> loop pattern gets its own function.</p>
 <p>Remember the code above - it violates the rule of thumb that you
 should not copy-paste code more than twice.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># repetitive code</span></span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>df<span class="sc">$</span>a <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>a)</span>
-<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>df<span class="sc">$</span>b <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>b)</span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>df<span class="sc">$</span>c <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>c)</span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>df<span class="sc">$</span>d <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>d)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># repetitive code</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>df<span class="sc">$</span>a <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>a)</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>df<span class="sc">$</span>b <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>b)</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>df<span class="sc">$</span>c <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>c)</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>df<span class="sc">$</span>d <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>d)</span></code></pre></div>
 <div id="for-loops" class="section level2">
 <h2>For-loops</h2>
-<p>To solve problems like this one with a for loop we need to think
-again about the following three components:</p>
+<p>To solve problems like this one with a <code>for</code> loop, we need
+to think again about the following three components:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Output:</strong> we already have the output — it’s the
 same as the input because we are modifying data. If that is not the
@@ -606,35 +612,36 @@ list of columns, so we can iterate over each column with
 function.</p></li>
 </ol>
 <p>The better solution will look like this:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co"># repetitive code</span></span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>df<span class="sc">$</span>a <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>a)</span>
-<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>df<span class="sc">$</span>b <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>b)</span>
-<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>df<span class="sc">$</span>c <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>c)</span>
-<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>df<span class="sc">$</span>d <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>d)</span>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># repetitive code</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>df<span class="sc">$</span>a <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>a)</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>df<span class="sc">$</span>b <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>b)</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>df<span class="sc">$</span>c <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>c)</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>df<span class="sc">$</span>d <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df<span class="sc">$</span>d)</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="co"># equivalent iteration</span></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(df)) {       <span class="co"># seq_along() similar to length()</span></span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>  df[[i]] <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df[[i]])     <span class="co"># [[]] because we are working on single elements</span></span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a>}</span></code></pre></div>
+<p>Remember, this only works for <code>for</code> loops that manipulate
+existing inputs (ie. columns in a dataframe). If you want to save the
+output of your function in a different way, you need to define the
+object where you wish to store the output <strong>ahead</strong> of the
+function.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>output_median <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">&quot;double&quot;</span>, <span class="fu">ncol</span>(df))</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(df)) {            </span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>  output_median[[i]] <span class="ot">&lt;-</span> <span class="fu">median</span>(df[[i]])</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>}</span>
 <span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co"># equivalent iteration</span></span>
-<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(df)) {       <span class="co"># seq_along() similar to length()</span></span>
-<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>  df[[i]] <span class="ot">&lt;-</span> <span class="fu">zscale</span>(df[[i]])     <span class="co"># [[]] because we are working on single elements</span></span>
-<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>}</span></code></pre></div>
-<p>Remember, this only works for for-loops that manipulate existing
-inputs (ie. columns in a dataframe). If you want to save the output of
-your function in a different way, you need to define the object where
-you wish to store the output <strong>ahead</strong> of the function.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>output_median <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">&quot;double&quot;</span>, <span class="fu">ncol</span>(df))</span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(df)) {            </span>
-<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>  output_median[[i]] <span class="ot">&lt;-</span> <span class="fu">median</span>(df[[i]])</span>
-<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>}</span>
-<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a></span>
-<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>output_median</span></code></pre></div>
-<pre><code>## [1]  0.005846726  0.293068635  0.054760327 -0.055792634</code></pre>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>output_median</span></code></pre></div>
+<pre><code>## [1]  0.05286293  0.18510658 -0.13003509 -0.05380469</code></pre>
 </div>
 <div id="while-loops" class="section level2">
 <h2>While-loops</h2>
 <p>You should also be aware that there is a conditional version of
-for-loops called while loops. There uses are a little more niche and as
+for-loops called while loops. Their uses are a little more niche and as
 such will not be covered in this lab. For those among you who are
-curious about them can find a pretty good tutorial <a
+curious about them, you can find a pretty good tutorial <a
 href="https://www.r-bloggers.com/2021/09/r-while-loop/">here</a>.</p>
 <hr />
 </div>
@@ -668,31 +675,31 @@ Logic behind vectorised functions (also called functional programming).
 <ol style="list-style-type: decimal">
 <li>pass directly to <code>map()</code></li>
 </ol>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">map</span>(df, mean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)                        </span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">map</span>(df, mean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) </span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>use an anonymous function <code>\(x)</code></li>
 </ol>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">map</span>(df, \(x) {</span>
-<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>  <span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) }</span>
-<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">map</span>(df, \(x) {</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>  <span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) }</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>)</span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>use <code>~</code></li>
 </ol>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">map</span>(df, <span class="sc">~</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">map</span>(<span class="at">.x =</span> df, <span class="sc">~</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
 <p>Let’s look at this in practice. Imagine you want to calculate the
 mean of each column in your data frame:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="co"># repetitive code</span></span>
-<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>a)</span>
-<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>b)</span>
-<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>c)</span>
-<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>d)</span>
-<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a></span>
-<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a></span>
-<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a><span class="co"># equivalent map function</span></span>
-<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a><span class="fu">map</span>(<span class="at">.x =</span> df, <span class="sc">~</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span>T))</span>
-<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a></span>
-<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a><span class="co"># map function in tidyverse style</span></span>
-<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>df <span class="sc">|&gt;</span> <span class="fu">map</span>(mean)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="co"># repetitive code</span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>a)</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>b)</span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>c)</span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>d)</span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a><span class="co"># equivalent map function</span></span>
+<span id="cb23-9"><a href="#cb23-9" tabindex="-1"></a><span class="fu">map</span>(<span class="at">.x =</span> df, <span class="sc">~</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span>T))</span>
+<span id="cb23-10"><a href="#cb23-10" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" tabindex="-1"></a><span class="co"># map function in tidyverse style</span></span>
+<span id="cb23-12"><a href="#cb23-12" tabindex="-1"></a>df <span class="sc">|&gt;</span> <span class="fu">map</span>(mean)</span></code></pre></div>
 </div>
 <div id="the-map-family-of-functions" class="section level2">
 <h2>The <code>map*()</code> family of functions 👪</h2>
@@ -812,25 +819,25 @@ geodesic distance between two points specified by radian
 latitude/longitude using the Haversine formula (hf); taken from <a
 href="https://goo.gl/GezNGB">here</a>, as an example. We’ve inserted
 some bugs here… 🐛</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>geod_dist <span class="ot">&lt;-</span> <span class="cf">function</span>(lat1, lon1, lat2, lon2, <span class="at">earth.radius =</span> <span class="dv">6371</span>) {</span>
-<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>  </span>
-<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>  <span class="co"># from degrees to radians</span></span>
-<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>  deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg) <span class="fu">return</span>(deg<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span>)</span>
-<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>  lon1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon1)</span>
-<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a>  lat1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat1)</span>
-<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a>  lon2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(long2)</span>
-<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a>  lat2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat2)</span>
-<span id="cb25-9"><a href="#cb25-9" tabindex="-1"></a>  </span>
-<span id="cb25-10"><a href="#cb25-10" tabindex="-1"></a>  <span class="co"># calculation</span></span>
-<span id="cb25-11"><a href="#cb25-11" tabindex="-1"></a>  delta.long <span class="ot">&lt;-</span> (lon2 <span class="sc">-</span> lon1)</span>
-<span id="cb25-12"><a href="#cb25-12" tabindex="-1"></a>  delta.lat <span class="ot">&lt;-</span> (lat2 <span class="sc">-</span> lat1)</span>
-<span id="cb25-13"><a href="#cb25-13" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">sin</span>(delta.lat<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">cos</span>(lat1) <span class="sc">*</span> <span class="fu">cos</span>(lat2) <span class="sc">*</span> <span class="fu">sing</span>(delta.long<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb25-14"><a href="#cb25-14" tabindex="-1"></a>  c <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">asin</span>(<span class="fu">min</span>(<span class="dv">1</span>,<span class="fu">sqrt</span>(a)))</span>
-<span id="cb25-15"><a href="#cb25-15" tabindex="-1"></a>  d <span class="ot">=</span> earth_radius <span class="sc">*</span> c</span>
-<span id="cb25-16"><a href="#cb25-16" tabindex="-1"></a>  <span class="fu">return</span>(d)</span>
-<span id="cb25-17"><a href="#cb25-17" tabindex="-1"></a>}</span>
-<span id="cb25-18"><a href="#cb25-18" tabindex="-1"></a></span>
-<span id="cb25-19"><a href="#cb25-19" tabindex="-1"></a><span class="fu">geod_dist</span>(<span class="at">lat1 =</span> <span class="fl">49.5</span>, <span class="at">lon1 =</span> <span class="fl">8.4</span>, <span class="at">lat2 =</span> <span class="fl">52.5</span>, <span class="at">lon2 =</span> <span class="fl">13.4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>geod_dist <span class="ot">&lt;-</span> <span class="cf">function</span>(lat1, lon1, lat2, lon2, <span class="at">earth.radius =</span> <span class="dv">6371</span>) {</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>  </span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>  <span class="co"># from degrees to radians</span></span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>  deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg) <span class="fu">return</span>(deg<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>  lon1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon1)</span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>  lat1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat1)</span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a>  lon2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(long2)</span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a>  lat2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat2)</span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a>  </span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a>  <span class="co"># calculation</span></span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a>  delta.long <span class="ot">&lt;-</span> (lon2 <span class="sc">-</span> lon1)</span>
+<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>  delta.lat <span class="ot">&lt;-</span> (lat2 <span class="sc">-</span> lat1)</span>
+<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">sin</span>(delta.lat<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">cos</span>(lat1) <span class="sc">*</span> <span class="fu">cos</span>(lat2) <span class="sc">*</span> <span class="fu">sing</span>(delta.long<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a>  c <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">asin</span>(<span class="fu">min</span>(<span class="dv">1</span>,<span class="fu">sqrt</span>(a)))</span>
+<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a>  d <span class="ot">=</span> earth_radius <span class="sc">*</span> c</span>
+<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a>  <span class="fu">return</span>(d)</span>
+<span id="cb24-17"><a href="#cb24-17" tabindex="-1"></a>}</span>
+<span id="cb24-18"><a href="#cb24-18" tabindex="-1"></a></span>
+<span id="cb24-19"><a href="#cb24-19" tabindex="-1"></a><span class="fu">geod_dist</span>(<span class="at">lat1 =</span> <span class="fl">49.5</span>, <span class="at">lon1 =</span> <span class="fl">8.4</span>, <span class="at">lat2 =</span> <span class="fl">52.5</span>, <span class="at">lon2 =</span> <span class="fl">13.4</span>)</span></code></pre></div>
 <div id="trial-and-error" class="section level3">
 <h3>Trial and error 🎓</h3>
 <p>That is, if you see the error right away, try and fix it. You have
@@ -842,20 +849,20 @@ lots of experience doing that. 🤓</p>
 (objects you can see in your environment, otherwise the objects are only
 available within your function). Then you can step through the code line
 by line to locate the bug.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="co"># make the objects that are otherwise entered as input parameters to your function global</span></span>
-<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>lat1 <span class="ot">=</span> <span class="fl">49.5</span>; lon1 <span class="ot">=</span> <span class="fl">8.4</span>; lat2 <span class="ot">=</span> <span class="fl">52.5</span>; lon2 <span class="ot">=</span> <span class="fl">13.4</span></span></code></pre></div>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="co"># now, execute line by line</span></span>
-<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a>deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg) <span class="fu">return</span>(deg<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span>)</span>
-<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a>lon1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon1)</span>
-<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a>lat1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat1)</span>
-<span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a>lon2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(long2)</span>
-<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a>lat2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat2)</span>
-<span id="cb27-7"><a href="#cb27-7" tabindex="-1"></a>delta.long <span class="ot">&lt;-</span> (lon2 <span class="sc">-</span> lon1)</span>
-<span id="cb27-8"><a href="#cb27-8" tabindex="-1"></a>delta.lat <span class="ot">&lt;-</span> (lat2 <span class="sc">-</span> lat1)</span>
-<span id="cb27-9"><a href="#cb27-9" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">sin</span>(delta.lat<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">cos</span>(lat1) <span class="sc">*</span> <span class="fu">cos</span>(lat2) <span class="sc">*</span> <span class="fu">sing</span>(delta.long<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb27-10"><a href="#cb27-10" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">asin</span>(<span class="fu">min</span>(<span class="dv">1</span>,<span class="fu">sqrt</span>(a)))</span>
-<span id="cb27-11"><a href="#cb27-11" tabindex="-1"></a>d <span class="ot">=</span> earth_radius <span class="sc">*</span> c</span>
-<span id="cb27-12"><a href="#cb27-12" tabindex="-1"></a><span class="fu">return</span>(d)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="co"># make the objects that are otherwise entered as input parameters to your function global</span></span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>lat1 <span class="ot">=</span> <span class="fl">49.5</span>; lon1 <span class="ot">=</span> <span class="fl">8.4</span>; lat2 <span class="ot">=</span> <span class="fl">52.5</span>; lon2 <span class="ot">=</span> <span class="fl">13.4</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="co"># now, execute line by line</span></span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg) <span class="fu">return</span>(deg<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>lon1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon1)</span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a>lat1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat1)</span>
+<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a>lon2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(long2)</span>
+<span id="cb26-6"><a href="#cb26-6" tabindex="-1"></a>lat2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat2)</span>
+<span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a>delta.long <span class="ot">&lt;-</span> (lon2 <span class="sc">-</span> lon1)</span>
+<span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a>delta.lat <span class="ot">&lt;-</span> (lat2 <span class="sc">-</span> lat1)</span>
+<span id="cb26-9"><a href="#cb26-9" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">sin</span>(delta.lat<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">cos</span>(lat1) <span class="sc">*</span> <span class="fu">cos</span>(lat2) <span class="sc">*</span> <span class="fu">sing</span>(delta.long<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">asin</span>(<span class="fu">min</span>(<span class="dv">1</span>,<span class="fu">sqrt</span>(a)))</span>
+<span id="cb26-11"><a href="#cb26-11" tabindex="-1"></a>d <span class="ot">=</span> earth_radius <span class="sc">*</span> c</span>
+<span id="cb26-12"><a href="#cb26-12" tabindex="-1"></a><span class="fu">return</span>(d)</span></code></pre></div>
 <p><strong>Problem:</strong> This creates global objects that match
 arguments names, which can become confusing and cause problems that
 become obvious when the function is called in a different environment.
@@ -870,8 +877,8 @@ example described above.</p>
 </div>
 <div id="using-traceback" class="section level3">
 <h3>Using <code>traceback()</code> 👈</h3>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="fu">geod_dist</span>(<span class="at">lat1 =</span> <span class="fl">49.5</span>, <span class="at">lon1 =</span> <span class="fl">8.4</span>, <span class="at">lat2 =</span> <span class="fl">52.5</span>, <span class="at">lon2 =</span> <span class="fl">13.4</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a><span class="fu">traceback</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="fu">geod_dist</span>(<span class="at">lat1 =</span> <span class="fl">49.5</span>, <span class="at">lon1 =</span> <span class="fl">8.4</span>, <span class="at">lat2 =</span> <span class="fl">52.5</span>, <span class="at">lon2 =</span> <span class="fl">13.4</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="fu">traceback</span>()</span></code></pre></div>
 <p>This shows you where the error occurred (but not why). Read from
 bottom to top (e.g. 1. called function X, 2. called function Y, error
 occurred in line #6 of function Y)</p>
@@ -882,23 +889,23 @@ occurred in line #6 of function Y)</p>
 before you expect the error. <strong>Note:</strong> While
 <code>browser()</code> works best within a clean .R script, it can also
 help with troubleshooting within .Rmd files.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>geod_dist <span class="ot">&lt;-</span> <span class="cf">function</span>(lat1, lon1, lat2, lon2, <span class="at">earth.radius =</span> <span class="dv">6371</span>) {</span>
-<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>  <span class="co"># from degrees to radians</span></span>
-<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>  <span class="fu">browser</span>()</span>
-<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a>  deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg) <span class="fu">return</span>(deg<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span>)</span>
-<span id="cb29-5"><a href="#cb29-5" tabindex="-1"></a>  lon1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon1)</span>
-<span id="cb29-6"><a href="#cb29-6" tabindex="-1"></a>  lat1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat1)</span>
-<span id="cb29-7"><a href="#cb29-7" tabindex="-1"></a>  lon2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon2)</span>
-<span id="cb29-8"><a href="#cb29-8" tabindex="-1"></a>  lat2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat2)</span>
-<span id="cb29-9"><a href="#cb29-9" tabindex="-1"></a>  <span class="co"># calculation</span></span>
-<span id="cb29-10"><a href="#cb29-10" tabindex="-1"></a>  delta.long <span class="ot">&lt;-</span> (lon2 <span class="sc">-</span> lon1)</span>
-<span id="cb29-11"><a href="#cb29-11" tabindex="-1"></a>  delta.lat <span class="ot">&lt;-</span> (lat2 <span class="sc">-</span> lat1)</span>
-<span id="cb29-12"><a href="#cb29-12" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">sin</span>(delta.lat<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">cos</span>(lat1) <span class="sc">*</span> <span class="fu">cos</span>(lat2) <span class="sc">*</span> <span class="fu">sin</span>(delta.long<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb29-13"><a href="#cb29-13" tabindex="-1"></a>  c <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">asin</span>(<span class="fu">min</span>(<span class="dv">1</span>,<span class="fu">sqrt</span>(a)))</span>
-<span id="cb29-14"><a href="#cb29-14" tabindex="-1"></a>  d <span class="ot">=</span> earth_radius <span class="sc">*</span> c</span>
-<span id="cb29-15"><a href="#cb29-15" tabindex="-1"></a>  <span class="fu">return</span>(d)</span>
-<span id="cb29-16"><a href="#cb29-16" tabindex="-1"></a>}</span>
-<span id="cb29-17"><a href="#cb29-17" tabindex="-1"></a><span class="fu">geod_dist</span>(<span class="at">lat1 =</span> <span class="fl">49.5</span>, <span class="at">lon1 =</span> <span class="fl">8.4</span>, <span class="at">lat2 =</span> <span class="fl">52.5</span>, <span class="at">lon2 =</span> <span class="fl">13.4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>geod_dist <span class="ot">&lt;-</span> <span class="cf">function</span>(lat1, lon1, lat2, lon2, <span class="at">earth.radius =</span> <span class="dv">6371</span>) {</span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>  <span class="co"># from degrees to radians</span></span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>  <span class="fu">browser</span>()</span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a>  deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg) <span class="fu">return</span>(deg<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a>  lon1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon1)</span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a>  lat1 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat1)</span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a>  lon2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lon2)</span>
+<span id="cb28-8"><a href="#cb28-8" tabindex="-1"></a>  lat2 <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(lat2)</span>
+<span id="cb28-9"><a href="#cb28-9" tabindex="-1"></a>  <span class="co"># calculation</span></span>
+<span id="cb28-10"><a href="#cb28-10" tabindex="-1"></a>  delta.long <span class="ot">&lt;-</span> (lon2 <span class="sc">-</span> lon1)</span>
+<span id="cb28-11"><a href="#cb28-11" tabindex="-1"></a>  delta.lat <span class="ot">&lt;-</span> (lat2 <span class="sc">-</span> lat1)</span>
+<span id="cb28-12"><a href="#cb28-12" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">sin</span>(delta.lat<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">cos</span>(lat1) <span class="sc">*</span> <span class="fu">cos</span>(lat2) <span class="sc">*</span> <span class="fu">sin</span>(delta.long<span class="sc">/</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb28-13"><a href="#cb28-13" tabindex="-1"></a>  c <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">asin</span>(<span class="fu">min</span>(<span class="dv">1</span>,<span class="fu">sqrt</span>(a)))</span>
+<span id="cb28-14"><a href="#cb28-14" tabindex="-1"></a>  d <span class="ot">=</span> earth_radius <span class="sc">*</span> c</span>
+<span id="cb28-15"><a href="#cb28-15" tabindex="-1"></a>  <span class="fu">return</span>(d)</span>
+<span id="cb28-16"><a href="#cb28-16" tabindex="-1"></a>}</span>
+<span id="cb28-17"><a href="#cb28-17" tabindex="-1"></a><span class="fu">geod_dist</span>(<span class="at">lat1 =</span> <span class="fl">49.5</span>, <span class="at">lon1 =</span> <span class="fl">8.4</span>, <span class="at">lat2 =</span> <span class="fl">52.5</span>, <span class="at">lon2 =</span> <span class="fl">13.4</span>)</span></code></pre></div>
 <p>You can then interactively work through the function line by line by
 hitting enter in the console or send additional lines of code.</p>
 <p><img src="pics/browser.png" width="776" /></p>
@@ -921,52 +928,52 @@ automatically, e.g.:</p>
 </ul>
 <p>Useful functions to deal with such cases: <code>try()</code> and
 <code>tryCatch()</code></p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { </span>
-<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>  <span class="fu">log</span>(x) </span>
-<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>  <span class="dv">10</span> </span>
-<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a>  } </span>
-<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a><span class="fu">f1</span>(<span class="st">&quot;x&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { </span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>  <span class="fu">log</span>(x) </span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>  <span class="dv">10</span> </span>
+<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a>  } </span>
+<span id="cb29-5"><a href="#cb29-5" tabindex="-1"></a><span class="fu">f1</span>(<span class="st">&quot;x&quot;</span>)</span></code></pre></div>
 <div id="using-try" class="section level3">
 <h3>Using <code>try()</code> 🤷</h3>
 <p>Ignore error:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { </span>
-<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a>  <span class="fu">try</span>(<span class="fu">log</span>(x))</span>
-<span id="cb31-3"><a href="#cb31-3" tabindex="-1"></a>  <span class="dv">10</span> </span>
-<span id="cb31-4"><a href="#cb31-4" tabindex="-1"></a>} </span>
-<span id="cb31-5"><a href="#cb31-5" tabindex="-1"></a><span class="fu">f1</span>(<span class="st">&quot;x&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { </span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>  <span class="fu">try</span>(<span class="fu">log</span>(x))</span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>  <span class="dv">10</span> </span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a>} </span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a><span class="fu">f1</span>(<span class="st">&quot;x&quot;</span>)</span></code></pre></div>
 <pre><code>## Error in log(x) : non-numeric argument to mathematical function</code></pre>
 <pre><code>## [1] 10</code></pre>
 <p>Suppress error message:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { </span>
-<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a>  <span class="fu">try</span>(<span class="fu">log</span>(x), <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a>  <span class="dv">10</span> </span>
-<span id="cb34-4"><a href="#cb34-4" tabindex="-1"></a>} </span>
-<span id="cb34-5"><a href="#cb34-5" tabindex="-1"></a><span class="fu">f1</span>(<span class="st">&quot;x&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { </span>
+<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a>  <span class="fu">try</span>(<span class="fu">log</span>(x), <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" tabindex="-1"></a>  <span class="dv">10</span> </span>
+<span id="cb33-4"><a href="#cb33-4" tabindex="-1"></a>} </span>
+<span id="cb33-5"><a href="#cb33-5" tabindex="-1"></a><span class="fu">f1</span>(<span class="st">&quot;x&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 10</code></pre>
 <p>Pass block of code to <code>try()</code>:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="fu">try</span>({ </span>
-<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="dv">1</span> </span>
-<span id="cb36-3"><a href="#cb36-3" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="st">&quot;x&quot;</span> </span>
-<span id="cb36-4"><a href="#cb36-4" tabindex="-1"></a>  a <span class="sc">+</span> b </span>
-<span id="cb36-5"><a href="#cb36-5" tabindex="-1"></a>})</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a><span class="fu">try</span>({ </span>
+<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="dv">1</span> </span>
+<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="st">&quot;x&quot;</span> </span>
+<span id="cb35-4"><a href="#cb35-4" tabindex="-1"></a>  a <span class="sc">+</span> b </span>
+<span id="cb35-5"><a href="#cb35-5" tabindex="-1"></a>})</span></code></pre></div>
 <pre><code>## Error in a + b : non-numeric argument to binary operator</code></pre>
 <p>Capture the output of <code>try()</code>:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a>success <span class="ot">&lt;-</span> <span class="fu">try</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span>) </span>
-<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a>failure <span class="ot">&lt;-</span> <span class="fu">try</span>(<span class="st">&quot;a&quot;</span> <span class="sc">+</span> <span class="st">&quot;b&quot;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a>success <span class="ot">&lt;-</span> <span class="fu">try</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span>) </span>
+<span id="cb37-2"><a href="#cb37-2" tabindex="-1"></a>failure <span class="ot">&lt;-</span> <span class="fu">try</span>(<span class="st">&quot;a&quot;</span> <span class="sc">+</span> <span class="st">&quot;b&quot;</span>) </span></code></pre></div>
 <pre><code>## Error in &quot;a&quot; + &quot;b&quot; : non-numeric argument to binary operator</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a><span class="fu">class</span>(success)</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a><span class="fu">class</span>(success)</span></code></pre></div>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a><span class="fu">class</span>(failure) </span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a><span class="fu">class</span>(failure) </span></code></pre></div>
 <pre><code>## [1] &quot;try-error&quot;</code></pre>
 <p>Use <code>possibly()</code>, a function similar to <code>try()</code>
 from the purrr package when applying a function to multiple elements in
 a list. You can also provide a default value (here: <code>NA</code>) in
 case execution fails.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a></span>
-<span id="cb44-3"><a href="#cb44-3" tabindex="-1"></a>elements <span class="ot">&lt;-</span><span class="fu">list</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="st">&quot;f&quot;</span>)</span>
-<span id="cb44-4"><a href="#cb44-4" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">map</span>(elements, log)</span>
-<span id="cb44-5"><a href="#cb44-5" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">map</span>(elements, <span class="fu">possibly</span>(log, <span class="cn">NA</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" tabindex="-1"></a>elements <span class="ot">&lt;-</span><span class="fu">list</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="st">&quot;f&quot;</span>)</span>
+<span id="cb43-4"><a href="#cb43-4" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">map</span>(elements, log)</span>
+<span id="cb43-5"><a href="#cb43-5" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">map</span>(elements, <span class="fu">possibly</span>(log, <span class="cn">NA</span>))</span></code></pre></div>
 </div>
 <div id="condition-handling-with-trycatch" class="section level3">
 <h3>Condition handling with <code>tryCatch()</code> 🎣</h3>
@@ -975,45 +982,45 @@ interruptions, with certain actions “handlers”. These are functions that
 map conditions to condition handler functions that can do anything but
 typically will return a value or create a more informative error
 message:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a>show_condition <span class="ot">&lt;-</span> <span class="cf">function</span>(code) { </span>
-<span id="cb45-2"><a href="#cb45-2" tabindex="-1"></a>  <span class="fu">tryCatch</span>(code, </span>
-<span id="cb45-3"><a href="#cb45-3" tabindex="-1"></a>           <span class="at">error =</span> <span class="cf">function</span>(c) <span class="st">&quot;error&quot;</span>, </span>
-<span id="cb45-4"><a href="#cb45-4" tabindex="-1"></a>           <span class="at">warning =</span> <span class="cf">function</span>(c) <span class="st">&quot;warning&quot;</span>, </span>
-<span id="cb45-5"><a href="#cb45-5" tabindex="-1"></a>           <span class="at">message =</span> <span class="cf">function</span>(c) <span class="st">&quot;message&quot;</span> )</span>
-<span id="cb45-6"><a href="#cb45-6" tabindex="-1"></a>  }</span>
-<span id="cb45-7"><a href="#cb45-7" tabindex="-1"></a></span>
-<span id="cb45-8"><a href="#cb45-8" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="fu">stop</span>(<span class="st">&quot;!&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a>show_condition <span class="ot">&lt;-</span> <span class="cf">function</span>(code) { </span>
+<span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a>  <span class="fu">tryCatch</span>(code, </span>
+<span id="cb44-3"><a href="#cb44-3" tabindex="-1"></a>           <span class="at">error =</span> <span class="cf">function</span>(c) <span class="st">&quot;error&quot;</span>, </span>
+<span id="cb44-4"><a href="#cb44-4" tabindex="-1"></a>           <span class="at">warning =</span> <span class="cf">function</span>(c) <span class="st">&quot;warning&quot;</span>, </span>
+<span id="cb44-5"><a href="#cb44-5" tabindex="-1"></a>           <span class="at">message =</span> <span class="cf">function</span>(c) <span class="st">&quot;message&quot;</span> )</span>
+<span id="cb44-6"><a href="#cb44-6" tabindex="-1"></a>  }</span>
+<span id="cb44-7"><a href="#cb44-7" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="#cb44-8" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="fu">stop</span>(<span class="st">&quot;!&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;error&quot;</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="fu">warning</span>(<span class="st">&quot;?!&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="fu">warning</span>(<span class="st">&quot;?!&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;warning&quot;</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="fu">message</span>(<span class="st">&quot;?&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="fu">message</span>(<span class="st">&quot;?&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;message&quot;</code></pre>
 <p>If no condition is captured, <code>tryCatch()</code> returns the
 value of the input:</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="dv">10</span><span class="sc">+</span><span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a><span class="fu">show_condition</span>(<span class="dv">10</span><span class="sc">+</span><span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## [1] 15</code></pre>
 <p>A more real-life example of how to use <code>tryCatch()</code> is
 this one:</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" tabindex="-1"></a>model_selection <span class="ot">&lt;-</span> <span class="cf">function</span>(data, formula1, formula2){</span>
-<span id="cb53-2"><a href="#cb53-2" tabindex="-1"></a></span>
-<span id="cb53-3"><a href="#cb53-3" tabindex="-1"></a>  <span class="fu">tryCatch</span>(<span class="fu">lm</span>(formula1, data), <span class="at">error =</span> <span class="cf">function</span>(e) <span class="fu">lm</span>(formula2, data))</span>
-<span id="cb53-4"><a href="#cb53-4" tabindex="-1"></a></span>
-<span id="cb53-5"><a href="#cb53-5" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>model_selection <span class="ot">&lt;-</span> <span class="cf">function</span>(data, formula1, formula2){</span>
+<span id="cb52-2"><a href="#cb52-2" tabindex="-1"></a></span>
+<span id="cb52-3"><a href="#cb52-3" tabindex="-1"></a>  <span class="fu">tryCatch</span>(<span class="fu">lm</span>(formula1, data), <span class="at">error =</span> <span class="cf">function</span>(e) <span class="fu">lm</span>(formula2, data))</span>
+<span id="cb52-4"><a href="#cb52-4" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="#cb52-5" tabindex="-1"></a>}</span></code></pre></div>
 <p>You try to fit <code>formula1</code> to the data, however, maybe it
 is a model with very strict requirements. You might also have a more
 robust (but maybe less interesting) <code>formula2</code> that you might
 fit if the requirements are not met and the modeling process throws an
 error.</p>
 <p>Make more informative error messages:</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a>read.csv_new <span class="ot">&lt;-</span> <span class="cf">function</span>(file, ...) { </span>
-<span id="cb54-2"><a href="#cb54-2" tabindex="-1"></a>  <span class="fu">tryCatch</span>(<span class="fu">read.csv</span>(file, ...), <span class="at">error =</span> <span class="cf">function</span>(c) {</span>
-<span id="cb54-3"><a href="#cb54-3" tabindex="-1"></a>    c<span class="sc">$</span>message <span class="ot">&lt;-</span> <span class="fu">paste0</span>(c<span class="sc">$</span>message, <span class="st">&quot; (in &quot;</span>, file, <span class="st">&quot;)&quot;</span>) </span>
-<span id="cb54-4"><a href="#cb54-4" tabindex="-1"></a>    <span class="fu">stop</span>(c) </span>
-<span id="cb54-5"><a href="#cb54-5" tabindex="-1"></a>  })</span>
-<span id="cb54-6"><a href="#cb54-6" tabindex="-1"></a>}</span>
-<span id="cb54-7"><a href="#cb54-7" tabindex="-1"></a></span>
-<span id="cb54-8"><a href="#cb54-8" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">&quot;code/dummy.csv&quot;</span>)</span>
-<span id="cb54-9"><a href="#cb54-9" tabindex="-1"></a><span class="fu">read.csv_new</span>(<span class="st">&quot;code/dummy.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" tabindex="-1"></a>read.csv_new <span class="ot">&lt;-</span> <span class="cf">function</span>(file, ...) { </span>
+<span id="cb53-2"><a href="#cb53-2" tabindex="-1"></a>  <span class="fu">tryCatch</span>(<span class="fu">read.csv</span>(file, ...), <span class="at">error =</span> <span class="cf">function</span>(c) {</span>
+<span id="cb53-3"><a href="#cb53-3" tabindex="-1"></a>    c<span class="sc">$</span>message <span class="ot">&lt;-</span> <span class="fu">paste0</span>(c<span class="sc">$</span>message, <span class="st">&quot; (in &quot;</span>, file, <span class="st">&quot;)&quot;</span>) </span>
+<span id="cb53-4"><a href="#cb53-4" tabindex="-1"></a>    <span class="fu">stop</span>(c) </span>
+<span id="cb53-5"><a href="#cb53-5" tabindex="-1"></a>  })</span>
+<span id="cb53-6"><a href="#cb53-6" tabindex="-1"></a>}</span>
+<span id="cb53-7"><a href="#cb53-7" tabindex="-1"></a></span>
+<span id="cb53-8"><a href="#cb53-8" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">&quot;code/dummy.csv&quot;</span>)</span>
+<span id="cb53-9"><a href="#cb53-9" tabindex="-1"></a><span class="fu">read.csv_new</span>(<span class="st">&quot;code/dummy.csv&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="defensive-programming" class="section level2">
@@ -1038,69 +1045,69 @@ their input (e.g. <code>sapply</code>)</li>
 <p>Here is a piece of code that comes with a few flaws. As an optional
 take-home exercise, please identify the bugs, remove them and report
 what you have done using comments.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a><span class="co"># load packages</span></span>
-<span id="cb55-2"><a href="#cb55-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb55-3"><a href="#cb55-3" tabindex="-1"></a><span class="fu">library</span>(LegislatoR) </span>
-<span id="cb55-4"><a href="#cb55-4" tabindex="-1"></a></span>
-<span id="cb55-5"><a href="#cb55-5" tabindex="-1"></a><span class="co"># get political data on German legislators</span></span>
-<span id="cb55-6"><a href="#cb55-6" tabindex="-1"></a>political_df <span class="ot">&lt;-</span> </span>
-<span id="cb55-7"><a href="#cb55-7" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="at">x =</span> <span class="fu">filter</span>(<span class="fu">get_political</span>(<span class="at">legislature =</span> <span class="st">&quot;ger&quot;</span>), <span class="fu">as.numeric</span>(<span class="st">&quot;session&quot;</span>) <span class="sc">==</span> <span class="dv">18</span>), </span>
-<span id="cb55-8"><a href="#cb55-8" tabindex="-1"></a>            <span class="at">y =</span> <span class="fu">get_core</span>(<span class="at">legislature =</span> <span class="st">&quot;ger&quot;</span>), <span class="at">by =</span> <span class="st">&quot;pageid&quot;</span>) </span>
-<span id="cb55-9"><a href="#cb55-9" tabindex="-1"></a></span>
-<span id="cb55-10"><a href="#cb55-10" tabindex="-1"></a><span class="co"># wiki traffic data</span></span>
-<span id="cb55-11"><a href="#cb55-11" tabindex="-1"></a>traffic_df <span class="ot">&lt;-</span> </span>
-<span id="cb55-12"><a href="#cb55-12" tabindex="-1"></a>  <span class="fu">get_traffic</span>(<span class="at">legislature =</span> <span class="st">&quot;ger&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb55-13"><a href="#cb55-13" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="st">&quot;2013-10-22&quot;</span> <span class="sc">&amp;</span> date <span class="sc">&lt;=</span> <span class="st">&quot;2017-10-24&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb55-14"><a href="#cb55-14" tabindex="-1"></a>  <span class="fu">group_by</span>(pageid) <span class="sc">|&gt;</span> </span>
-<span id="cb55-15"><a href="#cb55-15" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">traffic_mean =</span> <span class="fu">mean</span>(traffic, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb55-16"><a href="#cb55-16" tabindex="-1"></a>            <span class="at">traffic_max =</span> <span class="fu">max</span>(traffic, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb55-17"><a href="#cb55-17" tabindex="-1"></a></span>
-<span id="cb55-18"><a href="#cb55-18" tabindex="-1"></a><span class="co"># sessions served</span></span>
-<span id="cb55-19"><a href="#cb55-19" tabindex="-1"></a>sessions_served_df <span class="ot">&lt;-</span> </span>
-<span id="cb55-20"><a href="#cb55-20" tabindex="-1"></a>  <span class="fu">get_political</span>(<span class="at">legislature =</span> <span class="st">&quot;deu&quot;</span>) <span class="sc">%%</span> </span>
-<span id="cb55-21"><a href="#cb55-21" tabindex="-1"></a>  <span class="fu">group_by</span>(pageid) <span class="sc">|&gt;</span> </span>
-<span id="cb55-22"><a href="#cb55-22" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">sessions_served =</span> <span class="fu">n</span>())</span>
-<span id="cb55-23"><a href="#cb55-23" tabindex="-1"></a></span>
-<span id="cb55-24"><a href="#cb55-24" tabindex="-1"></a><span class="co"># merge</span></span>
-<span id="cb55-25"><a href="#cb55-25" tabindex="-1"></a>legislator_df <span class="ot">&lt;-</span> </span>
-<span id="cb55-26"><a href="#cb55-26" tabindex="-1"></a>  <span class="fu">left_join</span>(political_df, sessions_served_df, <span class="at">by =</span> <span class="st">&quot;pageid&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb55-27"><a href="#cb55-27" tabindex="-1"></a>  <span class="fu">left_join</span>(traffic_df, <span class="at">by =</span> <span class="st">&quot;pageid&quot;</span>) </span>
-<span id="cb55-28"><a href="#cb55-28" tabindex="-1"></a></span>
-<span id="cb55-29"><a href="#cb55-29" tabindex="-1"></a><span class="co"># compute age</span></span>
-<span id="cb55-30"><a href="#cb55-30" tabindex="-1"></a>get_age <span class="ot">&lt;-</span> <span class="cf">function</span>(birth, date_at) {</span>
-<span id="cb55-31"><a href="#cb55-31" tabindex="-1"></a>  date_at_fmt <span class="ot">&lt;-</span> date_at</span>
-<span id="cb55-32"><a href="#cb55-32" tabindex="-1"></a>  birth_fmt <span class="ot">&lt;-</span> birth</span>
-<span id="cb55-33"><a href="#cb55-33" tabindex="-1"></a>  diff <span class="ot">&lt;-</span> <span class="fu">difftime</span>(lubridate<span class="sc">::</span><span class="fu">ymd</span>(birth_fmt), lubridate<span class="sc">::</span><span class="fu">ymd</span>(date_at_fmt))</span>
-<span id="cb55-34"><a href="#cb55-34" tabindex="-1"></a>  diff_years <span class="ot">&lt;-</span> <span class="fu">time_length</span>(diff, <span class="st">&quot;years&quot;</span>) </span>
-<span id="cb55-35"><a href="#cb55-35" tabindex="-1"></a>  diff_years</span>
-<span id="cb55-36"><a href="#cb55-36" tabindex="-1"></a>}</span>
-<span id="cb55-37"><a href="#cb55-37" tabindex="-1"></a>legislator_df<span class="sc">$</span>age_in_years <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">get_age</span>(legislator_df<span class="sc">$</span>birth, <span class="st">&quot;2017-10-24&quot;</span>), <span class="dv">0</span>)</span>
-<span id="cb55-38"><a href="#cb55-38" tabindex="-1"></a></span>
-<span id="cb55-39"><a href="#cb55-39" tabindex="-1"></a><span class="co"># plot top 10 pageviews</span></span>
-<span id="cb55-40"><a href="#cb55-40" tabindex="-1"></a>legislator_df <span class="ot">&lt;-</span> <span class="fu">arrange</span>(legislator_df, <span class="fu">desc</span>(traffic_mean))</span>
-<span id="cb55-41"><a href="#cb55-41" tabindex="-1"></a>legislator_df<span class="sc">$</span>rank <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(legislator_df)</span>
-<span id="cb55-42"><a href="#cb55-42" tabindex="-1"></a>legislator_df_table <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(rank, name, traffic_mean, traffic_max) </span>
-<span id="cb55-43"><a href="#cb55-43" tabindex="-1"></a><span class="fu">names</span>(legislator_df_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Rank&quot;</span>, <span class="st">&quot;Representative&quot;</span>, <span class="st">&quot;Mean&quot;</span>, <span class="st">&quot;Maximum&quot;</span>) </span>
-<span id="cb55-44"><a href="#cb55-44" tabindex="-1"></a>legislator_df_table <span class="ot">&lt;-</span> <span class="fu">head</span>(legislator_df_table, <span class="dv">10</span>)</span>
-<span id="cb55-45"><a href="#cb55-45" tabindex="-1"></a></span>
-<span id="cb55-46"><a href="#cb55-46" tabindex="-1"></a><span class="fu">ggplot</span>(legislator_df_table, <span class="fu">aes</span>(<span class="at">y =</span> Mean, <span class="at">x =</span> <span class="sc">-</span>Rank)) <span class="sc">+</span> </span>
-<span id="cb55-47"><a href="#cb55-47" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Rank&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Avg. daily page views&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb55-48"><a href="#cb55-48" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Top 10 representatives by average daily page views&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb55-49"><a href="#cb55-49" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stats =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span> <span class="co"># change to geom_col</span></span>
-<span id="cb55-50"><a href="#cb55-50" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="sc">-</span><span class="fu">nrow</span>(legislator_df_table)<span class="sc">:-</span><span class="dv">1</span>, <span class="at">labels =</span> <span class="fu">rev</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(legislator_df_table))) <span class="co"># add +</span></span>
-<span id="cb55-51"><a href="#cb55-51" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="dv">10</span>, <span class="at">label =</span> Representative), <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
-<span id="cb55-52"><a href="#cb55-52" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
-<span id="cb55-53"><a href="#cb55-53" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb55-54"><a href="#cb55-54" tabindex="-1"></a></span>
-<span id="cb55-55"><a href="#cb55-55" tabindex="-1"></a><span class="co"># run model of page views as a function of sessions served, party, sex, and age in years</span></span>
-<span id="cb55-56"><a href="#cb55-56" tabindex="-1"></a>legislator_df<span class="sc">$</span>traffic_log <span class="ot">&lt;-</span> <span class="fu">log</span>(legislator_df<span class="sc">$</span>traffic_mean)</span>
-<span id="cb55-57"><a href="#cb55-57" tabindex="-1"></a></span>
-<span id="cb55-58"><a href="#cb55-58" tabindex="-1"></a>covars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;sessions_served&quot;</span>, <span class="st">&quot;party&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;age_in_years&quot;</span>)</span>
-<span id="cb55-59"><a href="#cb55-59" tabindex="-1"></a>fmla <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;traffic_log&quot;</span>, <span class="fu">paste</span>(covars, <span class="at">collapse =</span> <span class="st">&quot; - &quot;</span>), <span class="at">sep =</span> <span class="st">&quot; ~ &quot;</span>) </span>
-<span id="cb55-60"><a href="#cb55-60" tabindex="-1"></a><span class="fu">summary</span>(log_traffic_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(fmla, legislator_df))</span>
-<span id="cb55-61"><a href="#cb55-61" tabindex="-1"></a></span>
-<span id="cb55-62"><a href="#cb55-62" tabindex="-1"></a><span class="co"># plot table</span></span>
-<span id="cb55-63"><a href="#cb55-63" tabindex="-1"></a>sjPlot<span class="sc">::</span><span class="fu">tab_model</span>(log_traffic_model)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb54-2"><a href="#cb54-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb54-3"><a href="#cb54-3" tabindex="-1"></a><span class="fu">library</span>(LegislatoR) </span>
+<span id="cb54-4"><a href="#cb54-4" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="#cb54-5" tabindex="-1"></a><span class="co"># get political data on German legislators</span></span>
+<span id="cb54-6"><a href="#cb54-6" tabindex="-1"></a>political_df <span class="ot">&lt;-</span> </span>
+<span id="cb54-7"><a href="#cb54-7" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="at">x =</span> <span class="fu">filter</span>(<span class="fu">get_political</span>(<span class="at">legislature =</span> <span class="st">&quot;ger&quot;</span>), <span class="fu">as.numeric</span>(<span class="st">&quot;session&quot;</span>) <span class="sc">==</span> <span class="dv">18</span>), </span>
+<span id="cb54-8"><a href="#cb54-8" tabindex="-1"></a>            <span class="at">y =</span> <span class="fu">get_core</span>(<span class="at">legislature =</span> <span class="st">&quot;ger&quot;</span>), <span class="at">by =</span> <span class="st">&quot;pageid&quot;</span>) </span>
+<span id="cb54-9"><a href="#cb54-9" tabindex="-1"></a></span>
+<span id="cb54-10"><a href="#cb54-10" tabindex="-1"></a><span class="co"># wiki traffic data</span></span>
+<span id="cb54-11"><a href="#cb54-11" tabindex="-1"></a>traffic_df <span class="ot">&lt;-</span> </span>
+<span id="cb54-12"><a href="#cb54-12" tabindex="-1"></a>  <span class="fu">get_traffic</span>(<span class="at">legislature =</span> <span class="st">&quot;ger&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb54-13"><a href="#cb54-13" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="st">&quot;2013-10-22&quot;</span> <span class="sc">&amp;</span> date <span class="sc">&lt;=</span> <span class="st">&quot;2017-10-24&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb54-14"><a href="#cb54-14" tabindex="-1"></a>  <span class="fu">group_by</span>(pageid) <span class="sc">|&gt;</span> </span>
+<span id="cb54-15"><a href="#cb54-15" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">traffic_mean =</span> <span class="fu">mean</span>(traffic, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb54-16"><a href="#cb54-16" tabindex="-1"></a>            <span class="at">traffic_max =</span> <span class="fu">max</span>(traffic, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb54-17"><a href="#cb54-17" tabindex="-1"></a></span>
+<span id="cb54-18"><a href="#cb54-18" tabindex="-1"></a><span class="co"># sessions served</span></span>
+<span id="cb54-19"><a href="#cb54-19" tabindex="-1"></a>sessions_served_df <span class="ot">&lt;-</span> </span>
+<span id="cb54-20"><a href="#cb54-20" tabindex="-1"></a>  <span class="fu">get_political</span>(<span class="at">legislature =</span> <span class="st">&quot;deu&quot;</span>) <span class="sc">%%</span> </span>
+<span id="cb54-21"><a href="#cb54-21" tabindex="-1"></a>  <span class="fu">group_by</span>(pageid) <span class="sc">|&gt;</span> </span>
+<span id="cb54-22"><a href="#cb54-22" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">sessions_served =</span> <span class="fu">n</span>())</span>
+<span id="cb54-23"><a href="#cb54-23" tabindex="-1"></a></span>
+<span id="cb54-24"><a href="#cb54-24" tabindex="-1"></a><span class="co"># merge</span></span>
+<span id="cb54-25"><a href="#cb54-25" tabindex="-1"></a>legislator_df <span class="ot">&lt;-</span> </span>
+<span id="cb54-26"><a href="#cb54-26" tabindex="-1"></a>  <span class="fu">left_join</span>(political_df, sessions_served_df, <span class="at">by =</span> <span class="st">&quot;pageid&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb54-27"><a href="#cb54-27" tabindex="-1"></a>  <span class="fu">left_join</span>(traffic_df, <span class="at">by =</span> <span class="st">&quot;pageid&quot;</span>) </span>
+<span id="cb54-28"><a href="#cb54-28" tabindex="-1"></a></span>
+<span id="cb54-29"><a href="#cb54-29" tabindex="-1"></a><span class="co"># compute age</span></span>
+<span id="cb54-30"><a href="#cb54-30" tabindex="-1"></a>get_age <span class="ot">&lt;-</span> <span class="cf">function</span>(birth, date_at) {</span>
+<span id="cb54-31"><a href="#cb54-31" tabindex="-1"></a>  date_at_fmt <span class="ot">&lt;-</span> date_at</span>
+<span id="cb54-32"><a href="#cb54-32" tabindex="-1"></a>  birth_fmt <span class="ot">&lt;-</span> birth</span>
+<span id="cb54-33"><a href="#cb54-33" tabindex="-1"></a>  diff <span class="ot">&lt;-</span> <span class="fu">difftime</span>(lubridate<span class="sc">::</span><span class="fu">ymd</span>(birth_fmt), lubridate<span class="sc">::</span><span class="fu">ymd</span>(date_at_fmt))</span>
+<span id="cb54-34"><a href="#cb54-34" tabindex="-1"></a>  diff_years <span class="ot">&lt;-</span> <span class="fu">time_length</span>(diff, <span class="st">&quot;years&quot;</span>) </span>
+<span id="cb54-35"><a href="#cb54-35" tabindex="-1"></a>  diff_years</span>
+<span id="cb54-36"><a href="#cb54-36" tabindex="-1"></a>}</span>
+<span id="cb54-37"><a href="#cb54-37" tabindex="-1"></a>legislator_df<span class="sc">$</span>age_in_years <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">get_age</span>(legislator_df<span class="sc">$</span>birth, <span class="st">&quot;2017-10-24&quot;</span>), <span class="dv">0</span>)</span>
+<span id="cb54-38"><a href="#cb54-38" tabindex="-1"></a></span>
+<span id="cb54-39"><a href="#cb54-39" tabindex="-1"></a><span class="co"># plot top 10 pageviews</span></span>
+<span id="cb54-40"><a href="#cb54-40" tabindex="-1"></a>legislator_df <span class="ot">&lt;-</span> <span class="fu">arrange</span>(legislator_df, <span class="fu">desc</span>(traffic_mean))</span>
+<span id="cb54-41"><a href="#cb54-41" tabindex="-1"></a>legislator_df<span class="sc">$</span>rank <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(legislator_df)</span>
+<span id="cb54-42"><a href="#cb54-42" tabindex="-1"></a>legislator_df_table <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(rank, name, traffic_mean, traffic_max) </span>
+<span id="cb54-43"><a href="#cb54-43" tabindex="-1"></a><span class="fu">names</span>(legislator_df_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Rank&quot;</span>, <span class="st">&quot;Representative&quot;</span>, <span class="st">&quot;Mean&quot;</span>, <span class="st">&quot;Maximum&quot;</span>) </span>
+<span id="cb54-44"><a href="#cb54-44" tabindex="-1"></a>legislator_df_table <span class="ot">&lt;-</span> <span class="fu">head</span>(legislator_df_table, <span class="dv">10</span>)</span>
+<span id="cb54-45"><a href="#cb54-45" tabindex="-1"></a></span>
+<span id="cb54-46"><a href="#cb54-46" tabindex="-1"></a><span class="fu">ggplot</span>(legislator_df_table, <span class="fu">aes</span>(<span class="at">y =</span> Mean, <span class="at">x =</span> <span class="sc">-</span>Rank)) <span class="sc">+</span> </span>
+<span id="cb54-47"><a href="#cb54-47" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Rank&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Avg. daily page views&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb54-48"><a href="#cb54-48" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Top 10 representatives by average daily page views&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb54-49"><a href="#cb54-49" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stats =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span> <span class="co"># change to geom_col</span></span>
+<span id="cb54-50"><a href="#cb54-50" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="sc">-</span><span class="fu">nrow</span>(legislator_df_table)<span class="sc">:-</span><span class="dv">1</span>, <span class="at">labels =</span> <span class="fu">rev</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(legislator_df_table))) <span class="co"># add +</span></span>
+<span id="cb54-51"><a href="#cb54-51" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="dv">10</span>, <span class="at">label =</span> Representative), <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb54-52"><a href="#cb54-52" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb54-53"><a href="#cb54-53" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb54-54"><a href="#cb54-54" tabindex="-1"></a></span>
+<span id="cb54-55"><a href="#cb54-55" tabindex="-1"></a><span class="co"># run model of page views as a function of sessions served, party, sex, and age in years</span></span>
+<span id="cb54-56"><a href="#cb54-56" tabindex="-1"></a>legislator_df<span class="sc">$</span>traffic_log <span class="ot">&lt;-</span> <span class="fu">log</span>(legislator_df<span class="sc">$</span>traffic_mean)</span>
+<span id="cb54-57"><a href="#cb54-57" tabindex="-1"></a></span>
+<span id="cb54-58"><a href="#cb54-58" tabindex="-1"></a>covars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;sessions_served&quot;</span>, <span class="st">&quot;party&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;age_in_years&quot;</span>)</span>
+<span id="cb54-59"><a href="#cb54-59" tabindex="-1"></a>fmla <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;traffic_log&quot;</span>, <span class="fu">paste</span>(covars, <span class="at">collapse =</span> <span class="st">&quot; - &quot;</span>), <span class="at">sep =</span> <span class="st">&quot; ~ &quot;</span>) </span>
+<span id="cb54-60"><a href="#cb54-60" tabindex="-1"></a><span class="fu">summary</span>(log_traffic_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(fmla, legislator_df))</span>
+<span id="cb54-61"><a href="#cb54-61" tabindex="-1"></a></span>
+<span id="cb54-62"><a href="#cb54-62" tabindex="-1"></a><span class="co"># plot table</span></span>
+<span id="cb54-63"><a href="#cb54-63" tabindex="-1"></a>sjPlot<span class="sc">::</span><span class="fu">tab_model</span>(log_traffic_model)</span></code></pre></div>
 <hr />
 </div>
 <div id="actually-learning-r" class="section level2">
