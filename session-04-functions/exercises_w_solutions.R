@@ -59,7 +59,7 @@ replace_w_emoticons <- function(x) {
 replace_w_emoticons_vectorized <- Vectorize(replace_w_emoticons) 
 study$emoticons <- study$emotions |> replace_w_emoticons_vectorized() 
 
-## tidyvers solutions:
+## tidyverse solutions:
 study <- study |> 
   rowwise() |> # use rowwise(), otherwise the function will only evaluate the first argument
   mutate(emoticons = replace_w_emoticons(emotions))
@@ -67,13 +67,15 @@ study <- study |>
 study <- study |> 
   mutate(emoticons2 = map_chr(emotions, replace_w_emoticons))
 
-
 # Exercise 4 ####
+is.vector(map_dbl(df, mean, na.rm = TRUE))
+
+# Exercise 5 ####
 mean_sd <- function(x) {
   list('mean' = mean(x, na.rm=T), 'sd' = sd(x, na.rm=T))
 }
 
-# Exercise 5 ####
+# Exercise 6 ####
 map_df(study |> select(where(is.numeric)), mean_sd) |> 
   cbind(
     'col' = study |> 
@@ -82,7 +84,7 @@ map_df(study |> select(where(is.numeric)), mean_sd) |>
   )
 # or just use any other map
 
-# Exercise 6 ####
+# Exercise 7 ####
 study |> select(where(is.character)) |> map_df(tolower)
 
 
