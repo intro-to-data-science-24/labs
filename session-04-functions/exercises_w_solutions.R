@@ -80,6 +80,11 @@ replace_w_emoticons <- function(x) {
 replace_w_emoticons_vectorized <- Vectorize(replace_w_emoticons) 
 study$emoticons <- study$emotions |> replace_w_emoticons() 
 
+#OR
+
+#we use the map function
+map_vec(study$emotions, replace_w_emoticons)
+
 ## tidyverse solutions:
 study <- study |> 
   rowwise() |> # use rowwise(), otherwise the function will only evaluate the first argument
@@ -126,6 +131,9 @@ map_df(study |> select(where(is.numeric)), mean_sd) |>
       select(where(is.numeric)) |> 
       colnames()
   )
+
+#Way 3: 
+map_vec(study$emotions, replace_w_emoticons)
 
 # or just use any other map
 
