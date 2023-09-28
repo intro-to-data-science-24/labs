@@ -6,7 +6,7 @@ pacman::p_load(tidyverse)
 
 
 # Exercise 1 ####
-# base R solution:
+# Way 1: base R solution
 get_mode <- function(v) {
   
   v <- na.omit(v)
@@ -16,7 +16,9 @@ get_mode <- function(v) {
   
 }
 
-# tidyverse solution:
+get_mode(study$age) #example
+
+# Way 2: tidyverse solution
 get_mode <- function(v) {
   
   out <- v |> 
@@ -28,22 +30,38 @@ get_mode <- function(v) {
   
 }
 
+get_mode(study$age) #example
+
+# Way 3:
+get_mode <- function(x){
+freq_table <- table(x)
+my_mode <- as.numeric(names(which.max(freq_table)))
+return(my_mode)
+}
+
+get_mode(study$age) #example
 
 # Exercise 2 ####
 get_mode(study$bmi_3cat) 
 
 
 # Exercise 3 ####
-# fix 'netural' typo
-study$emotions[study$emotions == 'netural'] <- 'neutral'# base R solution
 
-study <- study |> # tidyverse solution
+# Part 1: fix 'netural' typo
+
+# Way 1: base R solution
+study$emotions[study$emotions == 'netural'] <- 'neutral'
+
+# Way 2: tidyverse solution
+study <- study |> 
   mutate(
     #emotions = stringr::str_replace(emotions, "netural", "neutal") # using stringr package (optional)
     emotions = ifelse(emotions == "netural", "neutral", emotions)
     ) 
 
-# write emoticon function
+# Part 2: write emoticon function
+
+# Way 1:
 replace_w_emoticons <- function(x) {
   if (x == "happy") {
     ":)"
@@ -54,10 +72,13 @@ replace_w_emoticons <- function(x) {
   }
 }
 
-# vectorize the function to create an emoticons column
+#replace_w_emoticons(study$emotions) - when you run this, you get an error saying the condition has length >1. This is because if and else statements are designed to work with scalar (single) values or logical vectors with a length of 1.
+
+# therefore, we vectorize the function to create an emoticons column
+
 ## base R solution:
 replace_w_emoticons_vectorized <- Vectorize(replace_w_emoticons) 
-study$emoticons <- study$emotions |> replace_w_emoticons_vectorized() 
+study$emoticons <- study$emotions |> replace_w_emoticons() 
 
 ## tidyverse solutions:
 study <- study |> 
@@ -67,21 +88,45 @@ study <- study |>
 study <- study |> 
   mutate(emoticons2 = map_chr(emotions, replace_w_emoticons))
 
+
+# Way 2:
+replace_emotions <- function(x) {
+  result <- recode(x, "happy" = ":)", "sad" = ":(", "neutral" = ":|")
+  return(result)
+}
+
+replace_emotions(study$emotions)
+
+
 # Exercise 4 ####
 is.vector(map_dbl(df, mean, na.rm = TRUE))
 
 # Exercise 5 ####
-mean_sd <- function(x) {
-  list('mean' = mean(x, na.rm=T), 'sd' = sd(x, na.rm=T))
+mean_sd <- function(x){
+  if(!(is.numeric(x))) {
+   # stop("x is not a numeric value")
+   return(NULL)
+  } else{ 
+    list("mean" = mean(x, na.rm = TRUE),
+         "sd" = sd(x, na.rm = TRUE))
+  }  
 }
 
+
 # Exercise 6 ####
+
+#Way 1: list
+map(study %>% select_if(is.numeric), mean_sd)
+
+
+#Way 2: dataframe
 map_df(study |> select(where(is.numeric)), mean_sd) |> 
   cbind(
     'col' = study |> 
       select(where(is.numeric)) |> 
       colnames()
   )
+
 # or just use any other map
 
 # Exercise 7 ####
