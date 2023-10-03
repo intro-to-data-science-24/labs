@@ -1,6 +1,6 @@
 ---
 title: "Databases"
-subtitle: "Functions, dbplyr and working with SQL in R"
+subtitle: "Functions, `dbplyr` and working with SQL in R"
 output: 
   html_document:
     toc: TRUE
@@ -71,8 +71,8 @@ Let's perform a [left join](https://stat545.com/bit001_dplyr-cheatsheet.html#lef
 - *Note*: I'm going subset columns after the join, but only to keep text on the slide.
 
 ```{r}
-left_join(flights, planes) %>%
-  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) %>%
+left_join(flights, planes) |>
+  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) |>
   head(3) ## Just to save vertical space in output
 ```
 
@@ -95,10 +95,10 @@ You just need to be more explicit in your join call by using the `by = ` argumen
 ```{r}
 left_join(
   flights,
-  planes %>% rename(year_built = year), ## Not necessary w/ below line, but helpful
+  planes |> rename(year_built = year), ## Not necessary w/ below line, but helpful
   by = "tailnum" ## Be specific about the joining column
-  ) %>%
-  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, year_built, type, model) %>%
+  ) |>
+  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, year_built, type, model) |>
   head(3) 
 ```
 
@@ -109,8 +109,8 @@ left_join(
   flights,
   planes, ## Not renaming "year" to "year_built" this time
   by = "tailnum"
-  ) %>%
-  select(contains("year"), month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) %>%
+  ) |>
+  select(contains("year"), month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) |>
   head(3)
 ```
 
@@ -152,20 +152,19 @@ To connect to the database, we will use `dbConnect()` from the DBI package which
 Most existing databases don’t live in a file, but instead live on another server. In addition to the two arguments above, database drivers will therefore also require details like user, password, host, port, etc. That means your code will often look more like this:
 
 ```{r, eval=FALSE}
-con <- DBI::dbConnect(RMariaDB::MariaDB(), 
+con <- DBI::dbConnect(RSQLite::SQLite(), 
                       host = "database.rstudio.com",
                       user = "tom",
                       password = rstudioapi::askForPassword("Tom's password")
-)
-
+                      )
 ```
  
 
 For the purposes of this lab however, we are connecting to an **in-memory database**. That way we can avoid potential issues regarding the registration for access to a database, creation and caching of credentials, as well as defining safe ports and other boring details. 
 
-To avoid all this hassle, we basically create and host our own (small) database. Luckily, the code to do so is **the same as in the general case above**. But, SQLite only needs a path to the database. (Here, ":memory:" is a special path that creates an in-memory database.) 
+To avoid all this hassle, we basically create and host our own (small) database. Luckily, the code to do so is **the same as in the general case above**. But, SQLite only needs a path to the database. (Here, `":memory:"` is a special path that creates an in-memory database.) 
 
-We then **save** the database connection and store it in the object "con" for further use in exploring and querying data.
+We then **save** the database connection and store it in the object `con` for further use in exploring and querying data.
 
 
 ```{r}
@@ -181,16 +180,15 @@ summary(con)
 
 If you were to connect to a real online database that someone else generated, you could now call `DBI::dbListTables(con)` to see a list of the tables present in the database. Our local database is however still devoid of content.
 
-We need to populate our database. We copy the data from last week to our database connection. In **real life** this step would probably be taken care of by the responsible **database maintainer**.
+We need to populate our database. We copy the data from last week to our database connection. In **real life**, this step would probably be taken care of by the responsible **database maintainer**.
 
 ```{r}
-
 # upload local data frame into remote data source; here: database
 copy_to(
   dest = con, 
   df = nycflights13::flights, 
-  name = "flights")
-
+  name = "flights"
+  )
 ```
 
 
@@ -199,7 +197,6 @@ copy_to(
 Unfortunately, it is not enough to just copy data to our database. We also need to pass a list of **indexes** to the function. In this example, we set up indexes that will allow us to **quickly process the data by** time, carrier, plane, and destination. Creating the right indices is key to good database performance. Again, in applications where we don't set up the database, this will be taken care of by the database maintainer.
 
 ```{r}
-
 copy_to(
   dest = con, 
   df = nycflights13::flights, 
@@ -210,10 +207,9 @@ copy_to(
     "carrier", 
     "tailnum",
     "dest"
-  ),
-  overwrite = T # throws error as table already exists
-)
-
+    ),
+  overwrite = T # otherwise throws error as table already exists
+  )
 ```
 
 ## List Tables in Database
@@ -252,24 +248,22 @@ You can select specific columns:
 
 ```{r}
 # perform various queries
-flights_db %>% select(year:day, dep_delay, arr_delay)
-
+flights_db |> select(year:day, dep_delay, arr_delay)
 ```
 ## Filtering by Rows
 
 Access only specific rows: 
 
 ```{r}
-
-flights_db %>% filter(dep_delay > 240)
+flights_db |> filter(dep_delay > 240)
 ```
 ## Summary Statisitics 
 
 Or immediately generate summary statistics for different groups:
 
 ```{r}
-flights_db %>% 
-  group_by(dest) %>%
+flights_db |> 
+  group_by(dest) |>
   summarise(delay = mean(dep_time))
 ```
 
@@ -278,13 +272,12 @@ flights_db %>%
 You can even generate and plot figures without the need to store the data in your local environment:
 
 ```{r,echo=TRUE, results='hide', fig.keep='all'}
-
-flights_db %>% 
-  filter(distance > 75) %>%
-  group_by(origin, hour) %>%
-  summarise(delay = mean(dep_delay, na.rm = TRUE)) %>%
-  ggplot(aes(hour, delay, color = origin)) + geom_line()
-
+flights_db |> 
+  filter(distance > 75) |>
+  group_by(origin, hour) |>
+  summarise(delay = mean(dep_delay, na.rm = TRUE)) |>
+  ggplot(aes(hour, delay, color = origin)) + 
+  geom_line()
 ```
 
 
@@ -341,12 +334,11 @@ The `join` syntax has its origin in SQL. Unsurprisingly, you can join tables wit
 planes_db = tbl(con, 'planes')
 left_join(
   flights_db,
-  planes_db %>% rename(year_built = year),
+  planes_db |> rename(year_built = year),
   by = "tailnum" ## Important: Be specific about the joining column
-) %>%
+) |>
   select(year, month, day, dep_time, arr_time, carrier, flight, tailnum,
          year_built, type, model) 
-
 ```
 
 This should all feel very **familiar** right? `r emo::ji("grin")`
@@ -372,13 +364,13 @@ This even applies when you assign the output of a database query to an object:
  
 ```{r, warning=TRUE}
 
-tailnum_delay_db <- flights_db %>% 
-  group_by(tailnum) %>%
+tailnum_delay_db <- flights_db |> 
+  group_by(tailnum) |>
   summarise(
     delay = mean(arr_delay),
     n = n()
-  ) %>% 
-  arrange(desc(delay)) %>%
+  ) |> 
+  arrange(desc(delay)) |>
   filter(n > 100)
 
 ```
@@ -404,7 +396,7 @@ We can always inspect the SQL code that `dbplyr` is generating:
 
 ```{r}
 
-tailnum_delay_db %>% show_query()
+tailnum_delay_db |> show_query()
 ```
 
 That's probably not how you would write the SQL yourself, but it works.
@@ -418,7 +410,7 @@ More information about SQL translation can be found here: `vignette("translation
 If you then want to pull the data into a local data frame, use `collect()`:
 
 ```{r}
-tailnum_delay <- tailnum_delay_db %>% collect()
+tailnum_delay <- tailnum_delay_db |> collect()
 tailnum_delay
 ```
 
@@ -439,19 +431,17 @@ If you want to learn more about writing SQL with dbplyr, check out `vignette('sq
 
 ## Disconnect from database 
 
-When you are done with your SQL queries, it is a good idea to disconnect from the database. What seems evident, becomes increasingly important if you work with servers that charge you for their services!
+When you are done with your SQL queries, it is a good idea to disconnect from the database. This becomes increasingly important if you work with servers that charge you for their services!
 
 ```{r}
-
 DBI::dbDisconnect(con)
-
 ```
 
 ---
 
 ## Exercises on Databases
 
-If you want to practice accessing databases going forward, have a look at the practice script [here](https://github.com/intro-to-data-science-21/labs/tree/main/practice-scripts/05_database_example). It comes with a database file so you can open the connection locally without the need to register. Thanks for the excellent example to our colleague [Will Lowe](https://conjugateprior.org/)!
+If you want to practice accessing databases going forward, have a look at the practice script [here](https://github.com/intro-to-data-science-23/labs/tree/main/practice-scripts/05_database_example). It comes with a database file so you can open the connection locally without the need to register. Thanks for the excellent example to our colleague [Will Lowe](https://conjugateprior.org/)!
 
 ---
 
