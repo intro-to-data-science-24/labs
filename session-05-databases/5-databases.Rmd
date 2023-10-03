@@ -26,7 +26,7 @@ pacman::p_load(tidyverse, purrr)
 
 Many “big data” problems are actually “small data problems in disguise”. That is, we only really need a subset of the data, or maybe we want to aggregate the data into some larger dataset. For example, we might want to access Census data, but only for a handful of municipalities. Or, we might want to analyse climate data collected from a large number of weather stations, but aggregated up to the national or monthly level. In such cases, the underlying bottleneck is interacting with the original data, which is too big to fit into memory. How do we store data of this magnitude and and then access it effectively? The answer is through a database.
 
-Databases can exist either locally or remotely, as well as in-memory or on-disk. Regardless of where a database is located, the key point is that information is stored in a way that allows for very quick extraction and/or aggregation. More oftne than not you will probably need to extract several subsets and harmonise or transform them. To facilitate and automate this task, you will need to write your own functions and know to iterate them over the relevant subsets of data. This week's session thus ties in well with the sections on functions and iteration that we quickly touched upon during the last lab.
+Databases can exist either locally or remotely, as well as in-memory or on-disk. Regardless of where a database is located, the key point is that information is stored in a way that allows for very quick extraction and/or aggregation. More often than not, you will probably need to extract several subsets and harmonise or transform them. To facilitate and automate this task, you will need to write your own functions and know to iterate them over the relevant subsets of data. This week's session thus ties in well with the sections on functions and iteration that we quickly touched upon during the last lab.
 
 # Joins and Databases `r emo::ji("telescope")`
 
@@ -182,7 +182,6 @@ summary(con)
 If you were to connect to a real online database that someone else generated, you could now call `DBI::dbListTables(con)` to see a list of the tables present in the database. Our local database is however still devoid of content.
 
 We need to populate our database. We copy the data from last week to our database connection. In **real life** this step would probably be taken care of by the responsible **database maintainer**.
-We need to populate our database. We copy the data from earlier to our database connection. In **real life** this step would probably be taken care of by the responsible **database maintainer**.
 
 ```{r}
 
@@ -246,8 +245,6 @@ flights_db
 ```
 
 The console output shows that this is a **remote source**; the table is not stored in our RStudio environment. Nor should you need to transfer the entire table to your RStudio environment. You can perform operations directly on the remote source. What is more you can rely on the `dplyr` syntax from last week to formulate your queries. R will automatically translate it into SQL (more on that below).
-The console output shows that this is a **remote source**; the table is not stored in our RStudio environment. Nor should you need to transfer the entire table to your RStudio environment. You can perform operations directly on the remote source. What is more you can rely on the `dplyr` syntax from earlier to formulate your queries. R will automatically translate it into SQL (more on that below).
-
 
 ## Selecting Columns
 
