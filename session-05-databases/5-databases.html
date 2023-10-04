@@ -13,7 +13,7 @@
 
 <title>Databases</title>
 
-<script src="5-databases_files/header-attrs-2.23/header-attrs.js"></script>
+<script src="5-databases_files/header-attrs-2.24/header-attrs.js"></script>
 <script src="5-databases_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="5-databases_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
@@ -645,7 +645,8 @@ data in your local environment:</p>
 <span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>  <span class="fu">filter</span>(distance <span class="sc">&gt;</span> <span class="dv">75</span>) <span class="sc">|&gt;</span></span>
 <span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>  <span class="fu">group_by</span>(origin, hour) <span class="sc">|&gt;</span></span>
 <span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(hour, delay, <span class="at">color =</span> origin)) <span class="sc">+</span> <span class="fu">geom_line</span>()</span></code></pre></div>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(hour, delay, <span class="at">color =</span> origin)) <span class="sc">+</span> </span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
 <p><img src="5-databases_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
 <div id="joins" class="section level2">
@@ -722,7 +723,7 @@ queries</strong> that are worth pointing out.</p>
 SQL and executed in the database on the remote server, not in R on your
 local machine.</p>
 <p>This has the following implications. When working with databases,
-dplyr tries to be as <strong>lazy as possible</strong> 😴:</p>
+dplyr tries to be as <strong>lazy as possible</strong> 💤:</p>
 <ul>
 <li>It never pulls data into R unless you explicitly ask for it.</li>
 <li>It delays doing any work until the last possible moment: it collects
@@ -800,9 +801,8 @@ in R scripts:</p>
 <div id="disconnect-from-database" class="section level2">
 <h2>Disconnect from database</h2>
 <p>When you are done with your SQL queries, it is a good idea to
-disconnect from the database. What seems evident, becomes increasingly
-important if you work with servers that charge you for their
-services!</p>
+disconnect from the database. This becomes increasingly important if you
+work with servers that charge you for their services!</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>DBI<span class="sc">::</span><span class="fu">dbDisconnect</span>(con)</span></code></pre></div>
 <hr />
 </div>
@@ -810,7 +810,7 @@ services!</p>
 <h2>Exercises on Databases</h2>
 <p>If you want to practice accessing databases going forward, have a
 look at the practice script <a
-href="https://github.com/intro-to-data-science-21/labs/tree/main/practice-scripts/05_database_example">here</a>.
+href="https://github.com/intro-to-data-science-23/labs/tree/main/practice-scripts/05_database_example">here</a>.
 It comes with a database file so you can open the connection locally
 without the need to register. Thanks for the excellent example to our
 colleague <a href="https://conjugateprior.org/">Will Lowe</a>!</p>
