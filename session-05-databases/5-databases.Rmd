@@ -184,7 +184,7 @@ We need to populate our database. We copy the data from last week to our databas
 
 ```{r}
 # upload local data frame into remote data source; here: database
-copy_to(
+dplyr::copy_to(
   dest = con, 
   df = nycflights13::flights, 
   name = "flights"
@@ -208,7 +208,7 @@ copy_to(
     "tailnum",
     "dest"
     ),
-  overwrite = T # otherwise throws error as table already exists
+  overwrite = T # if set to false and the table already exists, it throws an error
   )
 ```
 
@@ -236,11 +236,11 @@ It is actually fairly straightforward. You use the `tbl()`function where you ind
 
 ```{r}
 # generate reference table from the database
-flights_db <- tbl(con, "flights")
+flights_db <- dplyr::tbl(con, "flights")
 flights_db 
 ```
 
-The console output shows that this is a **remote source**; the table is not stored in our RStudio environment. Nor should you need to transfer the entire table to your RStudio environment. You can perform operations directly on the remote source. What is more you can rely on the `dplyr` syntax from last week to formulate your queries. R will automatically translate it into SQL (more on that below).
+The console output shows that this is a **remote source**; the table is not stored in our RStudio environment. Nor should you need to transfer the entire table to your RStudio environment. You can perform operations directly on the remote source. What is more, you can rely on the `dplyr` syntax from last week to formulate your queries. R will automatically translate it into SQL (more on that below).
 
 ## Selecting Columns
 
@@ -331,7 +331,7 @@ dbListTables(con)
 The `join` syntax has its origin in SQL. Unsurprisingly, you can join tables without having to store the data in memory. Here is how you perform a left join: 
 
 ```{r}
-planes_db = tbl(con, 'planes')
+planes_db = dplyr::tbl(con, 'planes')
 left_join(
   flights_db,
   planes_db |> rename(year_built = year),

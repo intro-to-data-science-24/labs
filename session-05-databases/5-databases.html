@@ -535,7 +535,7 @@ our database connection. In <strong>real life</strong>, this step would
 probably be taken care of by the responsible <strong>database
 maintainer</strong>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># upload local data frame into remote data source; here: database</span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fu">copy_to</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">copy_to</span>(</span>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="at">dest =</span> con, </span>
 <span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="at">df =</span> nycflights13<span class="sc">::</span>flights, </span>
 <span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;flights&quot;</span></span>
@@ -561,7 +561,7 @@ care of by the database maintainer.</p>
 <span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>    <span class="st">&quot;tailnum&quot;</span>,</span>
 <span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>    <span class="st">&quot;dest&quot;</span></span>
 <span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>    ),</span>
-<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>  <span class="at">overwrite =</span> T <span class="co"># otherwise throws error as table already exists</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>  <span class="at">overwrite =</span> T <span class="co"># if set to false and the table already exists, it throws an error</span></span>
 <span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>  )</span></code></pre></div>
 </div>
 <div id="list-tables-in-database" class="section level2">
@@ -589,7 +589,7 @@ combination of tables. 📖</p>
 <strong>connection</strong> and the <strong>name of the table</strong>
 you want to interact with.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># generate reference table from the database</span></span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>flights_db <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">&quot;flights&quot;</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>flights_db <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">tbl</span>(con, <span class="st">&quot;flights&quot;</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>flights_db </span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -600,7 +600,7 @@ you want to interact with.</p>
 source</strong>; the table is not stored in our RStudio environment. Nor
 should you need to transfer the entire table to your RStudio
 environment. You can perform operations directly on the remote source.
-What is more you can rely on the <code>dplyr</code> syntax from last
+What is more, you can rely on the <code>dplyr</code> syntax from last
 week to formulate your queries. R will automatically translate it into
 SQL (more on that below).</p>
 </div>
@@ -694,7 +694,7 @@ connection. As you can see, there are several more tables now.</p>
 <p>The <code>join</code> syntax has its origin in SQL. Unsurprisingly,
 you can join tables without having to store the data in memory. Here is
 how you perform a left join:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>planes_db <span class="ot">=</span> <span class="fu">tbl</span>(con, <span class="st">&#39;planes&#39;</span>)</span>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>planes_db <span class="ot">=</span> dplyr<span class="sc">::</span><span class="fu">tbl</span>(con, <span class="st">&#39;planes&#39;</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="fu">left_join</span>(</span>
 <span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>  flights_db,</span>
 <span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>  planes_db <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">year_built =</span> year),</span>
@@ -723,7 +723,7 @@ queries</strong> that are worth pointing out.</p>
 SQL and executed in the database on the remote server, not in R on your
 local machine.</p>
 <p>This has the following implications. When working with databases,
-dplyr tries to be as <strong>lazy as possible</strong> 💤:</p>
+dplyr tries to be as <strong>lazy as possible</strong> 😴:</p>
 <ul>
 <li>It never pulls data into R unless you explicitly ask for it.</li>
 <li>It delays doing any work until the last possible moment: it collects
