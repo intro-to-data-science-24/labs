@@ -202,7 +202,7 @@ They are usually simpler and much easier to remember than corresponding regex pa
 
 ## Anchors & alternates `r emo::ji('anchor')`
 
-Next to character classes and quantifiers, *anchors* match the start `^` or end `$` of a string. *Alternates* allow us to handle multiple cases in our pattern. As in R `|`, is equivalent to an or. With `[qwert]` we are creating a "one of" pattern that matches any of the strings in the squared brackets. To negate this and get "anything but" we use `[^qwert]`. Parenthesis in regex are used to create groups and establish an order of evaluation. 
+Next to character classes and quantifiers, *anchors* match the start `^` or end `$` of a string. *Alternates* allow us to handle multiple cases in our pattern. As in R `|`, is equivalent to an "or". With `[qwert]` we are creating a "one of" pattern that matches any of the strings in the squared brackets. To negate this and get "anything but" we use `[^qwert]`. Parenthesis in regex are used to create groups and establish an order of evaluation. 
 
 ```{r}
 str_view(x, "^a|b")
@@ -221,16 +221,30 @@ z <- c('abc?defg', '123456?89', "[?.{!]\\")
 str_view(z, '\\?')
 ```
 
+For more info on regex in R, check out the documentation:
+
+```{r}
+?base::regex
+```
+
 Finally a word of caution at the end: Since regular expressions are extremely powerful in string manipulation, it is easy to try and solve every problem with a single regex. Do not forget that you have other tools available in a programming language and you can break down the problem by writing a series of simpler regexes. 
 
 # Regex exercises  `r emo::ji('wrench')`
 
 1. Can you explain what these regular expressions match?
 
-* `"^.*$"`
-* `"\\{.+\\}"`
-* `"\\d{4}-\\d{2}-\\d{2}"`
-* `"\\\\{4}"`
+      a. `[0-9]+\$`
+      a. `"^.*$"`
+      a. `"\\d{4}-\\d{2}-\\d{2}"`
+      a. `"\\\\{4}"`
+      a. `b[a-z]{1,4}`
+      a. `.*?\.txt$`
+
+```{r}
+# Example
+str_extract_all("Phone 150$, TV 690$", "[0-9]+\\$") # Answer: this regex describes prices in dollars
+```
+
 
 
 2. How many words are there in `stringr::words` that end with a "y" and are exactly 3 characers long?
@@ -256,8 +270,96 @@ ex_string <- "555-1239Moe Szyslak(636) 555-0113Burns, C. Montgomery555-6542Rev. 
 
 ```
 
+6. The following code hides a secret message. Crack it with R and regular expressions. Once you have cracked it, try to collapse the solution in one single string. *Hint: Some of the characters are more revealing than others!*
+
+```{r}
+secret <- "clcopCow1zmstc0d87wnkig7OvdicpNuggvhryn92Gjuwczi8hqrfpRxs5Aj5dwpn0TanwoUwisdij7Lj8kpf03AT5Idr3coc0bt7yczjatOaootj55t3Nj3ne6c4Sfek.r1w1YwwojigOd6vrfUrbz2.2bkAnbhzgv4R9i05zEcrop.wAgnb.RqoE65fGEa1otfb7wXm24k.6t3sH9zqe5fy89n6Ed5t9kc4fR905gmc4Ogxo5nhk!gr"
+```
+
 # Sources
 
 This tutorial drew heavily on Simon Munzert's book [Automated Data Collection with R](http://r-datacollection.com/) and related [course materials](https://github.com/simonmunzert/web-scraping-with-r-extended-edition). 
 For the regex part, we used examples from the string manipulation section in Hadley Wickham' s [R for Data Science](https://r4ds.had.co.nz/strings.html) book.
 
+# Appendix
+
+Here's a reference guide for regex expressions:
+
+```{r}
+# create example
+example.obj <- "1. A small sentence. - 2. Another tiny sentence."
+
+# wildcard
+str_extract(example.obj, "sm.ll")
+```
+
+```{r}
+# character class
+str_extract(example.obj, "sm[abc]ll")
+```
+
+```{r}
+# character class: range
+str_extract(example.obj, "sm[a-p]ll")
+```
+
+```{r}
+# character class: additional characters
+unlist(str_extract_all(example.obj, "[uvw. ]"))
+```
+
+```{r}
+# pre-defined character classes
+unlist(str_extract_all(example.obj, "[:punct:]"))
+unlist(str_extract_all(example.obj, "[[:punct:]ABC]"))
+unlist(str_extract_all(example.obj, "[^[:alnum:]]"))
+```
+
+```{r}
+# additional shortcuts
+unlist(str_extract_all(example.obj, "\\w+"))
+```
+
+```{r}
+# word edges
+unlist(str_extract_all(example.obj, "e\\b")) 
+unlist(str_extract_all(example.obj, "e\\B"))
+```
+```{r}
+# quantifier
+str_extract(example.obj, "s[:alpha:][:alpha:][:alpha:]l")
+str_extract(example.obj, "s[:alpha:]{3}l")
+str_extract(example.obj, "A.+sentence")
+```
+
+```{r}
+# greedy quantification
+str_extract(example.obj, "A.+sentence")
+str_extract(example.obj, "A.+?sentence")
+```
+
+```{r}
+# quantifier with pattern sequence
+unlist(str_extract_all(example.obj, "(.en){1,5}"))
+unlist(str_extract_all(example.obj, ".en{1,5}"))
+```
+
+```{r}
+# meta characters
+unlist(str_extract_all(example.obj, "\\."))
+unlist(str_extract_all(example.obj, fixed(".")))
+```
+
+```{r}
+# meta characters in character classes
+unlist(str_extract_all(example.obj, "[1-2]"))
+unlist(str_extract_all(example.obj, "[12-]"))
+```
+
+```{r}
+# backreferencing
+str_extract(example.obj, "([:alpha:]).+?\\1")
+str_extract(example.obj, "(\\b[a-z]+\\b).+?\\1")
+```
+
+Do you think you can master regular expressions now? Maybe [think again](http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address/201378#201378). `r emo::ji("exploding_head")`
