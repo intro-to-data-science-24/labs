@@ -227,13 +227,15 @@ For more info on regex in R, check out the documentation:
 ?base::regex
 ```
 
+The stringr package also provides a [vignette](https://stringr.tidyverse.org/articles/regular-expressions.html) on working with regex.
+
 Finally a word of caution at the end: Since regular expressions are extremely powerful in string manipulation, it is easy to try and solve every problem with a single regex. Do not forget that you have other tools available in a programming language and you can break down the problem by writing a series of simpler regexes. 
 
 # Regex exercises  `r emo::ji('wrench')`
 
 1. Can you explain what these regular expressions match?
 
-      a. `[0-9]+\$`
+      a. `\$[0-9]+`
       a. `"^.*$"`
       a. `"\\d{4}-\\d{2}-\\d{2}"`
       a. `"\\\\{4}"`
@@ -273,7 +275,7 @@ ex_string <- "555-1239Moe Szyslak(636) 555-0113Burns, C. Montgomery555-6542Rev. 
 6. The following code hides a secret message. Crack it with R and regular expressions. Once you have cracked it, try to collapse the solution in one single string. *Hint: Some of the characters are more revealing than others!*
 
 ```{r}
-secret <- "clcopCow1zmstc0d87wnkig7OvdicpNuggvhryn92Gjuwczi8hqrfpRxs5Aj5dwpn0TanwoUwisdij7Lj8kpf03AT5Idr3coc0bt7yczjatOaootj55t3Nj3ne6c4Sfek.r1w1YwwojigOd6vrfUrbz2.2bkAnbhzgv4R9i05zEcrop.wAgnb.RqoE65fGEa1otfb7wXm24k.6t3sH9zqe5fy89n6Ed5t9kc4fR905gmc4Ogxo5nhk!gr"
+secret <- "clcopCow1zmstc0d87wnkig7OvdicpNuggvhryn92Gjuwczi8hqrfpRxs5Aj5dwpn0TanwoUwisdij7Lj8kpf03AT5Idr3coc0bt7yczjatOaootj55t3Nj3ne6c4Sfek.r1w1YwwojigOd6vrfUrbz2.2bkSnbhzgv4O9i05zLcropwVgnbEqoD65fa1otf.b7wIm24k6t3s9zqe5fy89n6Td5t9kc4f905gmc4gxo5nhk!gr"
 ```
 
 # Sources
