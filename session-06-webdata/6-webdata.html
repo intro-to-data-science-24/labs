@@ -608,6 +608,9 @@ Therefore, we add another backward slash to escape the meta character
 ## [3] │ [&lt;?&gt;.{!]\</code></pre>
 <p>For more info on regex in R, check out the documentation:</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>?base<span class="sc">::</span>regex</span></code></pre></div>
+<p>The stringr package also provides a <a
+href="https://stringr.tidyverse.org/articles/regular-expressions.html">vignette</a>
+on working with regex.</p>
 <p>Finally a word of caution at the end: Since regular expressions are
 extremely powerful in string manipulation, it is easy to try and solve
 every problem with a single regex. Do not forget that you have other
@@ -620,7 +623,7 @@ problem by writing a series of simpler regexes.</p>
 <ol style="list-style-type: decimal">
 <li><p>Can you explain what these regular expressions match?</p>
 <ol style="list-style-type: lower-alpha">
-<li><code>[0-9]+\$</code></li>
+<li><code>\$[0-9]+</code></li>
 <li><code>"^.*$"</code></li>
 <li><code>"\\d{4}-\\d{2}-\\d{2}"</code></li>
 <li><code>"\\\\{4}"</code></li>
@@ -652,7 +655,7 @@ regular expressions. Once you have cracked it, try to collapse the
 solution in one single string. <em>Hint: Some of the characters are more
 revealing than others!</em></li>
 </ol>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>secret <span class="ot">&lt;-</span> <span class="st">&quot;clcopCow1zmstc0d87wnkig7OvdicpNuggvhryn92Gjuwczi8hqrfpRxs5Aj5dwpn0TanwoUwisdij7Lj8kpf03AT5Idr3coc0bt7yczjatOaootj55t3Nj3ne6c4Sfek.r1w1YwwojigOd6vrfUrbz2.2bkAnbhzgv4R9i05zEcrop.wAgnb.RqoE65fGEa1otfb7wXm24k.6t3sH9zqe5fy89n6Ed5t9kc4fR905gmc4Ogxo5nhk!gr&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>secret <span class="ot">&lt;-</span> <span class="st">&quot;clcopCow1zmstc0d87wnkig7OvdicpNuggvhryn92Gjuwczi8hqrfpRxs5Aj5dwpn0TanwoUwisdij7Lj8kpf03AT5Idr3coc0bt7yczjatOaootj55t3Nj3ne6c4Sfek.r1w1YwwojigOd6vrfUrbz2.2bkSnbhzgv4O9i05zLcropwVgnbEqoD65fa1otf.b7wIm24k6t3s9zqe5fy89n6Td5t9kc4f905gmc4gxo5nhk!gr&quot;</span></span></code></pre></div>
 </div>
 <div id="sources" class="section level1">
 <h1>Sources</h1>
@@ -669,71 +672,82 @@ book.</p>
 <h1>Appendix</h1>
 <p>Here’s a reference guide for regex expressions:</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a><span class="co"># create example</span></span>
-<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a>example.obj <span class="ot">&lt;-</span> <span class="st">&quot;1. A small sentence. - 2. Another tiny sentence.&quot;</span></span>
-<span id="cb40-3"><a href="#cb40-3" tabindex="-1"></a></span>
-<span id="cb40-4"><a href="#cb40-4" tabindex="-1"></a><span class="co"># wildcard</span></span>
-<span id="cb40-5"><a href="#cb40-5" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;sm.ll&quot;</span>)</span></code></pre></div>
+<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a>example.obj <span class="ot">&lt;-</span> <span class="st">&quot;1. A small sentence. - 2. Another tiny sentence.&quot;</span></span></code></pre></div>
+<div id="wildcard-." class="section level3">
+<h3>Wildcard <code>.</code></h3>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;sm.ll&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;small&quot;</code></pre>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a><span class="co"># character class</span></span>
-<span id="cb42-2"><a href="#cb42-2" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;sm[abc]ll&quot;</span>)</span></code></pre></div>
+</div>
+<div id="character-class" class="section level3">
+<h3>Character class</h3>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;sm[abc]ll&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;small&quot;</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a><span class="co"># character class: range</span></span>
-<span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;sm[a-p]ll&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a><span class="co"># range</span></span>
+<span id="cb45-2"><a href="#cb45-2" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;sm[a-p]ll&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;small&quot;</code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a><span class="co"># character class: additional characters</span></span>
-<span id="cb46-2"><a href="#cb46-2" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;[uvw. ]&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a><span class="co"># additional characters</span></span>
+<span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;[uvw. ]&quot;</span>))</span></code></pre></div>
 <pre><code>##  [1] &quot;.&quot; &quot; &quot; &quot; &quot; &quot; &quot; &quot;.&quot; &quot; &quot; &quot; &quot; &quot;.&quot; &quot; &quot; &quot; &quot; &quot; &quot; &quot;.&quot;</code></pre>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a><span class="co"># pre-defined character classes</span></span>
-<span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;[:punct:]&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a><span class="co"># pre-defined character classes</span></span>
+<span id="cb49-2"><a href="#cb49-2" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;[:punct:]&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;.&quot; &quot;.&quot; &quot;-&quot; &quot;.&quot; &quot;.&quot;</code></pre>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;[[:punct:]ABC]&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;[[:punct:]ABC]&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;.&quot; &quot;A&quot; &quot;.&quot; &quot;-&quot; &quot;.&quot; &quot;A&quot; &quot;.&quot;</code></pre>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;[^[:alnum:]]&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;[^[:alnum:]]&quot;</span>))</span></code></pre></div>
 <pre><code>##  [1] &quot;.&quot; &quot; &quot; &quot; &quot; &quot; &quot; &quot;.&quot; &quot; &quot; &quot;-&quot; &quot; &quot; &quot;.&quot; &quot; &quot; &quot; &quot; &quot; &quot; &quot;.&quot;</code></pre>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a><span class="co"># additional shortcuts</span></span>
-<span id="cb54-2"><a href="#cb54-2" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">w+&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a><span class="co"># additional shortcuts</span></span>
+<span id="cb55-2"><a href="#cb55-2" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">w+&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;1&quot;        &quot;A&quot;        &quot;small&quot;    &quot;sentence&quot; &quot;2&quot;        &quot;Another&quot;  &quot;tiny&quot;    
 ## [8] &quot;sentence&quot;</code></pre>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" tabindex="-1"></a><span class="co"># word edges</span></span>
-<span id="cb56-2"><a href="#cb56-2" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;e</span><span class="sc">\\</span><span class="st">b&quot;</span>)) </span></code></pre></div>
+</div>
+<div id="word-edges" class="section level3">
+<h3>Word edges</h3>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;e</span><span class="sc">\\</span><span class="st">b&quot;</span>)) </span></code></pre></div>
 <pre><code>## [1] &quot;e&quot; &quot;e&quot;</code></pre>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;e</span><span class="sc">\\</span><span class="st">B&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;e</span><span class="sc">\\</span><span class="st">B&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;e&quot; &quot;e&quot; &quot;e&quot; &quot;e&quot; &quot;e&quot;</code></pre>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" tabindex="-1"></a><span class="co"># quantifier</span></span>
-<span id="cb60-2"><a href="#cb60-2" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;s[:alpha:][:alpha:][:alpha:]l&quot;</span>)</span></code></pre></div>
+</div>
+<div id="quantifiers-1" class="section level3">
+<h3>Quantifiers</h3>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;s[:alpha:][:alpha:][:alpha:]l&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;small&quot;</code></pre>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;s[:alpha:]{3}l&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;s[:alpha:]{3}l&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;small&quot;</code></pre>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;A.+sentence&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;A.+sentence&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;A small sentence. - 2. Another tiny sentence&quot;</code></pre>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" tabindex="-1"></a><span class="co"># greedy quantification</span></span>
-<span id="cb66-2"><a href="#cb66-2" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;A.+sentence&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a><span class="co"># greedy quantification</span></span>
+<span id="cb67-2"><a href="#cb67-2" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;A.+sentence&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;A small sentence. - 2. Another tiny sentence&quot;</code></pre>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;A.+?sentence&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;A.+?sentence&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;A small sentence&quot;</code></pre>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" tabindex="-1"></a><span class="co"># quantifier with pattern sequence</span></span>
-<span id="cb70-2"><a href="#cb70-2" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;(.en){1,5}&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a><span class="co"># quantifier with pattern sequence</span></span>
+<span id="cb71-2"><a href="#cb71-2" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;(.en){1,5}&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;senten&quot; &quot;senten&quot;</code></pre>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;.en{1,5}&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;.en{1,5}&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;sen&quot; &quot;ten&quot; &quot;sen&quot; &quot;ten&quot;</code></pre>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" tabindex="-1"></a><span class="co"># meta characters</span></span>
-<span id="cb74-2"><a href="#cb74-2" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>))</span></code></pre></div>
+</div>
+<div id="meta-characters" class="section level3">
+<h3>Meta characters</h3>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;.&quot; &quot;.&quot; &quot;.&quot; &quot;.&quot;</code></pre>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="fu">fixed</span>(<span class="st">&quot;.&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="fu">fixed</span>(<span class="st">&quot;.&quot;</span>)))</span></code></pre></div>
 <pre><code>## [1] &quot;.&quot; &quot;.&quot; &quot;.&quot; &quot;.&quot;</code></pre>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" tabindex="-1"></a><span class="co"># meta characters in character classes</span></span>
-<span id="cb78-2"><a href="#cb78-2" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;[1-2]&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" tabindex="-1"></a><span class="co"># meta characters in character classes</span></span>
+<span id="cb79-2"><a href="#cb79-2" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;[1-2]&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;1&quot; &quot;2&quot;</code></pre>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;[12-]&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">str_extract_all</span>(example.obj, <span class="st">&quot;[12-]&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;1&quot; &quot;-&quot; &quot;2&quot;</code></pre>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" tabindex="-1"></a><span class="co"># backreferencing</span></span>
-<span id="cb82-2"><a href="#cb82-2" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;([:alpha:]).+?</span><span class="sc">\\</span><span class="st">1&quot;</span>)</span></code></pre></div>
+</div>
+<div id="backreferencing" class="section level3">
+<h3>Backreferencing</h3>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;([:alpha:]).+?</span><span class="sc">\\</span><span class="st">1&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;A small sentence. - 2. A&quot;</code></pre>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;(</span><span class="sc">\\</span><span class="st">b[a-z]+</span><span class="sc">\\</span><span class="st">b).+?</span><span class="sc">\\</span><span class="st">1&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" tabindex="-1"></a><span class="fu">str_extract</span>(example.obj, <span class="st">&quot;(</span><span class="sc">\\</span><span class="st">b[a-z]+</span><span class="sc">\\</span><span class="st">b).+?</span><span class="sc">\\</span><span class="st">1&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;sentence. - 2. Another tiny sentence&quot;</code></pre>
-<p>Do you think you can master regular expressions now? Maybe <a
+<p>Do you think you’ve mastered regular expressions? Maybe <a
 href="http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address/201378#201378">think
 again</a>. 🤯</p>
+</div>
 </div>
 
 &nbsp;

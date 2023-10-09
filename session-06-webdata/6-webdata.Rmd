@@ -290,78 +290,67 @@ Here's a reference guide for regex expressions:
 ```{r}
 # create example
 example.obj <- "1. A small sentence. - 2. Another tiny sentence."
+```
 
-# wildcard
+### Wildcard `.`
+```{r}
 str_extract(example.obj, "sm.ll")
 ```
 
+### Character class
 ```{r}
-# character class
 str_extract(example.obj, "sm[abc]ll")
-```
 
-```{r}
-# character class: range
+# range
 str_extract(example.obj, "sm[a-p]ll")
-```
 
-```{r}
-# character class: additional characters
+# additional characters
 unlist(str_extract_all(example.obj, "[uvw. ]"))
-```
 
-```{r}
 # pre-defined character classes
 unlist(str_extract_all(example.obj, "[:punct:]"))
 unlist(str_extract_all(example.obj, "[[:punct:]ABC]"))
 unlist(str_extract_all(example.obj, "[^[:alnum:]]"))
-```
 
-```{r}
 # additional shortcuts
 unlist(str_extract_all(example.obj, "\\w+"))
 ```
 
+### Word edges
 ```{r}
-# word edges
 unlist(str_extract_all(example.obj, "e\\b")) 
 unlist(str_extract_all(example.obj, "e\\B"))
 ```
+
+### Quantifiers
 ```{r}
-# quantifier
 str_extract(example.obj, "s[:alpha:][:alpha:][:alpha:]l")
 str_extract(example.obj, "s[:alpha:]{3}l")
 str_extract(example.obj, "A.+sentence")
-```
 
-```{r}
 # greedy quantification
 str_extract(example.obj, "A.+sentence")
 str_extract(example.obj, "A.+?sentence")
-```
 
-```{r}
 # quantifier with pattern sequence
 unlist(str_extract_all(example.obj, "(.en){1,5}"))
 unlist(str_extract_all(example.obj, ".en{1,5}"))
 ```
 
+### Meta characters
 ```{r}
-# meta characters
 unlist(str_extract_all(example.obj, "\\."))
 unlist(str_extract_all(example.obj, fixed(".")))
-```
 
-```{r}
 # meta characters in character classes
 unlist(str_extract_all(example.obj, "[1-2]"))
 unlist(str_extract_all(example.obj, "[12-]"))
 ```
 
+### Backreferencing
 ```{r}
-# backreferencing
 str_extract(example.obj, "([:alpha:]).+?\\1")
 str_extract(example.obj, "(\\b[a-z]+\\b).+?\\1")
 ```
 
-Do you think you can master regular expressions now? Maybe [think again](http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address/201378#201378). `r emo::ji("exploding_head")`
+Do you think you've mastered regular expressions? Maybe [think again](http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address/201378#201378). `r emo::ji("exploding_head")`
