@@ -1,6 +1,6 @@
 ---
 title: "Webdata"
-subtitle: "Wokring with xpath and regex"
+subtitle: "Working with xpath and regex"
 output: 
   html_document:
     toc: TRUE
@@ -166,7 +166,7 @@ str_replace_all(x, c("a" = "A", "b" = "B", "p" = "P"))
 `str_locate()` and `str_locate_all()` give you the starting and ending positions of each match. These are particularly useful when none of the other functions does exactly what you want. 
 
 ```{r}
-str_locate(x, 'a')
+str_locate_all(x, 'a')
 ```
 
 # Regular expressions `r emo::ji('memo')`
@@ -185,7 +185,7 @@ str_view(x, "a.")
 
 ## Quantifiers `r emo::ji('asterisk')`
 
-`? * + {n} {n,} {n,m}` are so-called *quantifiers*, that allow us to match the preceding character either zero or one `?`,  zero or more `.`, or one or more `+` times. `{n}` allows us to match a pattern exactly n times. To match n times and more, we add a comma in the curly brackets `{n,}` and to match between n and m times, we use `{n,m}`.
+`? * + {n} {n,} {n,m}` are so-called *quantifiers*, that allow us to match the preceding character either zero or one `?`,  zero or more `*`, or one or more `+` times. `{n}` allows us to match a pattern exactly n times. To match n times and more, we add a comma in the curly brackets `{n,}` and to match between n and m times, we use `{n,m}`.
 
 ```{r}
 str_view(x, "p+")
@@ -194,8 +194,8 @@ We can also match for specific *character classes*: If you would like to match w
 
 ```{r}
 y <- "1. A small sentence. - 2. Another tiny sentence."
-str_view_all(y, "\\s(\\w{4,5})\\s")
-str_view_all(y, "\\d\\W")
+str_view(y, "\\s(\\w{4,5})\\s")
+str_view(y, "\\d\\W")
 ```
 R's regex implmentation also ships with a number of predefined character classes, like `[:upper:]`, `[:lower:]` and `[:punct:]`.
 They are usually simpler and much easier to remember than corresponding regex patterns. Note however, that these will require double squared brackets in many of the base R functions.
@@ -205,16 +205,16 @@ They are usually simpler and much easier to remember than corresponding regex pa
 Next to character classes and quantifiers, *anchors* match the start `^` or end `$` of a string. *Alternates* allow us to handle multiple cases in our pattern. As in R `|`, is equivalent to an "or". With `[qwert]` we are creating a "one of" pattern that matches any of the strings in the squared brackets. To negate this and get "anything but" we use `[^qwert]`. Parenthesis in regex are used to create groups and establish an order of evaluation. 
 
 ```{r}
-str_view(x, "^a|b")
+str_view(x, "^(a|b)")
 ```
 
 ```{r}
 fruits <- c("apple", "orange", "pear")
 fruit_match <- str_c(fruits, collapse = "|")
-str_subset(stringr::sentences, fruit_match) %>% head(3)
+str_subset(stringr::sentences, fruit_match) |> head(3)
 ```
 
-At this point you may wonder yourself, how we match those characters that are used as meta characters in regex.T his is where it gets complicated. Theoretically, we only use `\` as an escape character. However, we also use regular characters, like `\d` for instance, to match digits or `\s` to match white spaces. Therefore, we add another backward slash to escape the meta character `\\`. To match a question mark, we would use `\\?`.
+At this point you may be wondering to yourself, how we match those characters that are used as meta characters in regex. This is where it gets complicated. Theoretically, we only use `\` as an escape character. However, we also use regular characters, like `\d` for instance, to match digits or `\s` to match white spaces. Therefore, we add another backward slash to escape the meta character `\\`. To match a question mark, we would use `\\?`.
 
 ```{r}
 z <- c('abc?defg', '123456?89', "[?.{!]\\")
@@ -235,16 +235,23 @@ Finally a word of caution at the end: Since regular expressions are extremely po
 
 1. Can you explain what these regular expressions match?
 
-      a. `\$[0-9]+`
+      a. `"\\$[0-9]+"`
       a. `"^.*$"`
       a. `"\\d{4}-\\d{2}-\\d{2}"`
+      a. `".*?\\.txt$"`
       a. `"\\\\{4}"`
-      a. `b[a-z]{1,4}`
-      a. `.*?\.txt$`
+      a. `"b[a-z]{1,4}"`
 
 ```{r}
 # Example
-str_extract_all("Phone 150$, TV 690$", "[0-9]+\\$") # Answer: this regex describes prices in dollars
+str_view(
+  string = c(
+    "$10 for two items!",
+    "Buy the latest iPhone for $899!",
+    "It costs just $15 per month to upgrade your phone plan."
+    ), 
+  pattern = "\\$[0-9]+" # Answer: this regex describes prices in dollars
+  ) 
 ```
 
 
@@ -269,7 +276,6 @@ emails <- c('456123@students.hertie-school.org', 'h.simpson@students.hertie-scho
 
 ```{r}
 ex_string <- "555-1239Moe Szyslak(636) 555-0113Burns, C. Montgomery555-6542Rev. Timothy Lovejoy555 8904Ned Flanders636-555-3226Simpson, Homer5553642Dr. Julius Hibbert"
-
 ```
 
 6. The following code hides a secret message. Crack it with R and regular expressions. Once you have cracked it, try to collapse the solution in one single string. *Hint: Some of the characters are more revealing than others!*
