@@ -9,7 +9,7 @@
 # "\\d{4}-\\d{2}-\\d{2}" will match four digits followed by a hyphen, followed by two digits followed by a hyphen, followed by another two digits. This is a regular expression that can match dates formatted like “YYYY-MM-DD” (“%Y-%m-%d”). For example, "\d{4}-\d{2}-\d{2}": "2018-01-11"
 
 # 1.d.
-# ".*?\\.txt$" will match any .txt file. For example, ".*?\\.txt$": c("FiLeN4m3.txt", "notes.txt", "1982-10-23.txt")
+# ".*\\.txt$" will match any .txt file. For example, ".*\\.txt$": c("FiLeN4m3.txt", "notes.txt", "1982-10-23.txt")
 
 # 1.e. 
 # "\\\\{4}" is \\{4}, which will match four backslashes. For example, "\\\\{4}": "\\\\\\\\"

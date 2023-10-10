@@ -188,6 +188,8 @@ str_view(x, "a.")
 `? * + {n} {n,} {n,m}` are so-called *quantifiers*, that allow us to match the preceding character either zero or one `?`,  zero or more `*`, or one or more `+` times. `{n}` allows us to match a pattern exactly n times. To match n times and more, we add a comma in the curly brackets `{n,}` and to match between n and m times, we use `{n,m}`.
 
 ```{r}
+str_view(x, "p?")
+str_view(x, "p*")
 str_view(x, "p+")
 ```
 We can also match for specific *character classes*: If you would like to match whitespaces (spaces, linebreaks, tabs) you can use `\\s`. To match any digit, simply use `\\d`, for word character (digits and alphabetic characters) you can use `\\w`. We can negate those character classes by using them in uppercase (e.g. `\\D` matching all non-digits).
