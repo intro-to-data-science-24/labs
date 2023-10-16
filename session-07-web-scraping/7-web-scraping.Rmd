@@ -79,8 +79,8 @@ parsed_url <- read_html("https://en.wikipedia.org/wiki/Cologne")
 **Step 3.** Extract information.
 
 ```{r}
-parsed_url %>% 
-  html_element(xpath = '//p[(((count(preceding-sibling::*) + 1) = 170) and parent::*)]') %>% 
+parsed_url |> 
+  html_element(xpath = '//p[(((count(preceding-sibling::*) + 1) = 170) and parent::*)]') |> 
   html_text()
 ```
 
@@ -97,13 +97,11 @@ knitr::include_graphics("pics/inspect.png")
 
 ```{r, fig.align='center', echo=F, out.width = "90%"}
 knitr::include_graphics("pics/selector.png")
-
 ```
 
 You can now de-select everything that is irrelevant to you by clicking it again (it then turns red). Final step, then just click the XPath button at the bottom of the browser window. Make sure to use single quotation marks with this XPath!
 
 ```{r, fig.align='center', echo=F, out.width = "90%"}
-
 knitr::include_graphics("pics/selector2.png")
 ```
 
@@ -117,11 +115,11 @@ nypl100 <- read_html(nypl_url)
 
 **Step 3.** Extract information. When going through different levels of html, you can also use tidyverse logic.
 ```
-body_nodes <- nypl100 %>% 
- html_elements("body") %>% 
+body_nodes <- nypl100 |> 
+ html_elements("body") |> 
  html_children()
 
-body_nodes %>% 
+body_nodes |> 
  html_children()
 ```
 play with that yourself if you like...
@@ -129,16 +127,16 @@ play with that yourself if you like...
 Now let's have a look at the different ways to extract information:
 
 ```{r}
-title <- nypl100 %>% 
-  html_elements(xpath = '//ul/li/div/div/h4') %>% 
+title <- nypl100 |> 
+  html_elements(xpath = '//ul/li/div/div/h4') |> 
   html_text2()
 
-author <- nypl100 %>% 
-  html_elements(css = '.spbb-card__byline--grid') %>% 
+author <- nypl100 |> 
+  html_elements(css = '.spbb-card__byline--grid') |> 
   html_text2()
 
-summary <- nypl100 %>% 
-  html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "spbb-card__description--grid", " " ))]') %>% 
+summary <- nypl100 |> 
+  html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "spbb-card__description--grid", " " ))]') |> 
   html_text2()
 
 ```
@@ -147,7 +145,7 @@ summary <- nypl100 %>%
 
 **Step 5.** Put everything into a data frame. `r emo::ji("book")`
 ```{r}
-knitr::kable(data.frame(title, author, summary) %>% head(3))
+knitr::kable(data.frame(title, author, summary) |> head(3))
 ```
 
 ## Scraping HTML tables `r emo::ji("rocket")`
@@ -155,14 +153,13 @@ knitr::kable(data.frame(title, author, summary) %>% head(3))
 Oftentimes, we would like to scrape tabular data from the web. This is even easier in `rvest`!
 
 ```{r}
-url_p <- read_html('https://en.wikipedia.org/wiki/R_(programming_language)')
-r_table <- html_table(url_p, header = TRUE, fill = TRUE) %>% 
-  pluck(2)
-r_table %>% 
-  select(Description) %>% 
+url_p <- read_html("https://en.wikipedia.org/wiki/Germany")
+deu_table <- html_table(url_p, header = TRUE, fill = TRUE) |> 
+  pluck(4)
+deu_table |> 
+  select(State, Capital) |> 
   head(5)
 ```
-Another R workaround for more complex tables is the package `htmltab` that offers some more flexibility.
 
 # Scraping multiple pages `r emo::ji("robot")`
 
@@ -180,20 +177,20 @@ volurl <- paste0("0", 1:99)
 volurl[1:9] <- paste0("00", 1:9)
 brurl <- paste0("0", 1:9)
 
-urls_list <- cross2(volurl, brurl) %>% map_chr(~paste0(baseurl, .[[1]], 'i', .[[2]]))
-names <- cross2(volurl, brurl) %>% map_chr(~paste0(.[[1]], '_', .[[2]], '.html'))
+urls_list <- cross2(volurl, brurl) |> map_chr(~paste0(baseurl, .[[1]], 'i', .[[2]]))
+names <- cross2(volurl, brurl) |> map_chr(~paste0(.[[1]], '_', .[[2]], '.html'))
 ```
 
 **Step 3** Think about where you want your scraped material to be stored and create a directory.
 ```{r, eval=F}
-tempwd <- ("data/jstatsoftStats")
-dir.create(tempwd)
+tempwd <- here::here("session-07-web-scraping/data/jstatsoftStats")
+dir.create(tempwd, recursive = TRUE)
 setwd(tempwd)
 ```
 
 **Step 4** Download the pages. Note that we did not do this step last time, when we were only scraping one page.
 ```{r, eval=F}
-folder <- paste0(tempwd, "\\html_articles\\")
+folder <- paste0(tempwd, "/html_articles/")
 dir.create(folder)
 
 for (i in seq_along(urls_list)) {
@@ -223,7 +220,7 @@ list_files <- list.files(folder, pattern = "0.*")
 list_files_path <- list.files(folder, pattern = "0.*", full.names = TRUE)
 length(list_files)
 ```
-Yay! Apparently, we scraped the html pages of 425 articles. 
+Yay! Apparently, we scraped the html pages of 855 articles. 
 
 ## (Git)ignoring files `r emo::ji("no_good_woman")`
 In case you scraping project is is linked to GitHub (as it will be in your assignment!), it can be useful to **.gitignore** the folder of downloaded files. This means that the folder can be stored in your local directory of the project but will not be synced with the remote (main) repository. Here is information on how to do this using [RStudio](https://carpentries-incubator.github.io/git-Rstudio-course/02-ignore/index.html). In Github Desktop it is very simple, you do your scraping work, the folder is created in your local repository and before your commit and push these changes, you go on `Repository` > `Repository Settings` > `Ignored Files` and edit the .gitignore file (add the name of the new folder / files you don't want to sync). More generally, it makes sense to exclude .Rproj files, .RData files (and other binary or large data files), draft folders and sensitive information from version control. Remember, git is built to track changes in code, not in large data files.
@@ -241,16 +238,16 @@ for (i in seq_along(list_files_path)) {
   
   html_out <- read_html(list_files_path[i])
     
-  authors[i] <- html_out %>% 
-    html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "authors_long", " " ))]//strong') %>% 
+  authors[i] <- html_out |> 
+    html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "authors_long", " " ))]//strong') |> 
     html_text2()
     
-  title[i] <- html_out %>% 
-    html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "page-header", " " ))]') %>% 
+  title[i] <- html_out |> 
+    html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "page-header", " " ))]') |> 
     html_text2()
     
-  datePublish[i] <- html_out %>% 
-    html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "article-meta", " " ))]//*[contains(concat( " ", @class, " " ), concat( " ", "row", " " )) and (((count(preceding-sibling::*) + 1) = 2) and parent::*)]//*[contains(concat( " ", @class, " " ), concat( " ", "col-sm-8", " " ))]') %>% 
+  datePublish[i] <- html_out |> 
+    html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "article-meta", " " ))]//*[contains(concat( " ", @class, " " ), concat( " ", "row", " " )) and (((count(preceding-sibling::*) + 1) = 2) and parent::*)]//*[contains(concat( " ", @class, " " ), concat( " ", "col-sm-8", " " ))]') |> 
     html_text2()
   
 }
@@ -303,7 +300,7 @@ First thing would be not to scrape at a speed that causes trouble for their serv
 
 And generally, it is better practice to store data on your local drive first (`download.file()`), then parse (`read_html()`). 
 
-**A footnote on sustainability.** In the digital context, we often forget that or actions do have physical consequences. For example, training AI, using blockchain and just streaming videos do cause considerable amounts of CO2 emissions. So does bombarding a server with requests - certainly to a much lesser extent than the examples before - but please consider whether you have to re-run a large scraping project 100 times in order to debug things. 
+**A footnote on sustainability.** In the digital context, we often forget that or actions do have physical consequences. For example, training AI, using blockchain and just streaming videos do cause considerable amounts of $CO^2$ emissions. So does bombarding a server with requests - certainly to a much lesser extent than the examples before - but please consider whether you have to re-run a large scraping project 100 times in order to debug things. 
 
 Furthermore, downloading massive amounts of data may arouse attention from server administrators.
 Assuming that you've got nothing to hide, you should stay identifiable beyond your IP address.
@@ -321,10 +318,9 @@ rvest_session <- session(url,
   add_headers(`From` = "my@email.com", 
               `UserAgent` = R.Version()$version.string))
                 
-scraped_text <- rvest_session %>% 
-            html_elements(xpath = "p//a") %>% 
+scraped_text <- rvest_session |> 
+            html_elements(xpath = "p//a") |> 
             html_text()
-
 ```
 
 rvest's `session()` creates a session object that responds to HTTP and HTML methods.
@@ -339,7 +335,6 @@ library(jsonlite)
 library(xml2)
 ```
 
-
 To get data from an API, we suggest to follow a workflow like this:
 
 1. Read the APIs documentation!
@@ -351,7 +346,6 @@ To get data from an API, we suggest to follow a workflow like this:
   + Parse the result with the `content` function
   + Either use `jsonlite` or `xml2` to parse the json or xml files
 
-
 Let's have a look at an example, the [Star Wars API](https://swapi.dev/):
 
 ```{r}
@@ -359,21 +353,20 @@ baseurl <- "https://swapi.dev/api/"
 
 query <- 'films'
 
-GET(paste0(baseurl, query)) %>%
-  content(as = 'text') %>%
-  fromJSON() %>% 
-  pluck(4) %>% 
+GET(paste0(baseurl, query)) |>
+  content(as = 'text') |>
+  fromJSON() |> 
+  pluck(4) |> 
   as.data.frame()
-  
 ```
 
 ```{r}
 query <- 'people/?search=skywalker'
 
-GET(paste0(baseurl, query)) %>%
-  content(as = 'text') %>%
-  fromJSON() %>% 
-  pluck(4) %>% 
+GET(paste0(baseurl, query)) |>
+  content(as = 'text') |>
+  fromJSON() |> 
+  pluck(4) |> 
   as.data.frame()
 ```
 
@@ -382,64 +375,55 @@ If you do not know the source format, the `http_type` function will help you out
 ```{r}
 query <- 'starships/?search=death/?format=wookiee'
 
-GET(paste0(baseurl, query)) %>%
+GET(paste0(baseurl, query)) |>
   http_type()
 ```
 
 ## API keys and authentication `r emo::ji('lock')``
 
-For many APIs, you will need to obtain an api key to retrieve data. Once you received your api key (or token), you will also need to adapt your GET query. How you need to do this depends a lot on the API. Let's have a look at how to do this for the API of the [US congress](https://api.congress.gov/): The API is actually valid across a number of [US government institutions](https://api.data.gov/docs/). We can sign up for an API key [here](https://api.data.gov/signup/). The API website, gives us detailed information on how to build our queries. But how do we actually authenticate ourselves with the API key? The [documentation](https://api.data.gov/docs/api-key/) tells us that there are multiple ways to go about this. We can either do adapt the use HTTP basic authentication, the GET query parameter, or the HTTP header.
+For many APIs, you will need to obtain an api key to retrieve data. Once you received your api key (or token), you will also need to adapt your GET query. How you need to do this depends a lot on the API. Let's have a look at how to do this for the API of the [US congress](https://api.congress.gov/): The API is actually valid across a number of [US government institutions](https://api.data.gov/). We can sign up for an API key [here](https://api.data.gov/signup/). The API website, gives us detailed information on how to build our queries. But how do we actually authenticate ourselves with the API key? The [documentation](https://api.data.gov/docs/api-key/) tells us that there are multiple ways to go about this. We can either do adapt the use HTTP basic authentication, the GET query parameter, or the HTTP header.
 
 Here's a quick overview of how to implement these with `httr`:
 
-
 ```{r, eval=FALSE}
+###
 baseurl <- 'https://api.congress.gov/v3/'
 
 query <- 'nomination/115/2259/actions'
 
 GET(paste0(baseurl, query), 
-    authenticate(user = Sys.getenv('US.GOV_API'), password = '')) %>%
-  content(as = 'text') %>% 
-  fromJSON() %>% 
-  pluck(1) %>% 
+    authenticate(user = Sys.getenv('US.GOV_API'), password = '')) |>
+  content(as = 'text') |> 
+  fromJSON() |> 
+  pluck(1) |> 
   as.data.frame()
 ```
 
 ```{r, eval=FALSE}
+###
 query <- paste0('summaries/117/hr?fromDateTime=2022-10-01T00:00:00Z&toDateTime=2022-11-01T00:00:00Z&sort=updateDate+desc')
 
-GET(paste0(baseurl, query), query = list(api_key = Sys.getenv('US.GOV_API'))) %>%
-  content(as = 'text') %>% 
-  fromJSON() %>% 
-  pluck(3) %>% 
+GET(paste0(baseurl, query), query = list(api_key = Sys.getenv('US.GOV_API'))) |>
+  content(as = 'text') |> 
+  fromJSON() |> 
+  pluck(3) |> 
   as.data.frame()
 ```
 
 ```{r, eval=FALSE}
+###
 query <- 'member/O000167/sponsored-legislation.xml'
 
 GET(paste0(baseurl, query), 
-    add_headers('X-Api-Key' = Sys.getenv('US.GOV_API'))) %>%
-  content(as = 'text') %>% 
-  read_xml() %>% 
-  xml_find_all('//sponsoredLegislation//title') %>% xml_text()
+    add_headers('X-Api-Key' = Sys.getenv('US.GOV_API'))) |>
+  content(as = 'text') |> 
+  read_xml() |> 
+  xml_find_all('//sponsoredLegislation//title') |> xml_text()
 ```
 
-Retrieving data from API's using `httr` can at times be quite tiresome. Luckily, there are many R libraries that make it much easier to retrieve data from APIs. Here is a [list of ready-made R bindings to web-APIs]('https://ropensci.org/packages/data-access/'). Actually, even the starwars API we queried earlier has its own R package, `rwars`!
-
+Retrieving data from API's using `httr` can at times be quite tiresome. Luckily, there are many R libraries that make it much easier to retrieve data from APIs. Here is a [list of ready-made R bindings to web-APIs](https://ropensci.org/packages/data-access/). Actually, even the starwars API we queried earlier has its own R package, `rwars`!
 
 # Sources
 
-This tutorial drew heavily on Simon Munzert's book [Automated Data Collection with R](http://r-datacollection.com/) and related [course materials](https://github.com/simonmunzert/web-scraping-with-r-extended-edition). We also used an [example](https://towardsdatascience.com/tidy-web-scraping-in-r-tutorial-and-resources-ac9f72b4fe47) from Keith McNulty's blog post on tidy web scraping in R. 
-For the regex part, we used examples from the string manipulation section in Hadley Wickham' s [R for Data Science](https://r4ds.had.co.nz/strings.html) book.
-
-
-
-
-
-
-
-
-
-
+This tutorial drew heavily on Simon Munzert's book [Automated Data Collection with R](http://r-datacollection.com/) and related [course materials](https://github.com/simonmunzert/web-scraping-with-r-extended-edition). We also used an [example](https://keith-mcnulty.medium.com/how-to-scrape-the-web-in-r-d77b11fca40d) from Keith McNulty's blog post on tidy web scraping in R. 
+For the regex part, we used examples from the string manipulation section in Hadley Wickham's [R for Data Science](https://r4ds.hadley.nz/strings) book.
