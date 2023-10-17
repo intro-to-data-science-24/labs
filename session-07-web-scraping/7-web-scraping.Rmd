@@ -388,7 +388,7 @@ Here's a quick overview of how to implement these with `httr`:
 baseurl <- 'https://developer.nrel.gov/api/alt-fuel-stations/v1.json?limit=1&api_key='
 
 api_key <- '[YOUR API KEY GOES HERE]'
-s
+
 # Get stations data in the US, remember to plug in your own API key
 get.afs <- GET(glue::glue("{baseurl}{api_key}"))
 

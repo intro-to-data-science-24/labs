@@ -350,7 +350,7 @@ data</li>
 <li>scraping dynamic webpages</li>
 </ul>
 <div id="why-webscrape-with-r" class="section level1">
-<h1>Why webscrape with R? 🌏</h1>
+<h1>Why webscrape with R? 🌐</h1>
 <p>Webscraping broadly includes a) getting (unstructured) data from the
 web and b) bringing it into shape (e.g. cleaning it, getting it into
 tabular format).</p>
@@ -779,7 +779,7 @@ header.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>baseurl <span class="ot">&lt;-</span> <span class="st">&#39;https://developer.nrel.gov/api/alt-fuel-stations/v1.json?limit=1&amp;api_key=&#39;</span></span>
 <span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>api_key <span class="ot">&lt;-</span> <span class="st">&#39;[YOUR API KEY GOES HERE]&#39;</span></span>
-<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>s</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a></span>
 <span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="co"># Get stations data in the US, remember to plug in your own API key</span></span>
 <span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>get.afs <span class="ot">&lt;-</span> <span class="fu">GET</span>(glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;{baseurl}{api_key}&quot;</span>))</span>
 <span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a></span>
