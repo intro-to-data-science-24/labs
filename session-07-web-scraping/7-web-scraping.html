@@ -350,7 +350,7 @@ data</li>
 <li>scraping dynamic webpages</li>
 </ul>
 <div id="why-webscrape-with-r" class="section level1">
-<h1>Why webscrape with R? 🌎</h1>
+<h1>Why webscrape with R? 🌏</h1>
 <p>Webscraping broadly includes a) getting (unstructured) data from the
 web and b) bringing it into shape (e.g. cleaning it, getting it into
 tabular format).</p>
@@ -531,12 +531,12 @@ find the pattern. Then, construct the list of URLs from scratch.</p>
 <span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>names <span class="ot">&lt;-</span> <span class="fu">cross2</span>(volurl, brurl) <span class="sc">|&gt;</span> <span class="fu">map_chr</span>(<span class="sc">~</span><span class="fu">paste0</span>(.[[<span class="dv">1</span>]], <span class="st">&#39;_&#39;</span>, .[[<span class="dv">2</span>]], <span class="st">&#39;.html&#39;</span>))</span></code></pre></div>
 <p><strong>Step 3</strong> Think about where you want your scraped
 material to be stored and create a directory.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>tempwd <span class="ot">&lt;-</span> (<span class="st">&quot;data/jstatsoftStats&quot;</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">dir.create</span>(tempwd)</span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>tempwd <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;session-07-web-scraping/data/jstatsoftStats&quot;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">dir.create</span>(tempwd, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="fu">setwd</span>(tempwd)</span></code></pre></div>
 <p><strong>Step 4</strong> Download the pages. Note that we did not do
 this step last time, when we were only scraping one page.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>folder <span class="ot">&lt;-</span> <span class="fu">paste0</span>(tempwd, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">html_articles</span><span class="sc">\\</span><span class="st">&quot;</span>)</span>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>folder <span class="ot">&lt;-</span> <span class="fu">paste0</span>(tempwd, <span class="st">&quot;/html_articles/&quot;</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">dir.create</span>(folder)</span>
 <span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a></span>
 <span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(urls_list)) {</span>
@@ -559,7 +559,7 @@ in the directory you defined…</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>list_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder, <span class="at">pattern =</span> <span class="st">&quot;0.*&quot;</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>list_files_path <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder, <span class="at">pattern =</span> <span class="st">&quot;0.*&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="fu">length</span>(list_files)</span></code></pre></div>
-<p>Yay! Apparently, we scraped the html pages of 425 articles.</p>
+<p>Yay! Apparently, we scraped the html pages of 855 articles.</p>
 <div id="gitignoring-files" class="section level2">
 <h2>(Git)ignoring files 🙅</h2>
 <p>In case you scraping project is is linked to GitHub (as it will be in
@@ -618,10 +618,9 @@ tidying the data, not into the actual downloading/scraping part.</p>
 <p>Scraping is also possible in much more complex scenarios! Watch out
 for workshop presentations on</p>
 <ul>
-<li>Dynamic webscraping with RSelenium</li>
-<li>Web APIs</li>
-<li>Regular expressions with stringr</li>
-<li>Data cleaning with janitor</li>
+<li>Text analytics with <code>quanteda</code></li>
+<li>Regular expressions with <code>stringr</code></li>
+<li>Data cleaning with <code>janitor</code></li>
 </ul>
 <p>and many more 🤩</p>
 </div>
@@ -630,17 +629,18 @@ for workshop presentations on</p>
 <h1>Good scraping practice</h1>
 <p>There is a set of general rules to the game:</p>
 <ol style="list-style-type: decimal">
-<li>You take all the responsibility for your web scraping work.</li>
-<li>Think about the nature of the data. Does it entail sensitive
-information? Do not collect personal data without explicit
+<li>You take all the <strong>responsibility</strong> for your web
+scraping work.</li>
+<li>Think about the nature of the data. Does it entail <strong>sensitive
+information</strong>? Do not collect personal data without explicit
 permission.</li>
-<li>Take all copyrights of a country’s jurisdiction into account. If you
-publish data, do not commit copyright fraud.</li>
-<li>If possible, stay identifiable. Stay polite. Stay friendly. Obey the
-scraping etiquette.</li>
-<li>If in doubt, ask the author/creator/provider of data for
-permission—if your interest is entirely scientific, chances aren’t bad
-that you get data.</li>
+<li>Take all <strong>copyrights</strong> of a country’s jurisdiction
+into account. If you publish data, do not commit copyright fraud.</li>
+<li>If possible, <strong>stay identifiable</strong>. Stay polite. Stay
+friendly. Obey the scraping etiquette.</li>
+<li>If in doubt, <strong>ask the author/creator/provider</strong> of
+data for permission—if your interest is entirely scientific, chances
+aren’t bad that you get data.</li>
 </ol>
 <div id="how-do-i-know-the-scraping-etiquette-of-a-site"
 class="section level2">
@@ -670,10 +670,11 @@ drive first (<code>download.file()</code>), then parse
 <p><strong>A footnote on sustainability.</strong> In the digital
 context, we often forget that or actions do have physical consequences.
 For example, training AI, using blockchain and just streaming videos do
-cause considerable amounts of CO2 emissions. So does bombarding a server
-with requests - certainly to a much lesser extent than the examples
-before - but please consider whether you have to re-run a large scraping
-project 100 times in order to debug things.</p>
+cause considerable amounts of <span class="math inline">\(CO^2\)</span>
+emissions. So does bombarding a server with requests - certainly to a
+much lesser extent than the examples before - but please consider
+whether you have to re-run a large scraping project 100 times in order
+to debug things.</p>
 <p>Furthermore, downloading massive amounts of data may arouse attention
 from server administrators. Assuming that you’ve got nothing to hide,
 you should stay identifiable beyond your IP address.</p>
@@ -691,8 +692,7 @@ rvest_session &lt;- session(url,
                 
 scraped_text &lt;- rvest_session |&gt; 
             html_elements(xpath = &quot;p//a&quot;) |&gt; 
-            html_text()
-</code></pre>
+            html_text()</code></pre>
 <p>rvest’s <code>session()</code> creates a session object that responds
 to HTTP and HTML methods. Here, we provide our email address and the
 current R version as User-Agent information. This will pop up in the
@@ -761,11 +761,12 @@ function will help you out!</p>
 <h2>API keys and authentication 🔒`</h2>
 <p>For many APIs, you will need to obtain an api key to retrieve data.
 Once you received your api key (or token), you will also need to adapt
-your GET query. How you need to do this depends a lot on the API. Let’s
-have a look at how to do this for the API of the <a
-href="https://api.congress.gov/">US congress</a>: The API is actually
-valid across a number of <a href="https://api.data.gov/">US government
-institutions</a>. We can sign up for an API key <a
+your GET query. How you need to do this depends a lot on the API. The
+National Renewable Data Laboratory offers APIs for users to access
+energy data in a few categories (see <a
+href="https://developer.nrel.gov/docs/">documentation</a>). The API is
+actually valid across a number of <a href="https://api.data.gov/">US
+government institutions</a>. We can sign up for an API key <a
 href="https://api.data.gov/signup/">here</a>. The API website, gives us
 detailed information on how to build our queries. But how do we actually
 authenticate ourselves with the API key? The <a
@@ -775,30 +776,42 @@ the use HTTP basic authentication, the GET query parameter, or the HTTP
 header.</p>
 <p>Here’s a quick overview of how to implement these with
 <code>httr</code>:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>baseurl <span class="ot">&lt;-</span> <span class="st">&#39;https://api.congress.gov/v3/&#39;</span></span>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>baseurl <span class="ot">&lt;-</span> <span class="st">&#39;https://developer.nrel.gov/api/alt-fuel-stations/v1.json?limit=1&amp;api_key=&#39;</span></span>
 <span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="st">&#39;nomination/115/2259/actions&#39;</span></span>
-<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a></span>
-<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="fu">GET</span>(<span class="fu">paste0</span>(baseurl, query), </span>
-<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>    <span class="fu">authenticate</span>(<span class="at">user =</span> <span class="fu">Sys.getenv</span>(<span class="st">&#39;US.GOV_API&#39;</span>), <span class="at">password =</span> <span class="st">&#39;&#39;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>  <span class="fu">content</span>(<span class="at">as =</span> <span class="st">&#39;text&#39;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a>  <span class="fu">fromJSON</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a>  <span class="fu">pluck</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&#39;summaries/117/hr?fromDateTime=2022-10-01T00:00:00Z&amp;toDateTime=2022-11-01T00:00:00Z&amp;sort=updateDate+desc&#39;</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a><span class="fu">GET</span>(<span class="fu">paste0</span>(baseurl, query), <span class="at">query =</span> <span class="fu">list</span>(<span class="at">api_key =</span> <span class="fu">Sys.getenv</span>(<span class="st">&#39;US.GOV_API&#39;</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a>  <span class="fu">content</span>(<span class="at">as =</span> <span class="st">&#39;text&#39;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a>  <span class="fu">fromJSON</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a>  <span class="fu">pluck</span>(<span class="dv">3</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="st">&#39;member/O000167/sponsored-legislation.xml&#39;</span></span>
-<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a><span class="fu">GET</span>(<span class="fu">paste0</span>(baseurl, query), </span>
-<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>    <span class="fu">add_headers</span>(<span class="st">&#39;X-Api-Key&#39;</span> <span class="ot">=</span> <span class="fu">Sys.getenv</span>(<span class="st">&#39;US.GOV_API&#39;</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>  <span class="fu">content</span>(<span class="at">as =</span> <span class="st">&#39;text&#39;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>  <span class="fu">read_xml</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a>  <span class="fu">xml_find_all</span>(<span class="st">&#39;//sponsoredLegislation//title&#39;</span>) <span class="sc">|&gt;</span> <span class="fu">xml_text</span>()</span></code></pre></div>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>api_key <span class="ot">&lt;-</span> <span class="st">&#39;[YOUR API KEY GOES HERE]&#39;</span></span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>s</span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="co"># Get stations data in the US, remember to plug in your own API key</span></span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>get.afs <span class="ot">&lt;-</span> <span class="fu">GET</span>(glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;{baseurl}{api_key}&quot;</span>))</span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a><span class="co"># extract content from the query</span></span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a>afs <span class="ot">&lt;-</span> <span class="fu">content</span>(get.afs)</span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a><span class="co"># see what&#39;s available in the downloaded data</span></span>
+<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a><span class="fu">names</span>(afs)</span>
+<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" tabindex="-1"></a><span class="co"># how many stations in the downloaded data</span></span>
+<span id="cb22-15"><a href="#cb22-15" tabindex="-1"></a>afs<span class="sc">$</span>total_results</span>
+<span id="cb22-16"><a href="#cb22-16" tabindex="-1"></a></span>
+<span id="cb22-17"><a href="#cb22-17" tabindex="-1"></a><span class="co"># how many stations per energy type</span></span>
+<span id="cb22-18"><a href="#cb22-18" tabindex="-1"></a>fuel_list <span class="ot">&lt;-</span> afs<span class="sc">$</span>station_counts<span class="sc">$</span>fuels</span>
+<span id="cb22-19"><a href="#cb22-19" tabindex="-1"></a></span>
+<span id="cb22-20"><a href="#cb22-20" tabindex="-1"></a><span class="co"># prepare data</span></span>
+<span id="cb22-21"><a href="#cb22-21" tabindex="-1"></a>fuel_df <span class="ot">&lt;-</span> fuel_list <span class="sc">|&gt;</span> </span>
+<span id="cb22-22"><a href="#cb22-22" tabindex="-1"></a>  <span class="fu">as_data_frame</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb22-23"><a href="#cb22-23" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), unlist)) <span class="sc">|&gt;</span> </span>
+<span id="cb22-24"><a href="#cb22-24" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb22-25"><a href="#cb22-25" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb22-26"><a href="#cb22-26" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">everything</span>(), </span>
+<span id="cb22-27"><a href="#cb22-27" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;fuel_type&quot;</span>, </span>
+<span id="cb22-28"><a href="#cb22-28" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;count&quot;</span></span>
+<span id="cb22-29"><a href="#cb22-29" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb22-30"><a href="#cb22-30" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fuel_type =</span> <span class="fu">fct_reorder</span>(fuel_type, <span class="fu">desc</span>(count))) <span class="co"># reorder </span></span>
+<span id="cb22-31"><a href="#cb22-31" tabindex="-1"></a></span>
+<span id="cb22-32"><a href="#cb22-32" tabindex="-1"></a><span class="co"># plot type of alternative fuel the station provides</span></span>
+<span id="cb22-33"><a href="#cb22-33" tabindex="-1"></a>fuel_df <span class="sc">|&gt;</span> </span>
+<span id="cb22-34"><a href="#cb22-34" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> fuel_type, <span class="at">y =</span> count)) <span class="sc">+</span></span>
+<span id="cb22-35"><a href="#cb22-35" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill=</span><span class="st">&quot;steelblue&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb22-36"><a href="#cb22-36" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() </span></code></pre></div>
 <p>Retrieving data from API’s using <code>httr</code> can at times be
 quite tiresome. Luckily, there are many R libraries that make it much
 easier to retrieve data from APIs. Here is a <a
@@ -814,9 +827,11 @@ href="http://r-datacollection.com/">Automated Data Collection with R</a>
 and related <a
 href="https://github.com/simonmunzert/web-scraping-with-r-extended-edition">course
 materials</a>. We also used an <a
-href="https://towardsdatascience.com/tidy-web-scraping-in-r-tutorial-and-resources-ac9f72b4fe47">example</a>
-from Keith McNulty’s blog post on tidy web scraping in R. For the regex
-part, we used examples from the string manipulation section in Hadley
+href="https://keith-mcnulty.medium.com/how-to-scrape-the-web-in-r-d77b11fca40d">example</a>
+from Keith McNulty’s blog post on tidy web scraping in R and another <a
+href="https://library.virginia.edu/data/articles/using-data-gov-apis-in-r">example</a>
+from Yun Tai’s article on using Data.gov APIs in R. For the regex part,
+we used examples from the string manipulation section in Hadley
 Wickham’s <a href="https://r4ds.hadley.nz/strings">R for Data
 Science</a> book.</p>
 </div>

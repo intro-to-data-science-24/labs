@@ -267,10 +267,9 @@ You see, scraping data from multiple pages is no problem in R. Most of the brain
 
 Scraping is also possible in much more complex scenarios! Watch out for workshop presentations on 
 
-* Dynamic webscraping with RSelenium
-* Web APIs
-* Regular expressions with stringr
-* Data cleaning with janitor
+* Text analytics with `quanteda`
+* Regular expressions with `stringr`
+* Data cleaning with `janitor`
 
 and many more `r emo::ji("star_struck")`
 
@@ -279,11 +278,11 @@ and many more `r emo::ji("star_struck")`
 
 There is a set of general rules to the game: 
 
-1. You take all the responsibility for your web scraping work.
-2. Think about the nature of the data. Does it entail sensitive information? Do not collect personal data without explicit permission.
-3. Take all copyrights of a country’s jurisdiction into account. If you publish data, do not commit copyright fraud.
-4. If possible, stay identifiable. Stay polite. Stay friendly. Obey the scraping etiquette.
-5. If in doubt, ask the author/creator/provider of data for permission—if your interest is entirely scientific, chances aren’t bad that you get data.
+1. You take all the **responsibility** for your web scraping work.
+2. Think about the nature of the data. Does it entail **sensitive information**? Do not collect personal data without explicit permission.
+3. Take all **copyrights** of a country’s jurisdiction into account. If you publish data, do not commit copyright fraud.
+4. If possible, **stay identifiable**. Stay polite. Stay friendly. Obey the scraping etiquette.
+5. If in doubt, **ask the author/creator/provider** of data for permission—if your interest is entirely scientific, chances aren’t bad that you get data.
 
 ## How do I know the scraping etiquette of a site? `r emo::ji("handshake")`
 
@@ -381,49 +380,51 @@ GET(paste0(baseurl, query)) |>
 
 ## API keys and authentication `r emo::ji('lock')``
 
-For many APIs, you will need to obtain an api key to retrieve data. Once you received your api key (or token), you will also need to adapt your GET query. How you need to do this depends a lot on the API. Let's have a look at how to do this for the API of the [US congress](https://api.congress.gov/): The API is actually valid across a number of [US government institutions](https://api.data.gov/). We can sign up for an API key [here](https://api.data.gov/signup/). The API website, gives us detailed information on how to build our queries. But how do we actually authenticate ourselves with the API key? The [documentation](https://api.data.gov/docs/api-key/) tells us that there are multiple ways to go about this. We can either do adapt the use HTTP basic authentication, the GET query parameter, or the HTTP header.
+For many APIs, you will need to obtain an api key to retrieve data. Once you received your api key (or token), you will also need to adapt your GET query. How you need to do this depends a lot on the API. The National Renewable Data Laboratory offers APIs for users to access energy data in a few categories (see [documentation](https://developer.nrel.gov/docs/)). The API is actually valid across a number of [US government institutions](https://api.data.gov/). We can sign up for an API key [here](https://api.data.gov/signup/). The API website, gives us detailed information on how to build our queries. But how do we actually authenticate ourselves with the API key? The [documentation](https://api.data.gov/docs/api-key/) tells us that there are multiple ways to go about this. We can either do adapt the use HTTP basic authentication, the GET query parameter, or the HTTP header.
 
 Here's a quick overview of how to implement these with `httr`:
 
 ```{r, eval=FALSE}
-###
-baseurl <- 'https://api.congress.gov/v3/'
+baseurl <- 'https://developer.nrel.gov/api/alt-fuel-stations/v1.json?limit=1&api_key='
 
-query <- 'nomination/115/2259/actions'
+api_key <- '[YOUR API KEY GOES HERE]'
+s
+# Get stations data in the US, remember to plug in your own API key
+get.afs <- GET(glue::glue("{baseurl}{api_key}"))
 
-GET(paste0(baseurl, query), 
-    authenticate(user = Sys.getenv('US.GOV_API'), password = '')) |>
-  content(as = 'text') |> 
-  fromJSON() |> 
-  pluck(1) |> 
-  as.data.frame()
-```
+# extract content from the query
+afs <- content(get.afs)
 
-```{r, eval=FALSE}
-###
-query <- paste0('summaries/117/hr?fromDateTime=2022-10-01T00:00:00Z&toDateTime=2022-11-01T00:00:00Z&sort=updateDate+desc')
+# see what's available in the downloaded data
+names(afs)
 
-GET(paste0(baseurl, query), query = list(api_key = Sys.getenv('US.GOV_API'))) |>
-  content(as = 'text') |> 
-  fromJSON() |> 
-  pluck(3) |> 
-  as.data.frame()
-```
+# how many stations in the downloaded data
+afs$total_results
 
-```{r, eval=FALSE}
-###
-query <- 'member/O000167/sponsored-legislation.xml'
+# how many stations per energy type
+fuel_list <- afs$station_counts$fuels
 
-GET(paste0(baseurl, query), 
-    add_headers('X-Api-Key' = Sys.getenv('US.GOV_API'))) |>
-  content(as = 'text') |> 
-  read_xml() |> 
-  xml_find_all('//sponsoredLegislation//title') |> xml_text()
+# prepare data
+fuel_df <- fuel_list |> 
+  as_data_frame() |> 
+  mutate(across(everything(), unlist)) |> 
+  filter(row_number() == 1) |> 
+  pivot_longer(
+    cols = everything(), 
+    names_to = "fuel_type", 
+    values_to = "count"
+    ) |> 
+  mutate(fuel_type = fct_reorder(fuel_type, desc(count))) # reorder 
+
+# plot type of alternative fuel the station provides
+fuel_df |> 
+  ggplot(aes(x = fuel_type, y = count)) +
+  geom_col(fill="steelblue") + 
+  theme_minimal() 
 ```
 
 Retrieving data from API's using `httr` can at times be quite tiresome. Luckily, there are many R libraries that make it much easier to retrieve data from APIs. Here is a [list of ready-made R bindings to web-APIs](https://ropensci.org/packages/data-access/). Actually, even the starwars API we queried earlier has its own R package, `rwars`!
 
 # Sources
 
-This tutorial drew heavily on Simon Munzert's book [Automated Data Collection with R](http://r-datacollection.com/) and related [course materials](https://github.com/simonmunzert/web-scraping-with-r-extended-edition). We also used an [example](https://keith-mcnulty.medium.com/how-to-scrape-the-web-in-r-d77b11fca40d) from Keith McNulty's blog post on tidy web scraping in R. 
-For the regex part, we used examples from the string manipulation section in Hadley Wickham's [R for Data Science](https://r4ds.hadley.nz/strings) book.
+This tutorial drew heavily on Simon Munzert's book [Automated Data Collection with R](http://r-datacollection.com/) and related [course materials](https://github.com/simonmunzert/web-scraping-with-r-extended-edition). We also used an [example](https://keith-mcnulty.medium.com/how-to-scrape-the-web-in-r-d77b11fca40d) from Keith McNulty's blog post on tidy web scraping in R and another [example](https://library.virginia.edu/data/articles/using-data-gov-apis-in-r) from Yun Tai's article on using Data.gov APIs in R. For the regex part, we used examples from the string manipulation section in Hadley Wickham's [R for Data Science](https://r4ds.hadley.nz/strings) book.
