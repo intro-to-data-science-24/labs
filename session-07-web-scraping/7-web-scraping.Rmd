@@ -87,7 +87,7 @@ parsed_url |>
 
 There are two options: 
 
-**Option 1.** We saw how to do this before the Midterm brea. On your page of interest, go to a table that you'd like to scrape. Our favorite bowser for webscraping is Google Chrome but others work as well. On Chrome, you go in View > Developer > inspect elements. If you hover over the html code on the right, you should see boxes of different colors framing different elements of the page. Once the part of the page you would like to scrape is selected, right click on the html code and Copy > Copy Xpath. That's it.
+**Option 1.** On your page of interest, go to a table that you'd like to scrape. Our favorite bowser for webscraping is Google Chrome but others work as well. On Chrome, you go in View > Developer > inspect elements. If you hover over the html code on the right, you should see boxes of different colors framing different elements of the page. Once the part of the page you would like to scrape is selected, right click on the html code and Copy > Copy Xpath. That's it.
 
 ```{r, fig.align='center', echo=F, out.width = "90%"}
 knitr::include_graphics("pics/inspect.png")
@@ -138,10 +138,9 @@ author <- nypl100 |>
 summary <- nypl100 |> 
   html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "spbb-card__description--grid", " " ))]') |> 
   html_text2()
-
 ```
 
-**Step 4.** Usually, step 4 is to clean extracted data. In this case, it actually is pretty clean already, thanks to `html_text2()`. However, in many cases, we need to clean the data we scraped with regular expressions.
+**Step 4.** Usually step 4 involves cleaning extracted data. In this case, it actually is pretty clean already, thanks to `html_text2()`. However, in many cases, we need to clean the data we scraped with regular expressions.
 
 **Step 5.** Put everything into a data frame. `r emo::ji("book")`
 ```{r}
@@ -191,7 +190,7 @@ setwd(tempwd)
 **Step 4** Download the pages. Note that we did not do this step last time, when we were only scraping one page.
 ```{r, eval=F}
 folder <- paste0(tempwd, "/html_articles/")
-dir.create(folder)
+dir.create(folder, recursive = TRUE)
 
 for (i in seq_along(urls_list)) {
   # only update, don't replace
@@ -223,7 +222,7 @@ length(list_files)
 Yay! Apparently, we scraped the html pages of 855 articles. 
 
 ## (Git)ignoring files `r emo::ji("no_good_woman")`
-In case you scraping project is is linked to GitHub (as it will be in your assignment!), it can be useful to **.gitignore** the folder of downloaded files. This means that the folder can be stored in your local directory of the project but will not be synced with the remote (main) repository. Here is information on how to do this using [RStudio](https://carpentries-incubator.github.io/git-Rstudio-course/02-ignore/index.html). In Github Desktop it is very simple, you do your scraping work, the folder is created in your local repository and before your commit and push these changes, you go on `Repository` > `Repository Settings` > `Ignored Files` and edit the .gitignore file (add the name of the new folder / files you don't want to sync). More generally, it makes sense to exclude .Rproj files, .RData files (and other binary or large data files), draft folders and sensitive information from version control. Remember, git is built to track changes in code, not in large data files.
+In case you scraping project is linked to GitHub (as it will be in your assignment!), it can be useful to **.gitignore** the folder of downloaded files. This means that the folder can be stored in your local directory of the project but will not be synced with the remote (main) repository. Here is information on how to do this using [RStudio](https://carpentries-incubator.github.io/git-Rstudio-course/02-ignore/index.html). In Github Desktop it is very simple, you do your scraping work, the folder is created in your local repository and before your commit and push these changes, you go on `Repository` > `Repository Settings` > `Ignored Files` and edit the .gitignore file (add the name of the new folder / files you don't want to sync). More generally, it makes sense to exclude .Rproj files, .RData files (and other binary or large data files), draft folders and sensitive information from version control. Remember, git is built to track changes in code, not in large data files.
 
 
 **Step 5** Import files and parse out information. A loop is helpful here!
@@ -306,9 +305,9 @@ Assuming that you've got nothing to hide, you should stay identifiable beyond yo
 
 ## How can I stay identifyable? `r emo::ji("bust_in_silhouette")`
 
-Option 1: Get in touch with website administrators / data owners.
+**Option 1**: Get in touch with website administrators / data owners.
 
-Option 2: Use HTTP header fields From and User-Agent to provide information about yourself.
+**Option 2**: Use HTTP header fields From and User-Agent to provide information about yourself.
 
 ```
 url <- "http://a-totally-random-website.com"
@@ -387,7 +386,8 @@ Here's a quick overview of how to implement these with `httr`:
 ```{r, eval=FALSE}
 baseurl <- 'https://developer.nrel.gov/api/alt-fuel-stations/v1.json?limit=1&api_key='
 
-api_key <- '[YOUR API KEY GOES HERE]'
+#Sys.setenv(MY_API_KEY="[YOUR API KEY]") 
+api_key <- Sys.getenv("MY_API_KEY")
 
 # Get stations data in the US, remember to plug in your own API key
 get.afs <- GET(glue::glue("{baseurl}{api_key}"))

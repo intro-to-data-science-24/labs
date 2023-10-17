@@ -350,7 +350,7 @@ data</li>
 <li>scraping dynamic webpages</li>
 </ul>
 <div id="why-webscrape-with-r" class="section level1">
-<h1>Why webscrape with R? 🌐</h1>
+<h1>Why webscrape with R? 🌍</h1>
 <p>Webscraping broadly includes a) getting (unstructured) data from the
 web and b) bringing it into shape (e.g. cleaning it, getting it into
 tabular format).</p>
@@ -394,14 +394,13 @@ forward test case.</p>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">html_text</span>()</span></code></pre></div>
 <pre><code>## [1] &quot;Cologne is also famous for Eau de Cologne (German: Kölnisch Wasser; lit: \&quot;Water of Cologne\&quot;), a perfume created by Italian expatriate Johann Maria Farina at the beginning of the 18th century. During the 18th century, this perfume became increasingly popular, was exported all over Europe by the Farina family and Farina became a household name for Eau de Cologne. In 1803 Wilhelm Mülhens entered into a contract with an unrelated person from Italy named Carlo Francesco Farina who granted him the right to use his family name and Mühlens opened a small factory at Cologne&#39;s Glockengasse. In later years, and after various court battles, his grandson Ferdinand Mülhens was forced to abandon the name Farina for the company and their product. He decided to use the house number given to the factory at Glockengasse during the French occupation in the early 19th century, 4711. Today, original Eau de Cologne is still produced in Cologne by both the Farina family, currently in the eighth generation, and by Mäurer &amp; Wirtz who bought the 4711 brand in 2006.\n&quot;</code></pre>
 <p>There are two options:</p>
-<p><strong>Option 1.</strong> We saw how to do this before the Midterm
-brea. On your page of interest, go to a table that you’d like to scrape.
-Our favorite bowser for webscraping is Google Chrome but others work as
-well. On Chrome, you go in View &gt; Developer &gt; inspect elements. If
-you hover over the html code on the right, you should see boxes of
-different colors framing different elements of the page. Once the part
-of the page you would like to scrape is selected, right click on the
-html code and Copy &gt; Copy Xpath. That’s it.</p>
+<p><strong>Option 1.</strong> On your page of interest, go to a table
+that you’d like to scrape. Our favorite bowser for webscraping is Google
+Chrome but others work as well. On Chrome, you go in View &gt; Developer
+&gt; inspect elements. If you hover over the html code on the right, you
+should see boxes of different colors framing different elements of the
+page. Once the part of the page you would like to scrape is selected,
+right click on the html code and Copy &gt; Copy Xpath. That’s it.</p>
 <p><img src="pics/inspect.png" width="90%" style="display: block; margin: auto;" /></p>
 <p><strong>Option 2.</strong> Something we did not show you, but that
 you might look at in your own time is the Chrome Extension
@@ -444,8 +443,8 @@ information:</p>
 <span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>summary <span class="ot">&lt;-</span> nypl100 <span class="sc">|&gt;</span> </span>
 <span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">&#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;spbb-card__description--grid&quot;, &quot; &quot; ))]&#39;</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>  <span class="fu">html_text2</span>()</span></code></pre></div>
-<p><strong>Step 4.</strong> Usually, step 4 is to clean extracted data.
-In this case, it actually is pretty clean already, thanks to
+<p><strong>Step 4.</strong> Usually step 4 involves cleaning extracted
+data. In this case, it actually is pretty clean already, thanks to
 <code>html_text2()</code>. However, in many cases, we need to clean the
 data we scraped with regular expressions.</p>
 <p><strong>Step 5.</strong> Put everything into a data frame. 📖</p>
@@ -537,7 +536,7 @@ material to be stored and create a directory.</p>
 <p><strong>Step 4</strong> Download the pages. Note that we did not do
 this step last time, when we were only scraping one page.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>folder <span class="ot">&lt;-</span> <span class="fu">paste0</span>(tempwd, <span class="st">&quot;/html_articles/&quot;</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">dir.create</span>(folder)</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">dir.create</span>(folder, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a></span>
 <span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(urls_list)) {</span>
 <span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  <span class="co"># only update, don&#39;t replace</span></span>
@@ -562,7 +561,7 @@ in the directory you defined…</p>
 <p>Yay! Apparently, we scraped the html pages of 855 articles.</p>
 <div id="gitignoring-files" class="section level2">
 <h2>(Git)ignoring files 🙅</h2>
-<p>In case you scraping project is is linked to GitHub (as it will be in
+<p>In case you scraping project is linked to GitHub (as it will be in
 your assignment!), it can be useful to <strong>.gitignore</strong> the
 folder of downloaded files. This means that the folder can be stored in
 your local directory of the project but will not be synced with the
@@ -681,9 +680,10 @@ you should stay identifiable beyond your IP address.</p>
 </div>
 <div id="how-can-i-stay-identifyable" class="section level2">
 <h2>How can I stay identifyable? 👤</h2>
-<p>Option 1: Get in touch with website administrators / data owners.</p>
-<p>Option 2: Use HTTP header fields From and User-Agent to provide
-information about yourself.</p>
+<p><strong>Option 1</strong>: Get in touch with website administrators /
+data owners.</p>
+<p><strong>Option 2</strong>: Use HTTP header fields From and User-Agent
+to provide information about yourself.</p>
 <pre><code>url &lt;- &quot;http://a-totally-random-website.com&quot;
 
 rvest_session &lt;- session(url, 
@@ -778,40 +778,41 @@ header.</p>
 <code>httr</code>:</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>baseurl <span class="ot">&lt;-</span> <span class="st">&#39;https://developer.nrel.gov/api/alt-fuel-stations/v1.json?limit=1&amp;api_key=&#39;</span></span>
 <span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>api_key <span class="ot">&lt;-</span> <span class="st">&#39;[YOUR API KEY GOES HERE]&#39;</span></span>
-<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a></span>
-<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="co"># Get stations data in the US, remember to plug in your own API key</span></span>
-<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>get.afs <span class="ot">&lt;-</span> <span class="fu">GET</span>(glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;{baseurl}{api_key}&quot;</span>))</span>
-<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a><span class="co"># extract content from the query</span></span>
-<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a>afs <span class="ot">&lt;-</span> <span class="fu">content</span>(get.afs)</span>
-<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a></span>
-<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a><span class="co"># see what&#39;s available in the downloaded data</span></span>
-<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a><span class="fu">names</span>(afs)</span>
-<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a></span>
-<span id="cb22-14"><a href="#cb22-14" tabindex="-1"></a><span class="co"># how many stations in the downloaded data</span></span>
-<span id="cb22-15"><a href="#cb22-15" tabindex="-1"></a>afs<span class="sc">$</span>total_results</span>
-<span id="cb22-16"><a href="#cb22-16" tabindex="-1"></a></span>
-<span id="cb22-17"><a href="#cb22-17" tabindex="-1"></a><span class="co"># how many stations per energy type</span></span>
-<span id="cb22-18"><a href="#cb22-18" tabindex="-1"></a>fuel_list <span class="ot">&lt;-</span> afs<span class="sc">$</span>station_counts<span class="sc">$</span>fuels</span>
-<span id="cb22-19"><a href="#cb22-19" tabindex="-1"></a></span>
-<span id="cb22-20"><a href="#cb22-20" tabindex="-1"></a><span class="co"># prepare data</span></span>
-<span id="cb22-21"><a href="#cb22-21" tabindex="-1"></a>fuel_df <span class="ot">&lt;-</span> fuel_list <span class="sc">|&gt;</span> </span>
-<span id="cb22-22"><a href="#cb22-22" tabindex="-1"></a>  <span class="fu">as_data_frame</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb22-23"><a href="#cb22-23" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), unlist)) <span class="sc">|&gt;</span> </span>
-<span id="cb22-24"><a href="#cb22-24" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb22-25"><a href="#cb22-25" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb22-26"><a href="#cb22-26" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">everything</span>(), </span>
-<span id="cb22-27"><a href="#cb22-27" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;fuel_type&quot;</span>, </span>
-<span id="cb22-28"><a href="#cb22-28" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;count&quot;</span></span>
-<span id="cb22-29"><a href="#cb22-29" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
-<span id="cb22-30"><a href="#cb22-30" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fuel_type =</span> <span class="fu">fct_reorder</span>(fuel_type, <span class="fu">desc</span>(count))) <span class="co"># reorder </span></span>
-<span id="cb22-31"><a href="#cb22-31" tabindex="-1"></a></span>
-<span id="cb22-32"><a href="#cb22-32" tabindex="-1"></a><span class="co"># plot type of alternative fuel the station provides</span></span>
-<span id="cb22-33"><a href="#cb22-33" tabindex="-1"></a>fuel_df <span class="sc">|&gt;</span> </span>
-<span id="cb22-34"><a href="#cb22-34" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> fuel_type, <span class="at">y =</span> count)) <span class="sc">+</span></span>
-<span id="cb22-35"><a href="#cb22-35" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill=</span><span class="st">&quot;steelblue&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb22-36"><a href="#cb22-36" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() </span></code></pre></div>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a><span class="co">#Sys.setenv(MY_API_KEY=&quot;[YOUR API KEY]&quot;) </span></span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>api_key <span class="ot">&lt;-</span> <span class="fu">Sys.getenv</span>(<span class="st">&quot;MY_API_KEY&quot;</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a><span class="co"># Get stations data in the US, remember to plug in your own API key</span></span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>get.afs <span class="ot">&lt;-</span> <span class="fu">GET</span>(glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;{baseurl}{api_key}&quot;</span>))</span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a><span class="co"># extract content from the query</span></span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a>afs <span class="ot">&lt;-</span> <span class="fu">content</span>(get.afs)</span>
+<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a></span>
+<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a><span class="co"># see what&#39;s available in the downloaded data</span></span>
+<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a><span class="fu">names</span>(afs)</span>
+<span id="cb22-14"><a href="#cb22-14" tabindex="-1"></a></span>
+<span id="cb22-15"><a href="#cb22-15" tabindex="-1"></a><span class="co"># how many stations in the downloaded data</span></span>
+<span id="cb22-16"><a href="#cb22-16" tabindex="-1"></a>afs<span class="sc">$</span>total_results</span>
+<span id="cb22-17"><a href="#cb22-17" tabindex="-1"></a></span>
+<span id="cb22-18"><a href="#cb22-18" tabindex="-1"></a><span class="co"># how many stations per energy type</span></span>
+<span id="cb22-19"><a href="#cb22-19" tabindex="-1"></a>fuel_list <span class="ot">&lt;-</span> afs<span class="sc">$</span>station_counts<span class="sc">$</span>fuels</span>
+<span id="cb22-20"><a href="#cb22-20" tabindex="-1"></a></span>
+<span id="cb22-21"><a href="#cb22-21" tabindex="-1"></a><span class="co"># prepare data</span></span>
+<span id="cb22-22"><a href="#cb22-22" tabindex="-1"></a>fuel_df <span class="ot">&lt;-</span> fuel_list <span class="sc">|&gt;</span> </span>
+<span id="cb22-23"><a href="#cb22-23" tabindex="-1"></a>  <span class="fu">as_data_frame</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb22-24"><a href="#cb22-24" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), unlist)) <span class="sc">|&gt;</span> </span>
+<span id="cb22-25"><a href="#cb22-25" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb22-26"><a href="#cb22-26" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb22-27"><a href="#cb22-27" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">everything</span>(), </span>
+<span id="cb22-28"><a href="#cb22-28" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;fuel_type&quot;</span>, </span>
+<span id="cb22-29"><a href="#cb22-29" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;count&quot;</span></span>
+<span id="cb22-30"><a href="#cb22-30" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb22-31"><a href="#cb22-31" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fuel_type =</span> <span class="fu">fct_reorder</span>(fuel_type, <span class="fu">desc</span>(count))) <span class="co"># reorder </span></span>
+<span id="cb22-32"><a href="#cb22-32" tabindex="-1"></a></span>
+<span id="cb22-33"><a href="#cb22-33" tabindex="-1"></a><span class="co"># plot type of alternative fuel the station provides</span></span>
+<span id="cb22-34"><a href="#cb22-34" tabindex="-1"></a>fuel_df <span class="sc">|&gt;</span> </span>
+<span id="cb22-35"><a href="#cb22-35" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> fuel_type, <span class="at">y =</span> count)) <span class="sc">+</span></span>
+<span id="cb22-36"><a href="#cb22-36" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill=</span><span class="st">&quot;steelblue&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb22-37"><a href="#cb22-37" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() </span></code></pre></div>
 <p>Retrieving data from API’s using <code>httr</code> can at times be
 quite tiresome. Luckily, there are many R libraries that make it much
 easier to retrieve data from APIs. Here is a <a
