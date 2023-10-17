@@ -80,7 +80,7 @@ parsed_url <- read_html("https://en.wikipedia.org/wiki/Cologne")
 
 ```{r}
 parsed_url |> 
-  html_element(xpath = '//p[(((count(preceding-sibling::*) + 1) = 170) and parent::*)]') |> 
+  html_element(xpath = '//p[(((count(preceding-sibling::*) + 1) = 172) and parent::*)]') |> 
   html_text()
 ```
 
@@ -222,7 +222,9 @@ length(list_files)
 Yay! Apparently, we scraped the html pages of 855 articles. 
 
 ## (Git)ignoring files `r emo::ji("no_good_woman")`
-In case you scraping project is linked to GitHub (as it will be in your assignment!), it can be useful to **.gitignore** the folder of downloaded files. This means that the folder can be stored in your local directory of the project but will not be synced with the remote (main) repository. Here is information on how to do this using [RStudio](https://carpentries-incubator.github.io/git-Rstudio-course/02-ignore/index.html). In Github Desktop it is very simple, you do your scraping work, the folder is created in your local repository and before your commit and push these changes, you go on `Repository` > `Repository Settings` > `Ignored Files` and edit the .gitignore file (add the name of the new folder / files you don't want to sync). More generally, it makes sense to exclude .Rproj files, .RData files (and other binary or large data files), draft folders and sensitive information from version control. Remember, git is built to track changes in code, not in large data files.
+In case you scraping project is linked to GitHub (as it will be in your assignment!), it can be useful to **.gitignore** the folder of downloaded files. This means that the folder can be stored in your local directory of the project but will not be synced with the remote (main) repository. Here is information on how to do this using [RStudio](https://carpentries-incubator.github.io/git-Rstudio-course/02-ignore/index.html).
+
+In Github Desktop it is very simple, you do your scraping work, the folder is created in your local repository and before your commit and push these changes, you go on `Repository` > `Repository Settings` > `Ignored Files` and edit the .gitignore file (add the name of the new folder / files you don't want to sync). More generally, it makes sense to exclude .Rproj files, .RData files (and other binary or large data files), draft folders and sensitive information from version control. Remember, git is built to track changes in code, not in large data files.
 
 
 **Step 5** Import files and parse out information. A loop is helpful here!
@@ -298,10 +300,9 @@ First thing would be not to scrape at a speed that causes trouble for their serv
 
 And generally, it is better practice to store data on your local drive first (`download.file()`), then parse (`read_html()`). 
 
-**A footnote on sustainability.** In the digital context, we often forget that or actions do have physical consequences. For example, training AI, using blockchain and just streaming videos do cause considerable amounts of $CO^2$ emissions. So does bombarding a server with requests - certainly to a much lesser extent than the examples before - but please consider whether you have to re-run a large scraping project 100 times in order to debug things. 
+**A footnote on sustainability.** In the digital context, we often forget that or actions do have physical consequences. For example, training AI, using blockchain, and streaming videos all create considerable amounts of $CO^2$ emissions. So does bombarding a server with requests - certainly to a much lesser extent than the previous examples - but please consider whether you have to re-run a large scraping project 100 times in order to debug things. 
 
-Furthermore, downloading massive amounts of data may arouse attention from server administrators.
-Assuming that you've got nothing to hide, you should stay identifiable beyond your IP address.
+Furthermore, downloading massive amounts of data may arouse attention from server administrators. Assuming that you've got nothing to hide, you should stay identifiable beyond your IP address.
 
 ## How can I stay identifyable? `r emo::ji("bust_in_silhouette")`
 
