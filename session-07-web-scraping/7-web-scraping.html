@@ -385,14 +385,15 @@ forward test case.</p>
 <code>stringr</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">library</span>(here)</span></code></pre></div>
 <p><strong>Step 2.</strong> Parse the page source.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>parsed_url <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">&quot;https://en.wikipedia.org/wiki/Cologne&quot;</span>)</span></code></pre></div>
 <p><strong>Step 3.</strong> Extract information.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>parsed_url <span class="sc">|&gt;</span> </span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">html_element</span>(<span class="at">xpath =</span> <span class="st">&#39;//p[(((count(preceding-sibling::*) + 1) = 170) and parent::*)]&#39;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">html_element</span>(<span class="at">xpath =</span> <span class="st">&#39;//p[(((count(preceding-sibling::*) + 1) = 172) and parent::*)]&#39;</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">html_text</span>()</span></code></pre></div>
-<pre><code>## [1] &quot;Cologne is also famous for Eau de Cologne (German: Kölnisch Wasser; lit: \&quot;Water of Cologne\&quot;), a perfume created by Italian expatriate Johann Maria Farina at the beginning of the 18th century. During the 18th century, this perfume became increasingly popular, was exported all over Europe by the Farina family and Farina became a household name for Eau de Cologne. In 1803 Wilhelm Mülhens entered into a contract with an unrelated person from Italy named Carlo Francesco Farina who granted him the right to use his family name and Mühlens opened a small factory at Cologne&#39;s Glockengasse. In later years, and after various court battles, his grandson Ferdinand Mülhens was forced to abandon the name Farina for the company and their product. He decided to use the house number given to the factory at Glockengasse during the French occupation in the early 19th century, 4711. Today, original Eau de Cologne is still produced in Cologne by both the Farina family, currently in the eighth generation, and by Mäurer &amp; Wirtz who bought the 4711 brand in 2006.\n&quot;</code></pre>
+<pre><code>## [1] &quot;The Cologne carnival is one of the largest street festivals in Europe. In Cologne, the carnival season officially starts on 11 November at 11 minutes past 11 a.m. with the proclamation of the new Carnival Season, and continues until Ash Wednesday. However, the so-called \&quot;Tolle Tage\&quot; (crazy days) do not start until Weiberfastnacht (Women&#39;s Carnival) or, in dialect, Wieverfastelovend, the Thursday before Ash Wednesday, which is the beginning of the street carnival. Zülpicher Strasse and its surroundings, Neumarkt square, Heumarkt and all bars and pubs in the city are crowded with people in costumes dancing and drinking in the streets. Hundreds of thousands of visitors flock to Cologne during this time. Generally, around a million people celebrate in the streets on the Thursday before Ash Wednesday.[67]&quot;</code></pre>
 <p>There are two options:</p>
 <p><strong>Option 1.</strong> On your page of interest, go to a table
 that you’d like to scrape. Our favorite bowser for webscraping is Google
@@ -678,21 +679,24 @@ to debug things.</p>
 from server administrators. Assuming that you’ve got nothing to hide,
 you should stay identifiable beyond your IP address.</p>
 </div>
-<div id="how-can-i-stay-identifyable" class="section level2">
-<h2>How can I stay identifyable? 👤</h2>
+<div id="how-can-i-stay-identifiable" class="section level2">
+<h2>How can I stay identifiable? 👤</h2>
 <p><strong>Option 1</strong>: Get in touch with website administrators /
 data owners.</p>
-<p><strong>Option 2</strong>: Use HTTP header fields From and User-Agent
-to provide information about yourself.</p>
-<pre><code>url &lt;- &quot;http://a-totally-random-website.com&quot;
-
-rvest_session &lt;- session(url, 
-  add_headers(`From` = &quot;my@email.com&quot;, 
-              `UserAgent` = R.Version()$version.string))
-                
-scraped_text &lt;- rvest_session |&gt; 
-            html_elements(xpath = &quot;p//a&quot;) |&gt; 
-            html_text()</code></pre>
+<p><strong>Option 2</strong>: Use HTTP header fields <code>From</code>
+and <code>User-Agent</code> to provide information about yourself.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://a-totally-random-website.com&quot;</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>rvest_session <span class="ot">&lt;-</span> rvest<span class="sc">::</span><span class="fu">session</span>(url, </span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>                                httr<span class="sc">::</span><span class="fu">add_headers</span>(</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>                                  <span class="st">`</span><span class="at">From</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;my@email.com&quot;</span>, </span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>                                  <span class="st">`</span><span class="at">UserAgent</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">R.Version</span>()<span class="sc">$</span>version.string</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>                                  )</span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>                                )</span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>                </span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a>scraped_text <span class="ot">&lt;-</span> rvest_session <span class="sc">|&gt;</span> </span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a>            <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">&quot;p//a&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a>            <span class="fu">html_text</span>()</span></code></pre></div>
 <p>rvest’s <code>session()</code> creates a session object that responds
 to HTTP and HTML methods. Here, we provide our email address and the
 current R version as User-Agent information. This will pop up in the
@@ -704,7 +708,8 @@ touch with you.</p>
 <h1>On an API far, far away… ⭐</h1>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">library</span>(httr)</span>
 <span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
-<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="fu">library</span>(xml2)</span></code></pre></div>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="fu">library</span>(xml2)</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="fu">library</span>(glue)</span></code></pre></div>
 <p>To get data from an API, we suggest to follow a workflow like
 this:</p>
 <ol style="list-style-type: decimal">
@@ -761,12 +766,11 @@ function will help you out!</p>
 <h2>API keys and authentication 🔒`</h2>
 <p>For many APIs, you will need to obtain an api key to retrieve data.
 Once you received your api key (or token), you will also need to adapt
-your GET query. How you need to do this depends a lot on the API. The
-National Renewable Data Laboratory offers APIs for users to access
-energy data in a few categories (see <a
-href="https://developer.nrel.gov/docs/">documentation</a>). The API is
-actually valid across a number of <a href="https://api.data.gov/">US
-government institutions</a>. We can sign up for an API key <a
+your GET query. How you need to do this depends a lot on the API. Let’s
+take a look at how to do this with the API for the <a
+href="https://api.congress.gov/">US congress</a>. The API is actually
+valid across a number of <a href="https://api.data.gov/">US government
+institutions</a>. We can sign up for an API key <a
 href="https://api.data.gov/signup/">here</a>. The API website, gives us
 detailed information on how to build our queries. But how do we actually
 authenticate ourselves with the API key? The <a
@@ -776,43 +780,44 @@ the use HTTP basic authentication, the GET query parameter, or the HTTP
 header.</p>
 <p>Here’s a quick overview of how to implement these with
 <code>httr</code>:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>baseurl <span class="ot">&lt;-</span> <span class="st">&#39;https://developer.nrel.gov/api/alt-fuel-stations/v1.json?limit=1&amp;api_key=&#39;</span></span>
-<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a><span class="co">#Sys.setenv(MY_API_KEY=&quot;[YOUR API KEY]&quot;) </span></span>
-<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>api_key <span class="ot">&lt;-</span> <span class="fu">Sys.getenv</span>(<span class="st">&quot;MY_API_KEY&quot;</span>)</span>
-<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a></span>
-<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a><span class="co"># Get stations data in the US, remember to plug in your own API key</span></span>
-<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>get.afs <span class="ot">&lt;-</span> <span class="fu">GET</span>(glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;{baseurl}{api_key}&quot;</span>))</span>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="co"># sign up for API key: https://api.data.gov/signup/</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="co">#Sys.setenv(MY_API_KEY = &quot;[YOUR API KEY GOES HERE]&quot;) # store your personal API key in R environment</span></span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a><span class="co"># US Congress: Bills</span></span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>baseurl <span class="ot">&lt;-</span> <span class="st">&quot;https://api.congress.gov/v3/&quot;</span> <span class="co"># base url (remains consistent across queries)</span></span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>api_key <span class="ot">&lt;-</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;api_key={Sys.getenv(&#39;MY_API_KEY&#39;)}&quot;</span>) <span class="co"># your personal API key</span></span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="st">&quot;bill&quot;</span> <span class="co"># query</span></span>
 <span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a></span>
-<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a><span class="co"># extract content from the query</span></span>
-<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a>afs <span class="ot">&lt;-</span> <span class="fu">content</span>(get.afs)</span>
-<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a></span>
-<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a><span class="co"># see what&#39;s available in the downloaded data</span></span>
-<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a><span class="fu">names</span>(afs)</span>
-<span id="cb22-14"><a href="#cb22-14" tabindex="-1"></a></span>
-<span id="cb22-15"><a href="#cb22-15" tabindex="-1"></a><span class="co"># how many stations in the downloaded data</span></span>
-<span id="cb22-16"><a href="#cb22-16" tabindex="-1"></a>afs<span class="sc">$</span>total_results</span>
-<span id="cb22-17"><a href="#cb22-17" tabindex="-1"></a></span>
-<span id="cb22-18"><a href="#cb22-18" tabindex="-1"></a><span class="co"># how many stations per energy type</span></span>
-<span id="cb22-19"><a href="#cb22-19" tabindex="-1"></a>fuel_list <span class="ot">&lt;-</span> afs<span class="sc">$</span>station_counts<span class="sc">$</span>fuels</span>
-<span id="cb22-20"><a href="#cb22-20" tabindex="-1"></a></span>
-<span id="cb22-21"><a href="#cb22-21" tabindex="-1"></a><span class="co"># prepare data</span></span>
-<span id="cb22-22"><a href="#cb22-22" tabindex="-1"></a>fuel_df <span class="ot">&lt;-</span> fuel_list <span class="sc">|&gt;</span> </span>
-<span id="cb22-23"><a href="#cb22-23" tabindex="-1"></a>  <span class="fu">as_data_frame</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb22-24"><a href="#cb22-24" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), unlist)) <span class="sc">|&gt;</span> </span>
-<span id="cb22-25"><a href="#cb22-25" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">row_number</span>() <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb22-26"><a href="#cb22-26" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb22-27"><a href="#cb22-27" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">everything</span>(), </span>
-<span id="cb22-28"><a href="#cb22-28" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;fuel_type&quot;</span>, </span>
-<span id="cb22-29"><a href="#cb22-29" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;count&quot;</span></span>
-<span id="cb22-30"><a href="#cb22-30" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
-<span id="cb22-31"><a href="#cb22-31" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fuel_type =</span> <span class="fu">fct_reorder</span>(fuel_type, <span class="fu">desc</span>(count))) <span class="co"># reorder </span></span>
-<span id="cb22-32"><a href="#cb22-32" tabindex="-1"></a></span>
-<span id="cb22-33"><a href="#cb22-33" tabindex="-1"></a><span class="co"># plot type of alternative fuel the station provides</span></span>
-<span id="cb22-34"><a href="#cb22-34" tabindex="-1"></a>fuel_df <span class="sc">|&gt;</span> </span>
-<span id="cb22-35"><a href="#cb22-35" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> fuel_type, <span class="at">y =</span> count)) <span class="sc">+</span></span>
-<span id="cb22-36"><a href="#cb22-36" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill=</span><span class="st">&quot;steelblue&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb22-37"><a href="#cb22-37" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() </span></code></pre></div>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a><span class="fu">GET</span>(glue<span class="sc">::</span><span class="fu">glue</span>(baseurl, query, <span class="st">&quot;?&quot;</span>, api_key)) <span class="sc">|&gt;</span> </span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a>  <span class="fu">content</span>(<span class="at">as =</span> <span class="st">&quot;text&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a>  <span class="fu">fromJSON</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a>  <span class="fu">pluck</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="co"># US Congress: Actions on a specific nomination</span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="st">&quot;nomination/115/2259/actions&quot;</span></span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="fu">GET</span>(glue<span class="sc">::</span><span class="fu">glue</span>(baseurl, query, <span class="st">&quot;?&quot;</span>, api_key)) <span class="sc">|&gt;</span> </span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a>  <span class="fu">content</span>(<span class="at">as =</span> <span class="st">&quot;text&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a>  <span class="fu">fromJSON</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a>  <span class="fu">pluck</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="co"># US Congress: Summaries filtered by congress and bill type</span></span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="st">&quot;summaries/117/hr?fromDateTime=2022-04-01T00:00:00Z&amp;toDateTime=2022-04-03T00:00:00Z&amp;sort=updateDate+desc&quot;</span></span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="fu">GET</span>(glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;{baseurl}{query}&amp;{api_key}&quot;</span>)) <span class="sc">|&gt;</span> <span class="co"># another way of using glue()</span></span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>  <span class="fu">content</span>(<span class="at">as =</span> <span class="st">&#39;text&#39;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>  <span class="fu">fromJSON</span>() <span class="sc">|&gt;</span></span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a>  <span class="fu">pluck</span>(<span class="dv">3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="co"># US Congress: Legislation sponsored by a specific congress member</span></span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="st">&quot;member/L000174/sponsored-legislation.xml&quot;</span> <span class="co"># data can be formatted as xml too</span></span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a><span class="fu">GET</span>(glue<span class="sc">::</span><span class="fu">glue</span>(baseurl, query, <span class="st">&quot;?&quot;</span>, api_key),</span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>    <span class="fu">add_headers</span>(<span class="st">&quot;X-Api-Key&quot;</span> <span class="ot">=</span> <span class="fu">Sys.getenv</span>(<span class="st">&quot;MY_API_KEY&quot;</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a>  <span class="fu">content</span>(<span class="at">as =</span> <span class="st">&quot;text&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a>  <span class="fu">read_xml</span>() <span class="sc">|&gt;</span></span>
+<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a>  <span class="fu">xml_find_all</span>(<span class="st">&quot;//sponsoredLegislation//title&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb25-9"><a href="#cb25-9" tabindex="-1"></a>  <span class="fu">xml_text</span>()</span></code></pre></div>
 <p>Retrieving data from API’s using <code>httr</code> can at times be
 quite tiresome. Luckily, there are many R libraries that make it much
 easier to retrieve data from APIs. Here is a <a
@@ -829,10 +834,8 @@ and related <a
 href="https://github.com/simonmunzert/web-scraping-with-r-extended-edition">course
 materials</a>. We also used an <a
 href="https://keith-mcnulty.medium.com/how-to-scrape-the-web-in-r-d77b11fca40d">example</a>
-from Keith McNulty’s blog post on tidy web scraping in R and another <a
-href="https://library.virginia.edu/data/articles/using-data-gov-apis-in-r">example</a>
-from Yun Tai’s article on using Data.gov APIs in R. For the regex part,
-we used examples from the string manipulation section in Hadley
+from Keith McNulty’s blog post on tidy web scraping in R. For the regex
+part, we used examples from the string manipulation section in Hadley
 Wickham’s <a href="https://r4ds.hadley.nz/strings">R for Data
 Science</a> book.</p>
 </div>

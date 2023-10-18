@@ -155,35 +155,42 @@ query <- 'starships/?search=death/?format=wookiee'
 GET(paste0(baseurl, query)) |>
   http_type()
 
-## ---- eval=FALSE-------------------
-## baseurl <- 'https://api.congress.gov/v3/'
-## 
-## query <- 'nomination/115/2259/actions'
-## 
-## GET(paste0(baseurl, query),
-##     authenticate(user = Sys.getenv('US.GOV_API'), password = '')) |>
-##   content(as = 'text') |>
-##   fromJSON() |>
-##   pluck(1) |>
-##   as.data.frame()
+# Example 6: US Congress API ---------------------------------------------------
+# sign up for API key
+#Sys.setenv(MY_API_KEY = "[YOUR API KEY GOES HERE]")
+
+# US Congress: Bills
+baseurl <- "https://api.congress.gov/v3/" # base url (remains consistent across queries)
+api_key <- glue::glue("api_key={Sys.getenv('MY_API_KEY')}") # your personal API key
+query <- "bill" # query
+GET(glue::glue(baseurl, query, "?", api_key)) |> 
+  content(as = "text") |> 
+  fromJSON() |> 
+  pluck(1) |> 
+  as.data.frame()
 
 
-## ---- eval=FALSE-------------------
-## query <- paste0('summaries/117/hr?fromDateTime=2022-10-01T00:00:00Z&toDateTime=2022-11-01T00:00:00Z&sort=updateDate+desc')
-## 
-## GET(paste0(baseurl, query), query = list(api_key = Sys.getenv('US.GOV_API'))) |>
-##   content(as = 'text') |>
-##   fromJSON() |>
-##   pluck(3) |>
-##   as.data.frame()
+# US Congress: Actions on a specific nomination
+query <- "nomination/115/2259/actions"
+GET(glue::glue(baseurl, query, "?", api_key)) |> 
+  content(as = "text") |> 
+  fromJSON() |> 
+  pluck(1) |> 
+  as.data.frame()
 
+# US Congress: Summaries filtered by congress and bill type, sorted by date of last update
+query <- "summaries/117/hr?fromDateTime=2022-04-01T00:00:00Z&toDateTime=2022-04-03T00:00:00Z&sort=updateDate+desc"
+GET(glue::glue("{baseurl}{query}&{api_key}")) |> # another way of using glue()
+  content(as = 'text') |>
+  fromJSON() |>
+  pluck(3) |>
+  as.data.frame()
 
-## ---- eval=FALSE-------------------
-## query <- 'member/O000167/sponsored-legislation.xml'
-## 
-## GET(paste0(baseurl, query),
-##     add_headers('X-Api-Key' = Sys.getenv('US.GOV_API'))) |>
-##   content(as = 'text') |>
-##   read_xml() |>
-##   xml_find_all('//sponsoredLegislation//title') |> xml_text()
-
+# US Congress: Legislation sponsored by a specific congress member
+query <- 'member/L000174/sponsored-legislation.xml' # data can be formatted as xml too
+GET(glue::glue(baseurl, query, "?", api_key),
+    add_headers("X-Api-Key" = Sys.getenv("MY_API_KEY"))) |>
+  content(as = "text") |>
+  read_xml() |>
+  xml_find_all("//sponsoredLegislation//title") |> 
+  xml_text()
