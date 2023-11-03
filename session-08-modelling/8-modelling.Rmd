@@ -272,9 +272,10 @@ results <- specr::specr(specs)
 
 These plots help to illustrate where and when you had to make a choice and how many models you might alternatively have specified.
 
-```{r}
+```{r, fig.height=7.5, fig.width=15}
 plot(specs, circular = TRUE)
 ```
+
 More concretely you could also look at some summary statistics for your p-values across the different model specifications:
 
 ```{r}
@@ -448,7 +449,7 @@ If you are looking for an alternative way to present your results, you might als
 Again, `modelsummary` provides a very accessible function for this: `modelplot()`. As with the regression table, you input the `r colorise("Model List", "red")` and not the tidied output. The tidying happens under the hood. 
 
 ```{r, fig.align='center', echo=T, out.width = "70%"}
-# since we don't want to overfill the plot, we define a small list of models
+# to avoid overplotting, we define a smaller list of models
 models <- list(
   "Bivariate OLS" = lm(life_expectancy ~ gdp, data = life_expec_dat),
   "Multivariate OLS" = lm(life_expectancy ~ gdp + total_expenditure + population + alcohol + bmi, data = life_expec_dat),
@@ -470,7 +471,7 @@ modelplot(models, coef_omit = "Intercept") +
          caption = "Comparing multiple models, the data originated at the WHO") 
 ```
 
-We will cover data visualisation in R in much greater detail in the next session, so hopefully the section on **coefficient plot** will be made clearer then! 
+We will cover data visualisation with R in much greater detail in the next session, so hopefully the section on **coefficient plot** will be made clearer then! 
 
 ***
 # Exercises `r emo::ji("person_lifting_weights")`
