@@ -83,6 +83,8 @@ parsed_url <- read_html("https://en.wikipedia.org/wiki/Cologne")
 parsed_url |> 
   html_element(xpath = '//p[(((count(preceding-sibling::*) + 1) = 172) and parent::*)]') |> 
   html_text()
+
+
 ```
 
 
@@ -131,6 +133,7 @@ Now let's have a look at the different ways to extract information:
 title <- nypl100 |> 
   html_elements(xpath = '//ul/li/div/div/h4') |> 
   html_text2()
+title
 
 author <- nypl100 |> 
   html_elements(css = '.spbb-card__byline--grid') |> 
@@ -154,8 +157,9 @@ Oftentimes, we would like to scrape tabular data from the web. This is even easi
 
 ```{r}
 url_p <- read_html("https://en.wikipedia.org/wiki/Germany")
-deu_table <- html_table(url_p, header = TRUE, fill = TRUE) |> 
+deu_table <- html_table(url_p, header = TRUE, fill = TRUE) |> #fill is now deprecated, it was originally used to fill missing cells with NAs
   pluck(4)
+
 deu_table |> 
   select(State, Capital) |> 
   head(5)
@@ -173,24 +177,36 @@ browseURL("http://www.jstatsoft.org/issue/archive")
 **Step 2** Develop a scraping strategy. We need a set of URLs leading to all sources. Inspect the URLs of different sources and find the pattern. Then, construct the list of URLs from scratch.
 ```{r}
 baseurl <- "http://www.jstatsoft.org/article/view/v"
-volurl <- paste0("0", 1:99)
+volurl <- paste0("0", 1:10)
 volurl[1:9] <- paste0("00", 1:9)
-brurl <- paste0("0", 1:9)
+brurl <- 1:21
+brurl[1:9] <- paste0("0", 1:21)
 
-urls_list <- cross2(volurl, brurl) |> map_chr(~paste0(baseurl, .[[1]], 'i', .[[2]]))
+
+urls_list <- cross2(volurl, brurl) |> map_chr(~paste0(baseurl, .[[1]], 'i', .[[2]])) 
+#cross2 produces all combinations of list elements
+#map_chr applies the pase function to all the elements of cross2(volurl, brurl)
+
 names <- cross2(volurl, brurl) |> map_chr(~paste0(.[[1]], '_', .[[2]], '.html'))
+names
 ```
 
 **Step 3** Think about where you want your scraped material to be stored and create a directory.
 ```{r, eval=F}
 tempwd <- here::here("session-07-web-scraping/data/jstatsoftStats")
+#here from here package creates a character string that represents a path to a directory
+
 dir.create(tempwd, recursive = TRUE)
+#recursive = TRUE indicates that it should create all directories along the specified path if they don't exist
+
 setwd(tempwd)
 ```
 
 **Step 4** Download the pages. Note that we did not do this step last time, when we were only scraping one page.
 ```{r, eval=F}
 folder <- paste0(tempwd, "/html_articles/")
+#concatenate the tempwd path with "/html_articles/" to create another path
+folder
 dir.create(folder, recursive = TRUE)
 
 for (i in seq_along(urls_list)) {
@@ -200,10 +216,10 @@ for (i in seq_along(urls_list)) {
     tryCatch(
       download.file(urls_list[i], destfile = paste0(folder, names[i])),
       error = function(e)
-        e
+        e #the error object (denoted by e) is returned but not acted upon, meaning the error is essentially ignored
     )
     # don't kill their server --> be polite!
-    Sys.sleep(runif(1, 0, 1))
+    Sys.sleep(runif(1, 0, 1)) #one random sleep interval of 0-1 seconds
   } 
 }
 ```
@@ -216,8 +232,9 @@ knitr::include_graphics("pics/html_files.png")
 
 Check whether it worked.
 ```{r, eval=F}
-list_files <- list.files(folder, pattern = "0.*")
-list_files_path <- list.files(folder, pattern = "0.*", full.names = TRUE)
+list_files <- list.files(folder, pattern = "0.*") #list of file names that match the regex
+list_files_path <- list.files(folder, pattern = "0.*", full.names = TRUE) #full file paths including directory paths of matched files
+
 length(list_files)
 ```
 Yay! Apparently, we scraped the html pages of 855 articles. 
@@ -314,6 +331,7 @@ Furthermore, downloading massive amounts of data may arouse attention from serve
 ```{r, eval=FALSE}
 url <- "http://a-totally-random-website.com"
 
+#rvest's session() creates a session object that responds to HTTP and HTML methods.
 rvest_session <- rvest::session(url, 
                                 httr::add_headers(
                                   `From` = "my@email.com", 
@@ -362,6 +380,7 @@ GET(paste0(baseurl, query)) |>
   fromJSON() |> 
   pluck(4) |> 
   as.data.frame()
+
 ```
 
 ```{r}
@@ -398,7 +417,7 @@ baseurl <- "https://api.congress.gov/v3/" # base url (remains consistent across 
 api_key <- glue::glue("api_key={Sys.getenv('MY_API_KEY')}") # your personal API key
 query <- "bill" # query
 
-GET(glue::glue(baseurl, query, "?", api_key)) |> 
+try2 <- GET(glue::glue(baseurl, query, "?", api_key)) |> 
   content(as = "text") |> 
   fromJSON() |> 
   pluck(1) |> 
