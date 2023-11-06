@@ -79,8 +79,8 @@ Before we start coding, we need to load several packages as well as our data. We
 pacman::p_load(kableExtra, tidyverse, broom, modelsummary, specr, janitor, modelr, wesanderson)
 
 # load data
-life_expec_dat <- read_csv("life_expectancy.csv") %>% 
-  janitor::clean_names() %>% 
+life_expec_dat <- read_csv("life_expectancy.csv") |> 
+  janitor::clean_names() |> 
   mutate(large = if_else(population > 50000000, 1, 0))  # pop size > 50M
 head(life_expec_dat)
 ```
@@ -156,13 +156,13 @@ lm_fun_iter_x <- function(indep_var) {
 
 ```{r, out.lines = 20}
 # create vector of variables to iterate over
-vars <- life_expec_dat %>% 
-  select(-c("life_expectancy", "country")) %>% 
+vars <- life_expec_dat |> 
+  select(-c("life_expectancy", "country")) |> 
   names()
 vars
 
 # run a bivariate model for each column
-biv_model_out <-  vars %>%
+biv_model_out <-  vars |>
   map(lm_fun_iter_x)
 biv_model_out
 ```
@@ -171,8 +171,8 @@ This returns output from all of the models that you've just run. Given that ther
 
 ```{r}
 # run a bivariate model for each column
-biv_model_out_w_names <-  vars %>%
-  set_names() %>% 
+biv_model_out_w_names <-  vars |>
+  set_names() |> 
   map(lm_fun_iter_x)
 
 biv_model_out_w_names$year # we can now easily index independent vars
@@ -186,9 +186,9 @@ Let's review the code introduced in the lecture:
 
 ```{r}
 combinations <- 
-   map(1:5, function(x) {combn(1:5, x)}) %>% # create all possible combinations (assume we have 5 covariates)
-   map(ncol) %>% # extract number of combinations
-   unlist() %>% # pull out of list structure
+   map(1:5, function(x) {combn(1:5, x)}) |> # create all possible combinations (assume we have 5 covariates)
+   map(ncol) |> # extract number of combinations
+   unlist() |> # pull out of list structure
    sum() # compute sum
 combinations
 ```
@@ -253,7 +253,7 @@ We can implement this approach using the `specr` package. In simple terms, it wo
 specs <- specr::setup(
   data = life_expec_dat, 
   y = c("life_expectancy"), # add dependent variable 
-  x = c("gdp", "log(gdp)", "I(gdp^2)", "gdp * total_expenditure"), # add independent variables 
+  x = c("gdp", "log(gdp)", "I(gdp^2)"), # add independent variables 
   model = c("lm", "glm"), # specify model types
   controls = c("population", "alcohol", "bmi"), # specify controls
   as.list(distinct(life_expec_dat, status)) # specify subgroup
@@ -285,11 +285,11 @@ summary(results,
         )
 ```
 
-The statistic `r colorise("mad", "red")` stands for `r colorise("median absolute deviation", "red")`.
+Note that statistic `r colorise("mad", "red")` stands for `r colorise("median absolute deviation", "red")`.
 
 A more intuitive way of inspecting the results might be to visualise them. 
 
-```{r}
+```{r, fig.height=7.5}
 # plot entire visualization
 plot(results)
 ```
@@ -308,7 +308,47 @@ plot(results)
 * **Y-axis (left)** = specific analytic decisions within each category
 * **Lines** = indicates whether a specific analytic decision was true for that particular model specification
 
-Without putting much thought into our model, it looks like `gdp` (depending on the specification) has either no effect or positive effects on `life_expectancy`. This just goes to show how *careful* one has to approach the task of *correctly specifying a model*! 
+**Any comments on the above plot?** `r emo::ji("thinking")`
+
+# Interpretable Effect Sizes  `r emo::ji("magnifying")`
+
+While these plots make it easy to compare effects across coefficients, unit changes may not be comparable across variables. We can address this problem in several ways:
+
+* Re-scale variables to show intuitive unit changes in X (e.g., \$1k instead of \$1)
+* Re-scale to full scale (minimum to maximum) changes in X
+* Standardise variables to show standard deviation changes in X
+
+Let's try standardising our variables to address the problem.
+
+```{r, fig.height=7.5, warning=FALSE}
+# copy our data
+life_expec_dat_stand <- life_expec_dat
+
+# standardise  variables
+life_expec_dat_stand <- life_expec_dat_stand |> 
+  mutate(gdp = effectsize::standardise(gdp))
+
+# specify reasonable model "ingredients"
+specs_stand <- specr::setup(
+  data = life_expec_dat_stand, 
+  y = c("life_expectancy"), # add dependent variable 
+  x = c("gdp", "log(gdp)", "I(gdp^2)"), # add independent variables 
+  model = c("lm", "glm"), # specify model types
+  controls = c("population", "alcohol", "bmi"), # specify controls
+  as.list(distinct(life_expec_dat_stand, status)) # specify subgroup
+  )
+
+# run specification curve analysis
+results_stand <- specr::specr(specs_stand)
+
+# plot entire visualization
+plot(results_stand) 
+```
+
+
+Note that any re-scaling operation will affect how you interpret the coefficients! For more details, check out the [`effectsize` package](https://easystats.github.io/effectsize/).
+
+Without putting much thought into our model, it looks like `gdp` (depending on the specification) can either have a small positive effect or a substantial positive effect on `life_expectancy`. This just goes to show how *careful* one has to approach the task of *correctly specifying a model*! 
 
 :::: {.noticebox data-latex=""}
 ::: {.center data-latex=""}
@@ -436,9 +476,9 @@ mod_table <- modelsummary(multiv_model_out[31],
 When using the `kableExtra` package, you can even post-process your table:
 
 ```{r}
-mod_table %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = F, fixed_thead = T) %>% 
-  row_spec(3, color = 'red') %>%
+mod_table |> 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = F, fixed_thead = T) |> 
+  row_spec(3, color = 'red') |>
   row_spec(5, background = 'lightblue')
 ```
 
@@ -628,7 +668,7 @@ For more background on specification curve analysis, see
 Inspecting models in R is straightforward with the summary() function
 
 ```{r}
-lm(arr_delay ~ distance + origin, data = flights) %>% summary()
+lm(arr_delay ~ distance + origin, data = flights) |> summary()
 ```
 
 But often you want to post-process estimation results. So let's examine the output of a model function more closely
@@ -686,7 +726,7 @@ Add fitted values and residuals to original data
 
 ```{r}
 ?augment.lm
-broom::augment(model_out) %>% slice(1:5)
+broom::augment(model_out) |> slice(1:5)
 ```
 
 Tidy can also be applied to htest objects
@@ -710,8 +750,8 @@ models_broom_df <- map_dfr(models_broom, rbind)
 **Step 5:** Summarize results
 
 ```{r}
-models_broom_df %>% 
-  filter(!str_detect(term, "Intercept|carrier")) %>%
+models_broom_df |> 
+  filter(!str_detect(term, "Intercept|carrier")) |>
   ggplot(aes(estimate)) + 
   geom_histogram(binwidth = .1) + 
   geom_vline(xintercept = 0, linetype="dashed") + 
@@ -831,9 +871,9 @@ library(effectsize)
 ## Reporting model results: true-vs-fitted plots 
 
 ```{r}
-model_out %>% 
-  augment() %>%
-  slice_sample(n = 10000) %>% 
+model_out |> 
+  augment() |>
+  slice_sample(n = 10000) |> 
   ggplot(aes(x = .fitted, y = arr_delay)) +
   geom_point(alpha =  0.25) +
   geom_abline(intercept = 0, slope = 1) + 
@@ -844,9 +884,9 @@ model_out %>%
   theme_minimal()
 
 model_out_improve <- lm(arr_delay ~ dep_delay + distance + origin, data = flights)
-model_out_improve %>% 
-  augment() %>%
-  slice_sample(n = 10000) %>% 
+model_out_improve |> 
+  augment() |>
+  slice_sample(n = 10000) |> 
   ggplot(aes(x = .fitted, y = arr_delay)) +
   geom_point(alpha =  0.25) +
   geom_abline(intercept = 0, slope = 1) + 
