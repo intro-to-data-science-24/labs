@@ -527,7 +527,7 @@ library(lme4)
 
 ## Crafting formulas 
 
-The basic structure of a formula 
+The basic structure of a formula:
 
 ```{r}
 y ~ x
@@ -539,7 +539,7 @@ Running a model with a formula is straightforward. Note that we don't even have 
 lm(arr_delay ~ distance + origin, data = flights)
 ```
 
-A more explicit way to write formulas
+A more explicit way to write formulas:
 
 ```{r}
 fmla <- as.formula("arr_delay ~ distance + origin")
@@ -547,7 +547,7 @@ class(fmla)
 lm(fmla, data = flights)
 ```
 
-More formula syntax
+More formula syntax:
 
 ```{r}
 y ~ x1 + x2
@@ -555,27 +555,26 @@ y ~ x1 - x2 # ignore x2 in analysis
 y ~ . # select all other variables in model matrix
 ```
 
-Interactions
+Interactions:
 
 ```{r}
-y ~ x1 * x2 # That's equivalent to
-y ~ x1 + x2 + x1*x2
-y ~ x1:x2  # only interaction, not main effects
+y ~ x1 * x2 # That's equivalent to y ~ x1 + x2 + x1*x2
+y ~ x1:x2  # only interaction, no main effects
 ```
 
-As-is variables
+As-is variables:
 
 ```{r}
 y ~ x + I(x^2)
 ```
 
-Extract all variable names from a formula object
+Extract all variable names from a formula object:
 
 ```{r}
 all.vars(fmla)
 ```
 
-Incrementally modify/update a formula
+Incrementally modify/update a formula:
 
 ```{r}
 ?update
@@ -583,13 +582,8 @@ Incrementally modify/update a formula
 
 ### Further reading
 
-Model formulae in R (Thomas Leeper)
-`browseURL("https://thomasleeper.com/Rcourse/Tutorials/formulae.html")`
-
-
-`formula(){stats}` documentation
-`browseURL("https://stat.ethz.ch/R-manual/R-devel/library/stats/html/formula.html")`
-
+* [Model formulae in R by Thomas Leeper](https://thomasleeper.com/Rcourse/Tutorials/formulae.html)
+* [`formula {stats}` documentation](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/formula.html)
 
 
 ## Advanced crafting of formulas: fitting multiple models 
@@ -601,7 +595,7 @@ xnam <- paste0("x", 1:25)
 (fmla <- as.formula(paste("y ~ ", paste(xnam, collapse= "+"))))
 ```
 
-## Create a multitude of covariate sets
+### Create a multitude of covariate sets
 
 **Step 1:** Define dependent variable + covariate set
 
@@ -646,32 +640,19 @@ length(models_list)
 
 ### Further reading
 
-Multiverse analysis with multiverse
-`browseURL("https://github.com/MUCollective/multiverse")`
-
-
-Specification curves with specr
-`browseURL("https://cran.r-project.org/web/packages/specr/vignettes/specr.html")`
-
-
-For more background on multiverse analysis, see
-`browseURL("https://journals.sagepub.com/doi/pdf/10.1177/1745691616658637")`
-
-
-For more background on specification curve analysis, see
-`browseURL("https://repository.upenn.edu/cgi/viewcontent.cgi?article=1314&context=marketing_papers")`
-
-
+* [Multiverse analysis with multiverse](https://github.com/MUCollective/multiverse)
+* [Specification curves with `specr`](https://masurp.github.io/specr/articles/specr.html)
+* [For more background on multiverse analysis, see Steegen et al.](https://journals.sagepub.com/doi/pdf/10.1177/1745691616658637)
 
 ## Working with tidy model outputs 
 
-Inspecting models in R is straightforward with the summary() function
+Inspecting models in R is straightforward with the `summary()` function.
 
 ```{r}
 lm(arr_delay ~ distance + origin, data = flights) |> summary()
 ```
 
-But often you want to post-process estimation results. So let's examine the output of a model function more closely
+But often you want to post-process estimation results. So let's examine the output of a model function more closely.
 
 ```{r}
 model_out <- lm(arr_delay ~ distance + origin, data = flights)
@@ -688,18 +669,18 @@ Ugh, that's a lot of information in a list structure. Let's use some helper func
 #model.matrix(model_out)
 ```
 
-We can also dig in the summary of the model
+We can also dig in the summary of the model.
 
 ```{r}
 #str(summary(model_out))
 summary(model_out)$coefficients
 ```
 
-## The broom philosophy
+### The broom philosophy `r emo::ji("broom")`
 
-"The broom package takes the messy output of built-in functions in R, such as lm, nls, or t.test, and turns them into tidy tibbles."
+The broom package takes the messy output of built-in R functions such as `lm()`, `nls()`, or `t.test()`, and turns them into tidy tibbles.
 
-Example: linear model output
+**Example**: linear model output
 
 ```{r}
 model_out <- lm(arr_delay ~ distance + origin, data = flights)
@@ -707,7 +688,7 @@ model_out
 summary(model_out)
 ```
 
-Examine model object
+Examine model object:
 
 ```{r}
 ?tidy.lm
@@ -715,28 +696,28 @@ broom::tidy(model_out)
 broom::tidy(model_out, conf.int = TRUE, conf.level = 0.95)
 ```
 
-Inspect summary statistics
+Inspect summary statistics:
 
 ```{r}
 ?glance.lm
 broom::glance(model_out)
 ```
 
-Add fitted values and residuals to original data
+Add fitted values and residuals to original data:
 
 ```{r}
 ?augment.lm
 broom::augment(model_out) |> slice(1:5)
 ```
 
-Tidy can also be applied to htest objects
+`tidy()` can also be applied to `htest` objects:
 
 ```{r}
 tt <- t.test(wt ~ am, mtcars)
 tidy(tt)
 ```
 
-The true power of broom unfolds in settings where you want to combine results from multiple analyses (using subgroups of data, different models, bootstrap replicates of the original data frame, permutations, imputations, ...)
+The true power of broom unfolds in settings where you want to combine results from multiple analyses (using subgroups of data, different models, bootstrap replicates of the original data frame, permutations, imputations, ...).
 
 **Step 4:** (continuing the analysis from above): Extract results from all models
 
@@ -749,7 +730,7 @@ models_broom_df <- map_dfr(models_broom, rbind)
 
 **Step 5:** Summarize results
 
-```{r}
+```{r, fig.width=10}
 models_broom_df |> 
   filter(!str_detect(term, "Intercept|carrier")) |>
   ggplot(aes(estimate)) + 
@@ -759,22 +740,16 @@ models_broom_df |>
   theme_minimal()
 ```
 
-
 ### Further reading
 
-Introductory broom package vignette
-`browseURL("https://cran.r-project.org/web/packages/broom/vignettes/broom.html")`
+* [Introductory broom package vignette](https://cran.r-project.org/web/packages/broom/vignettes/broom.html)
+* [Overview of available methods](https://cran.r-project.org/web/packages/broom/vignettes/available-methods.html)
 
+## Reporting model results
 
-Overview of available methods
+### Tables 
 
-`browseURL("https://cran.r-project.org/web/packages/broom/vignettes/available-methods.html")`
-
-
-
-## Reporting model results: tables 
-
-A table of models
+A table of models:
 
 ```{r}
 model1_out <- lm(arr_delay ~ dep_delay, data = flights)
@@ -791,9 +766,9 @@ modelsummary(models,
 ```
 
 
-## Reporting model results: coefficient plots 
+### Coefficient plots 
 
-One model, one plot
+One model, one plot:
 
 ```{r}
 cm <- c("distance" = "Distance",
@@ -805,7 +780,7 @@ modelplot(model_out,
 ```
 
 
-Standardized continuous variable
+Standardised continuous variable:
 
 ```{r}
 flights$distance_std <- effectsize::standardize(flights$distance)
@@ -816,7 +791,7 @@ cm <- c("distance_std" = "Distance",
 ```
 
 
-One model, one plot (more options)
+One model, one plot (more options):
 
 ```{r}
 modelplot(model_out_std2, coef_omit = "Interc", coef_map = cm) + 
@@ -828,7 +803,7 @@ modelplot(model_out_std2, coef_omit = "Interc", coef_map = cm) +
 ```
 
 
-Rescale continuous variable
+Re-scale continuous variable:
 
 ```{r}
 flights$distance1kmiles <- flights$distance / 1000
@@ -839,8 +814,7 @@ cm <- c("distance1kmiles" = "Distance (1k miles)",
 ```
 
 
-
-One model, one plot (more options)
+One model, one plot (more options):
 
 ```{r}
 modelplot(model_out_kmiles, coef_omit = "Interc", coef_map = cm) + 
@@ -852,7 +826,7 @@ modelplot(model_out_kmiles, coef_omit = "Interc", coef_map = cm) +
 ```
 
 
-Multiple options, one faceted plot
+Multiple options, one faceted plot:
 
 ```{r}
 modelplot(models, coef_omit = "Interc") + 
@@ -868,7 +842,7 @@ library(effectsize)
 ```
 
 
-## Reporting model results: true-vs-fitted plots 
+### True-vs-fitted plots 
 
 ```{r}
 model_out |> 
@@ -898,17 +872,10 @@ model_out_improve |>
 ```
 
 
-
 ### Further reading
-
-modelsummary creates tables and plots to summarize statistical models and data in R
-`browseURL("https://github.com/vincentarelbundock/modelsummary")`
-
-alternative packages for model summaries, including stargazer and texreg
-`browseURL("https://github.com/vincentarelbundock/modelsummary#alternative-packages")`
-
-yet another alternative for data visualization for statistics: sjPlot
-`browseURL("https://strengejacke.github.io/sjPlot/")`
+* The [`modelsummary`](https://github.com/vincentarelbundock/modelsummary) package creates tables and plots to summarize statistical models and data in R
+* [Alternative packages for model summaries, including stargazer and texreg](https://github.com/vincentarelbundock/modelsummary#alternative-packages)
+* Yet another alternative for data visualization for statistics: [sjPlot](https://strengejacke.github.io/sjPlot/)
 
 ***
 
