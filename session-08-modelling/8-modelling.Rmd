@@ -476,13 +476,14 @@ We will cover data visualisation with R in much greater detail in the next sessi
 ***
 # Exercises `r emo::ji("person_lifting_weights")`
 
-```{r}
+```{r, message=F, comment=F}
 library(tidyverse)
 library(broom)
 library(nycflights13)
 library(modelsummary)
 library(lme4)
 ```
+
 
 ## Crafting formulas 
 
@@ -543,14 +544,11 @@ Incrementally modify/update a formula
 ### Further reading
 
 Model formulae in R (Thomas Leeper)
-```{r}
-browseURL("https://thomasleeper.com/Rcourse/Tutorials/formulae.html")
-```
+`browseURL("https://thomasleeper.com/Rcourse/Tutorials/formulae.html")`
 
-`formula()` {stats} documentation
-```{r}
-browseURL("https://stat.ethz.ch/R-manual/R-devel/library/stats/html/formula.html")
-```
+
+`formula(){stats}` documentation
+`browseURL("https://stat.ethz.ch/R-manual/R-devel/library/stats/html/formula.html")`
 
 
 
@@ -565,7 +563,7 @@ xnam <- paste0("x", 1:25)
 
 ## Create a multitude of covariate sets
 
-Step 1: Define dependent variable + covariate set
+**Step 1:** Define dependent variable + covariate set
 
 ```{r}
 depvar <- "arr_delay"
@@ -573,7 +571,7 @@ covars <- c("dep_delay", "carrier", "origin", "air_time", "distance", "hour")
 ```
 
 
-Step 2: Build function to run lm models across set of all possible variable combinations 
+**Step 2:** Build function to run lm models across set of all possible variable combinations 
 
 ```{r}
 combn_models <- function(depvar, covars, data)
@@ -598,7 +596,7 @@ combn_models <- function(depvar, covars, data)
 ```
 
 
-Step 3: Run models (careful, this'll generate a quite heavy list)
+**Step 3:** Run models (careful, this'll generate a quite heavy list)
 
 ```{r}
 models_list <- combn_models(depvar = depvar,  covars = covars, data = flights)
@@ -609,27 +607,23 @@ length(models_list)
 ### Further reading
 
 Multiverse analysis with multiverse
-```{r}
-browseURL("https://github.com/MUCollective/multiverse")
-```
+`browseURL("https://github.com/MUCollective/multiverse")`
+
 
 Specification curves with specr
-```{r}
-browseURL("https://cran.r-project.org/web/packages/specr/vignettes/specr.html")
-```
+`browseURL("https://cran.r-project.org/web/packages/specr/vignettes/specr.html")`
+
 
 For more background on multiverse analysis, see
-```{r}
-browseURL("https://journals.sagepub.com/doi/pdf/10.1177/1745691616658637")
-```
+`browseURL("https://journals.sagepub.com/doi/pdf/10.1177/1745691616658637")`
+
 
 For more background on specification curve analysis, see
-```{r}
-browseURL("https://repository.upenn.edu/cgi/viewcontent.cgi?article=1314&context=marketing_papers")
-```
+`browseURL("https://repository.upenn.edu/cgi/viewcontent.cgi?article=1314&context=marketing_papers")`
 
 
-## Working with tidy model outputs ------------------------------
+
+## Working with tidy model outputs 
 
 Inspecting models in R is straightforward with the summary() function
 
@@ -641,23 +635,23 @@ But often you want to post-process estimation results. So let's examine the outp
 
 ```{r}
 model_out <- lm(arr_delay ~ distance + origin, data = flights)
-class(model_out)
-str(model_out)
+#class(model_out)
+#str(model_out)
 ```
 
 Ugh, that's a lot of information in a list structure. Let's use some helper functions to unpack these:
 
 ```{r}
-coef(model_out)
-fitted.values(model_out)
-residuals(model_out)
-model.matrix(model_out)
+#coef(model_out)
+#fitted.values(model_out)
+#residuals(model_out)
+#model.matrix(model_out)
 ```
 
 We can also dig in the summary of the model
 
 ```{r}
-str(summary(model_out))
+#str(summary(model_out))
 summary(model_out)$coefficients
 ```
 
@@ -704,7 +698,7 @@ tidy(tt)
 
 The true power of broom unfolds in settings where you want to combine results from multiple analyses (using subgroups of data, different models, bootstrap replicates of the original data frame, permutations, imputations, ...)
 
-Step 4 (continuing the analysis from above): Extract results from all models
+**Step 4:** (continuing the analysis from above): Extract results from all models
 
 ```{r}
 models_broom <- map(models_list, broom::tidy)
@@ -713,7 +707,7 @@ models_broom[[1]] # inspect one list entry
 models_broom_df <- map_dfr(models_broom, rbind)
 ```
 
-Step 5: Summarize results
+**Step 5:** Summarize results
 
 ```{r}
 models_broom_df %>% 
@@ -729,14 +723,12 @@ models_broom_df %>%
 ### Further reading
 
 Introductory broom package vignette
-```{r}
-browseURL("https://cran.r-project.org/web/packages/broom/vignettes/broom.html")
-```
+`browseURL("https://cran.r-project.org/web/packages/broom/vignettes/broom.html")`
+
 
 Overview of available methods
-```{r}
-browseURL("https://cran.r-project.org/web/packages/broom/vignettes/available-methods.html")
-```
+
+`browseURL("https://cran.r-project.org/web/packages/broom/vignettes/available-methods.html")`
 
 
 
@@ -828,11 +820,11 @@ modelplot(models, coef_omit = "Interc") +
 
 library(effectsize)
 ?standardize
-model_out_std <- standardize_parameters(model_out)
-modelplot(model_out_std, coef_omit = "Interc", coef_map = cm) + 
-  labs(title = "Linear regression of flight delay at arrival (in mins)",
-       caption = "Data source: nycflights13 package") + 
-  theme_minimal()
+#model_out_std <- standardize_parameters(model_out)
+#modelplot(model_out_std, coef_omit = "Interc", coef_map = cm) + 
+#  labs(title = "Linear regression of flight delay at arrival (in mins)",
+#       caption = "Data source: nycflights13 package") + 
+#  theme_minimal()
 ```
 
 
@@ -870,20 +862,15 @@ model_out_improve %>%
 ### Further reading
 
 modelsummary creates tables and plots to summarize statistical models and data in R
-```{r}
-browseURL("https://github.com/vincentarelbundock/modelsummary")
-```
+`browseURL("https://github.com/vincentarelbundock/modelsummary")`
 
 alternative packages for model summaries, including stargazer and texreg
-```{r}
-browseURL("https://github.com/vincentarelbundock/modelsummary#alternative-packages")
-```
+`browseURL("https://github.com/vincentarelbundock/modelsummary#alternative-packages")`
 
 yet another alternative for data visualization for statistics: sjPlot
-```{r}
-browseURL("https://strengejacke.github.io/sjPlot/")
-```
+`browseURL("https://strengejacke.github.io/sjPlot/")`
 
+***
 
 # Sources
 

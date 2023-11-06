@@ -13,7 +13,7 @@
 
 <title>Modelling</title>
 
-<script src="8-modelling_files/header-attrs-2.23/header-attrs.js"></script>
+<script src="8-modelling_files/header-attrs-2.24/header-attrs.js"></script>
 <script src="8-modelling_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="8-modelling_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
@@ -392,7 +392,7 @@ the World Health Organization</a> on life expectancy.</p>
 <hr />
 </div>
 <div id="using-formulas-in-r" class="section level1">
-<h1>Using Formulas in R 👩‍🏫</h1>
+<h1>Using Formulas in R 👨‍🏫</h1>
 <p>R, as a programming language, was specifically designed with
 statistical analysis in mind. Therefore the founding fathers of R 🙌 -
 in their infinite wisdom - decided to create a special object class
@@ -632,7 +632,7 @@ ingredients” for each model parameter:</p>
 ## 
 ##   function (x) 
 ## broom::tidy(x, conf.int = TRUE)
-## &lt;environment: 0x111ed0258&gt;
+## &lt;environment: 0x12401cfd0&gt;
 ## 
 ## 
 ## Head of specifications table (first 20 rows):</code></pre>
@@ -1196,8 +1196,455 @@ plot</strong> will be made clearer then!</p>
 </div>
 <div id="exercises" class="section level1">
 <h1>Exercises 🏋️</h1>
-<p>If you want to practice the above you can find more materials <a
-href="https://github.com/intro-to-data-science-23/labs/blob/main/practice-scripts/08-model-fitting.R">here</a>.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb42-2"><a href="#cb42-2" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb42-3"><a href="#cb42-3" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span>
+<span id="cb42-4"><a href="#cb42-4" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb42-5"><a href="#cb42-5" tabindex="-1"></a><span class="fu">library</span>(lme4)</span></code></pre></div>
+<div id="crafting-formulas" class="section level2">
+<h2>Crafting formulas</h2>
+<p>The basic structure of a formula</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a>y <span class="sc">~</span> x</span></code></pre></div>
+<pre><code>## y ~ x</code></pre>
+<p>Running a model with a formula is straightforward. Note that we don’t
+even have to put the formula in parentheses:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a><span class="fu">lm</span>(arr_delay <span class="sc">~</span> distance <span class="sc">+</span> origin, <span class="at">data =</span> flights)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = arr_delay ~ distance + origin, data = flights)
+## 
+## Coefficients:
+## (Intercept)     distance    originJFK    originLGA  
+##    13.41405     -0.00405     -2.70426     -4.45617</code></pre>
+<p>A more explicit way to write formulas</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a>fmla <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="st">&quot;arr_delay ~ distance + origin&quot;</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a><span class="fu">class</span>(fmla)</span></code></pre></div>
+<pre><code>## [1] &quot;formula&quot;</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a><span class="fu">lm</span>(fmla, <span class="at">data =</span> flights)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = fmla, data = flights)
+## 
+## Coefficients:
+## (Intercept)     distance    originJFK    originLGA  
+##    13.41405     -0.00405     -2.70426     -4.45617</code></pre>
+<p>More formula syntax</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a>y <span class="sc">~</span> x1 <span class="sc">+</span> x2</span></code></pre></div>
+<pre><code>## y ~ x1 + x2</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" tabindex="-1"></a>y <span class="sc">~</span> x1 <span class="sc">-</span> x2 <span class="co"># ignore x2 in analysis</span></span></code></pre></div>
+<pre><code>## y ~ x1 - x2</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a>y <span class="sc">~</span> . <span class="co"># select all other variables in model matrix</span></span></code></pre></div>
+<pre><code>## y ~ .</code></pre>
+<p>Interactions</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a>y <span class="sc">~</span> x1 <span class="sc">*</span> x2 <span class="co"># That&#39;s equivalent to</span></span></code></pre></div>
+<pre><code>## y ~ x1 * x2</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x1<span class="sc">*</span>x2</span></code></pre></div>
+<pre><code>## y ~ x1 + x2 + x1 * x2</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" tabindex="-1"></a>y <span class="sc">~</span> x1<span class="sc">:</span>x2  <span class="co"># only interaction, not main effects</span></span></code></pre></div>
+<pre><code>## y ~ x1:x2</code></pre>
+<p>As-is variables</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a>y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## y ~ x + I(x^2)</code></pre>
+<p>Extract all variable names from a formula object</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" tabindex="-1"></a><span class="fu">all.vars</span>(fmla)</span></code></pre></div>
+<pre><code>## [1] &quot;arr_delay&quot; &quot;distance&quot;  &quot;origin&quot;</code></pre>
+<p>Incrementally modify/update a formula</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a>?update</span></code></pre></div>
+<div id="further-reading" class="section level3">
+<h3>Further reading</h3>
+<p>Model formulae in R (Thomas Leeper)
+<code>browseURL("https://thomasleeper.com/Rcourse/Tutorials/formulae.html")</code></p>
+<p><code>formula(){stats}</code> documentation
+<code>browseURL("https://stat.ethz.ch/R-manual/R-devel/library/stats/html/formula.html")</code></p>
+</div>
+</div>
+<div id="advanced-crafting-of-formulas-fitting-multiple-models"
+class="section level2">
+<h2>Advanced crafting of formulas: fitting multiple models</h2>
+<p>Create a formula for a model with a large number of variables:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" tabindex="-1"></a>xnam <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;x&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">25</span>)</span>
+<span id="cb68-2"><a href="#cb68-2" tabindex="-1"></a>(fmla <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">&quot;y ~ &quot;</span>, <span class="fu">paste</span>(xnam, <span class="at">collapse=</span> <span class="st">&quot;+&quot;</span>))))</span></code></pre></div>
+<pre><code>## y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + 
+##     x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19 + x20 + x21 + 
+##     x22 + x23 + x24 + x25</code></pre>
+</div>
+<div id="create-a-multitude-of-covariate-sets" class="section level2">
+<h2>Create a multitude of covariate sets</h2>
+<p><strong>Step 1:</strong> Define dependent variable + covariate
+set</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" tabindex="-1"></a>depvar <span class="ot">&lt;-</span> <span class="st">&quot;arr_delay&quot;</span></span>
+<span id="cb70-2"><a href="#cb70-2" tabindex="-1"></a>covars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;dep_delay&quot;</span>, <span class="st">&quot;carrier&quot;</span>, <span class="st">&quot;origin&quot;</span>, <span class="st">&quot;air_time&quot;</span>, <span class="st">&quot;distance&quot;</span>, <span class="st">&quot;hour&quot;</span>)</span></code></pre></div>
+<p><strong>Step 2:</strong> Build function to run lm models across set
+of all possible variable combinations</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a>combn_models <span class="ot">&lt;-</span> <span class="cf">function</span>(depvar, covars, data)</span>
+<span id="cb71-2"><a href="#cb71-2" tabindex="-1"></a>{</span>
+<span id="cb71-3"><a href="#cb71-3" tabindex="-1"></a>  combn_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb71-4"><a href="#cb71-4" tabindex="-1"></a>  <span class="co"># generate list of covariate combinations</span></span>
+<span id="cb71-5"><a href="#cb71-5" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(covars)) {</span>
+<span id="cb71-6"><a href="#cb71-6" tabindex="-1"></a>    combn_list[[i]] <span class="ot">&lt;-</span> <span class="fu">combn</span>(covars, i, <span class="at">simplify =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb71-7"><a href="#cb71-7" tabindex="-1"></a>  }</span>
+<span id="cb71-8"><a href="#cb71-8" tabindex="-1"></a>  combn_list <span class="ot">&lt;-</span> <span class="fu">unlist</span>(combn_list, <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb71-9"><a href="#cb71-9" tabindex="-1"></a>  <span class="co"># function to generate formulas</span></span>
+<span id="cb71-10"><a href="#cb71-10" tabindex="-1"></a>  gen_formula <span class="ot">&lt;-</span> <span class="cf">function</span>(covars, depvar) {</span>
+<span id="cb71-11"><a href="#cb71-11" tabindex="-1"></a>    form <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste0</span>(depvar, <span class="st">&quot; ~ &quot;</span>, <span class="fu">paste0</span>(covars, <span class="at">collapse =</span> <span class="st">&quot;+&quot;</span>)))</span>
+<span id="cb71-12"><a href="#cb71-12" tabindex="-1"></a>    form</span>
+<span id="cb71-13"><a href="#cb71-13" tabindex="-1"></a>  }</span>
+<span id="cb71-14"><a href="#cb71-14" tabindex="-1"></a>  <span class="co"># generate formulas</span></span>
+<span id="cb71-15"><a href="#cb71-15" tabindex="-1"></a>  formulas_list <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(combn_list, gen_formula, <span class="at">depvar =</span> depvar)</span>
+<span id="cb71-16"><a href="#cb71-16" tabindex="-1"></a>  <span class="co"># run models</span></span>
+<span id="cb71-17"><a href="#cb71-17" tabindex="-1"></a>  models_list <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(formulas_list, lm, <span class="at">data =</span> data)</span>
+<span id="cb71-18"><a href="#cb71-18" tabindex="-1"></a>  models_list</span>
+<span id="cb71-19"><a href="#cb71-19" tabindex="-1"></a>}</span></code></pre></div>
+<p><strong>Step 3:</strong> Run models (careful, this’ll generate a
+quite heavy list)</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" tabindex="-1"></a>models_list <span class="ot">&lt;-</span> <span class="fu">combn_models</span>(<span class="at">depvar =</span> depvar,  <span class="at">covars =</span> covars, <span class="at">data =</span> flights)</span>
+<span id="cb72-2"><a href="#cb72-2" tabindex="-1"></a><span class="fu">length</span>(models_list)</span></code></pre></div>
+<pre><code>## [1] 63</code></pre>
+<div id="further-reading-1" class="section level3">
+<h3>Further reading</h3>
+<p>Multiverse analysis with multiverse
+<code>browseURL("https://github.com/MUCollective/multiverse")</code></p>
+<p>Specification curves with specr
+<code>browseURL("https://cran.r-project.org/web/packages/specr/vignettes/specr.html")</code></p>
+<p>For more background on multiverse analysis, see
+<code>browseURL("https://journals.sagepub.com/doi/pdf/10.1177/1745691616658637")</code></p>
+<p>For more background on specification curve analysis, see
+<code>browseURL("https://repository.upenn.edu/cgi/viewcontent.cgi?article=1314&amp;context=marketing_papers")</code></p>
+</div>
+</div>
+<div id="working-with-tidy-model-outputs" class="section level2">
+<h2>Working with tidy model outputs</h2>
+<p>Inspecting models in R is straightforward with the summary()
+function</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" tabindex="-1"></a><span class="fu">lm</span>(arr_delay <span class="sc">~</span> distance <span class="sc">+</span> origin, <span class="at">data =</span> flights) <span class="sc">%&gt;%</span> <span class="fu">summary</span>()</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = arr_delay ~ distance + origin, data = flights)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##  -89.0  -24.0  -11.8    7.3 1281.4 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 13.41405    0.17481    76.7   &lt;2e-16 ***
+## distance    -0.00404    0.00011   -36.9   &lt;2e-16 ***
+## originJFK   -2.70425    0.18871   -14.3   &lt;2e-16 ***
+## originLGA   -4.45617    0.19351   -23.0   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 44 on 327342 degrees of freedom
+##   (9430 observations deleted due to missingness)
+## Multiple R-squared:  0.0055, Adjusted R-squared:  0.00549 
+## F-statistic:  604 on 3 and 327342 DF,  p-value: &lt;2e-16</code></pre>
+<p>But often you want to post-process estimation results. So let’s
+examine the output of a model function more closely</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" tabindex="-1"></a>model_out <span class="ot">&lt;-</span> <span class="fu">lm</span>(arr_delay <span class="sc">~</span> distance <span class="sc">+</span> origin, <span class="at">data =</span> flights)</span>
+<span id="cb76-2"><a href="#cb76-2" tabindex="-1"></a><span class="co">#class(model_out)</span></span>
+<span id="cb76-3"><a href="#cb76-3" tabindex="-1"></a><span class="co">#str(model_out)</span></span></code></pre></div>
+<p>Ugh, that’s a lot of information in a list structure. Let’s use some
+helper functions to unpack these:</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" tabindex="-1"></a><span class="co">#coef(model_out)</span></span>
+<span id="cb77-2"><a href="#cb77-2" tabindex="-1"></a><span class="co">#fitted.values(model_out)</span></span>
+<span id="cb77-3"><a href="#cb77-3" tabindex="-1"></a><span class="co">#residuals(model_out)</span></span>
+<span id="cb77-4"><a href="#cb77-4" tabindex="-1"></a><span class="co">#model.matrix(model_out)</span></span></code></pre></div>
+<p>We can also dig in the summary of the model</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" tabindex="-1"></a><span class="co">#str(summary(model_out))</span></span>
+<span id="cb78-2"><a href="#cb78-2" tabindex="-1"></a><span class="fu">summary</span>(model_out)<span class="sc">$</span>coefficients</span></code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   13.414    0.17481      77  0.0e+00
+## distance      -0.004    0.00011     -37 5.5e-297
+## originJFK     -2.704    0.18871     -14  1.5e-46
+## originLGA     -4.456    0.19351     -23 3.0e-117</code></pre>
+</div>
+<div id="the-broom-philosophy" class="section level2">
+<h2>The broom philosophy</h2>
+<p>“The broom package takes the messy output of built-in functions in R,
+such as lm, nls, or t.test, and turns them into tidy tibbles.”</p>
+<p>Example: linear model output</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" tabindex="-1"></a>model_out <span class="ot">&lt;-</span> <span class="fu">lm</span>(arr_delay <span class="sc">~</span> distance <span class="sc">+</span> origin, <span class="at">data =</span> flights)</span>
+<span id="cb80-2"><a href="#cb80-2" tabindex="-1"></a>model_out</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = arr_delay ~ distance + origin, data = flights)
+## 
+## Coefficients:
+## (Intercept)     distance    originJFK    originLGA  
+##    13.41405     -0.00405     -2.70426     -4.45617</code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" tabindex="-1"></a><span class="fu">summary</span>(model_out)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = arr_delay ~ distance + origin, data = flights)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##  -89.0  -24.0  -11.8    7.3 1281.4 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 13.41405    0.17481    76.7   &lt;2e-16 ***
+## distance    -0.00404    0.00011   -36.9   &lt;2e-16 ***
+## originJFK   -2.70425    0.18871   -14.3   &lt;2e-16 ***
+## originLGA   -4.45617    0.19351   -23.0   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 44 on 327342 degrees of freedom
+##   (9430 observations deleted due to missingness)
+## Multiple R-squared:  0.0055, Adjusted R-squared:  0.00549 
+## F-statistic:  604 on 3 and 327342 DF,  p-value: &lt;2e-16</code></pre>
+<p>Examine model object</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" tabindex="-1"></a>?tidy.lm</span>
+<span id="cb84-2"><a href="#cb84-2" tabindex="-1"></a>broom<span class="sc">::</span><span class="fu">tidy</span>(model_out)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["term"],"name":[1],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"(Intercept)","2":"13.414","3":"0.17481","4":"77","5":"0.0e+00"},{"1":"distance","2":"-0.004","3":"0.00011","4":"-37","5":"5.5e-297"},{"1":"originJFK","2":"-2.704","3":"0.18871","4":"-14","5":"1.5e-46"},{"1":"originLGA","2":"-4.456","3":"0.19351","4":"-23","5":"3.0e-117"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" tabindex="-1"></a>broom<span class="sc">::</span><span class="fu">tidy</span>(model_out, <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["term"],"name":[1],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["conf.low"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["conf.high"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"(Intercept)","2":"13.414","3":"0.17481","4":"77","5":"0.0e+00","6":"13.0714","7":"13.7567"},{"1":"distance","2":"-0.004","3":"0.00011","4":"-37","5":"5.5e-297","6":"-0.0043","7":"-0.0038"},{"1":"originJFK","2":"-2.704","3":"0.18871","4":"-14","5":"1.5e-46","6":"-3.0741","7":"-2.3344"},{"1":"originLGA","2":"-4.456","3":"0.19351","4":"-23","5":"3.0e-117","6":"-4.8354","7":"-4.0769"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Inspect summary statistics</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" tabindex="-1"></a>?glance.lm</span>
+<span id="cb86-2"><a href="#cb86-2" tabindex="-1"></a>broom<span class="sc">::</span><span class="fu">glance</span>(model_out)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["r.squared"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["adj.r.squared"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sigma"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["logLik"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["AIC"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["BIC"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["deviance"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["df.residual"],"name":[11],"type":["int"],"align":["right"]},{"label":["nobs"],"name":[12],"type":["int"],"align":["right"]}],"data":[{"1":"0.0055","2":"0.0055","3":"45","4":"604","5":"0","6":"3","7":"-1706997","8":"3414005","9":"3414058","10":"6.5e+08","11":"327342","12":"327346"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Add fitted values and residuals to original data</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" tabindex="-1"></a>?augment.lm</span>
+<span id="cb87-2"><a href="#cb87-2" tabindex="-1"></a>broom<span class="sc">::</span><span class="fu">augment</span>(model_out) <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[".rownames"],"name":[1],"type":["chr"],"align":["left"]},{"label":["arr_delay"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["distance"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["origin"],"name":[4],"type":["chr"],"align":["left"]},{"label":[".fitted"],"name":[5],"type":["dbl"],"align":["right"]},{"label":[".resid"],"name":[6],"type":["dbl"],"align":["right"]},{"label":[".hat"],"name":[7],"type":["dbl"],"align":["right"]},{"label":[".sigma"],"name":[8],"type":["dbl"],"align":["right"]},{"label":[".cooksd"],"name":[9],"type":["dbl"],"align":["right"]},{"label":[".std.resid"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"11","3":"1400","4":"EWR","5":"7.8","6":"3.2","7":"9.2e-06","8":"45","9":"1.2e-08","10":"0.073"},{"1":"2","2":"20","3":"1416","4":"LGA","5":"3.2","6":"16.8","7":"1.2e-05","8":"45","9":"4.4e-07","10":"0.377"},{"1":"3","2":"33","3":"1089","4":"JFK","5":"6.3","6":"26.7","7":"9.4e-06","8":"45","9":"8.4e-07","10":"0.600"},{"1":"4","2":"-18","3":"1576","4":"JFK","5":"4.3","6":"-22.3","7":"9.7e-06","8":"45","9":"6.1e-07","10":"-0.502"},{"1":"5","2":"-25","3":"762","4":"LGA","5":"5.9","6":"-30.9","7":"9.9e-06","8":"45","9":"1.2e-06","10":"-0.694"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Tidy can also be applied to htest objects</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" tabindex="-1"></a>tt <span class="ot">&lt;-</span> <span class="fu">t.test</span>(wt <span class="sc">~</span> am, mtcars)</span>
+<span id="cb88-2"><a href="#cb88-2" tabindex="-1"></a><span class="fu">tidy</span>(tt)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["estimate"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["estimate1"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["estimate2"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["parameter"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["conf.low"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["conf.high"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["method"],"name":[9],"type":["chr"],"align":["left"]},{"label":["alternative"],"name":[10],"type":["chr"],"align":["left"]}],"data":[{"1":"1.4","2":"3.8","3":"2.4","4":"5.5","5":"6.3e-06","6":"29","7":"0.85","8":"1.9","9":"Welch Two Sample t-test","10":"two.sided"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>The true power of broom unfolds in settings where you want to combine
+results from multiple analyses (using subgroups of data, different
+models, bootstrap replicates of the original data frame, permutations,
+imputations, …)</p>
+<p><strong>Step 4:</strong> (continuing the analysis from above):
+Extract results from all models</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" tabindex="-1"></a>models_broom <span class="ot">&lt;-</span> <span class="fu">map</span>(models_list, broom<span class="sc">::</span>tidy)</span>
+<span id="cb89-2"><a href="#cb89-2" tabindex="-1"></a>models_broom[[<span class="dv">1</span>]] <span class="co"># inspect one list entry</span></span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["term"],"name":[1],"type":["chr"],"align":["left"]},{"label":["estimate"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["std.error"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"(Intercept)","2":"-5.9","3":"0.03302","4":"-179","5":"0"},{"1":"dep_delay","2":"1.0","3":"0.00079","4":"1296","5":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" tabindex="-1"></a><span class="co"># turn into df by rbinding all tidied results</span></span>
+<span id="cb90-2"><a href="#cb90-2" tabindex="-1"></a>models_broom_df <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(models_broom, rbind)</span></code></pre></div>
+<p><strong>Step 5:</strong> Summarize results</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" tabindex="-1"></a>models_broom_df <span class="sc">%&gt;%</span> </span>
+<span id="cb91-2"><a href="#cb91-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(term, <span class="st">&quot;Intercept|carrier&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb91-3"><a href="#cb91-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(estimate)) <span class="sc">+</span> </span>
+<span id="cb91-4"><a href="#cb91-4" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb91-5"><a href="#cb91-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype=</span><span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb91-6"><a href="#cb91-6" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">cols =</span> <span class="fu">vars</span>(term), <span class="at">scales =</span> <span class="st">&quot;free_y&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb91-7"><a href="#cb91-7" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="8-modelling_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<div id="further-reading-2" class="section level3">
+<h3>Further reading</h3>
+<p>Introductory broom package vignette
+<code>browseURL("https://cran.r-project.org/web/packages/broom/vignettes/broom.html")</code></p>
+<p>Overview of available methods</p>
+<p><code>browseURL("https://cran.r-project.org/web/packages/broom/vignettes/available-methods.html")</code></p>
+</div>
+</div>
+<div id="reporting-model-results-tables" class="section level2">
+<h2>Reporting model results: tables</h2>
+<p>A table of models</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" tabindex="-1"></a>model1_out <span class="ot">&lt;-</span> <span class="fu">lm</span>(arr_delay <span class="sc">~</span> dep_delay, <span class="at">data =</span> flights)</span>
+<span id="cb92-2"><a href="#cb92-2" tabindex="-1"></a>model2_out <span class="ot">&lt;-</span> <span class="fu">lm</span>(arr_delay <span class="sc">~</span> distance, <span class="at">data =</span> flights)</span>
+<span id="cb92-3"><a href="#cb92-3" tabindex="-1"></a>model3_out <span class="ot">&lt;-</span> <span class="fu">lm</span>(arr_delay <span class="sc">~</span> dep_delay <span class="sc">+</span> distance, <span class="at">data =</span> flights)</span>
+<span id="cb92-4"><a href="#cb92-4" tabindex="-1"></a></span>
+<span id="cb92-5"><a href="#cb92-5" tabindex="-1"></a>models <span class="ot">&lt;-</span> <span class="fu">list</span>(model1_out, model2_out, model3_out)</span>
+<span id="cb92-6"><a href="#cb92-6" tabindex="-1"></a></span>
+<span id="cb92-7"><a href="#cb92-7" tabindex="-1"></a><span class="fu">modelsummary</span>(models, </span>
+<span id="cb92-8"><a href="#cb92-8" tabindex="-1"></a>             <span class="at">estimate =</span> <span class="st">&quot;{estimate} [{conf.low}, {conf.high}]&quot;</span>,</span>
+<span id="cb92-9"><a href="#cb92-9" tabindex="-1"></a>             <span class="at">statistic =</span> <span class="cn">NULL</span>,</span>
+<span id="cb92-10"><a href="#cb92-10" tabindex="-1"></a>             <span class="at">gof_omit =</span> <span class="st">&quot;.+&quot;</span>,</span>
+<span id="cb92-11"><a href="#cb92-11" tabindex="-1"></a>             <span class="at">title =</span> <span class="st">&quot;Linear regression of flight delay at arrival (in mins)&quot;</span>) </span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Linear regression of flight delay at arrival (in mins)
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+ (1)
+</th>
+<th style="text-align:center;">
+  (2)
+</th>
+<th style="text-align:center;">
+  (3)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:center;">
+−5.899 [−5.964, −5.835]
+</td>
+<td style="text-align:center;">
+10.829 [10.564, 11.095]
+</td>
+<td style="text-align:center;">
+−3.213 [−3.322, −3.104]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dep_delay
+</td>
+<td style="text-align:center;">
+1.019 [1.018, 1.021]
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+1.018 [1.017, 1.020]
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+distance
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+−0.004 [−0.004, −0.004]
+</td>
+<td style="text-align:center;">
+−0.003 [−0.003, −0.002]
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="reporting-model-results-coefficient-plots"
+class="section level2">
+<h2>Reporting model results: coefficient plots</h2>
+<p>One model, one plot</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" tabindex="-1"></a>cm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;distance&quot;</span> <span class="ot">=</span> <span class="st">&quot;Distance&quot;</span>,</span>
+<span id="cb93-2"><a href="#cb93-2" tabindex="-1"></a>        <span class="st">&quot;originLGA&quot;</span> <span class="ot">=</span> <span class="st">&quot;Origin: LGA&quot;</span>,</span>
+<span id="cb93-3"><a href="#cb93-3" tabindex="-1"></a>        <span class="st">&quot;originJFK&quot;</span> <span class="ot">=</span> <span class="st">&quot;Origin: JFK&quot;</span>)</span>
+<span id="cb93-4"><a href="#cb93-4" tabindex="-1"></a><span class="fu">modelplot</span>(model_out, </span>
+<span id="cb93-5"><a href="#cb93-5" tabindex="-1"></a>          <span class="at">coef_omit =</span> <span class="st">&quot;Interc&quot;</span>, </span>
+<span id="cb93-6"><a href="#cb93-6" tabindex="-1"></a>          <span class="at">coef_map =</span> cm)</span></code></pre></div>
+<p><img src="8-modelling_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<p>Standardized continuous variable</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" tabindex="-1"></a>flights<span class="sc">$</span>distance_std <span class="ot">&lt;-</span> effectsize<span class="sc">::</span><span class="fu">standardize</span>(flights<span class="sc">$</span>distance)</span>
+<span id="cb94-2"><a href="#cb94-2" tabindex="-1"></a>model_out_std2 <span class="ot">&lt;-</span><span class="fu">lm</span>(arr_delay <span class="sc">~</span> distance_std <span class="sc">+</span> origin, <span class="at">data =</span> flights)</span>
+<span id="cb94-3"><a href="#cb94-3" tabindex="-1"></a>cm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;distance_std&quot;</span> <span class="ot">=</span> <span class="st">&quot;Distance&quot;</span>,</span>
+<span id="cb94-4"><a href="#cb94-4" tabindex="-1"></a>        <span class="st">&quot;originLGA&quot;</span> <span class="ot">=</span> <span class="st">&quot;Origin: LGA&quot;</span>,</span>
+<span id="cb94-5"><a href="#cb94-5" tabindex="-1"></a>        <span class="st">&quot;originJFK&quot;</span> <span class="ot">=</span> <span class="st">&quot;Origin: JFK&quot;</span>)</span></code></pre></div>
+<p>One model, one plot (more options)</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" tabindex="-1"></a><span class="fu">modelplot</span>(model_out_std2, <span class="at">coef_omit =</span> <span class="st">&quot;Interc&quot;</span>, <span class="at">coef_map =</span> cm) <span class="sc">+</span> </span>
+<span id="cb95-2"><a href="#cb95-2" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">5</span>, .<span class="dv">25</span>) <span class="sc">+</span> </span>
+<span id="cb95-3"><a href="#cb95-3" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype=</span><span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb95-4"><a href="#cb95-4" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Linear regression of flight delay at arrival (in mins)&quot;</span>,</span>
+<span id="cb95-5"><a href="#cb95-5" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&quot;Data source: nycflights13 package&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb95-6"><a href="#cb95-6" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="8-modelling_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<p>Rescale continuous variable</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" tabindex="-1"></a>flights<span class="sc">$</span>distance1kmiles <span class="ot">&lt;-</span> flights<span class="sc">$</span>distance <span class="sc">/</span> <span class="dv">1000</span></span>
+<span id="cb96-2"><a href="#cb96-2" tabindex="-1"></a>model_out_kmiles <span class="ot">&lt;-</span><span class="fu">lm</span>(arr_delay <span class="sc">~</span> distance1kmiles <span class="sc">+</span> origin, <span class="at">data =</span> flights)</span>
+<span id="cb96-3"><a href="#cb96-3" tabindex="-1"></a>cm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;distance1kmiles&quot;</span> <span class="ot">=</span> <span class="st">&quot;Distance (1k miles)&quot;</span>,</span>
+<span id="cb96-4"><a href="#cb96-4" tabindex="-1"></a>        <span class="st">&quot;originLGA&quot;</span> <span class="ot">=</span> <span class="st">&quot;Origin: LGA&quot;</span>,</span>
+<span id="cb96-5"><a href="#cb96-5" tabindex="-1"></a>        <span class="st">&quot;originJFK&quot;</span> <span class="ot">=</span> <span class="st">&quot;Origin: JFK&quot;</span>)</span></code></pre></div>
+<p>One model, one plot (more options)</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" tabindex="-1"></a><span class="fu">modelplot</span>(model_out_kmiles, <span class="at">coef_omit =</span> <span class="st">&quot;Interc&quot;</span>, <span class="at">coef_map =</span> cm) <span class="sc">+</span> </span>
+<span id="cb97-2"><a href="#cb97-2" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">5</span>, .<span class="dv">25</span>) <span class="sc">+</span> </span>
+<span id="cb97-3"><a href="#cb97-3" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype=</span><span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb97-4"><a href="#cb97-4" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Linear regression of flight delay at arrival (in mins)&quot;</span>,</span>
+<span id="cb97-5"><a href="#cb97-5" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&quot;Data source: nycflights13 package&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb97-6"><a href="#cb97-6" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="8-modelling_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
+<p>Multiple options, one faceted plot</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" tabindex="-1"></a><span class="fu">modelplot</span>(models, <span class="at">coef_omit =</span> <span class="st">&quot;Interc&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb98-2"><a href="#cb98-2" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>model)</span></code></pre></div>
+<p><img src="8-modelling_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" tabindex="-1"></a><span class="fu">library</span>(effectsize)</span>
+<span id="cb99-2"><a href="#cb99-2" tabindex="-1"></a>?standardize</span></code></pre></div>
+<pre><code>## Help on topic &#39;standardize&#39; was found in the following packages:
+## 
+##   Package               Library
+##   effectsize            /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library
+##   mvtnorm               /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library
+##   datawizard            /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library
+## 
+## 
+## Using the first match ...</code></pre>
+<div class="sourceCode" id="cb101"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" tabindex="-1"></a><span class="co">#model_out_std &lt;- standardize_parameters(model_out)</span></span>
+<span id="cb101-2"><a href="#cb101-2" tabindex="-1"></a><span class="co">#modelplot(model_out_std, coef_omit = &quot;Interc&quot;, coef_map = cm) + </span></span>
+<span id="cb101-3"><a href="#cb101-3" tabindex="-1"></a><span class="co">#  labs(title = &quot;Linear regression of flight delay at arrival (in mins)&quot;,</span></span>
+<span id="cb101-4"><a href="#cb101-4" tabindex="-1"></a><span class="co">#       caption = &quot;Data source: nycflights13 package&quot;) + </span></span>
+<span id="cb101-5"><a href="#cb101-5" tabindex="-1"></a><span class="co">#  theme_minimal()</span></span></code></pre></div>
+</div>
+<div id="reporting-model-results-true-vs-fitted-plots"
+class="section level2">
+<h2>Reporting model results: true-vs-fitted plots</h2>
+<div class="sourceCode" id="cb102"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" tabindex="-1"></a>model_out <span class="sc">%&gt;%</span> </span>
+<span id="cb102-2"><a href="#cb102-2" tabindex="-1"></a>  <span class="fu">augment</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb102-3"><a href="#cb102-3" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10000</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb102-4"><a href="#cb102-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> arr_delay)) <span class="sc">+</span></span>
+<span id="cb102-5"><a href="#cb102-5" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span>  <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb102-6"><a href="#cb102-6" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb102-7"><a href="#cb102-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Fitted vs. true values, lm(arr_delay ~ distance + origin)&quot;</span>,</span>
+<span id="cb102-8"><a href="#cb102-8" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&quot;Data source: nycflights13 package&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb102-9"><a href="#cb102-9" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Fitted values&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb102-10"><a href="#cb102-10" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Arrival delay (in mins)&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb102-11"><a href="#cb102-11" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="8-modelling_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
+<div class="sourceCode" id="cb103"><pre
+class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" tabindex="-1"></a>model_out_improve <span class="ot">&lt;-</span> <span class="fu">lm</span>(arr_delay <span class="sc">~</span> dep_delay <span class="sc">+</span> distance <span class="sc">+</span> origin, <span class="at">data =</span> flights)</span>
+<span id="cb103-2"><a href="#cb103-2" tabindex="-1"></a>model_out_improve <span class="sc">%&gt;%</span> </span>
+<span id="cb103-3"><a href="#cb103-3" tabindex="-1"></a>  <span class="fu">augment</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb103-4"><a href="#cb103-4" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10000</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb103-5"><a href="#cb103-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> arr_delay)) <span class="sc">+</span></span>
+<span id="cb103-6"><a href="#cb103-6" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span>  <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb103-7"><a href="#cb103-7" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb103-8"><a href="#cb103-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Fitted vs. true values, lm(arr_delay ~ dep_delay + distance + origin)&quot;</span>,</span>
+<span id="cb103-9"><a href="#cb103-9" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&quot;Data source: nycflights13 package&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb103-10"><a href="#cb103-10" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Fitted values&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb103-11"><a href="#cb103-11" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Arrival delay (in mins)&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb103-12"><a href="#cb103-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="8-modelling_files/figure-html/unnamed-chunk-61-2.png" width="672" /></p>
+<div id="further-reading-3" class="section level3">
+<h3>Further reading</h3>
+<p>modelsummary creates tables and plots to summarize statistical models
+and data in R
+<code>browseURL("https://github.com/vincentarelbundock/modelsummary")</code></p>
+<p>alternative packages for model summaries, including stargazer and
+texreg
+<code>browseURL("https://github.com/vincentarelbundock/modelsummary#alternative-packages")</code></p>
+<p>yet another alternative for data visualization for statistics: sjPlot
+<code>browseURL("https://strengejacke.github.io/sjPlot/")</code></p>
+<hr />
+</div>
+</div>
 </div>
 <div id="sources" class="section level1">
 <h1>Sources</h1>
