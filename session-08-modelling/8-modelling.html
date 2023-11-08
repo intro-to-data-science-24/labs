@@ -445,12 +445,12 @@ Model formulas make running many similar models much easier:</p>
 different variables for <code>x</code> or <code>y</code>. The function
 should take the <code>x</code> and/or <code>y</code> variable(s) as a
 string and return a model object.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># function to include different y variables.</span></span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># function to include different y variables</span></span>
 <span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>lm_fun_iter_y <span class="ot">&lt;-</span>  <span class="cf">function</span>(dep_var) {</span>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste</span>(dep_var, <span class="st">&quot;~ gdp&quot;</span>)), <span class="at">data =</span> life_expec_dat)</span>
 <span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>}</span>
 <span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co"># function to include different x variables. </span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co"># function to include different x variables </span></span>
 <span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>lm_fun_iter_x <span class="ot">&lt;-</span> <span class="cf">function</span>(indep_var) {</span>
 <span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>  <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">&quot;life_expectancy ~&quot;</span>, <span class="fu">paste</span>(indep_var, <span class="at">collapse =</span> <span class="st">&quot;+&quot;</span>))), <span class="at">data =</span> life_expec_dat)</span>
 <span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>}</span></code></pre></div>
@@ -632,7 +632,7 @@ ingredients” for each model parameter:</p>
 ## 
 ##   function (x) 
 ## broom::tidy(x, conf.int = TRUE)
-## &lt;environment: 0x109dabc70&gt;
+## &lt;environment: 0x10b045b28&gt;
 ## 
 ## 
 ## Head of specifications table (first 20 rows):</code></pre>
@@ -693,7 +693,7 @@ decision was true for that particular model specification</li>
 <p><strong>Any comments on the above plot?</strong> 🤔</p>
 </div>
 <div id="interpretable-effect-sizes" class="section level1">
-<h1>Interpretable Effect Sizes 🔍</h1>
+<h1>Interpretable Effect Sizes 🔎</h1>
 <p>While these plots make it easy to compare effects across
 coefficients, unit changes may not be comparable across variables. We
 can address this problem in several ways:</p>
@@ -1236,8 +1236,8 @@ plot</strong> will be made clearer then!</p>
 <hr />
 </div>
 </div>
-<div id="exercises" class="section level1">
-<h1>Exercises 🏋️</h1>
+<div id="appendix" class="section level1">
+<h1>Appendix</h1>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
 <span id="cb43-3"><a href="#cb43-3" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span>

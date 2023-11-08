@@ -139,12 +139,12 @@ Often, the modelling process requires you to run the same specification with **m
 **Step 1**: Define a function that let's you plug in different variables for `x` or `y`. The function should take the `x` and/or `y` variable(s) as a string and return a model object.
 
 ```{r}
-# function to include different y variables.
+# function to include different y variables
 lm_fun_iter_y <-  function(dep_var) {
   lm(as.formula(paste(dep_var, "~ gdp")), data = life_expec_dat)
 }
 
-# function to include different x variables. 
+# function to include different x variables 
 lm_fun_iter_x <- function(indep_var) {
   lm(as.formula(paste("life_expectancy ~", paste(indep_var, collapse = "+"))), data = life_expec_dat)
 }
@@ -514,7 +514,7 @@ modelplot(models, coef_omit = "Intercept") +
 We will cover data visualisation with R in much greater detail in the next session, so hopefully the section on **coefficient plot** will be made clearer then! 
 
 ***
-# Exercises `r emo::ji("person_lifting_weights")`
+# Appendix 
 
 ```{r, message=F, comment=F}
 library(tidyverse)
