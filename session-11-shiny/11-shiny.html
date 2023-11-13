@@ -13,13 +13,13 @@
 
 <title>Shiny Applications</title>
 
-<script src="10-shiny_files/header-attrs-2.18/header-attrs.js"></script>
-<script src="10-shiny_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="11-shiny_files/header-attrs-2.24/header-attrs.js"></script>
+<script src="11-shiny_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="10-shiny_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
-<script src="10-shiny_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="10-shiny_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="10-shiny_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<link href="11-shiny_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="11-shiny_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="11-shiny_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="11-shiny_files/bootstrap-3.3.5/shim/respond.min.js"></script>
 <style>h1 {font-size: 34px;}
        h1.title {font-size: 38px;}
        h2 {font-size: 30px;}
@@ -29,12 +29,12 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="10-shiny_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="10-shiny_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="10-shiny_files/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="10-shiny_files/navigation-1.1/tabsets.js"></script>
-<link href="10-shiny_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
-<script src="10-shiny_files/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="11-shiny_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="11-shiny_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="11-shiny_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="11-shiny_files/navigation-1.1/tabsets.js"></script>
+<link href="11-shiny_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="11-shiny_files/pagedtable-1.1/js/pagedtable.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -92,11 +92,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 code span.al { color: #ef2929; } /* Alert */
 code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #c4a000; } /* Attribute */
+code span.at { color: #204a87; } /* Attribute */
 code span.bn { color: #0000cf; } /* BaseN */
 code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4e9a06; } /* Char */
-code span.cn { color: #000000; } /* Constant */
+code span.cn { color: #8f5902; } /* Constant */
 code span.co { color: #8f5902; font-style: italic; } /* Comment */
 code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
 code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
@@ -105,14 +105,14 @@ code span.dv { color: #0000cf; } /* DecVal */
 code span.er { color: #a40000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #0000cf; } /* Float */
-code span.fu { color: #000000; } /* Function */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
 code span.im { } /* Import */
 code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
 code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
 code span.ot { color: #8f5902; } /* Other */
 code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code span.sc { color: #000000; } /* SpecialChar */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
 code span.ss { color: #4e9a06; } /* SpecialString */
 code span.st { color: #4e9a06; } /* String */
 code span.va { color: #000000; } /* Variable */
@@ -348,8 +348,8 @@ div.tocify {
 <p>Shiny is an R package that makes it easy to build interactive web
 applications (apps) straight from R. You need to install the package
 <code>shiny</code>:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;shiny&quot;</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;shiny&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(shiny)</span></code></pre></div>
 <p>For a quick illustration of what you can do with Shiny head over to
 the interactive visualisation tool for the <a
 href="https://gallery.shinyapps.io/freedom-press-index/?_ga=2.102672455.730641241.1638195397-1221361119.1634646993#home">Freedom
@@ -373,13 +373,13 @@ that your computer needs to build your app.</p></li>
 function creates Shiny app objects from an explicit UI/server
 pair.</p></li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># illustrated workflow </span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>()</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output) {}</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(<span class="at">ui =</span> ui, <span class="at">server =</span> server)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># illustrated workflow </span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>()</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output) {}</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="fu">shinyApp</span>(<span class="at">ui =</span> ui, <span class="at">server =</span> server)</span></code></pre></div>
 </div>
 <div id="running-a-shiny-app" class="section level3">
 <h3>Running a Shiny App</h3>
@@ -390,7 +390,7 @@ should have its own unique directory.</p>
 <p>You can run a Shiny app by giving the name of this directory to the
 function <code>runApp()</code>. For example if your Shiny app is in a
 directory called my_shiny_app, run it with the following code:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runApp</span>(<span class="st">&quot;my_shiny_app&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">runApp</span>(<span class="st">&quot;my_shiny_app&quot;</span>)</span></code></pre></div>
 <hr />
 </div>
 </div>
@@ -407,14 +407,14 @@ situations.</p>
 a title panel and a sidebar layout, which includes a sidebar panel and a
 main panel. Note that these elements are placed within the fluidPage
 function.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">&quot;title panel&quot;</span>),</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sidebarLayout</span>(</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sidebarPanel</span>(<span class="st">&quot;sidebar panel&quot;</span>),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mainPanel</span>(<span class="st">&quot;main panel&quot;</span>)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">&quot;title panel&quot;</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="fu">sidebarLayout</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>    <span class="fu">sidebarPanel</span>(<span class="st">&quot;sidebar panel&quot;</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    <span class="fu">mainPanel</span>(<span class="st">&quot;main panel&quot;</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  )</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>)</span></code></pre></div>
 <p>While titlePanel and sidebarLayout create a basic layout for your
 Shiny app, you can also create more advanced layouts. For example you
 can use navbarPage to give your app a multi-page user interface that
@@ -427,9 +427,9 @@ Application Layout Guide</a>.</p>
 further by italisising or making your font bold and even including html
 elements:</p>
 <p>To include images you need to use the <code>img</code> function.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">img</span>(<span class="at">src =</span> <span class="st">&quot;my_image.png&quot;</span>, <span class="at">height =</span> <span class="dv">72</span>, <span class="at">width =</span> <span class="dv">72</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;src =&quot; needs to be spelled out since the html expects it. </span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">img</span>(<span class="at">src =</span> <span class="st">&quot;my_image.png&quot;</span>, <span class="at">height =</span> <span class="dv">72</span>, <span class="at">width =</span> <span class="dv">72</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co"># &quot;src =&quot; needs to be spelled out since the html expects it. </span></span></code></pre></div>
 <p>To learn more about how you can customise your ui see <a
 href="https://shiny.rstudio.com/articles/html-tags.html">here</a> and <a
 href="https://shiny.rstudio.com/articles/tag-glossary.html">here</a>.</p>
@@ -465,17 +465,17 @@ the widget needs to do its job. They include things like initial values,
 ranges, and increments. You can find the exact arguments needed by a
 widget on the widget function’s help page, (e.g., ?selectInput).</p>
 <p>Relevant chunk from our running example:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fluidPage</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">&quot;Movie explorer&quot;</span>),</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fluidRow</span>(</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column</span>(<span class="dv">3</span>, ... ,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sliderInput</span>(<span class="at">name =</span> <span class="st">&quot;reviews&quot;</span>, <span class="at">label =</span> <span class="st">&quot;Minimum number of reviews on Rotten Tomatoes&quot;</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>          <span class="dv">10</span>, <span class="dv">300</span>, <span class="dv">80</span>, <span class="at">step =</span> <span class="dv">10</span>),</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        ... ,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">textInput</span>(<span class="st">&quot;director&quot;</span>, <span class="st">&quot;Director name contains (e.g., Miyazaki)&quot;</span>),</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    ...,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">&quot;xvar&quot;</span>, <span class="st">&quot;X-axis variable&quot;</span>, axis_vars, <span class="at">selected =</span> <span class="st">&quot;Meter&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">fluidPage</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">&quot;Movie explorer&quot;</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="fu">fluidRow</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>    <span class="fu">column</span>(<span class="dv">3</span>, ... ,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>        <span class="fu">sliderInput</span>(<span class="at">name =</span> <span class="st">&quot;reviews&quot;</span>, <span class="at">label =</span> <span class="st">&quot;Minimum number of reviews on Rotten Tomatoes&quot;</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>          <span class="dv">10</span>, <span class="dv">300</span>, <span class="dv">80</span>, <span class="at">step =</span> <span class="dv">10</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>        ... ,</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>        <span class="fu">textInput</span>(<span class="st">&quot;director&quot;</span>, <span class="st">&quot;Director name contains (e.g., Miyazaki)&quot;</span>),</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>    ),</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>    ...,</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">&quot;xvar&quot;</span>, <span class="st">&quot;X-axis variable&quot;</span>, axis_vars, <span class="at">selected =</span> <span class="st">&quot;Meter&quot;</span>)))</span></code></pre></div>
 <hr />
 </div>
 <div id="display-reactive-output" class="section level2">
@@ -495,17 +495,17 @@ output.</p>
 <code>tableOutput</code> for reactive tables.</p>
 <p>In our running example we used <code>textOutput</code> to give the
 number of movies displayed:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">&quot;Movie explorer&quot;</span>),</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fluidRow</span>(</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column</span>( ... ),</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column</span>(<span class="dv">9</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>           <span class="fu">plotlyOutput</span>(<span class="st">&quot;plot1&quot;</span>),</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>           <span class="fu">wellPanel</span>(</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>             <span class="fu">span</span>(<span class="st">&quot;Number of movies selected:&quot;</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">textOutput</span>(<span class="st">&quot;n_movies&quot;</span>)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>             )</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>           ))</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">&quot;Movie explorer&quot;</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="fu">fluidRow</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>    <span class="fu">column</span>( ... ),</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>    <span class="fu">column</span>(<span class="dv">9</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>           <span class="fu">plotlyOutput</span>(<span class="st">&quot;plot1&quot;</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>           <span class="fu">wellPanel</span>(</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>             <span class="fu">span</span>(<span class="st">&quot;Number of movies selected:&quot;</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>                  <span class="fu">textOutput</span>(<span class="st">&quot;n_movies&quot;</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>             )</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>           ))</span></code></pre></div>
 </div>
 <div id="step-2" class="section level3">
 <h3>Step 2:</h3>
@@ -521,13 +521,13 @@ this.</p>
 <p>To illustrate this let’s look at our example, where we used
 <code>textOutput("n_movies")</code>, in the server function we
 state:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  ... ,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>n_movies <span class="ot">&lt;-</span> <span class="fu">renderText</span>({ <span class="fu">nrow</span>(<span class="fu">movies</span>()) })</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that movies is a df that we create within our server function</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  ... ,</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  </span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  output<span class="sc">$</span>n_movies <span class="ot">&lt;-</span> <span class="fu">renderText</span>({ <span class="fu">nrow</span>(<span class="fu">movies</span>()) })</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>}</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co"># Note that movies is a df that we create within our server function</span></span></code></pre></div>
 <p>Every <code>output*</code> function in ui, has a corresponding
 <code>render*</code> function in server to build the reactive
 widget.</p>
@@ -837,7 +837,7 @@ neighbourhood diversity in the American Metropolis</a>.</p>
 
 <!-- Add font awesome icons -->
 <p style="text-align: center;">
-    <a href="https://github.com/intro-to-data-science-21"  <i class="fab fa-github"></i><a>
+    <a href="https://github.com/intro-to-data-science-23"  <i class="fab fa-github"></i><a>
 </p>
 
 &nbsp;
