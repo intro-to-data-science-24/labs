@@ -12,7 +12,8 @@
 7. Web scraping and APIs \[[**.html**](https://raw.githack.com/intro-to-data-science-23/labs/main/session-07-web-scraping/7-web-scraping.html) | [**.Rmd**](https://github.com/intro-to-data-science-23/labs/blob/main/session-07-web-scraping/7-web-scraping.Rmd)\]
 8. Modelling \[[**.html**](https://raw.githack.com/intro-to-data-science-23/labs/main/session-08-modelling/8-modelling.html) | [**.Rmd**](https://github.com/intro-to-data-science-23/labs/blob/main/session-08-modelling/8-modelling.Rmd)\]
 9. Visualization \[[**.html**](https://raw.githack.com/intro-to-data-science-23/labs/main/session-09-visualization/9-visualization.html) | [**.Rmd**](https://github.com/intro-to-data-science-23/labs/blob/main/session-09-visualization/9-visualization.Rmd)\]
-10. Filexdashboards and Shiny Apps \[[**.html**](https://raw.githack.com/intro-to-data-science-23/labs/main/session-10-shiny/10-shiny.html) | [**.Rmd**](https://github.com/intro-to-data-science-23/labs/blob/main/session-10-shiny/10-shiny.Rmd)\]
+10. Packaging in R \[[**.html**](https://raw.githack.com/intro-to-data-science-23/labs/main/session-10-packaging/10-visualization.html) | [**.Rmd**](https://github.com/intro-to-data-science-23/labs/blob/main/session-10-packaging/10-packaging.Rmd)\]
+11. Filexdashboards and Shiny Apps \[[**.html**](https://raw.githack.com/intro-to-data-science-23/labs/main/session-11-shiny/11-shiny.html) | [**.Rmd**](https://github.com/intro-to-data-science-23/labs/blob/main/session-11-shiny/11-shiny.Rmd)\]
 
 ## Instructors
 
