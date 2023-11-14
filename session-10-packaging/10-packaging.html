@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Packaging</title>
+
+<script src="10-packaging_files/header-attrs-2.24/header-attrs.js"></script>
+<script src="10-packaging_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="10-packaging_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="10-packaging_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="10-packaging_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="10-packaging_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="10-packaging_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="10-packaging_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="10-packaging_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="10-packaging_files/navigation-1.1/tabsets.js"></script>
+<link href="10-packaging_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="10-packaging_files/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="custom.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Packaging</h1>
+<h3 class="subtitle">Next steps to more robust, reliable and efficient
+programming in R.</h3>
+
+</div>
+
+
+<hr />
+<p>Welcome back everyone! Today we will have a look at</p>
+<ol style="list-style-type: decimal">
+<li>How to write your own package in R</li>
+<li>Automation in R</li>
+</ol>
+<hr />
+<div id="writing-packages-in-r" class="section level1">
+<h1>Writing Packages in R 📦</h1>
+<p>First of all, there is a very nice cheat sheet on <a
+href="https://rklopotek.blog.uksw.edu.pl/files/2017/09/package-development.pdf">package
+development</a>.</p>
+<p>Remember the overall workflow of creating a package:</p>
+<p><img src="pics/package_workflow2.png" width="462" style="display: block; margin: auto;" /></p>
+<p>Source: <a
+href="https://iqss.github.io/dss-rbuild/package-development.html">Simo
+Goshev &amp; Steve Worthinton</a></p>
+<p>We now run through the development of a small toy package.</p>
+<p>Note: In this minimal example, we won’t sync the package to GitHub as
+not to overload information and won’t do version control via Git. In
+principle, it is strongly recommended to use Git for version control
+during the process.</p>
+<div id="step-1-load-the-packages-you-will-need" class="section level2">
+<h2>Step 1: Load the packages you will need</h2>
+<p>Load the <code>devtools</code> package, which is the public face of a
+set of packages that support various aspects of package development.
+Also load the <code>roxygen2</code> package, which provides helper
+functions to document your package.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(devtools)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(roxygen2)</span></code></pre></div>
+</div>
+<div id="step-2-create-your-package-directory" class="section level2">
+<h2>Step 2: Create your package directory 🏠</h2>
+<p>You are going to create a directory with the bare minimum folders of
+R packages. We are going to make a very tiny package providing only a
+single function as an illustration.</p>
+<p>Call <code>create_package()</code> from the <code>usethis</code>
+package, which is loaded when you load <code>devtools</code>, to
+initialize a new package in a directory on your computer (and create the
+directory, if necessary). Make a deliberate choice about where to create
+this package on your computer. It should probably be somewhere within
+your home directory, alongside your other R projects. It should not be
+nested inside another RStudio Project, R package, or Git repo. Nor
+should it be in an R package library, which holds packages that have
+already been built and installed. The conversion of the source package
+we are creating here into an installed package is part of what devtools
+facilitates. Don’t try to do devtools’ job for it!</p>
+<p>Substitute your chosen path into a <code>create_package()</code> call
+like this:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">create_package</span>(<span class="st">&quot;./awesomepackage&quot;</span>, <span class="at">open =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># create_package(&quot;~/Documents/R/awesomepackage&quot;, open = FALSE)</span></span></code></pre></div>
+<p>Also, let’s navigate into that directory, which will allow us to use
+some fancy functions down the line.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;./awesomepackage&quot;</span>)</span></code></pre></div>
+</div>
+<div id="step-3-add-your-functions" class="section level2">
+<h2>Step 3: Add your functions</h2>
+<p>Now it’s time to add the functions you want to create the package
+for. Let’s just work with a toy function here:</p>
+<p>Some years ago, there used to be an issue when we catenating two
+factors (see this stackoverflow <a
+href="https://stackoverflow.com/questions/3443576/how-to-concatenate-factors-without-them-being-converted-to-integer-level/5068939">discussion</a>).
+The problem has already been solved, for example within the
+<code>forcats</code> package, but let’s pretend it had not.</p>
+<p>For whatever reason, the result of catenating two factors used to be
+an integer vector consisting of the numbers 1, 2, 3, and 4. A possible
+solution would have been to coerce each factor to character, catenate,
+then re-convert to factor.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;character&quot;</span>, <span class="st">&quot;hits&quot;</span>, <span class="st">&quot;your&quot;</span>, <span class="st">&quot;eyeballs&quot;</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;but&quot;</span>, <span class="st">&quot;integer&quot;</span>, <span class="st">&quot;where it&quot;</span>, <span class="st">&quot;counts&quot;</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="fu">c</span>(a, b) <span class="co"># used to cause troubles in the past</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="fu">factor</span>(<span class="fu">c</span>(<span class="fu">as.character</span>(a), <span class="fu">as.character</span>(b))) <span class="co"># was a common workaround (no longer necessary)</span></span></code></pre></div>
+<p>Let’s drop that logic into the body of a function called
+<code>fbind()</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>fbind <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="fu">as.character</span>(a), <span class="fu">as.character</span>(b)))</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>}</span></code></pre></div>
+<p>Save this function as an R file, <code>fbind.R</code>, to the R
+directory in your package folder.</p>
+<p>Alternatively, you can use the helper function
+<code>use_r()</code>from the <code>usethis</code> package, which
+automatically creates and/or opens a script below <code>R/</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">use_r</span>(<span class="st">&quot;fbind&quot;</span>)</span></code></pre></div>
+</div>
+<div id="step-4-add-documention" class="section level2">
+<h2>Step 4: Add documention 🎥</h2>
+<p>While not strictly necessary, it’s useful for Future-You and anybody
+else if you provide some documentation of your function. Luckily,
+there’s a tool again that helps you doing that. All you have to do is to
+add a comment like the following at the beginning of your function file,
+just like:</p>
+<pre><code>#&#39; Bind two factors
+#&#39;
+#&#39; Create a new factor from two existing factors, where the new factor&#39;s levels
+#&#39; are the union of the levels of the input factors.
+#&#39;
+#&#39; @param a factor
+#&#39; @param b factor
+#&#39;
+#&#39; @return factor
+#&#39; @export
+#&#39; @examples
+#&#39; fbind(iris$Species[c(1, 51, 101)], PlantGrowth$group[c(1, 11, 21)])</code></pre>
+<p>Then, you can run <code>document()</code> from roxygen2 to
+automatically create the documentation for you:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">document</span>()</span></code></pre></div>
+<p>You should now be able to preview your help file like so:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>?fbind</span></code></pre></div>
+</div>
+<div id="step-5-install" class="section level2">
+<h2>Step 5: Install!</h2>
+<p>Now it is as simple as installing the package! You need to run this
+from the parent working directory that contains the package folder.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;..&quot;</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">install</span>(<span class="st">&quot;awesomepackage&quot;</span>)</span></code></pre></div>
+<p>Now you have a real, live, functioning R package. For example, try
+typing ?fbind. You should see the standard help page pop up!</p>
+</div>
+<div id="step-6-check-your-package" class="section level2">
+<h2>Step 6: Check your package</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;awesomepackage&quot;</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">check</span>()</span></code></pre></div>
+</div>
+<div id="step-7-add-a-license" class="section level2">
+<h2>Step 7: Add a license 🏷</h2>
+<p>The field of (software) licensing is complex. Check out this <a
+href="https://choosealicense.com/">resource</a> for a start. In terms of
+open source licenses, there are two major types: - permissive licences:
+easy-going; can be freely copied, modified, and published. examples:
+MIT, Apache - copyleft licenses: can be freely copied and modified or
+personal use, but publishing may be restricted. example: GPL</p>
+<p>The usethis package comes with helper functions to add various
+licenses with minimal effort.</p>
+<p>Things can become more complicated when you use other people’s code
+and want to bundle it with yours. The licenses may not be compatible…
+see more <a
+href="https://en.wikipedia.org/wiki/License_compatibility">here</a>.</p>
+<p>More detailed information on R package licenses can be found <a
+href="https://r-pkgs.org/license.html">here</a> for more
+information.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">use_mit_license</span>(<span class="st">&quot;Your Name&quot;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="co"># use_gpl_license(&quot;Your Name&quot;)</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co"># use_proprietary_license(&quot;Your Name&quot;) # don&#39;t make it open sources; cannot be published on CRAN</span></span></code></pre></div>
+</div>
+<div id="additional-steps" class="section level2">
+<h2>Additional steps</h2>
+<p>In case you’re having a nice idea for an actual package, please take
+a look at some much more in depth explanations, e.g. by Hadley Wickham
+and Jenny Bryan: R packages, <a
+href="https://r-pkgs.org/whole-game.html">Chapter 2 “The whole game”</a>
+or Karl Broman: <a href="https://kbroman.org/pkg_primer/">R package
+primer</a>. An overview of next steps to take are:</p>
+<ul>
+<li>Iterative loading and testing -&gt; load_all()</li>
+<li>Adding unit tests -&gt; use_testthat()</li>
+<li>Import functions from other packages -&gt; use_package()</li>
+<li>Version control and collaboration -&gt; use_github()</li>
+<li>Add a proper public description -&gt; use_readme_rmd()</li>
+<li>Add vignettes -&gt; use_vignette()</li>
+<li>Submit to CRAN -&gt; devtools::build(), devtools::release()</li>
+</ul>
+</div>
+<div id="take-home-package-exercise" class="section level2">
+<h2>Take-home Package Exercise 🧳</h2>
+<p>As we do not have an assignment to this session, here is an optional
+take-home exercise to self-test your packaging skills.</p>
+<p>Build your own package and publish it in a public GitHub repository.
+Here are the requirements:</p>
+<ul>
+<li>It should contain at least one function that you wrote. The function
+does not have to do anything innovative. Anything works really.</li>
+<li>It should contain all the necessary package components.</li>
+<li>The repository should contain a README.md that briefly reports what
+the package/function does.</li>
+<li>Everyone should be able to install your package using
+devtools::install_github(“<your-github-account-name>/<your-package-name>”).</li>
+</ul>
+<p>All you have to provide to users interested in your package would be
+this line of code:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;&lt;your-github-account-name&gt;/&lt;your-package-name&gt;&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="automation-in-r" class="section level1">
+<h1>Automation in R</h1>
+<p>We won’t cover automation in the lab today, but here is a summary of
+helpful resources in case you are planning to:</p>
+<p><strong>1. Organize the workflow of a complex project</strong></p>
+<ul>
+<li>by running multiple scripts through a “master” R-script - see <a
+href="https://github.com/intro-to-data-science-21/labs/tree/main/session-9-debugging/automation-examples/01-automation-just-r">master.R
+example</a></li>
+<li>by running multiple scripts through a shell script - see <a
+href="https://github.com/intro-to-data-science-21/labs/tree/main/session-9-debugging/automation-examples/02-automation-shell-rscript">master.sh
+example</a></li>
+<li>by using an R make-file - see <a
+href="https://github.com/intro-to-data-science-21/labs/tree/main/session-9-debugging/automation-examples/03-automation-r-make">makefile
+example</a>. Note that an alternative package to use here would be <a
+href="https://docs.ropensci.org/targets/">targets</a></li>
+</ul>
+<p><strong>2. Schedule reoccurring tasks</strong></p>
+<ul>
+<li>using the <a
+href="https://cran.r-project.org/web/packages/taskscheduleR/vignettes/taskscheduleR.html">tashscheduleR</a>
+package in R</li>
+<li>through the command line using <code>schtasks.exe</code></li>
+<li>through the <a
+href="https://en.wikipedia.org/wiki/Windows_Task_Scheduler">Windows Task
+Scheduler</a></li>
+<li>on macOS you would use <a
+href="https://en.wikipedia.org/wiki/Cron">cron</a> or <a
+href="https://en.wikipedia.org/wiki/Launchd">launchd</a></li>
+</ul>
+<hr />
+<div id="sources" class="section level2">
+<h2>Sources</h2>
+<p>The debugging tutorial is inspired by Sean C. Anderson’s work on <a
+href="https://seananderson.ca/2013/08/23/debugging-r/">debugging R
+functions</a>.</p>
+<p>The packaging tutorial draws heavily on resources by Hilary Parker:
+<a
+href="https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/">Writing
+an R package from scratch</a>, Hadley Wickham and Jenny Bryan: R
+packages, <a href="https://r-pkgs.org/whole-game.html">Chapter 2 “The
+whole game”</a> and Karl Broman: <a
+href="https://kbroman.org/pkg_primer/">R package primer</a></p>
+</div>
+</div>
+
+&nbsp;
+<hr />
+<p style="text-align: center;">A work by Lisa Oswald & Tom Arend</a></p>
+<p style="text-align: center;"><span style="color: #808080;"><em>Prepared for Intro to Data Science, taught by Simon Munzert</em></span></p>
+<p style="text-align: center;"><span style="color: #808080;"><em><a href="https://www.hertie-school.org/en/">Hertie School, Berlin</em></span></p>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" >
+
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+    <a href="https://github.com/intro-to-data-science-21"  <i class="fab fa-github"></i><a>
+</p>
+
+&nbsp;
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

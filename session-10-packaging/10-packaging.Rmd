@@ -1,0 +1,270 @@
+---
+title: "Packaging"
+subtitle: "Next steps to more robust, reliable and efficient programming in R."
+output: 
+  html_document:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    theme: lumen
+    toc_depth: 3
+    toc_float: true
+    css: custom.css 
+    self_contained: false
+    includes:
+      after_body: footer.html
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(digits=2)
+
+# save the built-in output hook
+hook_output <- knitr::knit_hooks$get("output")
+
+# set a new output hook to truncate text output
+knitr::knit_hooks$set(output = function(x, options) {
+  if (!is.null(n <- options$out.lines)) {
+    x <- xfun::split_lines(x)
+    if (length(x) > n) {
+      # truncate the output
+      x <- c(head(x, n), "....\n")
+    }
+    x <- paste(x, collapse = "\n")
+  }
+  hook_output(x, options)
+})
+
+colorise <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{%s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'>%s</span>", color,
+      x)
+  } else x
+}
+
+```
+
+***
+Welcome back everyone! Today we will have a look at 
+
+1. How to write your own package in R
+2. Automation in R
+
+***
+# Writing Packages in R `r emo::ji("package")`
+
+First of all, there is a very nice cheat sheet on [package development](https://rklopotek.blog.uksw.edu.pl/files/2017/09/package-development.pdf).
+
+Remember the overall workflow of creating a package:
+
+```{r, fig.align='center', echo=F}
+knitr::include_graphics("pics/package_workflow2.png", dpi = 200)
+```
+
+Source: [Simo Goshev & Steve Worthinton](https://iqss.github.io/dss-rbuild/package-development.html)
+
+
+We now run through the development of a small toy package.
+
+Note: In this minimal example, we won't sync the package to GitHub as not to overload information and won't do version control via Git. In principle, it is strongly recommended to use Git for version control during the process.
+
+
+## Step 1: Load the packages you will need
+
+Load the `devtools` package, which is the public face of a set of packages that support various aspects of package development. Also load the `roxygen2` package, which provides helper functions to document your package.
+
+```{r eval = FALSE}
+library(devtools)
+library(roxygen2)
+```
+
+
+## Step 2: Create your package directory `r emo::ji("house")`
+
+You are going to create a directory with the bare minimum folders of R packages. We are going to make a very tiny package providing only a single function as an illustration.
+
+Call `create_package()` from the `usethis` package, which is loaded when you load `devtools`, to initialize a new package in a directory on your computer (and create the directory, if necessary). Make a deliberate choice about where to create this package on your computer. It should probably be somewhere within your home directory, alongside your other R projects. It should not be nested inside another RStudio Project, R package, or Git repo. Nor should it be in an R package library, which holds packages that have already been built and installed. The conversion of the source package we are creating here into an installed package is part of what devtools facilitates. Don't try to do devtools' job for it! 
+
+Substitute your chosen path into a `create_package()` call like this:
+
+```{r, eval = FALSE}
+create_package("./awesomepackage", open = FALSE)
+# create_package("~/Documents/R/awesomepackage", open = FALSE)
+```
+
+Also, let's navigate into that directory, which will allow us to use some fancy functions down the line.
+
+```{r, eval = FALSE}
+setwd("./awesomepackage")
+```
+
+## Step 3: Add your functions
+
+Now it's time to add the functions you want to create the package for. Let's just work with a toy function here:
+
+Some years ago, there used to be an issue when we catenating two factors (see this stackoverflow [discussion](https://stackoverflow.com/questions/3443576/how-to-concatenate-factors-without-them-being-converted-to-integer-level/5068939)).
+The problem has already been solved, for example within the `forcats` package, but let's pretend it had not.
+
+
+For whatever reason, the result of catenating two factors used to be an integer vector consisting of the numbers 1, 2, 3, and 4. A possible solution would have been to coerce each factor to character, catenate, then re-convert to factor.
+
+```{r eval = FALSE}
+a <- factor(c("character", "hits", "your", "eyeballs"))
+b <- factor(c("but", "integer", "where it", "counts"))
+
+c(a, b) # used to cause troubles in the past
+
+factor(c(as.character(a), as.character(b))) # was a common workaround (no longer necessary)
+
+```
+
+Let's drop that logic into the body of a function called `fbind()`:
+
+```{r eval = FALSE}
+fbind <- function(a, b) {
+ factor(c(as.character(a), as.character(b)))
+}
+```
+
+Save this function as an R file, `fbind.R`, to the R directory in your package folder.
+
+Alternatively, you can use the helper function `use_r()`from the `usethis` package, which automatically creates and/or opens a script below `R/`: 
+
+```{r, eval = FALSE}
+use_r("fbind")
+```
+
+
+## Step 4: Add documention `r emo::ji("movie_camera")`
+
+While not strictly necessary, it's useful for Future-You and anybody else if you provide some documentation of your function. Luckily, there's a tool again that helps you doing that. All you have to do is to add a comment like the following at the beginning of your function file, just like:
+
+```
+#' Bind two factors
+#'
+#' Create a new factor from two existing factors, where the new factor's levels
+#' are the union of the levels of the input factors.
+#'
+#' @param a factor
+#' @param b factor
+#'
+#' @return factor
+#' @export
+#' @examples
+#' fbind(iris$Species[c(1, 51, 101)], PlantGrowth$group[c(1, 11, 21)])
+```
+
+Then, you can run `document()` from roxygen2 to automatically create the documentation for you:
+
+```{r document-fbind, eval = FALSE}
+document()
+```
+
+You should now be able to preview your help file like so:
+
+```{r eval = FALSE}
+?fbind
+```
+
+
+## Step 5: Install!
+
+Now it is as simple as installing the package! You need to run this from the parent working directory that contains the package folder.
+
+```{r eval = FALSE}
+setwd("..")
+install("awesomepackage")
+```
+
+Now you have a real, live, functioning R package. For example, try typing ?fbind. You should see the standard help page pop up!
+
+## Step 6: Check your package
+
+```{r eval = FALSE}
+setwd("awesomepackage")
+check()
+```
+
+
+## Step 7: Add a license `r emo::ji("tag")`
+
+The field of (software) licensing is complex. Check out this [resource](https://choosealicense.com/) for a start.
+In terms of open source licenses, there are two major types:
+	- permissive licences: easy-going; can be freely copied, modified, and published. examples: MIT, Apache
+	- copyleft licenses: can be freely copied and modified or personal use, but publishing may be restricted. example: GPL
+
+The usethis package comes with helper functions to add various licenses with minimal effort.
+
+Things can become more complicated when you use other people's code and want to bundle it with yours. The licenses may not be compatible... see more [here](https://en.wikipedia.org/wiki/License_compatibility). 
+
+More detailed information on R package licenses can be found [here](https://r-pkgs.org/license.html) for more information.
+
+```{r eval = FALSE}
+use_mit_license("Your Name")
+# use_gpl_license("Your Name")
+# use_proprietary_license("Your Name") # don't make it open sources; cannot be published on CRAN
+```
+
+## Additional steps
+
+In case you're having a nice idea for an actual package, please take a look at some much more in depth explanations, e.g. by
+Hadley Wickham and Jenny Bryan: R packages, [Chapter 2 "The whole game"](https://r-pkgs.org/whole-game.html) or 
+Karl Broman: [R package primer](https://kbroman.org/pkg_primer/). An overview of next steps to take are:
+
+- Iterative loading and testing -> load_all()
+- Adding unit tests -> use_testthat()
+- Import functions from other packages -> use_package()
+- Version control and collaboration -> use_github()
+- Add a proper public description -> use_readme_rmd()
+- Add vignettes -> use_vignette()
+- Submit to CRAN -> devtools::build(), devtools::release()
+
+## Take-home Package Exercise `r emo::ji("luggage")`
+
+As we do not have an assignment to this session, here is an optional take-home exercise to self-test your packaging skills.
+
+Build your own package and publish it in a public GitHub repository. Here are the requirements:
+
+  * It should contain at least one function that you wrote. The function does not have to do anything innovative. Anything works really.
+  * It should contain all the necessary package components.
+  * The repository should contain a README.md that briefly reports what the package/function does.
+  * Everyone should be able to install your package using devtools::install_github("<your-github-account-name>/<your-package-name>").
+  
+All you have to provide to users interested in your package would be this line of code:
+
+```{r, eval = FALSE}
+devtools::install_github("<your-github-account-name>/<your-package-name>")
+``` 
+
+
+# Automation in R
+
+We won't cover automation in the lab today, but here is a summary of helpful resources in case you are planning to:
+
+**1. Organize the workflow of a complex project**
+
+* by running multiple scripts through a "master" R-script - see [master.R example](https://github.com/intro-to-data-science-21/labs/tree/main/session-9-debugging/automation-examples/01-automation-just-r)
+* by running multiple scripts through a shell script - see [master.sh example](https://github.com/intro-to-data-science-21/labs/tree/main/session-9-debugging/automation-examples/02-automation-shell-rscript)
+* by using an R make-file - see [makefile example](https://github.com/intro-to-data-science-21/labs/tree/main/session-9-debugging/automation-examples/03-automation-r-make). Note that an alternative package to use here would be [targets](https://docs.ropensci.org/targets/)
+
+**2. Schedule reoccurring tasks**
+
+* using the [tashscheduleR](https://cran.r-project.org/web/packages/taskscheduleR/vignettes/taskscheduleR.html) package in R
+* through the command line using `schtasks.exe`
+* through the [Windows Task Scheduler](https://en.wikipedia.org/wiki/Windows_Task_Scheduler)
+* on macOS you would use [cron](https://en.wikipedia.org/wiki/Cron) or [launchd](https://en.wikipedia.org/wiki/Launchd)
+
+
+---
+
+## Sources
+
+The debugging tutorial is inspired by Sean C. Anderson's work on [debugging R functions](https://seananderson.ca/2013/08/23/debugging-r/).
+
+The packaging tutorial draws heavily on resources by Hilary Parker: [Writing an R package from scratch](https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/), 
+Hadley Wickham and Jenny Bryan: R packages, [Chapter 2 "The whole game"](https://r-pkgs.org/whole-game.html) and 
+Karl Broman: [R package primer](https://kbroman.org/pkg_primer/)
+
