@@ -433,7 +433,7 @@ cors <- df %>%
   summarise(cor = cor(lifeExp, log10(gdpPercap)))
 ```
 
-We can use the `geom_tile()` geom to create the heatmap; specifying the variable we want to display in color via the `fill` command. We can improve the left plot in a number of ways. First, the color scheme is not necessarily intuitive. The colors aren't separated enough to best display smaller differences in the correlation coefficient, because they are based on the same hue. We can customize out colors to display a gradient with multiple hues.
+We can use the `geom_tile()` geom to create the heatmap; specifying the variable we want to display in color via the `fill` command. We can improve the left plot in a number of ways. First, the color scheme is not necessarily intuitive. The colors aren't separated enough to best display smaller differences in the correlation coefficient, because they are based on the same hue. We can customize our colors to display a gradient with multiple hues.
 ```{r, fig.show="hold", out.width="50%", warning=F, message=F}
 par(mar = c(4, 4, .1, .1)) # to let the figures sit side by side
 
