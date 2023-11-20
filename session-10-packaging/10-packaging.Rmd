@@ -105,11 +105,10 @@ setwd("./awesomepackage")
 
 Now it's time to add the functions you want to create the package for. Let's just work with a toy function here:
 
-Some years ago, there used to be an issue when we catenating two factors (see this stackoverflow [discussion](https://stackoverflow.com/questions/3443576/how-to-concatenate-factors-without-them-being-converted-to-integer-level/5068939)).
-The problem has already been solved, for example within the `forcats` package, but let's pretend it had not.
+Some years ago, there used to be an issue when you tried to concatenate two factors (see this stackoverflow [discussion](https://stackoverflow.com/questions/3443576/how-to-concatenate-factors-without-them-being-converted-to-integer-level/5068939)). By now, the problem has been solved in the `forcats` package, but let's pretend it has not.
 
 
-For whatever reason, the result of catenating two factors used to be an integer vector consisting of the numbers 1, 2, 3, and 4. A possible solution would have been to coerce each factor to character, catenate, then re-convert to factor.
+For whatever reason, the result of concatenating two factors used to be an integer vector consisting of the numbers `1`, `2`, `3`, and `4`. A possible solution would have been to coerce each factor to a character type, concatenate, and then re-convert to a factor type.
 
 ```{r eval = FALSE}
 a <- factor(c("character", "hits", "your", "eyeballs"))
@@ -140,7 +139,7 @@ use_r("fbind")
 
 ## Step 4: Add documention `r emo::ji("movie_camera")`
 
-While not strictly necessary, it's useful for Future-You and anybody else if you provide some documentation of your function. Luckily, there's a tool again that helps you doing that. All you have to do is to add a comment like the following at the beginning of your function file, just like:
+While not strictly necessary, it's useful for Future-You and anybody else who you might use your package to provide some documentation for your function. Luckily, there's another tool to help with this. All you have to do is add a comment like the following at the beginning of the script containing your function:
 
 ```
 #' Bind two factors
@@ -179,7 +178,7 @@ setwd("..")
 install("awesomepackage")
 ```
 
-Now you have a real, live, functioning R package. For example, try typing ?fbind. You should see the standard help page pop up!
+Now you have a real, live, functioning R package. For example, try typing `?fbind`. You should see the standard help page pop up!
 
 ## Step 6: Check your package
 
@@ -191,12 +190,13 @@ check()
 
 ## Step 7: Add a license `r emo::ji("tag")`
 
-The field of (software) licensing is complex. Check out this [resource](https://choosealicense.com/) for a start.
+The field of (software) licensing is complex. Check out this [resource](https://choosealicense.com/) for starters.
 In terms of open source licenses, there are two major types:
-	- permissive licences: easy-going; can be freely copied, modified, and published. examples: MIT, Apache
-	- copyleft licenses: can be freely copied and modified or personal use, but publishing may be restricted. example: GPL
 
-The usethis package comes with helper functions to add various licenses with minimal effort.
+  * **Permissive licences**: easy-going; can be freely copied, modified, and published. (examples: MIT, Apache)
+	* **Copyleft licenses**: can be freely copied and modified for personal use, but publishing may be restricted. (example: GPL)
+
+The `usethis` package comes with helper functions to add various licenses with minimal effort.
 
 Things can become more complicated when you use other people's code and want to bundle it with yours. The licenses may not be compatible... see more [here](https://en.wikipedia.org/wiki/License_compatibility). 
 
@@ -210,39 +210,32 @@ use_mit_license("Your Name")
 
 ## Additional steps
 
-In case you're having a nice idea for an actual package, please take a look at some much more in depth explanations, e.g. by
+In case you're having a nice idea for an actual package, please take a look at some much more in-depth explanations, e.g. by
 Hadley Wickham and Jenny Bryan: R packages, [Chapter 2 "The whole game"](https://r-pkgs.org/whole-game.html) or 
-Karl Broman: [R package primer](https://kbroman.org/pkg_primer/). An overview of next steps to take are:
+Karl Broman: [R package primer](https://kbroman.org/pkg_primer/). Here's an overview of next steps you would follow:
 
-- Iterative loading and testing -> load_all()
-- Adding unit tests -> use_testthat()
-- Import functions from other packages -> use_package()
-- Version control and collaboration -> use_github()
-- Add a proper public description -> use_readme_rmd()
-- Add vignettes -> use_vignette()
-- Submit to CRAN -> devtools::build(), devtools::release()
+- Iterative loading and testing `r emo::ji("right_arrow")` `load_all()`
+- Adding unit tests `r emo::ji("right_arrow")` `use_testthat()`
+- Import functions from other packages `r emo::ji("right_arrow")` `use_package()`
+- Version control and collaboration `r emo::ji("right_arrow")` `use_github()`
+- Add a proper public description `r emo::ji("right_arrow")` `use_readme_rmd()`
+- Add vignettes `r emo::ji("right_arrow")` `use_vignette()`
+- Submit to CRAN `r emo::ji("right_arrow")` `devtools::build()`, `devtools::release()`
 
 ## Exercise 
 
-As we do not have an assignment to this session, let's spend some time building our own package and publishing it in a public GitHub repository. 
+Since we do not have an assignment for this session, let's spend some time building our own package and publishing it to a public GitHub repository. 
 
 Here are the requirements:
 
-  * It should contain at least one function that you wrote. The function does not have to do anything innovative. Anything works really.
+  * It should contain at least one function that you yourself have written. The function does not have to do anything innovative. Anything works really.
   * It should contain all the necessary package components.
-  * The repository should contain a README.md that briefly reports what the package/function does.
-  * Everyone should be able to install your package using devtools::install_github("<your-github-account-name>/<your-package-name>").
-  
-All you have to provide to users interested in your package would be this line of code:
-
-```{r, eval = FALSE}
-devtools::install_github("<your-github-account-name>/<your-package-name>")
-``` 
-
+  * The repository should contain a `README.md` that briefly describes what the package/function does.
+  * Anyone should be able to install your package using `devtools::install_github("<your-github-account-name>/<your-package-name>")`.
 
 # Automation in R
 
-We won't cover automation in the lab today, but here is a summary of helpful resources in case you are planning to:
+We won't cover automation in the lab today, but here is a summary of helpful resources in case you ever need to automate your workflow:
 
 **1. Organize the workflow of a complex project**
 

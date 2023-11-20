@@ -13,7 +13,7 @@
 
 <title>Packaging</title>
 
-<script src="10-packaging_files/header-attrs-2.24/header-attrs.js"></script>
+<script src="10-packaging_files/header-attrs-2.25/header-attrs.js"></script>
 <script src="10-packaging_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="10-packaging_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
@@ -394,15 +394,16 @@ some fancy functions down the line.</p>
 <h2>Step 3: Add your functions</h2>
 <p>Now it’s time to add the functions you want to create the package
 for. Let’s just work with a toy function here:</p>
-<p>Some years ago, there used to be an issue when we catenating two
-factors (see this stackoverflow <a
+<p>Some years ago, there used to be an issue when you tried to
+concatenate two factors (see this stackoverflow <a
 href="https://stackoverflow.com/questions/3443576/how-to-concatenate-factors-without-them-being-converted-to-integer-level/5068939">discussion</a>).
-The problem has already been solved, for example within the
-<code>forcats</code> package, but let’s pretend it had not.</p>
-<p>For whatever reason, the result of catenating two factors used to be
-an integer vector consisting of the numbers 1, 2, 3, and 4. A possible
-solution would have been to coerce each factor to character, catenate,
-then re-convert to factor.</p>
+By now, the problem has been solved in the <code>forcats</code> package,
+but let’s pretend it has not.</p>
+<p>For whatever reason, the result of concatenating two factors used to
+be an integer vector consisting of the numbers <code>1</code>,
+<code>2</code>, <code>3</code>, and <code>4</code>. A possible solution
+would have been to coerce each factor to a character type, concatenate,
+and then re-convert to a factor type.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;character&quot;</span>, <span class="st">&quot;hits&quot;</span>, <span class="st">&quot;your&quot;</span>, <span class="st">&quot;eyeballs&quot;</span>))</span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;but&quot;</span>, <span class="st">&quot;integer&quot;</span>, <span class="st">&quot;where it&quot;</span>, <span class="st">&quot;counts&quot;</span>))</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
@@ -424,10 +425,10 @@ automatically creates and/or opens a script below <code>R/</code>:</p>
 <div id="step-4-add-documention" class="section level2">
 <h2>Step 4: Add documention 🎥</h2>
 <p>While not strictly necessary, it’s useful for Future-You and anybody
-else if you provide some documentation of your function. Luckily,
-there’s a tool again that helps you doing that. All you have to do is to
-add a comment like the following at the beginning of your function file,
-just like:</p>
+else who you might use your package to provide some documentation for
+your function. Luckily, there’s another tool to help with this. All you
+have to do is add a comment like the following at the beginning of the
+script containing your function:</p>
 <pre><code>#&#39; Bind two factors
 #&#39;
 #&#39; Create a new factor from two existing factors, where the new factor&#39;s levels
@@ -453,7 +454,8 @@ from the parent working directory that contains the package folder.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;..&quot;</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">install</span>(<span class="st">&quot;awesomepackage&quot;</span>)</span></code></pre></div>
 <p>Now you have a real, live, functioning R package. For example, try
-typing ?fbind. You should see the standard help page pop up!</p>
+typing <code>?fbind</code>. You should see the standard help page pop
+up!</p>
 </div>
 <div id="step-6-check-your-package" class="section level2">
 <h2>Step 6: Check your package</h2>
@@ -463,13 +465,19 @@ typing ?fbind. You should see the standard help page pop up!</p>
 <div id="step-7-add-a-license" class="section level2">
 <h2>Step 7: Add a license 🏷</h2>
 <p>The field of (software) licensing is complex. Check out this <a
-href="https://choosealicense.com/">resource</a> for a start. In terms of
-open source licenses, there are two major types: - permissive licences:
-easy-going; can be freely copied, modified, and published. examples:
-MIT, Apache - copyleft licenses: can be freely copied and modified or
-personal use, but publishing may be restricted. example: GPL</p>
-<p>The usethis package comes with helper functions to add various
-licenses with minimal effort.</p>
+href="https://choosealicense.com/">resource</a> for starters. In terms
+of open source licenses, there are two major types:</p>
+<ul>
+<li><strong>Permissive licences</strong>: easy-going; can be freely
+copied, modified, and published. (examples: MIT, Apache)
+<ul>
+<li><strong>Copyleft licenses</strong>: can be freely copied and
+modified for personal use, but publishing may be restricted. (example:
+GPL)</li>
+</ul></li>
+</ul>
+<p>The <code>usethis</code> package comes with helper functions to add
+various licenses with minimal effort.</p>
 <p>Things can become more complicated when you use other people’s code
 and want to bundle it with yours. The licenses may not be compatible…
 see more <a
@@ -484,45 +492,46 @@ information.</p>
 <div id="additional-steps" class="section level2">
 <h2>Additional steps</h2>
 <p>In case you’re having a nice idea for an actual package, please take
-a look at some much more in depth explanations, e.g. by Hadley Wickham
+a look at some much more in-depth explanations, e.g. by Hadley Wickham
 and Jenny Bryan: R packages, <a
 href="https://r-pkgs.org/whole-game.html">Chapter 2 “The whole game”</a>
 or Karl Broman: <a href="https://kbroman.org/pkg_primer/">R package
-primer</a>. An overview of next steps to take are:</p>
+primer</a>. Here’s an overview of next steps you would follow:</p>
 <ul>
-<li>Iterative loading and testing -&gt; load_all()</li>
-<li>Adding unit tests -&gt; use_testthat()</li>
-<li>Import functions from other packages -&gt; use_package()</li>
-<li>Version control and collaboration -&gt; use_github()</li>
-<li>Add a proper public description -&gt; use_readme_rmd()</li>
-<li>Add vignettes -&gt; use_vignette()</li>
-<li>Submit to CRAN -&gt; devtools::build(), devtools::release()</li>
+<li>Iterative loading and testing ➡️ <code>load_all()</code></li>
+<li>Adding unit tests ➡️ <code>use_testthat()</code></li>
+<li>Import functions from other packages ➡️
+<code>use_package()</code></li>
+<li>Version control and collaboration ➡️ <code>use_github()</code></li>
+<li>Add a proper public description ➡️
+<code>use_readme_rmd()</code></li>
+<li>Add vignettes ➡️ <code>use_vignette()</code></li>
+<li>Submit to CRAN ➡️ <code>devtools::build()</code>,
+<code>devtools::release()</code></li>
 </ul>
 </div>
 <div id="exercise" class="section level2">
 <h2>Exercise</h2>
-<p>As we do not have an assignment to this session, let’s spend some
-time building our own package and publishing it in a public GitHub
+<p>Since we do not have an assignment for this session, let’s spend some
+time building our own package and publishing it to a public GitHub
 repository.</p>
 <p>Here are the requirements:</p>
 <ul>
-<li>It should contain at least one function that you wrote. The function
-does not have to do anything innovative. Anything works really.</li>
+<li>It should contain at least one function that you yourself have
+written. The function does not have to do anything innovative. Anything
+works really.</li>
 <li>It should contain all the necessary package components.</li>
-<li>The repository should contain a README.md that briefly reports what
-the package/function does.</li>
-<li>Everyone should be able to install your package using
-devtools::install_github(“<your-github-account-name>/<your-package-name>”).</li>
+<li>The repository should contain a <code>README.md</code> that briefly
+describes what the package/function does.</li>
+<li>Anyone should be able to install your package using
+<code>devtools::install_github("&lt;your-github-account-name&gt;/&lt;your-package-name&gt;")</code>.</li>
 </ul>
-<p>All you have to provide to users interested in your package would be
-this line of code:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;&lt;your-github-account-name&gt;/&lt;your-package-name&gt;&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="automation-in-r" class="section level1">
 <h1>Automation in R</h1>
 <p>We won’t cover automation in the lab today, but here is a summary of
-helpful resources in case you are planning to:</p>
+helpful resources in case you ever need to automate your workflow:</p>
 <p><strong>1. Organize the workflow of a complex project</strong></p>
 <ul>
 <li>by running multiple scripts through a “master” R-script - see <a
