@@ -13,7 +13,7 @@
 
 <title>Shiny Applications</title>
 
-<script src="11-shiny_files/header-attrs-2.24/header-attrs.js"></script>
+<script src="11-shiny_files/header-attrs-2.25/header-attrs.js"></script>
 <script src="11-shiny_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="11-shiny_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
@@ -360,18 +360,20 @@ different aspects of creating a shiny app. You can find it in the folder
 Tomatoes and includes several filtering options.</p>
 <div id="structure-of-a-shiny-app" class="section level3">
 <h3>Structure of a Shiny App</h3>
-<p>Shiny apps are contained in a single script called app.R. The script
-app.R lives in a directory (for example, newdir/) and the app can be run
-with runApp(“newdir”).</p>
-<p>app.R has three components:</p>
+<p>Shiny apps are contained in a single script called
+<code>app.R</code>. The script app.R lives in a directory (for example,
+<code>newdir/</code>) and the app can be run with
+<code>runApp("newdir")</code>.</p>
+<p><code>app.R</code> has three components:</p>
 <ol style="list-style-type: decimal">
-<li><p>a user interface object - the (ui) object controls the layout and
-appearance of your app.</p></li>
-<li><p>a server function - the server function contains the instructions
-that your computer needs to build your app.</p></li>
-<li><p>a call to the <code>shinyApp</code> function - the shinyApp
-function creates Shiny app objects from an explicit UI/server
-pair.</p></li>
+<li><p><strong>A user interface object</strong>: The (UI) object
+controls the layout and appearance of your app.</p></li>
+<li><p><strong>A server function</strong>: The <code>server</code>
+function contains the instructions that your computer needs to build
+your app.</p></li>
+<li><p><strong>A call to the <code>shinyApp()</code> function</strong>:
+The <code>shinyApp()</code> function creates Shiny app objects from an
+explicit UI/server pair.</p></li>
 </ol>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># illustrated workflow </span></span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
@@ -384,29 +386,30 @@ pair.</p></li>
 <div id="running-a-shiny-app" class="section level3">
 <h3>Running a Shiny App</h3>
 <p>To create a Shiny app you need to create a new directory and save an
-app.R file inside it. This app.R script needs to contain the three
-components outlined above. Further, it is recommended that each app
-should have its own unique directory.</p>
+<code>app.R</code> file inside it. This <code>app.R</code> script needs
+to contain the three components outlined above. Further, it is
+recommended that each app should have its own unique directory.</p>
 <p>You can run a Shiny app by giving the name of this directory to the
 function <code>runApp()</code>. For example if your Shiny app is in a
-directory called my_shiny_app, run it with the following code:</p>
+directory called <code>my_shiny_app</code>, run it with the following
+code:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">runApp</span>(<span class="st">&quot;my_shiny_app&quot;</span>)</span></code></pre></div>
 <hr />
 </div>
 </div>
 <div id="layout-ui" class="section level2">
 <h2>Layout / UI 🗺</h2>
-<p>Shiny uses the function <code>fluidPage</code> to create a display
+<p>Shiny uses the function <code>fluidPage()</code> to create a display
 that automatically adjusts to the dimensions of your user’s browser
 window. You lay out the user interface of your app by placing elements
-in the <code>fluidPage</code> function. Alternatives to
-<code>fluidPage</code> exist (i.e. <code>fixedPage</code>,
-<code>bootstrapPage</code>), but these are only useful in specific
+in the <code>fluidPage()</code> function. Alternatives to
+<code>fluidPage()</code> exist (i.e. <code>fixedPage()</code>,
+<code>bootstrapPage()</code>), but these are only useful in specific
 situations.</p>
-<p>For example, the ui function below creates a user interface that has
-a title panel and a sidebar layout, which includes a sidebar panel and a
-main panel. Note that these elements are placed within the fluidPage
-function.</p>
+<p>For example, the <code>ui</code> function below creates a user
+interface that has a title panel and a sidebar layout, which includes a
+sidebar panel and a main panel. Note that these elements are placed
+within the <code>fluidPage()</code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">&quot;title panel&quot;</span>),</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
@@ -415,12 +418,13 @@ function.</p>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    <span class="fu">mainPanel</span>(<span class="st">&quot;main panel&quot;</span>)</span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  )</span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>)</span></code></pre></div>
-<p>While titlePanel and sidebarLayout create a basic layout for your
-Shiny app, you can also create more advanced layouts. For example you
-can use navbarPage to give your app a multi-page user interface that
-includes a navigation bar. Or you can use fluidRow and column to build
-your layout up from a grid system. If you’d like to learn more about
-these advanced options, have a look at the <a
+<p>While <code>titlePanel()</code> and <code>sidebarLayout()</code>
+create a basic layout for your Shiny app, you can also create more
+advanced layouts. For example you can use <code>navbarPage()</code> to
+give your app a multi-page user interface that includes a navigation
+bar. Or you can use <code>fluidRow()</code> and <code>column()</code> to
+build your layout up from a grid system. If you’d like to learn more
+about these advanced options, have a look at the <a
 href="https://shiny.rstudio.com/articles/layout-guide.html">Shiny
 Application Layout Guide</a>.</p>
 <p>Within the different layout functions you can also customise your app
@@ -429,8 +433,8 @@ elements:</p>
 <p>To include images you need to use the <code>img</code> function.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">img</span>(<span class="at">src =</span> <span class="st">&quot;my_image.png&quot;</span>, <span class="at">height =</span> <span class="dv">72</span>, <span class="at">width =</span> <span class="dv">72</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co"># &quot;src =&quot; needs to be spelled out since the html expects it. </span></span></code></pre></div>
-<p>To learn more about how you can customise your ui see <a
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co"># &quot;src =&quot; needs to be typed out since the html expects it. </span></span></code></pre></div>
+<p>To learn more about how you can customise your UI see <a
 href="https://shiny.rstudio.com/articles/html-tags.html">here</a> and <a
 href="https://shiny.rstudio.com/articles/tag-glossary.html">here</a>.</p>
 <hr />
@@ -444,26 +448,30 @@ a user changes the input in a widget, the value that is shown will
 change as well.</p>
 <p>Shiny comes with a family of pre-built widgets, each created with a
 transparently named R function. For example, Shiny provides a function
-named actionButton that creates an Action Button and a function named
-sliderInput that creates a slider bar.</p>
-<p>Some standard Shiny widgets are (<a
-href="https://shiny.rstudio.com/gallery/widget-gallery.html">gallery</a>):</p>
+named <code>actionButton()</code> that creates an Action Button and a
+function named sliderInput that creates a slider bar.</p>
+<p>Check out the <a
+href="https://shiny.rstudio.com/gallery/widget-gallery.html">gallery</a>
+for an overview of standard widgets:</p>
 <p><img src="pics/basic-widgets.png" width="960" /></p>
 <p>To add a widget to your app, you need to include a widget function in
-sidebarPanel or mainPanel in your ui object.</p>
+<code>sidebarPanel()</code> or <code>mainPanel()</code> in your
+<code>ui</code> object.</p>
 <p>Each widget function requires several arguments. The first two
 arguments for each widget are:</p>
 <ol style="list-style-type: decimal">
-<li><p>a name for the widget: The user will not see this name, but you
-can use it to access the widget’s value. The name should be a character
-string.</p></li>
-<li><p>a label: This label will appear with the widget in your app. It
-should be a character string, but it can be an empty string ““.</p></li>
+<li><p><strong>A name for the widget</strong>: The user will not see
+this name, but you can use it to access the widget’s value. The name
+should be a character string.</p></li>
+<li><p><strong>A label</strong>: This label will appear with the widget
+in your app. It should be a character string, but it can be an empty
+string <code>""</code>.</p></li>
 </ol>
 <p>The remaining arguments vary from widget to widget, depending on what
 the widget needs to do its job. They include things like initial values,
 ranges, and increments. You can find the exact arguments needed by a
-widget on the widget function’s help page, (e.g., ?selectInput).</p>
+widget on the widget function’s help page, (e.g.,
+<code>?selectInput</code>).</p>
 <p>Relevant chunk from our running example:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">fluidPage</span>(</span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">&quot;Movie explorer&quot;</span>),</span>
@@ -475,7 +483,9 @@ widget on the widget function’s help page, (e.g., ?selectInput).</p>
 <span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>        <span class="fu">textInput</span>(<span class="st">&quot;director&quot;</span>, <span class="st">&quot;Director name contains (e.g., Miyazaki)&quot;</span>),</span>
 <span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>    ),</span>
 <span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>    ...,</span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">&quot;xvar&quot;</span>, <span class="st">&quot;X-axis variable&quot;</span>, axis_vars, <span class="at">selected =</span> <span class="st">&quot;Meter&quot;</span>)))</span></code></pre></div>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">&quot;xvar&quot;</span>, <span class="st">&quot;X-axis variable&quot;</span>, axis_vars, <span class="at">selected =</span> <span class="st">&quot;Meter&quot;</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>    )</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  )</span></code></pre></div>
 <hr />
 </div>
 <div id="display-reactive-output" class="section level2">
@@ -483,17 +493,21 @@ widget on the widget function’s help page, (e.g., ?selectInput).</p>
 <p>To give your Shiny App a feeling of live interactiveness you need to
 include a way to display reactive output. Reactive output automatically
 responds when your user selects an option in a widget.</p>
-<p>There are two steps involved in making your widgets reactive: 1. Add
-the relevant output function to your ui function. 2. Provide R code to
-build the object in your server function.</p>
+<p>There are two steps involved in making your widgets reactive:</p>
+<ol style="list-style-type: decimal">
+<li>Add the relevant output function to your <code>ui</code>
+function.</li>
+<li>Provide R code to build the object in your <code>server</code>
+function.</li>
+</ol>
 <div id="step-1" class="section level3">
-<h3>Step 1:</h3>
+<h3>Step 1</h3>
 <p>Shiny provides a family of functions that turn R objects into output
 for your user interface. Each function creates a specific type of
 output.</p>
-<p>Some examples are: <code>plotOutput</code> for reactive plots,
-<code>tableOutput</code> for reactive tables.</p>
-<p>In our running example we used <code>textOutput</code> to give the
+<p>Some examples are: <code>plotOutput()</code> for reactive plots,
+<code>tableOutput()</code> for reactive tables.</p>
+<p>In our running example we used <code>textOutput()</code> to give the
 number of movies displayed:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">&quot;Movie explorer&quot;</span>),</span>
@@ -504,23 +518,25 @@ number of movies displayed:</p>
 <span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>           <span class="fu">wellPanel</span>(</span>
 <span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>             <span class="fu">span</span>(<span class="st">&quot;Number of movies selected:&quot;</span>,</span>
 <span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>                  <span class="fu">textOutput</span>(<span class="st">&quot;n_movies&quot;</span>)</span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>             )</span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>           ))</span></code></pre></div>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>                  )</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>             )</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>           )</span></code></pre></div>
 </div>
 <div id="step-2" class="section level3">
-<h3>Step 2:</h3>
-<p>Placing a function in ui tells Shiny where to display your object.
-Next, you need to tell Shiny how to build the object.</p>
+<h3>Step 2</h3>
+<p>Placing a function in <code>ui</code> tells Shiny where to display
+your object. Next, you need to tell Shiny how to build the object.</p>
 <p>We do this by providing the R code that builds the object in the
-server function. You do this by defining a new element for output within
-the server function. The element name should match the name of the
-reactive element that you created in the ui.</p>
-<p>If you created a <code>textOutput("selected_var")</code> in your ui,
-<code>output$selected_var</code> in the server function matches
-this.</p>
-<p>To illustrate this let’s look at our example, where we used
-<code>textOutput("n_movies")</code>, in the server function we
-state:</p>
+<code>server</code> function. You do this by defining a new element for
+output within the <code>server</code> function. The element name should
+match the name of the reactive element that you created in the
+<code>ui</code>.</p>
+<p>If you created a <code>textOutput("selected_var")</code> in your
+<code>ui</code>, <code>output$selected_var</code> in the
+<code>server</code> function matches this.</p>
+<p>To illustrate this, let’s look at our example, where we used
+<code>textOutput("n_movies")</code>, in the <code>server</code> function
+we state:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  ... ,</span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  </span>
@@ -528,13 +544,13 @@ state:</p>
 <span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>}</span>
 <span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a></span>
 <span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co"># Note that movies is a df that we create within our server function</span></span></code></pre></div>
-<p>Every <code>output*</code> function in ui, has a corresponding
-<code>render*</code> function in server to build the reactive
-widget.</p>
+<p>Every <code>output*</code> function in <code>ui</code>, has a
+corresponding <code>render*</code> function in server for building
+reactive widgets.</p>
 <p>Each <code>render*</code> function takes a single argument: an R
-expression surrounded by braces, {}. The expression can be one simple
-line of text, or it can involve many lines of code, as if it were a
-complicated function call.</p>
+expression surrounded by braces, <code>{}</code>. The expression can be
+one simple line of text, or it can involve many lines of code, as though
+it were a complicated function call.</p>
 <hr />
 </div>
 </div>
@@ -544,18 +560,20 @@ complicated function call.</p>
 packages, and data sets.</p>
 <p>What you need to know is that:</p>
 <ul>
-<li>The directory that app.R appears in will become the working
-directory of the Shiny app</li>
-<li>Shiny will run code placed at the start of app.R, before the server
-function, only once during the life of the app.</li>
-<li>Shiny will run code placed inside server function multiple times,
-which can slow down the app.</li>
+<li>The directory that <code>app.R</code> appears in will become the
+working directory of the Shiny app</li>
+<li>Shiny will run code placed at the start of <code>app.R</code>,
+before the <code>server</code> function, only once during the life of
+the app.</li>
+<li>Shiny will run code placed inside <code>server</code> function
+multiple times, which can slow down the app.</li>
 </ul>
 <p>In our example, this is used to first create and join the necessary
 tables for the entirety of the app. This only needs to be done once.
-Within the server function we then filter and select based on certain
-inputs, obviously this needs to be repeated every time the input
-changes. This is why we placed that code within the server function.</p>
+Within the <code>server</code> function we then filter and select based
+on certain inputs; obviously this needs to be repeated every time the
+input changes. This is why we placed that code within the
+<code>server</code> function.</p>
 <hr />
 </div>
 <div id="share-your-apps" class="section level2">
@@ -566,23 +584,24 @@ apps.</p>
 <p>When it comes to sharing Shiny apps, you have two basic options:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Share your Shiny app as R scripts.</strong> This is the
-simplest way to share an app, but it works only if your users have R on
+simplest way to share an app, but it only works if your users have R on
 their own computer (and know how to use it). Users can use these scripts
 to launch the app from their own R session, just like you’ve been
 launching the apps so far in this tutorial. All they need to do this a
-copy of your app directory including the app.R script.</p></li>
+copy of your app directory including the <code>app.R</code>
+script.</p></li>
 <li><p><strong>Share your Shiny app as a web page.</strong> This is
-definitely the most user friendly way to share a Shiny app. Your users
+definitely the most user-friendly way to share a Shiny app. Your users
 can navigate to your app through the internet with a web browser. They
 will find your app fully rendered, up to date, and ready to go.</p></li>
 </ol>
 <p>If you prefer the second option, I propose that you have a look at
-Shinyapps.io. It is RStudio’s hosting service for Shiny apps.
+shinyapps.io. It’s RStudio’s hosting service for Shiny apps.
 shinyapps.io lets you upload your app straight from your R session to a
 server hosted by RStudio. You have complete control over your app
 including server administration tools. You can find out more about
 shinyapps.io by visiting <a
-href="https://www.shinyapps.io/?_ga=2.69192023.730641241.1638195397-1221361119.1634646993">shinyapps.io</a>.</p>
+href="https://www.shinyapps.io/">shinyapps.io</a>.</p>
 <p>The setup and installation for doing this is relatively
 straightforward, but requires all the standard boring steps, such as
 setting up an account, password and getting familiar with the website
@@ -593,7 +612,7 @@ href="https://docs.rstudio.com/shinyapps.io/">here</a>.</p>
 </div>
 <div id="exercises" class="section level2">
 <h2>Exercises</h2>
-<p>Now it is your turn, adapt the shiny app by:</p>
+<p>Now it is your turn, adapt the Shiny app by:</p>
 <ol style="list-style-type: decimal">
 <li>Adding a widget that let’s you subset by the film’s genre:
 <ul>
@@ -630,9 +649,8 @@ answers?</li>
 without much context?</li>
 <li>What could lead to the metrics being wrong/misleading?</li>
 </ol>
-<p>Only if you answered ticked the box after the majority of the
-questions above should you really opt for a dashboard-based
-approach.</p>
+<p>If a dashboard still sounds like the best approach after considering
+these questions, go for it!</p>
 <hr />
 </div>
 <div id="design-advice" class="section level2">
@@ -648,8 +666,8 @@ cool.</li>
 <li>Use interactive figures with care (e.g., to make optional content
 conditionally visible)</li>
 <li>Try not to exceed the boundaries of a single screen.</li>
-<li>Ensure desktop/mobile screen responsiveness (fluidPage(), will
-achieve this).</li>
+<li>Ensure desktop/mobile screen responsiveness
+(<code>fluidPage()</code>, will achieve this).</li>
 </ul>
 <hr />
 </div>
@@ -663,16 +681,16 @@ variety of components can be included in flexdashboard layouts, for a
 full list see <a
 href="https://pkgs.rstudio.com/flexdashboard/articles/flexdashboard.html">the
 documentation</a>.</p>
-<p>As with shiny apps, it is difficult to interactively present an
+<p>As with Shiny apps, it is difficult to interactively present an
 example in a script. Therefore, we are going to be working with the
-example in the folder “/felxdash”. It is an example of a flexdashboard
-created by <a href="https://walker-data.com/">Kyle Walker</a>. For a
-rendered version of the dashboard <a
-href="https://walkerke.shinyapps.io/neighborhood_diversity/#section-about">click
+example in the folder <code>/felxdash</code>. It is an example of a
+flexdashboard created by <a href="https://walker-data.com/">Kyle
+Walker</a>. For a rendered version of the dashboard <a
+href="https://walkerke.shinyapps.io/neighborhood_diversity">click
 here</a>.</p>
 <div id="flexdashboard-in-practice" class="section level2">
 <h2>Flexdashboard in practice 🏀</h2>
-<p>The big difference to shiny apps is that the flexdashboard Rmd will
+<p>The big difference to Shiny apps is that the flexdashboard Rmd will
 take over the function used to define the layout of the dashboard/app.
 In other words, the entire Rmd, now plays the role of
 <code>fluidPage()</code>.</p>
@@ -693,8 +711,8 @@ introduce the following (<code>=============</code>).</p>
 <p>In the YAML tab of the Rmd you can specify a number of additional
 properties:</p>
 <ul>
-<li>vertical_layout: scroll</li>
-<li>orientation: rows</li>
+<li><code>vertical_layout: scroll</code></li>
+<li><code>orientation: rows</code></li>
 </ul>
 <p>Feeling overwhelmed? No need to come up with a fancy design all on
 your own. You can find a long list of templates <a
@@ -705,18 +723,18 @@ href="https://pkgs.rstudio.com/flexdashboard/articles/layouts.html">here</a>.</p
 <p>To add Shiny components to a flexdashboard there are a few things
 that you need to remember.</p>
 <ol style="list-style-type: decimal">
-<li><p>you need to <code>add runtime: shiny</code> to the options
+<li><p>you need to add <code>runtime: shiny</code> to the options
 declared at the top of the document (YAML front matter).</p></li>
-<li><p>Add the {.sidebar} attribute to the first column of the dashboard
-to make it a host for Shiny input controls (note this step isn’t
-strictly required, but many Shiny based dashboards will want to do
+<li><p>Add the <code>{.sidebar}</code> attribute to the first column of
+the dashboard to make it a host for Shiny input controls (note this step
+isn’t strictly required, but many Shiny based dashboards will want to do
 this).</p></li>
 </ol>
 <p>Overall, however, the same rules apply:</p>
 <ul>
 <li>You should perform any expensive loading of data within the global
 chunk.</li>
-<li>Input elements will go into the {.sidebar} column.</li>
+<li>Input elements will go into the <code>{.sidebar}</code> column.</li>
 <li>Outputs are represented within flexdashboard content panes</li>
 </ul>
 <p>Now you are more or less ready to go!</p>
@@ -747,7 +765,7 @@ by Elsevier on how to create effective academic personal website.</p>
 jobs) that could be:</p>
 <ul>
 <li>about statement</li>
-<li>CV(?)</li>
+<li>CV (?)</li>
 <li>EXAMPLES of data science projects</li>
 <li>contact + links to Github, LinkedIn, etc.</li>
 </ul>
@@ -767,13 +785,12 @@ other downsides.</p>
 experience, but you have that!) is to use <a
 href="https://pages.github.com/">GitHub Pages</a> because</p>
 <ul>
-<li>it is free and free of adds</li>
-<li>the page would be directly hosted from your GitHub repository
-and</li>
+<li>it’s free and free of ads</li>
+<li>the page is directly hosted from your GitHub repository</li>
 <li>you can choose from a huge variety of <a
-href="https://jekyllthemes.io/github-pages-themes">Jekyll themes</a>
-and</li>
-<li>it compiles html from Markdown - something you’ve been doing all the
+href="https://jekyllthemes.io/github-pages-themes">Jekyll
+themes</a></li>
+<li>it compiles HTML from Markdown - something you’ve been doing all the
 time in this course</li>
 <li>and there are even more <a
 href="http://svmiller.com/blog/2015/08/create-your-website-in-jekyll/#advantages">advantages</a></li>
@@ -783,21 +800,21 @@ href="https://jayrobwilliams.com/posts/2020/06/academic-website/">Rob
 Williams</a> created a great tutorial on how to build an academic
 websites with Github; and the <a
 href="https://academicpages.github.io/">academicpages</a> template is a
-ready-to-fork GitHub Pages template that I used to build my webpage <a
-href="https://lfoswald.github.io/">lfoswald.github.io</a>. If you like,
+ready-to-fork GitHub Pages template and is easily customizable (e.g., <a
+href="https://lfoswald.github.io/">lfoswald.github.io</a>). If you like,
 you can also configure <a
 href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site">custom
 URLs</a>.</p>
-<p>Here is a, possibly even more accessible, all purpose and less
+<p>Here is a possibly even more accessible, multifaceted, and less
 complicated <a href="https://docs.github.com/en/pages/quickstart">Quick
 Start</a> tutorial on GitHub Pages.</p>
 </div>
 <div id="blogdown" class="section level3">
 <h3>Blogdown</h3>
 <p><a href="https://bookdown.org/yihui/blogdown/">Blogdown</a> is an R
-package based on Hugo, another static site generator. Again</p>
+package based on Hugo, another static site generator.</p>
 <ul>
-<li>it is free</li>
+<li>it’s free</li>
 <li>you have great online support because you work with R and
 GitHub</li>
 <li>and you can choose from a wide range of <a
@@ -808,20 +825,20 @@ href="https://www.andrewhetherington.com/">Andrew Hetherington</a> on
 how to build a <a
 href="https://www.andrewhetherington.com/page/make-a-personal-website/">data-science
 personal website</a> in R using blogdown. His personal webpage is also
-created with blogdown. You can deploy and host your website, for
-example, on <a href="https://www.netlify.com/">Netlify</a>.</p>
+created with blogdown. You can deploy and host your website on <a
+href="https://www.netlify.com/">Netlify</a>.</p>
 <hr />
 </div>
 </div>
 <div id="sources" class="section level2">
 <h2>Sources</h2>
-<p>The shiny tutorial leans heavily on RStudio’s series of <a
+<p>The Shiny tutorial leans heavily on RStudio’s series of <a
 href="https://shiny.rstudio.com/tutorial/">written shiny tutorials</a>.
 The running example of the shiny.app was adapted from: <a
 href="https://github.com/rstudio/shiny-examples/tree/main/051-movie-explorer">Movies-Explorer
-Interactive App</a>, while the running example of the flexdash was
+Interactive App</a>, while the running example of the flexdashboard was
 adapted from <a
-href="https://walkerke.shinyapps.io/neighborhood_diversity/#section-about">Locating
+href="https://walkerke.shinyapps.io/neighborhood_diversity">Locating
 neighbourhood diversity in the American Metropolis</a>.</p>
 </div>
 </div>
