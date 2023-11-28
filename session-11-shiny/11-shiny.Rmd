@@ -346,7 +346,7 @@ In the YAML tab of the Rmd you can specify a number of additional properties:
 * `vertical_layout: scroll`
 * `orientation: rows` 
 
-Feeling overwhelmed? No need to come up with a fancy design all on your own. You can find a long list of templates [here](https://pkgs.rstudio.com/flexdashboard/articles/layouts.html).
+Feeling overwhelmed? No need to come up with a fancy design all on your own. You can find a long list of templates [here](https://pkgs.rstudio.com/flexdashboard/articles/examples.html).
 
 
 ## A note on shiny dashboards
