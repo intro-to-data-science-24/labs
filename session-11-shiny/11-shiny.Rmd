@@ -238,7 +238,7 @@ server <- function(input, output, session) {
 
 Every `output*` function in `ui`, has a corresponding `render*` function in server for building reactive widgets. 
 
-Each `render*` function takes a single argument: an R expression surrounded by braces, `{}`. The expression can be one simple line of text, or it can involve many lines of code, as though it were a complicated function call.
+Each `render*` function takes a single argument: an R expression surrounded by braces, `{}`. The expression can be one simple line of code, or it can involve many lines of code.
 
 ***
 
@@ -324,7 +324,7 @@ Even then, there are a number of design guidelines that you should follow. Here 
 
 The goal of flexdashboard is to make it easy to create interactive dashboards for R, using R Markdown. A flexdashboard can either be static (a standard web page) or dynamic (a Shiny interactive document). A wide variety of components can be included in flexdashboard layouts, for a full list see [the documentation](https://pkgs.rstudio.com/flexdashboard/articles/flexdashboard.html).
 
-As with Shiny apps, it is difficult to interactively present an example in a script. Therefore, we are going to be working with the example in the folder `/felxdash`. It is an example of a flexdashboard created by [Kyle Walker](https://walker-data.com/). For a rendered version of the dashboard [click here](https://walkerke.shinyapps.io/neighborhood_diversity).
+As with Shiny apps, it is difficult to interactively present an example in a script. Therefore, we are going to be working with the example in the folder `/flexdash`. It is an example of a flexdashboard created by [Kyle Walker](https://walker-data.com/). For a rendered version of the dashboard [click here](https://walkerke.shinyapps.io/neighborhood_diversity).
 
 ## Flexdashboard in practice `r emo::ji("basketball")`
 
