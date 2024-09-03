@@ -3,7 +3,7 @@
 
 ## Lab Sessions
 
-1. Introduction, R basics, and best practices \[[**.html**](https://github.com/intro-to-data-science-24/labs/blob/main/session-01-intro/1-intro-lab.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-01-intro/1-intro-lab.Rmd)\]
+1. Introduction, R basics, and best practices \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-24/labs/e8f584a81276b185e0b8fdf0c6292fdc5d8bdf60/session-01-intro/1-intro-lab.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-01-intro/1-intro-lab.Rmd)\]
 2. Version control and project management \[[**.html**](https://github.com/intro-to-data-science-24/labs/blob/main/session-02-version-control/2-git.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-02-version-control/2-git.Rmd)\]
 3. R and the tidyverse \[[**.html**](https://github.com/intro-to-data-science-24/labs/blob/main/session-03-tidyverse/3-tidyverse.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-03-tidyverse/3-tidyverse.Rmd)\]
 4. Functions and debugging \[[**.html**](https://github.com/intro-to-data-science-24/labs/blob/main/session-04-functions/4-functions.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-04-functions/4-functions.Rmd)\]
