@@ -3,8 +3,8 @@
 
 ## Lab Sessions
 
-1. Introduction, R basics, and best practices \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-24/labs/e8f584a81276b185e0b8fdf0c6292fdc5d8bdf60/session-01-intro/1-intro-lab.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-01-intro/1-intro-lab.Rmd)\]
-2. Version control and project management \[[**.html**](https://github.com/intro-to-data-science-24/labs/blob/main/session-02-version-control/2-git.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-02-version-control/2-git.Rmd)\]
+1. Introduction, R basics, and best practices \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-24/labs/6ca7e45186a762a62aeb97c0fc201d1499c569bd/session-01-intro/1-intro-lab.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-01-intro/1-intro-lab.Rmd)\]
+2. Version control and project management \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-24/labs/6ca7e45186a762a62aeb97c0fc201d1499c569bd/session-02-version-control/2-git.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-02-version-control/2-git.Rmd)\]
 3. R and the tidyverse \[[**.html**](https://github.com/intro-to-data-science-24/labs/blob/main/session-03-tidyverse/3-tidyverse.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-03-tidyverse/3-tidyverse.Rmd)\]
 4. Functions and debugging \[[**.html**](https://github.com/intro-to-data-science-24/labs/blob/main/session-04-functions/4-functions.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-04-functions/4-functions.Rmd)\]
 5. Databases \[[**.html**](https://github.com/intro-to-data-science-24/labs/blob/main/session-05-databases/5-databases.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-05-databases/5-databases.Rmd)\]
@@ -17,8 +17,11 @@
 
 ## Instructors
 
-The lab sessions to the course Introduction to Data Science by [Simon Munzert](https://simonmunzert.github.io/) at the [Hertie School, Berlin](https://www.hertie-school.org/en/), are taught by [Sebastian Ramirez]() and [Carmen Garro](https://github.com/cgarroca).
+The lab sessions to the course Introduction to Data Science by [Simon Munzert](https://simonmunzert.github.io/) at the [Hertie School, Berlin](https://www.hertie-school.org/en/), are taught by [Sebastian Ramirez](https://seramirezruiz.github.io/) and [Carmen Garro](https://github.com/cgarroca).
 
+## Acknowledgements
+
+These materials were drafted by [Tom Arendt](https://github.com/tom-arend) and [Lisa Oswald](https://lfoswald.github.io/), with contributions by [Steve Kerr](https://smkerr.github.io/), [Hiba Ahmad](https://github.com/hiba-ahmad), [Carmen Garro](https://github.com/cgarroca), and [Sebastian Ramirez-Ruiz](https://seramirezruiz.github.io/). 
 
 ## License
 
