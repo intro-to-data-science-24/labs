@@ -1,6 +1,9 @@
 wikipediaStatisticians
 .Rhistory
-.DS-Store
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
 .Rproj.user
 practice-scripts/07-model-fitting.R
 session-10-shiny/10-shiny.html

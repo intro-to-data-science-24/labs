@@ -1,23 +1,60 @@
 ---
 title: "Version Control"
 subtitle: "Getting used to Git(Hub) with R"
+author: "Carmen Garro & Sebastian Ramirez-Ruiz"
+date: "(Fall 2024) Introduction to Data Science"
 output: 
-  html_document:
+    rmdformats::robobook:
     toc: TRUE
     df_print: paged
     number_sections: FALSE
     highlight: tango
-    theme: lumen
     toc_depth: 3
     toc_float: true
-    css: custom.css 
     self_contained: false
-    includes:
-      after_body: footer.html
 ---
+
+```{=html}
+<style>
+.h1,h2,h3 {
+color:#2f1a61;
+}
+
+.subtitle, section.normal {
+color:#291854;
+}
+
+.title {
+color:#cc0065;
+}
+
+.nav-pills>li>a{
+color: #2f1a61;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+color: #fff;
+background-color: #2f1a61;
+}
+
+.nav-tabs>li>a{
+color: #2f1a61;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+color: #fff;
+background-color: #2f1a61;
+}
+
+</style>
+
+
+
+```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
 ```
 
 ------------------------------------------------------------------------
@@ -64,9 +101,31 @@ However, projects are only as useful as the organization within them. As we saw 
     +-- .gitignore
 
 We can visualize the folder structure of our repository using the `fs` package's `dir_tree()` function.
-```{r}
+
+```r
 fs::dir_tree(path = here::here(), recurse = FALSE) # set recurse=TRUE to view sub-levels
 ```
+
+```r
+## /Users/seramirezruiz/2024-ids/labs
+## ├── README.md
+## ├── archive
+## ├── footer.html
+## ├── labs.Rproj
+## ├── practice-scripts
+## ├── session-01-intro
+## ├── session-02-version-control
+## ├── session-03-tidyverse
+## ├── session-04-functions
+## ├── session-05-databases
+## ├── session-06-webdata
+## ├── session-07-web-scraping
+## ├── session-08-modelling
+## ├── session-09-visualization
+## ├── session-10-packaging
+## └── session-11-shiny
+```
+
 
 ### Data Folder
 
@@ -135,9 +194,9 @@ Great, now that you have created a new repo on GitHub, it is important to note t
 
 ------------------------------------------------------------------------
 
-### 2. Clone it to your local machine {.tabset .tabset-fade .tabset-pills}
+### 2. Clone it to your local machine {.tabset}
 
-Whatever way you plan on cloning this repo, you first need to copy the URL identifying it. Luckily there is another green button "Code" that allows you to do just that. Copy the HTTPS link for now. It will look something like this <https://github.com/tom-arend/my_first_repo.git>.
+Whatever way you plan on cloning this repo, you first need to copy the URL identifying it. Luckily there is another green button "Code" that allows you to do just that. Copy the HTTPS link for now. It will look something like this <https://github.com/your-git-username/my_first_repo.git>.
 
 #### Using the Command Line
 
@@ -148,15 +207,15 @@ Be sure to check what directory you're in. `$ pwd` displays the working director
 Clone a repo into your chosen directory.
 
 ```{bash, eval=F}
-cd ~/phd_hertie/teaching/IDS_fall_21 
-git clone https://github.com/tom-arend/my_first_repo.git
+cd ~/teaching/2024-ids
+git clone https://github.com/your-git-username/my_first_repo.git
 
 ```
 
 Check whether it worked:
 
 ```{bash, eval=F}
-cd ~/phd_hertie/teaching/IDS_fall_21/my_first_repo
+cd ~/teaching/2024-ids/my_first_repo
 git log
 git status
 ```
@@ -228,8 +287,8 @@ head(gapminder)
 # Clean your Data ---------------------------------------------------------
 
 gapminder_clean <- gapminder %>% 
-  rename(life_exp = lifeExp, gdp_per_cap = gdpPercap) %>% 
-  mutate(gdp = pop * gdp_per_cap)
+  dplyr::rename(life_exp = lifeExp, gdp_per_cap = gdpPercap) %>% 
+  dplyr::mutate(gdp = pop * gdp_per_cap)
 
 ```
 
@@ -239,7 +298,7 @@ gapminder_clean <- gapminder %>%
 
 ------------------------------------------------------------------------
 
-### 4. Stage your Changes and Commit {.tabset .tabset-fade .tabset-pills}
+### 4. Stage your Changes and Commit {.tabset}
 
 Before we get on to the next step, it is a good idea to save this newly created script and give it a name. Also save changes made to the README file. Now that your changes are saved locally we need to let Git know.
 
@@ -303,7 +362,7 @@ knitr::include_graphics("./pics/github_desktop_stage_commit.gif")
 
 ------------------------------------------------------------------------
 
-### 5. Pulling and Pushing your commits {.tabset .tabset-fade .tabset-pills}
+### 5. Pulling and Pushing your commits {.tabset}
 
 This part of the version control workflow should be relatively easy. The most important thing to remember is that you should always **pull** before you **push**. The reason for this is that in collaborative projects someone else might have pushed changes to the same file you were working on. This can lead to conflicts that should be avoided, if possible.
 
@@ -380,7 +439,7 @@ Only once you (and your collaborators) are 100% satisfied, would you merge it ba
 
 Okay, time to play around with branches a little bit!
 
-###  {.unlisted .unnumbered .tabset .tabset-fade .tabset-pills}
+###  {.unlisted .unnumbered .tabset }
 
 #### Using the Command Line
 
@@ -431,7 +490,7 @@ Given the point-&-click nature of GitHub Desktop, it is very easy to open a new 
 knitr::include_graphics("./pics/github_desktop_open_new_branch.gif")
 ```
 
-###  {.unlisted .unnumbered .tabset .tabset-fade .tabset-pills}
+###  {.unlisted .unnumbered .tabset}
 
 # Pull Requests `r emo::ji("ask")`
 
@@ -472,9 +531,8 @@ For these exercises we will use the same repo created in the first part of the e
 
 # Appendix
 
-------------------------------------------------------------------------
 
-### Caching credentials with HTTPS {#https .tabset .tabset-fade .tabset-pills}
+### Caching credentials with HTTPS {#https .tabset}
 
 GitHub recommends that you generate a *Personal Access Token* and cache it using HTTPS. Luckily for us this can be achieved in a few simple steps.
 
@@ -523,3 +581,10 @@ It will ask you for your PAT (or if you already cached credentials, whether you 
 Now you should be able to **pull** and **push** to your origin/main repo.
 
 If you ever misplace your token, but you need to use it to authenticate your command line operation for example, you can also call ´gitcreds::gitcreds_set()´ and select the 3. option to display your PAT.
+
+
+# <b style="color:#2f1a61">Acknowledgements</b> {-}
+
+------------------------------------------------------------------------
+
+This script was drafted by [Tom Arendt](https://github.com/tom-arend) and [Lisa Oswald](https://lfoswald.github.io/), with contributions by [Steve Kerr](https://smkerr.github.io/), [Hiba Ahmad](https://github.com/hiba-ahmad), [Carmen Garro](https://github.com/cgarroca), and [Sebastian Ramirez-Ruiz](https://seramirezruiz.github.io/).

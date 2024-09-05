@@ -1,19 +1,34 @@
 ---
 title: "Introduction"
 subtitle: "Getting you up to speed with R"
+author: "Carmen Garro & Sebastian Ramirez-Ruiz"
+date: "(Fall 2024) Introduction to Data Science"
 output: 
-  html_document:
+    rmdformats::robobook:
     toc: TRUE
     df_print: paged
     number_sections: FALSE
     highlight: tango
-    theme: lumen
     toc_depth: 3
     toc_float: true
     self_contained: false
-    includes:
-      after_body: footer.html
 ---
+
+```{=html}
+<style>
+.h1,h2,h3 {
+color:#2f1a61;
+}
+
+.subtitle, section.normal {
+color:#291854;
+}
+
+.title {
+color:#cc0065;
+}
+</style>
+```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
@@ -812,9 +827,9 @@ Next week's session will be about version control and project management with Gi
 
 ---
 
-# Sources {-}
+# <b style="color:#2f1a61">Acknowledgements</b> {-}
 
-This script draws heavily on the materials for the Introduction to R workshop within the Data Science Seminar series at Hertie, created by Therese Anders. 
+This script was drafted by [Tom Arendt](https://github.com/tom-arend) and [Lisa Oswald](https://lfoswald.github.io/), with contributions by [Steve Kerr](https://smkerr.github.io/), [Hiba Ahmad](https://github.com/hiba-ahmad), [Carmen Garro](https://github.com/cgarroca), and [Sebastian Ramirez-Ruiz](https://seramirezruiz.github.io/). It draws heavily on the materials for the Introduction to R workshop within the Data Science Seminar series at Hertie, created by [Therese Anders](http://therese.rbind.io/), Statistical Modeling and Causal Inference by Sebastian Ramirez-Ruiz and Lisa Oswald.
 
 Economist Intelligence Unit (2017): *Democracy Index*. https://infographics.economist.com/2017/DemocracyIndex/.
 
@@ -823,3 +838,4 @@ Imai, Kosuke (2017): *Quantitative Social Science. An Introduction*. Princeton a
 Raleigh, Clionadh, Andrew Linke, Håvard Hegre and Joakim Karlsen. 2010. Introducing ACLED – Armed Conflict Location and Event Data. *Journal of Peace Research* 47(5), 651-660.
 
 World Bank (2017): *Population, total*. https://data.worldbank.org/indicator/sp.pop.totl?end=2016&start=2015.
+
