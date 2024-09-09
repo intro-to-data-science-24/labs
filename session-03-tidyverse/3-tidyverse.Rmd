@@ -1,20 +1,56 @@
 ---
 title: "Tidyverse"
 subtitle: "Data cleaning and wrangling in R"
+author: "Carmen Garro & Sebastian Ramirez-Ruiz"
+date: "(Fall 2024) Introduction to Data Science"
 output: 
-  html_document:
+    rmdformats::robobook:
     toc: TRUE
     df_print: paged
     number_sections: FALSE
     highlight: tango
-    theme: lumen
     toc_depth: 3
     toc_float: true
-    css: custom.css 
     self_contained: false
-    includes:
-      after_body: footer.html
 ---
+
+```{=html}
+<style>
+.h1,h2,h3 {
+color:#2f1a61;
+}
+
+.subtitle, section.normal {
+color:#291854;
+}
+
+.title {
+color:#cc0065;
+}
+
+.nav-pills>li>a{
+color: #2f1a61;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+color: #fff;
+background-color: #2f1a61;
+}
+
+.nav-tabs>li>a{
+color: #2f1a61;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+color: #fff;
+background-color: #2f1a61;
+}
+
+</style>
+
+
+
+```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
@@ -46,7 +82,7 @@ Last week we discussed how git and Github can be used to optimize, record and re
 
 The easiest way (in our opinion) to do this involves the use of Github Desktop. Though, feel free to play around with either the command line or integrate you git workflow into Rstudio, we will accept whichever works best for you. 
 
-Whatever way you plan on cloning a repo (e.g. the assignement), you first need to copy the URL identifying it. Luckily there is a green button "Code" that allows you to do just that. Copy the HTTPS link for now. It will look something like this <https://github.com/tom-arend/my_first_repo.git>.
+Whatever way you plan on cloning a repo (e.g. the assignment), you first need to copy the URL identifying it. Luckily there is a green button "Code" that allows you to do just that. Copy the HTTPS link for now. It will look something like this <https://github.com/tom-arend/my_first_repo.git>.
 
 Here is a short gif on how to clone a repo with GitHub Desktop:
 
@@ -60,7 +96,7 @@ Once you navigate to the folder that you decided to save the assignment in, you 
 
 ### Stage your Changes and Commit
 
-Changed or added files are automatically staged in Github Desktop. The GUI also displays (wehere possible) the changes that were done.
+Changed or added files are automatically staged in Github Desktop. The GUI also displays (where possible) the changes that were done.
 
 You only really need to commit the changes with a nice little summary or message.
 
@@ -78,7 +114,7 @@ Unfortunately, this is the only step on Github Desktop that is not really straig
 knitr::include_graphics("./pics/github_desktop_pull_and_push.gif")
 ```
 
-Good luck with the assignment! `r emo::ji("surfer")`
+Good luck with the assignments! `r emo::ji("surfer")`
 
 ---
 
@@ -107,7 +143,7 @@ We can also see information about the package versions and some [namespace confl
 
 The tidyverse actually comes with a lot more packages than those that are just loaded automatically.
 ```{r}
-tidyverse_packages()
+tidyverse::tidyverse_packages()
 ```
 
 We'll use several of these additional packages during the remainder of this course.
@@ -124,7 +160,7 @@ Underlying these packages are two key ideas:
 
 ## 1. The pipe `%>%` operator 
 
-You were introduced to the pipe operator in the previous lab.
+You might have seen the pipe operator in the previous lab.
 
 **Exercise 1**
 ```
@@ -186,8 +222,8 @@ alex_replete <- breakfast(alex_showered,
 alex_underway <- walk(alex_replete, 
                       step_function())
 alex_on_train <- bvg(alex_underway, 
-                         train = "U2", 
-                         destination = "Stadtmitte")
+                     train = "U2", 
+                     destination = "Stadtmitte")
 alex_hertie <- hertie(alex_on_train, 
                       course = "Intro to DS")
 ```
@@ -201,16 +237,17 @@ alex_hertie <- hertie(alex_on_train,
 
 ### The base R pipe: `|>`
 
-The magrittr pipe has proven so successful and popular that the R core team [recently added](https://stat.ethz.ch/R-manual/R-devel/library/base/html/pipeOp.html) a "native" pipe operator to base R (version 4.1), denoted `|>`. Here's how it works:
+The `magrittr` pipe has proven so successful and popular that the R core team [recently added](https://stat.ethz.ch/R-manual/R-devel/library/base/html/pipeOp.html) a "native" pipe operator to base R (version 4.1), denoted `|>`. Here's how it works:
 
 ```r
 mtcars |> subset(cyl == 4) |> head()
 mtcars |> subset(cyl == 4) |> (\(x) lm(mpg ~ disp, data = x))()
 ```
 
-Now, should we use the "magrittr" pipe or the native pipe? The native pipe might make more sense in the long term, since it avoids dependencies and might be more efficient. Check out [this Stackoverflow post](https://stackoverflow.com/questions/67633022/what-are-the-differences-between-rs-new-native-pipe-and-the-magrittr-pipe) and [this Tidyverse blog post](https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/) for a discussion of differences.
+Now, should we use the `magrittr` pipe or the native pipe? The native pipe might make more sense in the long term, since it avoids dependencies and might be more efficient. Check out [this Stackoverflow post](https://stackoverflow.com/questions/67633022/what-are-the-differences-between-rs-new-native-pipe-and-the-magrittr-pipe) and [this Tidyverse blog post](https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/) for a discussion of differences.
 
 You can update your settings, if you'd like RStudio to default to the native pipe operator `|>`. 
+
 ```{r, echo=FALSE, fig.align='center', out.width="70%"}
 knitr::include_graphics("pics/rstudio_pipe_settings.png")
 ```
@@ -242,20 +279,20 @@ Think about what you might have learned about panel surveys (surveys fielded to 
 
 But what if the data is not already in this format? We use the `tidyr` package.
 
-Key tidyr verbs are:
+Key `tidyr` verbs are:
 
-1. `pivot_longer`: Pivot wide data into long format (i.e. "melt").
+1. `tidyr::pivot_longer`: Pivot wide data into long format (i.e. "melt").
 
-2. `pivot_wider`: Pivot long data into wide format (i.e. "cast").
+2. `tidyr::pivot_wider`: Pivot long data into wide format (i.e. "cast").
 
-3. `separate`: Separate (i.e. split) one column into multiple columns (new syntax: `separate_wider_position()` and `separate_wider_delim()`)
+3. `tidyr::separate`: Separate (i.e. split) one column into multiple columns (new syntax: `tidyr::separate_wider_position()` and `tidyr::separate_wider_delim()`)
 
-4. `unite`: Unite (i.e. combine) multiple columns into one.
+4. `tidyr::unite`: Unite (i.e. combine) multiple columns into one.
 
 
-## `pivot_longer()`
+## `tidyr::pivot_longer()`
 
-`pivot_longer()` makes datasets longer by increasing the number of rows and decreasing the number of columns. As with any tidyverse function, your first argument will be the dataframe to be transposed. The next key argument requires you to specify one or more columns that you want to "lengthen". Next, you will have to specify the name of the new column for the information stored in the wide column names. The next important argument specifies the name of the column to create from the data stored in cell values. 
+`tidyr::pivot_longer()` makes datasets longer by increasing the number of rows and decreasing the number of columns. As with any tidyverse function, your first argument will be the dataframe to be transposed. The next key argument requires you to specify one or more columns that you want to "lengthen". Next, you will have to specify the name of the new column for the information stored in the wide column names. The next important argument specifies the name of the column to create from the data stored in cell values. 
 
 ```{r, echo=FALSE, fig.align='center'}
 knitr::include_graphics("pics/pivot_longer.png")
@@ -264,28 +301,34 @@ knitr::include_graphics("pics/pivot_longer.png")
 Let's see how this works in practice:
 
 ```{r}
-stocks = data.frame( ## Could use "tibble" instead of "data.frame" if you prefer
+stocks <- data.frame( ## Could use "tibble" instead of "data.frame" if you prefer
   time = as.Date('2009-01-01') + 0:1,
   X = rnorm(2, 0, 1),
   Y = rnorm(2, 0, 2),
   Z = rnorm(2, 0, 4)
-  )
+)
+
 stocks
-stocks |> pivot_longer(-time, names_to = "stock", values_to = "price")
+
+stocks |> 
+  tidyr::pivot_longer(-time, #all columns, but time
+                      names_to = "stock", #column names will go to a variable "stock"
+                      values_to = "price") #values will go to a variable "price"
 ```
 
 Let's quickly save the "tidy" (i.e. long) stocks data frame  
 
 ```{r}
-## Write out the argument names this time: i.e. "names_to=" and "values_to="
 tidy_stocks <- stocks |> 
-  pivot_longer(-time, names_to = "stock", values_to = "price")
+  tidyr::pivot_longer(-time, #all columns, but time
+                      names_to = "stock", #column names will go to a variable "stock"
+                      values_to = "price") #values will go to a variable "price"
 ```
 
 
-## `pivot_wider()`
+## `tidyr::pivot_wider()`
 
-`pivot_wider()` is the opposite of `pivot_longer()`: it makes a dataset wider by increasing the number of columns and decreasing the number of rows. It’s relatively rare to need `pivot_wider()` to make data for analysis, but it’s often useful for creating summary and descriptive tables for presentations, or papers.
+`tidyr::pivot_wider()` is the opposite of `pivot_longer()`: it makes a dataset wider by increasing the number of columns and decreasing the number of rows. It’s relatively rare to need `pivot_wider()` to make data for analysis, but it’s often useful for creating summary and descriptive tables for presentations, or papers.
 
 ```{r, echo=FALSE, fig.align='center'}
 knitr::include_graphics("pics/pivot_wider.png")
@@ -294,8 +337,12 @@ knitr::include_graphics("pics/pivot_wider.png")
 
 ```{r pivot_wider1, dependson="tidy_stocks"}
 tidy_stocks
-tidy_stocks |> pivot_wider(names_from = stock, values_from = price)
-tidy_stocks |> pivot_wider(names_from = time, values_from = price)
+
+tidy_stocks |> 
+  tidyr::pivot_wider(names_from = stock, values_from = price)
+
+tidy_stocks |> 
+  tidyr::pivot_wider(names_from = time, values_from = price)
 ```
 
 Note that the second example; which has combined different pivoting arguments; has effectively transposed the data.
@@ -303,82 +350,96 @@ Note that the second example; which has combined different pivoting arguments; h
 
 ## Optional: `tidyr::separate()` `r emo::ji("broken_heart")`
 
-`separate()` is used to separate a single column into multiple columns. It has been superseded in favour of `separate_wider_position()` (splits at fixed widths) and `separate_wider_delim()` (splits by delimiter) because the two functions make the two uses more obvious, the API is more polished, and the handling of problems is better. The superseded `separate` function will not go away, but will only receive critical bug fixes.
+`tidyr::separate()` is used to separate a single column into multiple columns. It has been superseded in favor of `tidyr::separate_wider_position()` (splits at fixed widths) and `tidyr::separate_wider_delim()` (splits by delimiter) because the two functions make the two uses more obvious, the API is more polished, and the handling of problems is better. The superseded `tidyr::separate()` function will not go away, but will only receive critical bug fixes.
 
 ```{r sep1}
-economists = data.frame(name = c("Adam.Smith", "Esther.Duflo", "Milton.Friedman"))
-econ_sep <- economists |> separate(name, c("first_name", "last_name")) 
+economists <-  data.frame(name = c("Adam.Smith", "Esther.Duflo", "Milton.Friedman"))
+
+econ_sep <- economists |> 
+  tidyr::separate(name, c("first_name", "last_name")) 
 ```
 
 This command is pretty smart. But to avoid ambiguity, you can also specify the separation character with `separate(..., sep=".")`. Note that "." is a special character in regular expressions (we study this in Session 6), and has to be "escaped" using 2 backslashes ("\\.") for R to treat it as just a dot.
 
-Now let's try to achieve the same results using the new syntax `separate_wider_delim`:
+Now let's try to achieve the same results using the new syntax `tidyr::separate_wider_delim`:
 
 ```{r}
 economists |>
-  separate_wider_delim(
+  tidyr::separate_wider_delim(
     cols = name,
     delim = ".",
     names = c("first_name", "last_name")
   )
 ```
 
-In order to use `separate_wider_position`, the position of the characters plays a crucial role. Let's add another column to our dataframe: 
+In order to use `tidyr::separate_wider_position`, the position of the characters plays a crucial role. Let's add another column to our dataframe: 
 
 ```{r}
 economists$attribute <- c("m-34", "f-23", "m-38")
+
 economists
+
 economists |>
-  separate_wider_position(attribute, c(sex = 1, 1, age = 2) 
-    )
+  tidyr::separate_wider_position(attribute, c(sex = 1, 1, age = 2) 
+  )
 ```
 
 
-`separate_rows` is another related function, for splitting up cells that contain multiple fields or observations (a frustratingly common occurence with survey data).
+`tidyr::separate_rows` is another related function, for splitting up cells that contain multiple fields or observations (a frustratingly common occurrence with survey data).
 
 ```{r sep2}
-jobs = data.frame(
+jobs <-  data.frame(
   name = c("Jack", "Jill"),
   occupation = c("Homemaker", "Philosopher, Philanthropist, Troublemaker") 
-  ) 
+) 
+
 jobs
+
 ## Now split out Jill's various occupations into different rows
-jobs |> separate_rows(occupation)
+jobs |> 
+  tidyr::separate_rows(occupation)
 ```
 
 
 ## Optional: `tidyr::unite()` `r emo::ji("heart")`
 
 ```{r unite1}
-gdp = data.frame(
+gdp <-  data.frame(
   yr = rep(2016, times = 4),
   mnth = rep(1, times = 4),
   dy = 1:4,
   gdp = rnorm(4, mean = 100, sd = 2)
-  )
+)
+
 gdp 
+
 ## Combine "yr", "mnth", and "dy" into one "date" column
-gdp |> unite(date, c("yr", "mnth", "dy"), sep = "-")
+gdp |> 
+  tidyr::unite(date, c("yr", "mnth", "dy"), sep = "-")
 ```
 
-Note that `unite` will automatically create a **character** variable. You can see this better if we convert it to a tibble. 
+Note that `tidyr::unite` will automatically create a **character** variable. You can see this better if we convert it to a tibble. 
 ```{r unite2}
-gdp_u = gdp |> unite(date, c("yr", "mnth", "dy"), sep = "-") |> as_tibble()
+gdp_u <-  gdp |> 
+  tidyr::unite(date, c("yr", "mnth", "dy"), sep = "-") |> 
+  tibble::as_tibble()
 ```
 
-If you want to convert it to something else (e.g. date or numeric) then you will need to modify it using `mutate`. See below for an example, using the [lubridate](https://lubridate.tidyverse.org/) package's super helpful date conversion functions.
+If you want to convert it to something else (e.g. date or numeric) then you will need to modify it using `dplyr::mutate`. See below for an example, using the [lubridate](https://lubridate.tidyverse.org/) package's super helpful date conversion functions.
 
 ```{r unite3, message=F}
 library(lubridate)
-gdp_u |> mutate(date = ymd(date))
+
+gdp_u |> 
+  dplyr::mutate(date = lubridate::ymd(date))
 ```
 
 ## Optional: Other `tidyr` functions
 
-`crossing()`: Get the full combination of a group of variables.
+`tidyr::crossing()`: Get the full combination of a group of variables.
 
 ```{r cross1}
-crossing(side = c("left", "right"), height = c("top", "bottom"))
+tidyr::crossing(side = c("left", "right"), height = c("top", "bottom"))
 ```
 
 `expand()` and `complete()`: See `?expand()` and `?complete()` for more specialized functions that allow you to fill in (implicit) missing data or variable combinations in existing data frames. Base R alternative: `expand.grid()`.
@@ -395,12 +456,12 @@ Now on to another important tidyverse package!
 
 A second fundamental package of the tidyverse is called `dplyr`. In this section you'll learn and practice examples using some functions in `dplyr` to work with data. Those are: 
 
-- `select()`: Select (i.e. subset) columns by their names (keep or exclude some columns)
-- `mutate()`: Create new columns or edit existing ones
-- `filter()`: Filter (i.e. subset) rows based on their values (keep rows that satisfy your conditions)
-- `summarize()`: Collapse multiple rows into a single summary value (summary statistics)
-- `arrange()`: Arrange (i.e. reorder) rows based on their values (reorder rows according to single or multiple variables)
-- `group_by()`: Define groups within your data set
+- `dplyr::select()`: Select (i.e. subset) columns by their names (keep or exclude some columns)
+- `dplyr::mutate()`: Create new columns or edit existing ones
+- `dplyr::filter()`: Filter (i.e. subset) rows based on their values (keep rows that satisfy your conditions)
+- `dplyr::summarize()`: Collapse multiple rows into a single summary value (summary statistics)
+- `dplyr::arrange()`: Arrange (i.e. reorder) rows based on their values (reorder rows according to single or multiple variables)
+- `dplyr::group_by()`: Define groups within your data set
 
 
 ```{r, echo=FALSE}
@@ -431,7 +492,7 @@ names(penguins)
 
 Say we are only interested in the species, island, and year variables of these data, we can utilize the following syntax:
 
-`select(data, columns)`
+`dplyr::select(data, columns)`
 
 
 **Exercise 3**
@@ -442,10 +503,10 @@ The following code chunk would select the variables we need. Can you adapt it, s
 dplyr::select(penguins, species, island, year)
 ```
 
-Good to know: To **drop** variables, use `-` before the variable name, i.e. select(penguins, -year) to drop the year column (select everything but the year column).
+Good to know: To **drop** variables, use `-` before the variable name, i.e. `dplyr::select(penguins, -year)` to drop the year column (select everything but the year column).
 
 
-## `filter()` `r emo::ji("coffee")`
+## `dplyr::filter()` `r emo::ji("coffee")`
 
 The second verb (function) we will employ is `filter()`. `filter()` lets you use a logical test to extract specific **rows** from a data frame. To use `filter()`, pass it the data frame followed by one or more logical tests. `filter()` will return every row that passes each logical test.
 
@@ -479,16 +540,16 @@ only_2009_chinstraps <- dplyr::filter(only_2009, species == "Chinstrap")
 only_2009_chinstraps_species_sex_year <- dplyr::select(only_2009_chinstraps, species, sex, year)
 final_df <- only_2009_chinstraps_species_sex_year
 final_df #to print it in our console
- 
+
 ```
 
 
-## `mutate()` `r emo::ji("closed_umbrella")``r emo::ji("open_umbrella")`
+## `dplyr::mutate()` `r emo::ji("closed_umbrella")``r emo::ji("open_umbrella")`
 
-`mutate()` lets us create, modify, and delete columns. The most common use for now will be to create new variables based on existing ones. Say we are working with a U.S. American client and they feel more comfortable with assessing the weight of the penguins in pounds. We would utilize `mutate()` as such:
+`dplyr::mutate()` lets us create, modify, and delete columns. The most common use for now will be to create new variables based on existing ones. Say we are working with a U.S. American client and they feel more comfortable with assessing the weight of the penguins in pounds. We would utilize `mutate()` as such:
 
 
-```mutate(new_var_name = manipulated old_var(s))```
+```dplyr::mutate(new_var_name = manipulated old_var(s))```
 
 ```{r,, eval=F}
 penguins |>
@@ -496,14 +557,15 @@ penguins |>
 ```
 
 
-## `group_by()` and `summarize()`
+## `dplyr::group_by()` and `dplyr::summarize()`
 
-These two verbs `group_by()` and `summarize()` tend to go together. When combined , 'summarize()` will create a new data frame. It will have one (or more) rows for each combination of grouping variables; if there are no grouping variables, the output will have a single row summarising all observations in the input. For example:
+These two verbs `dplyr::group_by()` and `dplyr::summarize()` tend to go together. When combined, `dplyr::summarize()` will create a new data frame. It will have one (or more) rows for each combination of grouping variables; if there are no grouping variables, the output will have a single row summarizing all observations in the input. For example:
 
 ```{r}
 # compare this output with the one below
 penguins |>
-  dplyr::summarize(heaviest_penguin = max(body_mass_g, na.rm = T)) 
+  dplyr::summarize(heaviest_penguin = max(body_mass_g, na.rm = T)) |>
+  dplyr::ungroup()
 ```
 
 ```{r}
@@ -516,21 +578,25 @@ There is also an alternate approach to calculating grouped summary statistics ca
 
 ```{r}
 penguins |>
-  dplyr::summarise(heaviest_penguin = max(body_mass_g, na.rm = T), .by = species)
+  dplyr::summarize(heaviest_penguin = max(body_mass_g, na.rm = T), .by = species) |>
+  dplyr::ungroup()
 
 penguins |>
-  dplyr::summarise(heaviest_penguin = max(body_mass_g, na.rm = T), .by = c(species, sex))
+  dplyr::summarize(heaviest_penguin = max(body_mass_g, na.rm = T), .by = c(species, sex)) |>
+  dplyr::ungroup()
 ```
 
+
+> Notice that we are using `dplyr::ungroup()` after performing grouped calculations. It is a convention we encourage. If you forget to `ungroup()` data, future data management can produce errors in downstream operations. Just to be sage, use `dplyr::ungroup()` when you’ve finished with your calculations.
 
 **Exercise 6**
 ```
 Can you get the weight of the lightest penguin of each species? You can use `min()`. What happens when in addition to species you also group by year `group_by(species, year)`?
 ```
 
-## `arrange()` `r emo::ji("egg")``r emo::ji("hatching_chick")``r emo::ji("hatched_chick")`
+## `dplyr::arrange()` `r emo::ji("egg")``r emo::ji("hatching_chick")``r emo::ji("hatched_chick")`
 
-The `arrange()` verb is pretty self-explanatory. `arrange()` orders the rows of a data frame by the values of selected columns in ascending order. You can use the `desc()` argument inside to arrange in descending order. The following chunk arranges the data frame based on the length of the penguins' bill. You hint tab contains the code for the descending order alternative. 
+The `dplyr::arrange()` verb is pretty self-explanatory. `arrange()` orders the rows of a data frame by the values of selected columns in ascending order. You can use the `desc()` argument inside to arrange in descending order. The following chunk arranges the data frame based on the length of the penguins' bill. You hint tab contains the code for the descending order alternative. 
 
 ```{r, eval=F}
 penguins |>
@@ -553,18 +619,18 @@ Can you create a data frame arranged by body_mass_g of the penguins observed in 
 ```
 1. Which verb allows you to index columns?
 ```
-    * `select()`
-    * `filter()`
-    * `summarize()`
-    * `group_by()`
+* `dplyr::select()`
+* `dplyr::filter()`
+* `dplyr::summarize()`
+* `dplyr::group_by()`
 
 ```
 2. Which verb allows you to index rows?
 ```
-    * `select()`
-    * `filter()`
-    * `summarize()`
-    * `group_by()`
+* `dplyr::select()`
+* `dplyr::filter()`
+* `dplyr::summarize()`
+* `dplyr::group_by()`
 
 ```
 3. How long was the longest observed bill of a **Gentoo** penguin in **2008**? 
@@ -576,45 +642,47 @@ Can you create a data frame arranged by body_mass_g of the penguins observed in 
 
 ## Optional: Other `dplyr` functions
 
-`ungroup()`: For ungrouping data after using the `group_by()` command
+`dplyr::ungroup()`: For ungrouping data after using the `dplyr::group_by()` command
 
-- Particularly useful with the `summarise` and `mutate` commands, as we've already seen.
-
-
-`slice()`: Subset rows by position rather than filtering by values.
-
-- E.g. `penguins |> slice(c(1, 5))`
+- Particularly useful with the `dplyr::summarize` and `dplyr::mutate` commands, as we've already seen.
 
 
-`pull()`: Extract a column from a data frame as a vector or scalar.
+`dplyr::slice()`: Subset rows by position rather than filtering by values.
 
-- E.g. `penguins |> filter(sex == "female") |> pull(flipper_length)`
+- E.g. `penguins |> dplyr::slice(c(1, 5))`
 
 
-`count()` and `distinct()`: Number and isolate unique observations.
+`dplyr::pull()`: Extract a column from a data frame as a vector or scalar.
 
-- E.g. `penguins |> count(species)`, or `penguins |> distinct(species)`
-- You could also use a combination of `mutate`, `group_by`, and `n()`, e.g. `penguins |> group_by(species) |> summarize(num = n())`.
+- E.g. `penguins |> dplyr::filter(sex == "female") |> dplyr::pull(flipper_length)`
 
-`where()`: Select the variables for which a function returns true.
 
-- E.g. `penguins |> select(where(is.numeric)) |> names()`
+`dplyr::count()` and `dplyr::distinct()`: Number and isolate unique observations.
 
-`across()`: Summarize or mutate multiple variables in the same way. More information [here](https://dplyr.tidyverse.org/reference/across.html).
+- E.g. `penguins |> dplyr::count(species)`, or `penguins |> dplyr::distinct(species)`
+- You could also use a combination of `dplyr::mutate`, `dplyr::group_by`, and `dplyr::n()`, e.g. `penguins |> dplyr::group_by(species) |> summarize(num = dplyr::n())`.
 
-- E.g. `penguins |> mutate(across(where(is.numeric), scale)) |> head(3)`
+`dplyr::where()`: Select the variables for which a function returns true.
 
-`case_when()`: Vectorize multiple `if_else()` (or base R `ifelse()`) statements.
+- E.g. `penguins |> dplyr::select(dplyr::where(is.numeric)) |> names()`
+
+`dplyr::across()`: Summarize or mutate multiple variables in the same way. More information [here](https://dplyr.tidyverse.org/reference/across.html).
+
+- E.g. `penguins |> dplyr::mutate(dplyr::across(dplyr::where(is.numeric), scale)) |> head(3)`
+
+`dplyr::case_when()`: Vectorize multiple `dplyr::if_else()` (or base R `ifelse()`) statements.
 ```{r}
 #multiple conditional statements
-penguins |> mutate( 
-    flipper_length_cat = case_when(
-      flipper_length_mm < 190 ~ "small",
-      flipper_length_mm >= 190 & flipper_length_mm < 210 ~ "medium",
-      flipper_length_mm >= 210  ~ "large"
-    )
+penguins |> 
+  dplyr::mutate(flipper_length_cat = 
+                  dplyr::case_when(
+                    flipper_length_mm < 190 ~ "small",
+                    flipper_length_mm >= 190 & flipper_length_mm < 210 ~ "medium",
+                    flipper_length_mm >= 210  ~ "large"
+                  )
   ) |>
-  pull(flipper_length_cat) |> table()
+  dplyr::pull(flipper_length_cat) |> 
+  table()
 ```
 
 **Window functions**: There are also a whole class of [window functions](https://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html) for getting leads and lags, ranking, creating cumulative aggregates, etc. See `vignette("window-functions")`.
@@ -630,12 +698,12 @@ However - note that we will cover them in session 5 on relational data structure
 
 One of the mainstays of the dplyr package is merging data with the family [join operations](https://cran.r-project.org/web/packages/dplyr/vignettes/two-table.html).
 
-- `inner_join(df1, df2)`
-- `left_join(df1, df2)`
-- `right_join(df1, df2)`
-- `full_join(df1, df2)`
-- `semi_join(df1, df2)`
-- `anti_join(df1, df2)`
+- `dplyr::inner_join(df1, df2)`
+- `dplyr::left_join(df1, df2)`
+- `dplyr::right_join(df1, df2)`
+- `dplyr::full_join(df1, df2)`
+- `dplyr::semi_join(df1, df2)`
+- `dplyr::anti_join(df1, df2)`
 
 (You might find it helpful to to see visual depictions of the different join operations [here](https://r4ds.had.co.nz/relational-data.html).)
 
@@ -652,8 +720,8 @@ Let's perform a [left join](https://stat545.com/bit001_dplyr-cheatsheet.html#lef
 - *Note*: I'm going subset columns after the join, but only to keep text on the screen.
 
 ```{r}
-left_join(flights, planes) |>
-  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) |>
+dplyr::left_join(flights, planes) |>
+  dplyr::select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) |>
   head(3) ## Just to save vertical space in output
 ```
 
@@ -673,29 +741,29 @@ Luckily, there's an easy way to avoid this problem.
 You just need to be more explicit in your join call by using the `by = ` argument.
 - You can also rename any ambiguous columns to avoid confusion. 
 ```{r}
-left_join(
+dplyr::left_join(
   flights,
-  planes |> rename(year_built = year), ## Not necessary w/ below line, but helpful
+  planes |> dplyr::rename(year_built = year), ## Not necessary w/ below line, but helpful
   by = "tailnum" ## Be specific about the joining column
-  ) |>
-  select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, year_built, type, model) |>
+) |>
+  dplyr::select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, year_built, type, model) |>
   head(3) 
 ```
 
 Note what happens if we again specify the join column... but don't rename the ambiguous "year" column in at least one of the given data frames.
 ```{r join3}
-left_join(
+dplyr::left_join(
   flights,
   planes, ## Not renaming "year" to "year_built" this time
   by = "tailnum"
-  ) |>
-  select(contains("year"), month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) |>
+) |>
+  dplyr::select(dplyr::contains("year"), month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) |>
   head(3)
 ```
 
 Make sure you know what "year.x" and "year.y" are. Again, it pays to be specific.
 
-Now let's take another example using the palmerpenguins dataset we used earlier today. Suppose we have the following additional information on the three islands the penguins are from:
+Now let's take another example using the `palmerpenguins` dataset we used earlier today. Suppose we have the following additional information on the three islands the penguins are from:
 
 ```{r}
 islands <- data.frame(name = c("Torgersen", "Biscoe", "Dream"), 
@@ -704,34 +772,34 @@ islands <- data.frame(name = c("Torgersen", "Biscoe", "Dream"),
 
 We want to merge these datasets using the column for island names, however the columns are named differently in both datasets. This is where dplyr's new updates come in handy.
 
-dpyr 1.1.0 has introduced a whole [new bunch of extensions](https://www.tidyverse.org/blog/2023/01/dplyr-1-1-0-joins/) in the `*_join` family of functions that bring their functionality closer to data.table, SQL etc. One of them is the `join_by` function for the `by` argument.
+dplyr 1.1.0 has introduced a whole [new bunch of extensions](https://www.tidyverse.org/blog/2023/01/dplyr-1-1-0-joins/) in the `*_join` family of functions that bring their functionality closer to data.table, SQL etc. One of them is the `join_by` function for the `by` argument.
 
 Previously, we'd merge these data frames as follows:
 
 ```{r}
-left_join(
+dplyr::left_join(
   penguins,
   islands,
   by = c("island" = "name")
-  ) |>
+) |>
   head(3)
 ```
 
-With the `join_by` function, we would achieve the same results as follows:
+With the `dplyr::join_by` function, we would achieve the same results as follows:
 ```{r}
-left_join(
+dplyr::left_join(
   penguins,
   islands,
-  by = join_by(island == name)
-  ) |>
+  by = dplyr::join_by(island == name)
+) |>
   head(3)
 
 #or simply
-left_join(
+dplyr::left_join(
   penguins,
   islands,
-  join_by(island == name)
-  ) |>
+  dplyr::join_by(island == name)
+) |>
   head(3)
 ```
 
@@ -769,13 +837,13 @@ This tutorial is partly based on [_R for Data Science_](https://r4ds.hadley.nz/)
 - Questions of style are a matter of opinion.
 - We will mostly follow Hadley Wickham’s opinion as expressed in the "[tidyverse style guide](https://style.tidyverse.org/)".
 - We'll consider how to
-  - name,
-  - comment,
-  - structure, and
-  - write.
-  
+- name,
+- comment,
+- structure, and
+- write.
+
 ### Naming things 
-  
+
 #### Naming files
 
 - Code file names should be meaningful and end in `.R`.
@@ -895,9 +963,9 @@ c("survey_2021_cleaned.RData",
 - If a **function call is too long** to fit on a single line, use one line each for the function name, each argument, and the closing bracket.
 - Use **pipes**. When you use them, they should always have a space before it, and should usually be followed by a new line.
 
- 
+
 **Spacing**
- 
+
 ```{r, eval = FALSE} 
 # Good
 mean(x, na.rm = TRUE)
@@ -910,7 +978,7 @@ height<-feet*12+inches
 ``` 
 
 **Piping**
- 
+
 ```{r, eval = FALSE} 
 babynames |>
   filter(name |> equals("Kim")) |>
@@ -921,3 +989,10 @@ babynames |>
   add(ggtitle('People named "Kim"')) |>
   print
 ``` 
+
+
+---
+
+# <b style="color:#2f1a61">Acknowledgements</b> {-}
+
+This script was drafted by [Tom Arendt](https://github.com/tom-arend) and [Lisa Oswald](https://lfoswald.github.io/), with contributions by [Steve Kerr](https://smkerr.github.io/), [Hiba Ahmad](https://github.com/hiba-ahmad), [Carmen Garro](https://github.com/cgarroca), and [Sebastian Ramirez-Ruiz](https://seramirezruiz.github.io/). It draws heavily on the materials for the Statistical Modeling and Causal Inference course by Adelaida Barrera and Sebastian Ramirez-Ruiz.

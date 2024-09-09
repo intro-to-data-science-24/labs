@@ -17,7 +17,7 @@
 
 ## Instructors
 
-The lab sessions to the course Introduction to Data Science by [Simon Munzert](https://simonmunzert.github.io/) at the [Hertie School, Berlin](https://www.hertie-school.org/en/), are taught by [Sebastian Ramirez](https://seramirezruiz.github.io/) and [Carmen Garro](https://github.com/cgarroca).
+The lab sessions to the course Introduction to Data Science by [Simon Munzert](https://simonmunzert.github.io/) at the [Hertie School, Berlin](https://www.hertie-school.org/en/), are taught by [Sebastian Ramirez-Ruiz](https://seramirezruiz.github.io/) and [Carmen Garro](https://github.com/cgarroca).
 
 ## Acknowledgements
 
