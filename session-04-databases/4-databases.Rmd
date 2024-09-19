@@ -1,0 +1,536 @@
+---
+title: "Databases"
+subtitle: "Functions, `dbplyr` and working with SQL in R"
+author: "Carmen Garro & Sebastian Ramirez-Ruiz"
+date: "(Fall 2024) Introduction to Data Science"
+output: 
+    rmdformats::robobook:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    toc_depth: 3
+    toc_float: true
+    self_contained: false
+---
+
+```{=html}
+<style>
+.h1,h2,h3 {
+color:#2f1a61;
+}
+
+.subtitle, section.normal {
+color:#291854;
+}
+
+.title {
+color:#cc0065;
+}
+
+.nav-pills>li>a{
+color: #2f1a61;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+color: #fff;
+background-color: #2f1a61;
+}
+
+.nav-tabs>li>a{
+color: #2f1a61;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+color: #fff;
+background-color: #2f1a61;
+}
+
+</style>
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+pacman::p_load(tidyverse, purrr, dp)
+```
+
+
+# Introduction
+
+Many “big data” problems are actually “small data problems in disguise”. That is, we only really need a subset of the data, or maybe we want to aggregate the data into some larger dataset. For example, we might want to access Census data, but only for a handful of municipalities. Or, we might want to analyse climate data collected from a large number of weather stations, but aggregated up to the national or monthly level. In such cases, the underlying bottleneck is interacting with the original data, which is too big to fit into memory. How do we store data of this magnitude and and then access it effectively? The answer is through a database.
+
+Databases can exist either locally or remotely, as well as in-memory or on-disk. Regardless of where a database is located, the key point is that information is stored in a way that allows for very quick extraction and/or aggregation. More often than not, you will probably need to extract several subsets and harmonise or transform them. To facilitate and automate this task, you will need to write your own functions and know to iterate them over the relevant subsets of data. This week's session thus ties in well with the sections on functions and iteration that we quickly touched upon during the last lab.
+
+---
+
+# Joins and Databases `r emo::ji("telescope")`
+
+Although this week's session is nominally about databases - and we will spend the majority of this session on them - we believe that joins in R are a key skill that deserves more attention than we were able to devote to it during the tidyverse session. Therefore, we will split the session in two. First we will cover joins as implemented by the tidyverse. In that section you will learn to:
+
+* join together different datasets
+* differentiate between types of joins
+
+The second part of the session will deal with databases and SQL. Here you will learn to: 
+
+* connect to remote databases with R
+* generate SQL queries in R with `dbplyr`
+* manipulate and transform data in a remote database
+* how to collect hosted data and store it locally
+
+
+---
+
+# Joins with `dplyr`
+
+One of the mainstays of the dplyr package is merging data with the family [join operations](https://cran.r-project.org/web/packages/dplyr/vignettes/two-table.html).
+
+- `dplyr::inner_join(df1, df2)`
+- `dplyr::left_join(df1, df2)`
+- `dplyr::right_join(df1, df2)`
+- `dplyr::full_join(df1, df2)`
+- `dplyr::semi_join(df1, df2)`
+- `dplyr::anti_join(df1, df2)`
+
+(You might find it helpful to to see visual depictions of the different join operations [here](https://r4ds.had.co.nz/relational-data.html).)
+
+---
+
+For the simple examples that we will see here, we'll need some data sets that come bundled with the [**nycflights13**](http://github.com/hadley/nycflights13) package. 
+
+- Load it now and then inspect these data frames in your own console.
+
+```{r, echo = F}
+library(nycflights13)
+#flights 
+#planes
+```
+
+Let's perform a [left join](https://stat545.com/bit001_dplyr-cheatsheet.html#left_joinsuperheroes-publishers) on the flights and planes datasets. 
+- *Note*: I'm going subset columns after the join, but only to keep text on the slide.
+
+```{r}
+dplyr::left_join(flights, planes) |>
+  dplyr::select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) |>
+  head(3) ## Just to save vertical space in output
+```
+
+Note that dplyr made a reasonable guess about which columns to join on (i.e. columns that share the same name). It also told us its choices: 
+
+```
+## Joining, by = c("year", "tailnum")
+```
+
+However, there's an obvious problem here: the variable "year" does not have a consistent meaning across our joining datasets!
+- In one it refers to the *year of flight*, in the other it refers to *year of construction*.
+
+
+Luckily, there's an easy way to avoid this problem. 
+- Try `?dplyr::join`.
+
+You just need to be more explicit in your join call by using the `by = ` argument.
+- You can also rename any ambiguous columns to avoid confusion. 
+
+```{r}
+dplyr::left_join(
+  flights,
+  planes |> dplyr::rename(year_built = year), ## Not necessary w/ below line, but helpful
+  by = "tailnum" ## Be specific about the joining column
+) |>
+  dplyr::select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, year_built, type, model) |>
+  head(3) 
+```
+
+
+Last thing I'll mention for now; note what happens if we again specify the join column... but don't rename the ambiguous "year" column in at least one of the given data frames.
+
+```{r join3}
+dplyr::left_join(
+  flights,
+  planes, ## Not renaming "year" to "year_built" this time
+  by = "tailnum"
+) |>
+  dplyr::select(dplyr::contains("year"), month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) |>
+  head(3)
+```
+
+Make sure you know what "year.x" and "year.y" are. Again, it pays to be specific.
+
+---
+
+# Working with databases `r emo::ji("floppy_disk")`
+
+So far, we have dealt with small datasets that easily fit into your computer’s memory. But what about datasets when we work with data that are **too large** for our computers to handle as a whole? 
+
+In this case, storing the data outside of R and **organizing it in a database is helpful**. Connecting to the database allows you to retrieve only the parts needed for your current analysis.
+
+Even better, many large datasets are already available in public or private databases. You can query them without having to download the data first.
+
+---
+
+## Necessary packages
+
+Accessing databases in R requires a few packages: 
+
+* `dbplyr` is the database backend for `dplyr`. It makes use of the `dplyr`, but works with remote data stored in databases.
+* `DBI` is a package that allows R to connect easily to a DBMS (**D**ata**B**ase **M**anagement **S**ystem)
+* Some package to interact with the back-end of the remote database such as `RSQLite`, other options might be:
+
++ `RMariaDB::MariaDB()` for RMariaDB,
++ `RPostgres::Postgres()` for RPostgres,
++ `odbc::odbc()` for odbc, 
++ `mongolite::mongo` for MongoDB,
++ and `bigrquery::bigquery()` for BigQuery.
+
+
+```{r, include=FALSE}
+pacman::p_load(RSQLite, DBI, bigrquery, dbplyr, nycflights13) # getting packages we might need
+```
+
+---
+
+## Connecting to a database 
+
+To connect to the database, we will use `DBI::dbConnect()` from the `DBI` package which defines a common interface between R and database management systems. The **first argument** is the **database driver** which in our case is SQLite and the **second argument** is the **name and location of the database**. 
+
+Most existing databases don’t live in a file, but instead live on a server. In addition to the two arguments above, database drivers will therefore also require details like user, password, host, port, etc. That means your code will often look more like this:
+
+```r
+con <- DBI::dbConnect(RSQLite::SQLite(),  # driver
+host = "database.rstudio.com",
+user = "your_username",
+password = rstudioapi::askForPassword("Your password")
+)
+```
+
+---
+
+For the purposes of this lab however, we are connecting to an **in-memory database**. That way we can avoid potential issues with the registration for access to a database, creation and caching of credentials, as well as defining safe ports and other boring details. 
+
+To avoid all this hassle, we will create and host our own (small) database in our local memory. Luckily, the code to do so is **the same as in the general case above**. But, SQLite only needs a path to the database. (Here, `":memory:"` is a special path that creates an in-memory database.) 
+
+We then **save** the database connection and store it in the object `con` for further use in exploring and querying data.
+
+```{r}
+# set up connection with DBI and RSQLite
+con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+```
+
+Next, let us get a quick summary of the database connection using `summary()`. It shows **"SQLiteConnection" under class** and we can ignore the other details for the time being. Great!
+
+```{r}
+summary(con)
+```
+
+If you were to connect to a real online database that someone else generated, you could now call `DBI::dbListTables(con)` to see a list of the tables present in the database. Our local database is however still devoid of content.
+
+**We need to populate our database**. We will copy some data from `nycflights13` to our database connection. In **real life**, this step would probably be taken care of by the responsible **database maintainer**.
+
+```{r}
+# upload local data frame into remote data source; here: database
+dplyr::copy_to(
+  dest = con, 
+  df = nycflights13::flights, 
+  name = "flights"
+)
+```
+
+
+---
+
+## Indexing 
+
+Unfortunately, it is not enough to just copy data to our database. We also need to pass a list of **indexes** to the function. In this example, we set up indexes that will allow us to **quickly process the data by** time, carrier, plane, and destination. Creating the right indices is key to good database performance. Again, in applications where we don't set up the database, this will be taken care of by the database maintainer.
+
+```{r}
+dplyr::copy_to(
+  dest = con, 
+  df = nycflights13::flights, 
+  name = "flights",
+  temporary = FALSE, 
+  indexes = list(
+    c("year", "month", "day"), 
+    "carrier", 
+    "tailnum",
+    "dest"
+  ),
+  overwrite = T # if set to FALSE and the table already exists (as it is the case now), it will prevent this from overwriting performing the changes
+)
+```
+
+---
+
+## List Existing Tables in a Database
+
+Now that we are connected to a database, let us list all the tables present in it using `DBI::dbListTables()`.
+
+```{r}
+DBI::dbListTables(con)
+```
+
+As you can see there is only one table for now (flights). The other objects that show up are infrastructure specificities for SQLite that you can safely ignore. Usually you would **find many different tables** in a relational database.
+
+---
+
+# Queries
+
+A query is a request for data or information from a database table or combination of tables. `r emo::ji("book")`
+
+## Reference Table
+
+So how do you query a table in a database? 
+
+It is actually fairly straightforward. You use the `dplyr::tbl()`function where you indicate the **connection** and the **name of the table** you want to interact with. 
+
+```{r}
+# generate reference table from the database
+flights_db <- dplyr::tbl(con, "flights")
+flights_db 
+
+## You will notice that there are some slight differences from our <tibble> or <data.frame> types (see "Source:" and "Database:")
+```
+
+The console output shows that this is a **remote source**; the table is not stored in our RStudio environment. Nor should you need to transfer the entire table to your RStudio environment. You can perform operations directly on the remote source. What is more, you can rely on the `dplyr` syntax from last week to formulate your queries. R will automatically translate it into SQL (more on that below).
+
+---
+
+## Selecting Columns
+
+You can select specific columns:
+
+```{r}
+# perform various queries
+flights_db |> dplyr::select(year:day, dep_delay, arr_delay)
+```
+
+---
+
+
+## Filtering by Rows
+
+Access only specific rows: 
+
+```{r}
+flights_db |> dplyr::filter(dep_delay > 240)
+```
+---
+
+## Summary Statisitics 
+
+Or immediately generate summary statistics for different groups:
+
+```{r}
+flights_db |> 
+  dplyr::group_by(dest) |>
+  dplyr::summarize(delay = mean(dep_time))
+```
+
+---
+
+## More advanced operations
+
+You can even generate and plot figures without the need to store the data in your local environment:
+
+```{r,echo=TRUE, results='hide', fig.keep='all'}
+flights_db |> 
+  dplyr::filter(distance > 75) |>
+  dplyr::group_by(origin, hour) |>
+  dplyr::summarize(delay = mean(dep_delay, na.rm = TRUE)) |>
+  ggplot(aes(hour, delay, color = origin)) + 
+  geom_line() 
+```
+
+---
+
+## Joins 
+
+Databases become more exciting with more tables. So let's add a couple more:
+
+```{r}
+dplyr::copy_to(
+  dest = con, 
+  df = nycflights13::planes, 
+  name = "planes", # we create the "planes" table
+  temporary = FALSE, 
+  indexes = "tailnum"
+)
+
+dplyr::copy_to(
+  dest = con, 
+  df = nycflights13::airlines, 
+  name = "airlines", # we create the "airlines" table
+  temporary = FALSE, 
+  indexes = "carrier" 
+)
+
+dplyr::copy_to(
+  dest = con, 
+  df = nycflights13::airports, 
+  name = "airports", # we create the "airports" table
+  temporary = FALSE, 
+  indexes = "faa"
+)
+
+dplyr::copy_to(
+  dest = con, 
+  df = nycflights13::weather, 
+  name = "weather", # we create the "weather" table
+  temporary = FALSE, 
+  indexes = list(
+    c("year", "month", "day", "hour", "origin")
+  )
+)
+```
+
+Let us call `DBI::dbListTables()` again on our "con" database connection. As you can see, there are several more tables now.
+
+```{r}
+DBI::dbListTables(con)
+```
+
+---
+
+## Working with joins
+
+The `join` syntax has its origin in SQL. Unsurprisingly, you can join tables without having to store the data in memory. Here is how you perform a left join: 
+
+```{r}
+planes_db <-  dplyr::tbl(con, 'planes')
+
+dplyr::left_join(
+  flights_db,
+  planes_db |> dplyr::rename(year_built = year), # taking care of name ambiguity
+  by = "tailnum" ## Important: Be specific about the joining column
+) |>
+  dplyr::select(year, month, day, dep_time, arr_time, carrier, flight, tailnum,
+         year_built, type, model) 
+```
+
+This should all feel very **familiar** right? `r emo::ji("grin")`
+
+---
+
+# A look under the Hood
+
+As you saw, you can conduct your analyses in a database, the same way you are **used to** do it in R. All that without your data having to be stored on your own device. 
+
+Unfortunately, there are however **some differences** between **ordinary data frames and remote database queries** that are worth pointing out. 
+
+The most important among these is that your R code is translated into SQL and executed in the database on the remote server, not in R on your local machine. 
+
+This has the following implications. When working with databases, `dplyr` tries to be as **lazy as possible** `r emo::ji("sleep")`:
+
+- It never pulls data into R unless you explicitly ask for it.
+- It delays doing any work until the last possible moment: it collects together everything you want to do and then sends it to the database in one step.
+
+This even applies when you assign the output of a database query to an object:
+
+```{r, warning=TRUE}
+tailnum_delay_db <- flights_db |> 
+  dplyr::group_by(tailnum) |>
+  dplyr::summarize(
+    delay = mean(arr_delay),
+    n = n()
+  ) |> 
+  dplyr::arrange(desc(delay)) |>
+  dplyr::filter(n > 100)
+```
+
+This leads to some **unexpected behaviour**:
+
+
+**Exhibit A:** Because there’s generally no way to determine how many rows a query will return unless you actually run it, `nrow()` is always `NA`.
+
+```{r}
+nrow(tailnum_delay_db)
+```
+
+**Exhibit B:** Because you can’t find the last few rows without executing the whole query, you can’t use `tail()`.
+
+```{r, error=TRUE}
+tail(tailnum_delay_db)
+```
+---
+
+## Inspecting queries 
+
+We can always inspect the SQL code that `dbplyr` is generating in the background:
+
+```{r}
+tailnum_delay_db |> dplyr::show_query()
+```
+That's probably not how you would write the SQL yourself, but it works.
+
+More information about SQL translation can be found here: `vignette("translation-verb")`. 
+
+--- 
+
+## From remote to local storage 
+
+If you then want to pull the data into a local data frame, use `dplyr::collect()`:
+
+```{r}
+tailnum_delay <- tailnum_delay_db |> dplyr::collect()
+tailnum_delay
+```
+
+---
+
+## Using SQL directly in R 
+
+If, for whatever reason you might want to write your SQL queries yourself, you can use `DBI::dbGetQuery()` to run SQL queries in R scripts:
+
+```{r}
+sql_query <- "SELECT * FROM flights WHERE dep_delay > 240.0 LIMIT 5"
+DBI::dbGetQuery(con, sql_query)
+```
+
+If you want to learn more about writing SQL with `dbplyr`, check out `vignette('sql', package = 'dbplyr')`.
+
+--- 
+
+## Disconnect from database 
+
+When you are done with your SQL queries, it is a good idea to disconnect from the database. This becomes increasingly important if you work with servers that charge you for their services!
+
+```{r}
+DBI::dbDisconnect(con)
+```
+
+---
+
+## Exercises on Databases
+
+If you want to practice accessing databases going forward, have a look at the practice script [here](https://github.com/intro-to-data-science-24/labs/tree/main/practice-scripts/04_database_example). It comes with a database file so you can open the connection locally without the need to register. You will get a practice script, as well as an answer sheet. You can thank our colleague [Will Lowe](https://conjugateprior.org/) for the excellent example!
+
+---
+
+# (Advanced) BigQuery
+
+If you are still curious about databases and SQL and wonder how you might scale all this up in for the purposes of a real project, you might be interested to look into [Google's BigQuery](https://cloud.google.com/bigquery) service. You can register for a free Google Cloud account [here](https://cloud.google.com/bigquery/?utm_source=google&utm_medium=cpc&utm_campaign=emea-gb-all-en-dr-bkws-all-solutions-trial-b-gcp-1010042&utm_content=text-ad-none-any-DEV_c-CRE_502351626221-ADGP_Hybrid%20%7C%20BKWS%20-%20BMM%20%7C%20Txt%20~%20Data%20Analytics%20~%20BigQuery%23v1-KWID_43700053279048301-aud-606988877734%3Akwd-41385121591-userloc_1003853&utm_term=KW_%2Bgoogle%20%2Bbigquery-NET_g-PLAC_&ds_rl=1242853&ds_rl=1245734&ds_rl=1242853&ds_rl=1245734&gclid=EAIaIQobChMI9MCA2tKw8wIVgtKyCh33uAdiEAAYASAAEgJRbfD_BwE&gclsrc=aw.ds). Be aware that you only have a certain amount of free queries (1 TB / month) before you are charged. BigQuery is the most widely used service to interact with online databses and it has a number of [public datasets](https://cloud.google.com/bigquery/public-data) that you can easily practice with. Everything we saw above applies, with the exception that you need to specify the backend `bigrquery::bigquery()`.
+
+Here is an example of how it would look:
+
+```r
+con <- DBI::dbConnect(
+  bigrquery::bigquery(),
+  project = "publicdata",
+  dataset = "samples",
+  billing = google_cloud_project_name # This will tell Google whom to charge
+)
+```
+
+---
+
+## Actually learning R `r emo::ji("backpack")`
+
+Let us remind you again, the key to learning `R` is: **Google**! We can only give you an overview over basic `R` functions, but to really learn `R` you will have to actively use it yourself, trouble shoot, ask questions, and google! It is very likely that someone else has had the exact same or just *similar enough* issue before and that the R community has answered it with 5+ different solutions years ago. `r emo::ji("wink")`
+
+---
+
+# <b style="color:#2f1a61">Acknowledgements</b> {.unnumbered}
+
+The section on databases and SQL relies on the vignette from the [_dbplyr package_](https://cran.r-project.org/web/packages/dbplyr/vignettes/dbplyr.html), [_RStudio Tutorial on databases_](https://db.rstudio.com/getting-started/connect-to-database) as well as the [_Databases Session_](https://github.com/uo-ec607/lectures/blob/master/16-databases/16-databases.html) in McDermott's Data Science for Economists by Grant McDermott.
+
+This script was drafted by [Tom Arendt](https://github.com/tom-arend) and [Lisa Oswald](https://lfoswald.github.io/), with contributions by [Steve Kerr](https://smkerr.github.io/), [Hiba Ahmad](https://github.com/hiba-ahmad), [Carmen Garro](https://github.com/cgarroca), and [Sebastian Ramirez-Ruiz](https://seramirezruiz.github.io/).
