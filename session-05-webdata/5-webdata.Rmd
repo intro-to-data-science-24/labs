@@ -1,20 +1,54 @@
 ---
 title: "Webdata"
 subtitle: "Working with xpath and regex"
+author: "Carmen Garro & Sebastian Ramirez-Ruiz"
+date: "(Fall 2024) Introduction to Data Science"
 output: 
-  html_document:
+    rmdformats::robobook:
     toc: TRUE
     df_print: paged
     number_sections: FALSE
     highlight: tango
-    theme: lumen
     toc_depth: 3
     toc_float: true
-    css: custom.css 
     self_contained: false
-    includes:
-      after_body: footer.html
 ---
+
+```{=html}
+<style>
+.h1,h2,h3 {
+color:#2f1a61;
+}
+
+.subtitle, section.normal {
+color:#291854;
+}
+
+.title {
+color:#cc0065;
+}
+
+.nav-pills>li>a{
+color: #2f1a61;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+color: #fff;
+background-color: #2f1a61;
+}
+
+.nav-tabs>li>a{
+color: #2f1a61;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+color: #fff;
+background-color: #2f1a61;
+}
+
+</style>
+```
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
@@ -34,7 +68,7 @@ HTML is the standard markup language for creating Web pages. It is thus importan
 
 Here is an example of a document object model (DOM). Notice how the there is a cascading structure of html nodes. 
 
-```{html, prompt = FALSE, eval = FALSE}
+```html
 <!DOCTYPE html> 
   <html> 
     <head>
@@ -50,8 +84,9 @@ Here is an example of a document object model (DOM). Notice how the there is a c
 </html>
 ```
 
-
 The `<!DOCTYPE html>` declaration defines that this document is an HTML5 document. The `<html>` element is the root element of an HTML page. The `<head>` element contains meta information about the HTML page. The `<title>` element specifies a title for the HTML page (which is shown in the browser's title bar or in the page's tab). The `<body>` element defines the document's body, and is a container for all the visible contents, such as headings, paragraphs, images, hyperlinks, tables, lists, etc. The `<h1>` element defines a large heading. 
+
+---
 
 ## Developer Tools `r emo::ji('surfer')`
 
@@ -62,6 +97,8 @@ knitr::include_graphics("pics/inspect.png")
 ```
 
 This opens up the developer tools interface on your browser. For our purposes, the most important tab in the developer tools is the "Elements" tab. This tab shows you the source code of the webpage in an interactive manner. Now, when we hover over the elements in the tab they will be highlighted on the webpage. By clicking the mouse icon on the top left, we can reverse this behaviour.
+
+---
 
 ## Parsing with R
 
@@ -75,24 +112,25 @@ library(stringr)
 You'll learn more about `rvest` in next week's session. For now, just remember that parsing a website in R is straightforward:
 
 ```{r}
-parsed_doc <- read_html("http://www.r-datacollection.com/materials/ch-4-xpath/fortunes/fortunes.html") 
+parsed_doc <- rvest::read_html("http://www.r-datacollection.com/materials/ch-4-xpath/fortunes/fortunes.html") 
 ```
 
+---
 
 # Xpath Basics `r emo::ji('woman_technologist')`
 
-While HTML displays data and describes the structure of a webpage, XML stores and transfers data. XML is a standard language which can define other computer languages. XPath uses path expressions to select nodes or node-sets in an XML document. HTML and Xpath can thus be exploited in conjunction to programmtically interact with the stored HTML structure of a website. 
+While HTML displays data and describes the structure of a webpage, XML stores and transfers data. XML is a standard language which can define other computer languages. XPath uses path expressions to select nodes or node-sets in an XML document. HTML and Xpath can thus be exploited in conjunction to interact with the stored HTML structure of a website. 
 
-A simple xpath in the example mentioned above would be `html/body/div/h1`. The simple slashes in this example indicate an **absolute path**. This means, we start at the root node and follow the whole way down to our target element h1.
+A simple Xpath in the example mentioned above would be `html/body/div/h1`. The simple slashes in this example indicate an **absolute path**. This means, we start at the root node and follow the whole way down to our target element h1.
 
 **Relative paths** on the other hand are indicated with double slashes `//`. Relative paths skip nodes and do not need to start at the root node. An example here would be `//body//h1`.
 
-The wildcard operator `*` allows us to skip elements in the xpath.
+The wildcard operator `*` allows us to skip elements in the Xpath.
 
-After having parsed the webiste from HTML to an XML document, we can locate individual elements with xpaths. The `html_elements()` function from the `rvest` package, finds and selects elements in the parsed document. We can use both css and xpath selectors, but for now we will only look at xpath selectors. 
+After having parsed the webiste from HTML to an XML document, we can locate individual elements with Xpaths. The `html_elements()` function from the `rvest` package, finds and selects elements in the parsed document. We can use both **css** and **xpath** selectors, but for now we will only look at Xpath selectors. 
 
 ```{r}
-html_elements(parsed_doc, xpath = "/html/body/div/p/i")
+rvest::html_elements(parsed_doc, xpath = "/html/body/div/p/i")
 ```
 
 
@@ -110,32 +148,40 @@ knitr::include_graphics("pics/Xpath.png")
 * Attribute: The name of our attribute.
 * Value: The value of our attribute
 
+---
+
 ## XPath Predicates 
 
-Now let's take a look at some more complex examples of xpaths. Elements on the webpage can also be selected with xpath by leveraging their relations to the elements that they are connected to. The basic syntax for this is `element1/relation::element2`. 
+Now let's take a look at some more complex examples of Xpaths. Elements on the webpage can also be selected with Xpath by leveraging their relations to the elements that they are connected to. The basic syntax for this is `element1/relation::element2`. 
 
 If we would like to extract the two names on our example webpage, using element relations, we can do so like this:
 
 ```{r}
-html_elements(parsed_doc, xpath = "//p/preceding-sibling::h1")
+rvest::html_elements(parsed_doc, xpath = "//p/preceding-sibling::h1")
 ```
 
-Finally, we can also use True/False conditions on our elements to filter them. In xpath, this is called **predicates**. A **numeric predicate** lets us select the nth element within a given path. Let us use this to extract the Source of the quotes on our example page:
+Finally, we can also use True/False conditions on our elements to filter them. In Xpath, this is called **predicates**. A **numeric predicate** lets us select the nth element within a given path. Let us use this to extract the Source of the quotes on our example page:
 
 ```{r}
-html_elements(parsed_doc, xpath = "//p[2]")
+rvest::html_elements(parsed_doc, xpath = "//p[2]")
 ```
 
 Next to numeric predicates, there are also **textual predicates**. Textual predicates allow us to do rudimentary text matching. This is implemented in string functions like `contains()`, `starts_with` or `ends_with()`. Predicates can also be chained together with `and`. Multiple xpaths can be combined in an or logic with the pipe operator `|`:
 
 ```{r}
-html_elements(parsed_doc, xpath = "//h1[contains(., 'Rolf')] | //h1[contains(., 'Robert')]" )
+rvest::html_elements(parsed_doc, xpath = "//h1[contains(., 'Rolf')] | //h1[contains(., 'Robert')]" )
 ```
+
+---
 
 ## Xpath exercise `r emo::ji('pick')``
 
 Can you find all links in on our example document?
 
+
+```{r}
+
+```
 
 ***
 
@@ -148,26 +194,28 @@ Here is a quick overview of the most useful functions in the `stringr` package:
 ```{r}
 x <- c("apple", "banana", "pear")
 
-str_detect(x, "e")
+stringr::str_detect(x, "e")
 ```
 
-To extract the actual text of a match, use `str_extract()`. Note that `str_extract()` only extracts the first match. To get all matches, use `str_extract_all()`, which returns a list.
+To extract the actual text of a match, use `stringr::str_extract()`. Note that `stringr::str_extract()` only extracts the first match. To get all matches, use `stringr::str_extract_all()`, which returns a list.
 
 ```{r}
-str_extract_all(x, 'a')
+stringr::str_extract_all(x, 'a')
 ```
 
-`str_replace()` and `str_replace_all()` allow you to replace matches with new strings. The simplest way is to replace a fixed string, however with `str_replace_all()` you can perform multiple replacements by supplying a named vector:
+`stringr::str_replace()` and `stringr::str_replace_all()` allow you to replace matches with new strings. The simplest way is to replace a fixed string, however with `stringr::str_replace_all()` you can perform multiple replacements by supplying a named vector:
 
 ```{r}
-str_replace_all(x, c("a" = "A", "b" = "B", "p" = "P"))
+stringr::str_replace_all(x, c("a" = "A", "b" = "B", "p" = "P"))
 ```
 
-`str_locate()` and `str_locate_all()` give you the starting and ending positions of each match. These are particularly useful when none of the other functions does exactly what you want. 
+`stringr::str_locate()` and `stringr::str_locate_all()` give you the starting and ending positions of each match. These are particularly useful when none of the other functions does exactly what you want. 
 
 ```{r}
-str_locate_all(x, 'a')
+stringr::str_locate_all(x, 'a')
 ```
+
+---
 
 # Regular expressions `r emo::ji('memo')`
 
@@ -177,50 +225,58 @@ knitr::include_graphics("pics/xkcd_regex.png")
 
 Regular expressions (Regex) allow us to manipulate strings based on pattern matching. Regex patterns specify a sequence of strings, either explicitly or by meta characters. While they can be a hard nut to crack, they are extremely useful.
 
-Meta characters allow us to abstract from explicit patterns. These meta characters are `. \ | ( ) [ { ^ $ * + ?`. For example, `.` is called a wildcard, as it matches any character, except for line breaks (`\n`). 
+Meta characters allow us to abstract from explicit patterns. These meta characters are `. \ | ( ) [ { ^ $ * + ?`. 
+
+For example, `.` is called a wildcard, as it matches any character, except for line breaks (`\n`). 
 
 ```{r}
-str_view(x, "a.")
+stringr::str_view(x, "a.")
 ```
+
+---
 
 ## Quantifiers `r emo::ji('asterisk')`
 
 `? * + {n} {n,} {n,m}` are so-called *quantifiers*, that allow us to match the preceding character either zero or one `?`,  zero or more `*`, or one or more `+` times. `{n}` allows us to match a pattern exactly n times. To match n times and more, we add a comma in the curly brackets `{n,}` and to match between n and m times, we use `{n,m}`.
 
 ```{r}
-str_view(x, "p?")
-str_view(x, "p*")
-str_view(x, "p+")
+stringr::str_view(x, "p?")
+stringr::str_view(x, "p*")
+stringr::str_view(x, "p+")
 ```
+
 We can also match for specific *character classes*: If you would like to match whitespaces (spaces, linebreaks, tabs) you can use `\\s`. To match any digit, simply use `\\d`, for word character (digits and alphabetic characters) you can use `\\w`. We can negate those character classes by using them in uppercase (e.g. `\\D` matching all non-digits).
 
 ```{r}
 y <- "1. A small sentence. - 2. Another tiny sentence."
-str_view(y, "\\s(\\w{4,5})\\s")
-str_view(y, "\\d\\W")
+stringr::str_view(y, "\\s(\\w{4,5})\\s")
+stringr::str_view(y, "\\d\\W")
 ```
+
 R's regex implmentation also ships with a number of predefined character classes, like `[:upper:]`, `[:lower:]` and `[:punct:]`.
 They are usually simpler and much easier to remember than corresponding regex patterns. Note however, that these will require double squared brackets in many of the base R functions.
+
+---
 
 ## Anchors & alternates `r emo::ji('anchor')`
 
 Next to character classes and quantifiers, *anchors* match the start `^` or end `$` of a string. *Alternates* allow us to handle multiple cases in our pattern. As in R `|`, is equivalent to an "or". With `[qwert]` we are creating a "one of" pattern that matches any of the strings in the squared brackets. To negate this and get "anything but" we use `[^qwert]`. Parenthesis in regex are used to create groups and establish an order of evaluation. 
 
 ```{r}
-str_view(x, "^(a|b)")
+stringr::str_view(x, "^(a|b)")
 ```
 
 ```{r}
 fruits <- c("apple", "orange", "pear")
-fruit_match <- str_c(fruits, collapse = "|")
-str_subset(stringr::sentences, fruit_match) |> head(3)
+fruit_match <- stringr::str_c(fruits, collapse = "|")
+stringr::str_subset(stringr::sentences, fruit_match) |> head(3)
 ```
 
 At this point you may be wondering to yourself, how we match those characters that are used as meta characters in regex. This is where it gets complicated. Theoretically, we only use `\` as an escape character. However, we also use regular characters, like `\d` for instance, to match digits or `\s` to match white spaces. Therefore, we add another backward slash to escape the meta character `\\`. To match a question mark, we would use `\\?`.
 
 ```{r}
 z <- c('abc?defg', '123456?89', "[?.{!]\\")
-str_view(z, '\\?')
+stringr::str_view(z, '\\?')
 ```
 
 For more info on regex in R, check out the documentation:
@@ -232,6 +288,8 @@ For more info on regex in R, check out the documentation:
 The stringr package also provides a [vignette](https://stringr.tidyverse.org/articles/regular-expressions.html) on working with regex.
 
 Finally a word of caution at the end: Since regular expressions are extremely powerful in string manipulation, it is easy to try and solve every problem with a single regex. Do not forget that you have other tools available in a programming language and you can break down the problem by writing a series of simpler regexes. 
+
+---
 
 # Regex exercises  `r emo::ji('wrench')`
 
@@ -256,17 +314,23 @@ str_view(
   ) 
 ```
 
-
+---
 
 2. How many words are there in `stringr::words` that end with a "y" and are exactly 3 characers long?
 
 ```{r}
+
 ```
+
+---
 
 3. Now, try to find all words that end with "-ed" but not with "eed"!
 
 ```{r}
+
 ```
+
+---
 
 4. Let us now write a pattern that matches both emails in the vector below. 
 
@@ -274,11 +338,15 @@ str_view(
 emails <- c('456123@students.hertie-school.org', 'h.simpson@students.hertie-school.org')
 ```
 
+---
+
 5. Now try to extract all names and corresponding phone numbers from the string below.
 
 ```{r}
 ex_string <- "555-1239Moe Szyslak(636) 555-0113Burns, C. Montgomery555-6542Rev. Timothy Lovejoy555 8904Ned Flanders636-555-3226Simpson, Homer5553642Dr. Julius Hibbert"
 ```
+
+---
 
 6. The following code hides a secret message. Crack it with R and regular expressions. Once you have cracked it, try to collapse the solution in one single string. *Hint: Some of the characters are more revealing than others!*
 
@@ -286,10 +354,16 @@ ex_string <- "555-1239Moe Szyslak(636) 555-0113Burns, C. Montgomery555-6542Rev. 
 secret <- "clcopCow1zmstc0d87wnkig7OvdicpNuggvhryn92Gjuwczi8hqrfpRxs5Aj5dwpn0TanwoUwisdij7Lj8kpf03AT5Idr3coc0bt7yczjatOaootj55t3Nj3ne6c4Sfek.r1w1YwwojigOd6vrfUrbz2.2bkSnbhzgv4O9i05zLcropwVgnbEqoD65fa1otf.b7wIm24k6t3s9zqe5fy89n6Td5t9kc4f905gmc4gxo5nhk!gr"
 ```
 
-# Sources
+---
+
+# <b style="color:#2f1a61">Acknowledgements</b> {.unnumbered}
 
 This tutorial drew heavily on Simon Munzert's book [Automated Data Collection with R](http://r-datacollection.com/) and related [course materials](https://github.com/simonmunzert/web-scraping-with-r-extended-edition). 
 For the regex part, we used examples from the string manipulation section in Hadley Wickham' s [R for Data Science](https://r4ds.had.co.nz/strings.html) book.
+
+This script was drafted by [Tom Arendt](https://github.com/tom-arend) and [Lisa Oswald](https://lfoswald.github.io/), with contributions by [Steve Kerr](https://smkerr.github.io/), [Hiba Ahmad](https://github.com/hiba-ahmad), [Carmen Garro](https://github.com/cgarroca), and [Sebastian Ramirez-Ruiz](https://seramirezruiz.github.io/).
+
+---
 
 # Appendix
 
@@ -302,63 +376,63 @@ example.obj <- "1. A small sentence. - 2. Another tiny sentence."
 
 ### Wildcard `.`
 ```{r}
-str_extract(example.obj, "sm.ll")
+stringr::str_extract(example.obj, "sm.ll")
 ```
 
 ### Character class
 ```{r}
-str_extract(example.obj, "sm[abc]ll")
+stringr::str_extract(example.obj, "sm[abc]ll")
 
 # range
-str_extract(example.obj, "sm[a-p]ll")
+stringr::str_extract(example.obj, "sm[a-p]ll")
 
 # additional characters
-unlist(str_extract_all(example.obj, "[uvw. ]"))
+unlist(stringr::str_extract_all(example.obj, "[uvw. ]"))
 
 # pre-defined character classes
-unlist(str_extract_all(example.obj, "[:punct:]"))
-unlist(str_extract_all(example.obj, "[[:punct:]ABC]"))
-unlist(str_extract_all(example.obj, "[^[:alnum:]]"))
+unlist(stringr::str_extract_all(example.obj, "[:punct:]"))
+unlist(stringr::str_extract_all(example.obj, "[[:punct:]ABC]"))
+unlist(stringr::str_extract_all(example.obj, "[^[:alnum:]]"))
 
 # additional shortcuts
-unlist(str_extract_all(example.obj, "\\w+"))
+unlist(stringr::str_extract_all(example.obj, "\\w+"))
 ```
 
 ### Word edges
 ```{r}
-unlist(str_extract_all(example.obj, "e\\b")) 
-unlist(str_extract_all(example.obj, "e\\B"))
+unlist(stringr::str_extract_all(example.obj, "e\\b")) 
+unlist(stringr::str_extract_all(example.obj, "e\\B"))
 ```
 
 ### Quantifiers
 ```{r}
-str_extract(example.obj, "s[:alpha:][:alpha:][:alpha:]l")
-str_extract(example.obj, "s[:alpha:]{3}l")
-str_extract(example.obj, "A.+sentence")
+stringr::str_extract(example.obj, "s[:alpha:][:alpha:][:alpha:]l")
+stringr::str_extract(example.obj, "s[:alpha:]{3}l")
+stringr::str_extract(example.obj, "A.+sentence")
 
 # greedy quantification
-str_extract(example.obj, "A.+sentence")
-str_extract(example.obj, "A.+?sentence")
+stringr::str_extract(example.obj, "A.+sentence")
+stringr::str_extract(example.obj, "A.+?sentence")
 
 # quantifier with pattern sequence
-unlist(str_extract_all(example.obj, "(.en){1,5}"))
-unlist(str_extract_all(example.obj, ".en{1,5}"))
+unlist(stringr::str_extract_all(example.obj, "(.en){1,5}"))
+unlist(stringr::str_extract_all(example.obj, ".en{1,5}"))
 ```
 
 ### Meta characters
 ```{r}
-unlist(str_extract_all(example.obj, "\\."))
-unlist(str_extract_all(example.obj, fixed(".")))
+unlist(stringr::str_extract_all(example.obj, "\\."))
+unlist(stringr::str_extract_all(example.obj, fixed(".")))
 
 # meta characters in character classes
-unlist(str_extract_all(example.obj, "[1-2]"))
-unlist(str_extract_all(example.obj, "[12-]"))
+unlist(stringr::str_extract_all(example.obj, "[1-2]"))
+unlist(stringr::str_extract_all(example.obj, "[12-]"))
 ```
 
 ### Backreferencing
 ```{r}
-str_extract(example.obj, "([:alpha:]).+?\\1")
-str_extract(example.obj, "(\\b[a-z]+\\b).+?\\1")
+stringr::str_extract(example.obj, "([:alpha:]).+?\\1")
+stringr::str_extract(example.obj, "(\\b[a-z]+\\b).+?\\1")
 ```
 
 Do you think you've mastered regular expressions? Maybe [think again](http://stackoverflow.com/questions/201323/using-a-regular-expression-to-validate-an-email-address/201378#201378). `r emo::ji("exploding_head")`
