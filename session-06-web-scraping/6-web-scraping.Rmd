@@ -126,10 +126,10 @@ library(tidyverse)
 library(here)
 ```
 
-**Step 2.** Parse the page source.
+**Step 2.** Parse the page source. If encoding is necessary, you can add it in the reading html step.
 
 ```{r}
-parsed_url <- rvest::read_html("https://en.wikipedia.org/wiki/Cologne")
+parsed_url <- rvest::read_html("https://en.wikipedia.org/wiki/Cologne", encoding = "UTF-8")
 ```
 
 **Step 3.** Extract information.
@@ -140,6 +140,49 @@ parsed_url |>
   rvest::html_text()
 
 ```
+
+Another way of writing this in a more intuitive way:
+
+```{r}
+# this one is more intuitive
+parsed_url |> 
+  rvest::html_element(xpath = "//div[contains(@class, 'mw-heading mw-heading3')]//h3[@id='Carnival']/following::p") |> 
+  rvest::html_text()
+```
+
+This is because the html structure has the desired paragraph which is preceded by an [element div that contains the "mw-heading mw-heading3" class and is then followed by a header with "Carnival# as id]. Everything that is in square brakets is what comes before the p element we want as an output.
+
+```html
+<!DOCTYPE html> 
+  <html> 
+    <head>
+      ...
+  <body>
+      ...
+      <div class="mw-heading mw-heading3">
+          <h3 id="Carnival">
+            Carnival
+          </h3>
+          ...
+      </div>
+      <p>
+        "The"
+        <a href="/wiki/Cologne_carnival">Cologne carnival</a>
+        " is one of the largest street festivals in Europe. In Cologne, the carnival season officially starts on 11 November at 11 minutes past 11&nbsp;a.m. with the proclamation of the new Carnival Season, and continues until "
+        <a href="/wiki/Ash_Wednesday" title="Ash Wednesday">Ash Wednesday</a>
+        ". However, the so-called "Tolle Tage" (crazy days) do not start until "
+        <i>Weiberfastnacht</i>
+        " (Women's Carnival) or, in dialect, "
+        <i>Wieverfastelovend</i>
+        ", the Thursday before Ash Wednesday, which is the beginning of the street carnival. Zülpicher Strasse and its surrounding, Neumarkt square, Heumarkt and all bars and pubs in the city are crowded with people in costumes dancing and drinking in the streets. Hundreds of thousands of visitors flock to Cologne during this time. Generally, around a million people celebrate in the streets on the Thursday before Ash Wednesday."
+        <sup id="cite_ref-73" class="reference">...</sup>
+      </p>
+      ...
+  </body>
+</html>
+```
+
+You can see that even though there are other elements between the <p>...</p>, it is taking everything that is betweem these two tagnames.
 
 ---
 
