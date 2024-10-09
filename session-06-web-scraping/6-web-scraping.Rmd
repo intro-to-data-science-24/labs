@@ -129,7 +129,8 @@ library(here)
 **Step 2.** Parse the page source. If encoding is necessary, you can add it in the reading html step.
 
 ```{r}
-parsed_url <- rvest::read_html("https://en.wikipedia.org/wiki/Cologne", encoding = "UTF-8")
+parsed_url <- rvest::read_html("https://en.wikipedia.org/wiki/Cologne", 
+                               encoding = "UTF-8")
 ```
 
 **Step 3.** Extract information.
@@ -139,6 +140,11 @@ parsed_url |>
   rvest::html_element(xpath = '//p[(((count(preceding-sibling::*) + 1) = 178) and parent::*)]') |> 
   rvest::html_text()
 
+parsed_url |> 
+  rvest::html_element(xpath = '//p[76]') |> 
+  rvest::html_text()
+
+
 ```
 
 Another way of writing this in a more intuitive way:
@@ -146,7 +152,18 @@ Another way of writing this in a more intuitive way:
 ```{r}
 # this one is more intuitive
 parsed_url |> 
-  rvest::html_element(xpath = "//div[contains(@class, 'mw-heading mw-heading3')]//h3[@id='Carnival']/following::p") |> 
+  rvest::html_element(xpath = '//div[contains(@class, "mw-heading mw-heading3")]//h3[@id="Carnival"]/following::p') |> 
+  rvest::html_text()
+
+parsed_url |> 
+  rvest::html_element(xpath = '//div[contains(@class, "mw-heading mw-heading3")]//*//following::p') |> 
+  rvest::html_text()
+
+# copy xpath
+#"/html/body/div[2]/div/div[3]/main/div[3]/div[3]/div[1]/p[76]"
+
+parsed_url |> 
+  rvest::html_element(xpath = "/html/body/div[2]/div/div[3]/main/div[3]/div[3]/div[1]/p[76]") |> 
   rvest::html_text()
 ```
 
@@ -232,6 +249,8 @@ knitr::include_graphics("pics/nylibrary.png")
 ```{r}
 nypl_url <- "https://www.nypl.org/books-more/recommendations/best-books/adults?year=2021"
 nypl100 <- rvest::read_html(nypl_url)
+
+nypl100
 ```
 
 **Step 3.** Extract information. When going through different levels of HTML, you can also use `tidyverse` logic.
@@ -257,7 +276,6 @@ title <- nypl100 |>
   rvest::html_elements(xpath = '//ul/li/div/div/h4') |> 
   rvest::html_text2()
 
-
 # CSS
 author <- nypl100 |> 
   rvest::html_elements(css = '.spbb-card__byline--grid') |> 
@@ -267,6 +285,12 @@ author <- nypl100 |>
 summary <- nypl100 |> 
   rvest::html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "spbb-card__description--grid", " " ))]') |> 
   rvest::html_text2()
+
+
+#summary <- nypl100 |> 
+#  rvest::html_elements(xpath = '.spbb-card__description spbb-card__description--grid') |> 
+#  rvest::html_text2()
+
 
 ```
 
@@ -306,7 +330,6 @@ spotify_table_raw # this is what we would get
 spotify_table <- spotify_table_raw |>
   dplyr::mutate(song = stringr::str_remove_all(song, '\"'), #remove quotation marks from song titles
                 streams_billions = as.numeric(streams_billions) #make stream_billions a numeric variable
-                
                 ) |> 
   dplyr::slice(1:100) |> # drop dangling row with "As of date"
   dplyr::select(-ref) 
@@ -364,7 +387,6 @@ urls_list <- combinations |>
   dplyr::mutate(url = paste0(baseurl, volurl, 'i', issueurl)) |>
   dplyr::pull(url)
 
-
 names_for_files <- combinations |>
   dplyr::mutate(name = paste0(volurl, '_', issueurl, '.html')) |>
   dplyr::pull(name)
@@ -374,6 +396,7 @@ names_for_files <- combinations |>
 **Step 3** Think about where you want your scraped material to be stored and create a directory.
 
 ```{r, eval=F}
+
 tempwd <- here::here("session-06-web-scraping/data/jstatsoftStats")
 #here from here package creates a character string that represents a path to a directory
 
@@ -386,6 +409,7 @@ setwd(tempwd)
 **Step 4** Download the pages. Note that we did not do this step last time, when we were only scraping one page.
 
 ```{r, eval=F}
+tempwd
 folder <- paste0(tempwd, "/html_articles/")
 #concatenate the tempwd path with "/html_articles/" to create another path
 folder
@@ -441,10 +465,12 @@ authors <- character()
 title <- character()
 datePublish <- character()
 
+# session goes here
+
 # then run the loop
 for (i in seq_along(list_files_path)) {
   
-  html_out <- rvest::read_html(list_files_path[i])
+  html_out <- rvest::read_html(list_files_path[i], encoding = "UTF-8")
     
   authors[i] <- html_out |> 
     rvest::html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "authors_long", " " ))]//strong') |> 
