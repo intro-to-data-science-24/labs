@@ -155,11 +155,13 @@ parsed_url |>
   rvest::html_element(xpath = '//div[contains(@class, "mw-heading mw-heading3")]//h3[@id="Carnival"]/following::p') |> 
   rvest::html_text()
 
+#this one is not specific enough
 parsed_url |> 
   rvest::html_element(xpath = '//div[contains(@class, "mw-heading mw-heading3")]//*//following::p') |> 
   rvest::html_text()
 
 # copy xpath
+# right click on element and copy full XPath
 #"/html/body/div[2]/div/div[3]/main/div[3]/div[3]/div[1]/p[76]"
 
 parsed_url |> 
@@ -168,6 +170,9 @@ parsed_url |>
 ```
 
 This is because the html structure has the desired paragraph which is preceded by an [element div that contains the "mw-heading mw-heading3" class and is then followed by a header with "Carnival# as id]. Everything that is in square brakets is what comes before the p element we want as an output.
+
+
+
 
 ```html
 <!DOCTYPE html> 
@@ -249,8 +254,6 @@ knitr::include_graphics("pics/nylibrary.png")
 ```{r}
 nypl_url <- "https://www.nypl.org/books-more/recommendations/best-books/adults?year=2021"
 nypl100 <- rvest::read_html(nypl_url)
-
-nypl100
 ```
 
 **Step 3.** Extract information. When going through different levels of HTML, you can also use `tidyverse` logic.
@@ -286,10 +289,15 @@ summary <- nypl100 |>
   rvest::html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "spbb-card__description--grid", " " ))]') |> 
   rvest::html_text2()
 
+# Another way of doing it
+summary <- nypl100 |> 
+  rvest::html_elements(xpath = '//*[contains(@class,"spbb-card__description--grid")]') |> 
+  rvest::html_text()
 
-#summary <- nypl100 |> 
-#  rvest::html_elements(xpath = '.spbb-card__description spbb-card__description--grid') |> 
-#  rvest::html_text2()
+# this one does not work
+# summary <- nypl100 |> 
+#   rvest::html_elements(xpath = '.spbb-card__description spbb-card__description--grid') |> 
+#   rvest::html_text2()
 
 
 ```
@@ -349,7 +357,7 @@ b) Which artists have the highest number of most streamed songs? (Note that the 
 
 *Bonus at home 🏠*
 
-c) Which artists has the most cumulative streams?
+c) Which artists have the most cumulative streams?
 :::
 
 
@@ -396,7 +404,7 @@ names_for_files <- combinations |>
 **Step 3** Think about where you want your scraped material to be stored and create a directory.
 
 ```{r, eval=F}
-
+here()
 tempwd <- here::here("session-06-web-scraping/data/jstatsoftStats")
 #here from here package creates a character string that represents a path to a directory
 
@@ -409,10 +417,9 @@ setwd(tempwd)
 **Step 4** Download the pages. Note that we did not do this step last time, when we were only scraping one page.
 
 ```{r, eval=F}
-tempwd
 folder <- paste0(tempwd, "/html_articles/")
 #concatenate the tempwd path with "/html_articles/" to create another path
-folder
+
 dir.create(folder, recursive = TRUE)
 
 for (i in seq_along(urls_list)) {
@@ -428,6 +435,8 @@ for (i in seq_along(urls_list)) {
     Sys.sleep(runif(1, 0, 1)) #one random sleep interval of 0-1 seconds
   } 
 }
+
+
 ```
 
 While R is downloading the pages for you, you can watch it directly in the directory you defined...
@@ -470,7 +479,7 @@ datePublish <- character()
 # then run the loop
 for (i in seq_along(list_files_path)) {
   
-  html_out <- rvest::read_html(list_files_path[i], encoding = "UTF-8")
+  html_out <- rvest::read_html(list_files_path[i])
     
   authors[i] <- html_out |> 
     rvest::html_elements(xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "authors_long", " " ))]//strong') |> 
@@ -607,7 +616,7 @@ To get data from an API, we suggest to follow a workflow like this:
 Let's have a look at an example, the [Star Wars API](https://swapi.dev/):
 
 ```{r echo = F, eval = F}
-browseURL(https://swapi.dev/)
+browseURL("https://swapi.dev/")
 ```
 
 ```{r}
@@ -627,7 +636,7 @@ query <- 'people/?search=skywalker'
 
 httr::GET(paste0(baseurl, query)) |> # Make API call
   httr::content(as = 'text') |> # extract content as text
-  jsonlite::fromJSON() |> # convert JSON data into R object (nested list)
+  jsonlite::fromJSON() |>  #convert JSON data into R object (nested list)
   purrr::pluck(4)  # extract from index inside nested list (4th place corresponding to "results" in the payload)
  
 ```

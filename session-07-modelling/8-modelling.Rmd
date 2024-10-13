@@ -471,6 +471,8 @@ mod_table <- modelsummary(multiv_model_out[31],
                            "life_expectancy" = "Life Expectancy"),
              gof_omit = 'DF|Deviance|Log.Lik|AIC|BIC',
              title = 'A Most Beautiful Regression Table')
+
+mod_table
 ```
 
 When using the `kableExtra` package, you can even post-process your table:
