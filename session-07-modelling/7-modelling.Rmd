@@ -1,0 +1,960 @@
+---
+title: "Modeling"
+subtitle: "Reporting, summarising and communicating models in R"
+author: "Carmen Garro & Sebastian Ramirez-Ruiz"
+date: "(Fall 2024) Introduction to Data Science"
+output: 
+    rmdformats::robobook:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    toc_depth: 3
+    toc_float: true
+    self_contained: false
+---
+
+```{=html}
+<style>
+.h1,h2,h3 {
+color:#2f1a61;
+}
+
+.subtitle, section.normal {
+color:#291854;
+}
+
+.title {
+color:#cc0065;
+}
+
+.nav-pills>li>a{
+color: #2f1a61;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+color: #fff;
+background-color: #2f1a61;
+}
+
+.nav-tabs>li>a{
+color: #2f1a61;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+color: #fff;
+background-color: #2f1a61;
+}
+
+.pad-box{
+padding: 1em;"
+}
+</style>
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(digits=2)
+
+# save the built-in output hook
+hook_output <- knitr::knit_hooks$get("output")
+
+# set a new output hook to truncate text output
+knitr::knit_hooks$set(output = function(x, options) {
+  if (!is.null(n <- options$out.lines)) {
+    x <- xfun::split_lines(x)
+    if (length(x) > n) {
+      # truncate the output
+      x <- c(head(x, n), "....\n")
+    }
+    x <- paste(x, collapse = "\n")
+  }
+  hook_output(x, options)
+})
+
+colorise <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{%s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'>%s</span>", color,
+            x)
+  } else x
+}
+
+```
+
+------------------------------------------------------------------------
+
+Last session we talked a bit about how you might scrape data from the web. Collecting data is not an end in itself, rather the first step in answering your research question. When it comes to analyzing trends, testing hypotheses, and predicting outcomes, modelling enters the picture. 
+
+:::{.alert-info .pad-box}
+In this session, we won't focus on the statistical considerations that inform your model choice, but rather show you how to:
+
+-   Use formulas to specify multiple models
+-   Process (estimate) model results with `broom`
+-   Summarize outputs with `modelsummary`
+-   Communicate results through plots and tables
+
+You will have full courses dedicated to thinking about modelling choices, such as Causal Inference and Machine Learning.
+:::
+
+
+------------------------------------------------------------------------
+
+# The Model Workflow with R
+
+While the last session dealt with one of the flashier aspects of data science (Web-Scraping), today we will return to the **bread and butter** `r emo::ji("bread")` of any dedicated data scientist's tool kit - modelling!
+
+But if we aren't even talking about Machine Learning, Deep Learning or model choice, why bother? Well, as with most things, it is worth revisiting fundamentals from time to time. By investing just a little more effort here, we can create *much better* reports and papers!
+
+In general, remember that your basic **workflow for evaluating and reporting models** is as follows:
+
+```{r, fig.align='center', echo=F, out.width = "90%"}
+knitr::include_graphics("pics/data-science-communicate.png")
+```
+
+Today we will mostly deal with the "Model" and "Communicate" steps shown in the graph.
+
+------------------------------------------------------------------------
+
+# Setup
+
+Before we start coding, we need to load several packages as well as our data. We'll be using [data from the World Health Organization](https://www.kaggle.com/kumarajarshi/life-expectancy-who) on life expectancy.
+
+```{r, message=F, comment=F}
+# load packages 
+pacman::p_load(kableExtra, # for nicely outputted HTML tables
+               tidyverse, # for the suite of tidy packages
+               broom, # to extract key information from statistical models into tidy data 
+               modelsummary, # flexible model output tables 
+               specr, # to conduct specification curve analyses
+               janitor, # to clean up out data
+               modelr, # tidy syntax modelling
+               wesanderson) # color palette for ggplot2
+
+# load data
+life_expec_dat <- readr::read_csv("life_expectancy.csv") |> 
+  janitor::clean_names() |> 
+  dplyr::mutate(large = if_else(population > 50000000, 1, 0))  # pop size > 50M
+
+head(life_expec_dat)
+```
+
+------------------------------------------------------------------------
+
+# Using Formulas in R `r emo::ji("teacher")`
+
+R, as a programming language, was specifically designed with statistical analysis in mind. Therefore the founding fathers of R  🙌 - in their infinite wisdom - decided to create a special object class (called `formula`) to help with running models.
+
+---
+
+## Syntax
+
+A quick recap of the syntax used within formulas. The `~` (*tilde*) sign generally differentiates between dependent and independent variables. The `+` sign is used to distinguish between independent variables. Here are a few more common formula inputs that are useful to know:
+
+```r
+y ~ x1 + x2 # standard formula
+
+y ~ . # include all other columns in data as x vars
+
+y ~ x1 * x2 # interaction terms
+
+y ~ x + I(x^2) # higher order terms
+```
+
+Formulas are generally straightforward to work with. To avoid any potential errors, you should follow these two steps:
+
+**Step 1:** Create a string containing the written formula.
+
+```{r}
+formula_string <- paste("life_expectancy", "~ gdp")
+formula_string
+```
+
+**Step 2:** Transform the string into R's `formula` class. Only then will your modeling function accept it as input.
+
+```{r}
+form <- as.formula(formula_string) # needs to be transformed into formula class
+form
+```
+
+Here is the proof that both ways of doing it are identical.
+
+```{r}
+reg1 <- lm(form, data = life_expec_dat) 
+reg2 <- lm(life_expectancy ~ gdp, data = life_expec_dat)
+
+reg1$coefficients == reg2$coefficients
+```
+
+---
+
+## Iteration
+
+In instances where you might need to **fit many models**, formulas can help with making this process iterative.
+
+Often, the modelling process requires you to run the same specification with **multiple configurations** of both **dependent** and **independent** variables. Model formulas make running many similar models much easier:
+
+**Step 1**: Define a function that let's you plug in different variables for `x` or `y`. The function should take the `x` and/or `y` variable(s) as a string and return a model object.
+
+```{r}
+# function to include different y variables
+lm_fun_iter_y <-  function(dep_var) {
+  lm(as.formula(paste(dep_var, "~ gdp")), data = life_expec_dat)
+}
+
+# function to include different x variables 
+lm_fun_iter_x <- function(indep_var) {
+  lm(as.formula(paste("life_expectancy ~", paste(indep_var, collapse = "+"))), data = life_expec_dat)
+}
+```
+
+`r colorise("Notice:", "red")` Considering your model will likely include many independent variables, it's unlikely that you'll run a simple bivariate regression. Therefore, we need to use a nested paste function that combines (with `collapse()`) all independent variables contained in a character vector with `+`.
+
+**Step 2**: Use `purrr::map()` (refer to [lab session 4](https://rawcdn.githack.com/intro-to-data-science-24/labs/02e4175f0b23aef7e2c79ca67cf1e7da29520e2b/session-03-tidyverse-functions/3-tidyverse-functions.html)) to iteratively apply the model to each variable contained in a character vector of variables:
+
+```{r, out.lines = 20}
+# create vector of variables to iterate over
+vars <- life_expec_dat |> 
+  dplyr::select(-c("life_expectancy", "country")) |> 
+  names()
+
+vars
+
+# run a bivariate model for each column
+biv_model_out <-  vars |>
+  purrr::map(lm_fun_iter_x)
+
+biv_model_out
+```
+
+This returns output from all of the models that you've just run. Given that there are now quite a few models, it might be a good idea to keep the names of the independent variables that you feed into the model. You can do this with `purrr::set_names()`.
+
+```{r}
+# run a bivariate model for each column
+biv_model_out_w_names <-  vars |>
+  purrr::set_names() |> 
+  purrr::map(lm_fun_iter_x)
+
+biv_model_out_w_names$year # we can now easily index independent vars
+```
+
+Say that you're interested in seeing what effect `gdp` has on `life_expectancy`, but you suspect that other covariates such as alcohol consumption, health care expenditure, average body mass index and the propagation of aids also have an effect. 
+
+On top of this, it's possible that these variables might have different effects on `life_expectancy` depending on how they interact with each other. We can determine which independent variables are robustly associated with the dependent variable by generating models for every possible combination of independent variables and then looking into the distribution of effects across these models.
+
+Let's review the code introduced in the lecture:
+
+**Step 1**: Find out how many possible combinations of independent and dependent variables exist:
+
+```{r}
+combinations <- 
+  purrr::map(1:5, function(x) {combn(1:5, x)}) |> # create all possible combinations (assume we have 5 covariates)
+  purrr::map(ncol) |> # extract number of combinations
+  unlist() |> # pull out of list structure
+  sum() # compute sum
+
+combinations
+```
+
+**Step 2**: Write a function that can run all possible combinations in one go:
+
+```{r}
+combn_models <- function(depvar, covars, data) {
+  
+  # initialize empty list
+  combn_list <- list()
+  
+  # generate list of covariate combinations
+  for (i in seq_along(covars)) {
+    combn_list[[i]] <- combn(covars, i, simplify = FALSE)
+  } # what is combn?
+  
+  # unlist to make object easier to work with
+  combn_list <-
+    unlist(combn_list, recursive = FALSE) 
+  
+  # function to generate formulas
+  gen_formula <- function(covars, depvar) {
+    form <-
+      as.formula(paste0(depvar, " ~ ", paste0(covars, collapse = "+")))
+    form
+  }
+  
+  # generate formulas
+  formulas_list <-
+    purrr::map(combn_list, gen_formula, depvar = depvar)
+  
+  # run models
+  models_list <- purrr::map(formulas_list, lm, data = data)
+  models_list
+}
+
+```
+
+**Step 3**: Apply the function to our case:
+
+```{r}
+depvar <- "life_expectancy"
+covars <-  c("gdp", "percentage_expenditure", "alcohol", "bmi", "hiv_aids")
+multiv_model_out <- combn_models(depvar = depvar, covars = covars, data = life_expec_dat)
+
+# check whether we have the correct number of models
+length(multiv_model_out)
+```
+
+As you can see, the function introduced in the lecture is quite powerful, but it is by no means the only option for testing multiple model specifications. Depending on the type of analysis that you plan to perform, certain R packages enable you run many different combinations of regression models with just a few lines of code. For example, the we can perform [multiple estimations with the `fixest` package](https://cran.r-project.org/web/packages/fixest/vignettes/multiple_estimations.html).
+
+------------------------------------------------------------------------
+
+# Specification Curve Analysis `r emo::ji("right_arrow_curving_up")`
+
+In the example above, we consciously chose which models to run. Ideally, this decision should be grounded in theory and knowledge of the subject matter. Alternatively, some researchers argue that such choices are inherently arbitrary, potentially resulting in biased model specification. They propose taking a more analytical approach to model specification which they refer to as **Specification Curve Analysis**, or **Multiverse Analysis**.
+
+We can implement this approach using the `specr` package. In simple terms, it works as follows:
+
+**Step 1**: Specify a list of reasonable “model ingredients” for each model parameter:
+
+```{r}
+specs <- specr::setup(
+  data = life_expec_dat, 
+  y = c("life_expectancy"), # add dependent variable 
+  x = c("gdp", "log(gdp)", "I(gdp^2)"), # add independent variables 
+  model = c("lm", "glm"), # specify model types
+  controls = c("population", "alcohol", "bmi"), # specify controls
+  subsets = as.list(distinct(life_expec_dat, status)) # specify subgroup
+)
+
+summary(specs, rows = 20)
+```
+
+**Step 2**: Run Specification Curve Analysis:
+
+```{r cache =TRUE}
+# run specification curve analysis
+results <- specr::specr(specs)
+```
+
+**Step 3**: Inspect the specification curve to understand how robust your findings are to different analytical choices.
+
+These plots help to illustrate where and when you had to make a choice and how many models you might alternatively have specified.
+
+```{r, fig.height=7.5, fig.width=15}
+plot(specs, circular = TRUE)
+```
+
+More concretely you could also look at some summary statistics for your p-values across the different model specifications:
+
+```{r}
+summary(results, 
+        type = "curve",
+        group = c("x", "controls")  # group analysis by model choices
+)
+```
+
+Note that statistic `r colorise("mad", "red")` stands for `r colorise("median absolute deviation", "red")`.
+
+A more intuitive way of inspecting the results might be to visualize them.
+
+```{r, fig.height=7.5}
+# plot entire visualization
+plot(results)
+```
+
+**Plot A** denotes:
+
+-   **X-axis** = ordered model specifications (from most negative effect to most positive effect)
+-   **Y-axis** = standardized regression coefficient for the IV-DV relationship
+-   **Points** = the standardized regression coefficient for each specific model
+-   **Error bars** = 95% confidence intervals around the point estimate
+
+**Plot B** denotes:
+
+-   **X-axis** = ordered model specifications (the same as panel A)
+-   **Y-axis (right)** = analytic decision categories
+-   **Y-axis (left)** = specific analytic decisions within each category
+-   **Lines** = indicates whether a specific analytic decision was true for that particular model specification
+
+---
+
+# Interpretable Effect Sizes `r emo::ji("magnifying")`
+
+While these plots make it easy to compare effects across coefficients, unit changes may not be comparable across variables. We can address this problem in several ways:
+
+-   Re-scale variables to show intuitive unit changes in X (e.g., \$1k instead of \$1)
+-   Re-scale to full scale (minimum to maximum) changes in X
+-   Standardize variables to show standard deviation changes in X
+
+Let's try standardizing our variables to address the problem.
+
+```{r, fig.height=7.5, warning=FALSE, cache = TRUE}
+# copy our data
+life_expec_dat_stand <- life_expec_dat
+
+# standardize  variables
+life_expec_dat_stand <- life_expec_dat_stand |> 
+  dplyr::mutate(gdp = effectsize::standardise(gdp))
+
+# specify reasonable model "ingredients"
+specs_stand <- specr::setup(
+  data = life_expec_dat_stand, 
+  y = c("life_expectancy"), # add dependent variable 
+  x = c("gdp", "log(gdp)", "I(gdp^2)"), # add independent variables 
+  model = c("lm", "glm"), # specify model types
+  controls = c("population", "alcohol", "bmi"), # specify controls
+  subsets = as.list(distinct(life_expec_dat_stand, status)) # specify subgroup
+)
+
+# run specification curve analysis
+results_stand <- specr::specr(specs_stand)
+
+# plot entire visualization
+plot(results_stand) 
+```
+
+Note that any re-scaling operation will affect how you interpret the coefficients! For more details, check out the [`effectsize` package](https://easystats.github.io/effectsize/).
+
+Without putting much thought into our model, it looks like `gdp` (depending on the specification) can either have a small positive effect or a substantial positive effect on `life_expectancy`. This just goes to show how *careful* one has to approach the task of *correctly specifying a model*!
+
+::: {.alert-danger .pad-box}
+🚨 **Watch Out!** ⚠️
+
+Be careful and **selective** when you use specification curve analysis! It is not a tool that you should apply to each and every potential paper. Especially, if you have not taken a course on **causal inference**. Specification curve analysis, when it includes variables that act as **colliders** or **mediators**, might actually legitimize an otherwise wrongly specified model!
+:::
+
+------------------------------------------------------------------------
+
+# Model Output with `broom` `r emo::ji("broom")`
+
+In the lecture we saw that lists of different combinations of model specifications can be unwieldy. Simon also pointed out that we are interested in three main aspects of our model outputs:
+
+1.  **Estimated coefficients** and associated standard errors, t-statistics, p-values, confidence intervals
+2.  **Model summaries** including goodness of fit measures, information on model convergence, number of observations used
+3.  **Observation-level** information that arises from the estimated model, such as fitted/predicted values, residuals, estimates of influence
+
+Extracting this information from the model output is possible but not straightforward:
+
+```{r, out.lines = 10}
+str(multiv_model_out[[3]])
+
+summary(multiv_model_out[[3]])
+```
+
+## Tidying Model Objects
+
+Luckily, we don't have to deal with this. We can use the [tidyverse's](https://www.tidyverse.org/) `broom` package which is part of a collection of packages used for modeling that adhere to tidyverse principles referred to as [tidymodels](https://www.tidymodels.org/). Tidymodels offers a lot of cool packages that have their own tutorials, so check them out! `r emo::ji("strong")`.
+
+In today's session, we will only focus on `broom`. As a refresher, here are the three key broom functions that you should know:
+
+1.  `broom::tidy()`: Summarizes information about model components.
+
+```{r}
+broom::tidy(multiv_model_out[[3]], conf.int = TRUE, conf.level = 0.95)
+```
+
+2.  `broom::glance()`: Reports information about the entire model.
+
+```{r}
+broom::glance(multiv_model_out[[3]])
+```
+
+3.  `augment()`: Adds information about observations to a dataset.
+
+```{r}
+broom::augment(multiv_model_out[[3]], se_fit = TRUE) 
+```
+
+Doesn't this look so much tidier?
+
+---
+
+## Broom with Many Models
+
+Where `broom` really shines is when it comes to dealing with multiple models like we have in our `multiv_model_out`. It allows us to easily move away from hard-to-deal-with lists while retaining each of the three important model outputs. Since our example replicates several variables in different models, we include the `.id` argument in `purrr::map()`. This adds a column to our tibble which will contain a **model identifier**. In our example, the identifier of each model corresponds with the index number of the model output.
+
+```{r}
+multiv_model_out_broom <- purrr::map_dfr(multiv_model_out[1:3], # the model objects
+                                         broom::tidy, # the function to iterate with
+                                         .id = "model_type") # id column
+
+multiv_model_out_broom
+```
+
+Now that we have multiple model outputs in a format that we can work with, it is time to start thinking about visualizing our results. You can plot the residuals, the goodness of fit statistics etc. Similarly, you could also use `broom::glance()` to provide some robustness statistics or descriptive tables.
+
+The next section will focus on how to **present your results**!
+
+------------------------------------------------------------------------
+
+# Results with `modelsummary` `r emo::ji("lab_coat")`
+
+For this we will use the `modelsummary` package by [Vincent Arel-Bundock's](https://vincentarelbundock.github.io/modelsummary/). Though there are many packages to choose from when it comes to communicating your results, we highly recommend you give `modelsummary` a shot!
+
+One reason that we like this package is that it combines both approaches of presenting model results, either as a **table** or as a **coefficient plot**. As we saw in the lecture, each method has its advantages and its drawbacks. Therefore, we will cover both here.
+
+---
+
+## Using Regression Tables
+
+The workhorse function in `modelsummary` is unsurprisingly `modelsummary()`. `r emo::ji("thinking")`
+
+Here we only need to input the `r colorise("models list", "red")` as the function does all of the tidying for us.
+
+```{r}
+modelsummary::modelsummary(multiv_model_out[[31]], 
+                           output = "kableExtra") # can take multiple formats (e.g., .tex, .doc, .pdf)
+```
+
+It looks pretty solid already, but can definitely be improved upon.
+
+For example, we can **set acceptable number of digits**:
+
+```{r, eval=F}
+modelsummary::modelsummary(multiv_model_out[[31]], 
+                           output = "kableExtra",
+                           fmt = "%.2f") # 2-digits and trailing 0
+```
+
+We can also report **only the C.I.** by getting rid of the p-values and intercept term:
+
+```{r}
+model_table <- modelsummary::modelsummary(multiv_model_out[[31]], 
+                                          output = "kableExtra",
+                                          fmt = "%.2f",  # 2-digits and trailing 0  
+                                          estimate  = "{estimate}", 
+                                          statistic = "conf.int",
+                                          coef_omit = "Intercept") 
+```
+
+Wouldn't it look more professional if our **coefficients began with capital letter**? And how about we get rid of some of the bloated goodness of fit statistics?
+
+```{r}
+mod_table <- modelsummary::modelsummary(multiv_model_out[31], 
+                                        output = "default",
+                                        fmt = "%.2f",  # 2-digits and trailing 0  
+                                        estimate  = "{estimate}",
+                                        statistic = "conf.int",
+                                        coef_omit = "Intercept",
+                                        coef_rename=c("gdp"="Gdp", 
+                                                      "bmi"="Avg. BMI", 
+                                                      "alcohol" = "Alcohol Consum.",
+                                                      "hiv_aids"= "HIV cases", 
+                                                      "percentage_expenditure" = "Health Expenditure (% of GDP)",
+                                                      "life_expectancy" = "Life Expectancy"),
+                                        gof_omit = 'DF|Deviance|Log.Lik|AIC|BIC',
+                                        title = 'An Improved Regression Table')
+
+mod_table
+```
+
+When using the `kableExtra` package, you can even post-process your table:
+
+```{r}
+mod_table |> 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = F, fixed_thead = T) |> 
+  kableExtra::row_spec(3, color = 'red') |>
+  kableExtra::row_spec(5, background = 'lightblue')
+```
+
+---
+
+## Using Plots 🎨
+
+If you are looking for an alternative way to present your results, you might also consider a nice **coefficient plot**.
+
+Again, `modelsummary` provides a very accessible function for this: `modelplot()`. As with the regression table, you input the `r colorise("Model List", "red")` and not the tidied output. The tidying happens under the hood.
+
+```{r, fig.align='center', echo=T, out.width = "70%"}
+# to avoid overplotting, we define a smaller list of models
+models <- list(
+  "Bivariate OLS" = lm(life_expectancy ~ gdp, data = life_expec_dat),
+  "Multivariate OLS" = lm(life_expectancy ~ gdp + total_expenditure + population + alcohol + bmi, data = life_expec_dat),
+  "Interaction" = lm(life_expectancy ~  gdp + total_expenditure + population + gdp*total_expenditure, data = life_expec_dat),
+  "Polynomial" = lm(life_expectancy ~ gdp + I(gdp^2), data = life_expec_dat)
+)
+
+# plot 
+modelsummary::modelplot(models, coef_omit = "Intercept") 
+```
+
+Now we just need to customize the plot to our liking:
+
+```{r, fig.align='center', echo=T, out.width = "70%"}
+modelsummary::modelplot(models, coef_omit = "Intercept") +
+  labs(x = 'Coefficients', 
+       y = 'Term names',
+       title = 'Linear regression models of "Life expectancy"',
+       caption = "Comparing multiple models, the data originated at the WHO") 
+```
+
+We will cover data visualization with R in much greater detail in the next session, so hopefully the section on **coefficient plot** will be made clearer then!
+
+------------------------------------------------------------------------
+
+# Appendix
+
+```{r, message=F, comment=F}
+library(tidyverse)
+library(broom)
+library(nycflights13)
+library(modelsummary)
+library(lme4)
+```
+
+## Crafting formulas
+
+The basic structure of a formula:
+
+```r
+y ~ x
+```
+
+Running a model with a formula is straightforward. Note that we don't even have to put the formula in parentheses:
+
+```{r}
+lm(arr_delay ~ distance + origin, data = flights)
+```
+
+A more explicit way to write formulas:
+
+```{r}
+fmla <- as.formula("arr_delay ~ distance + origin")
+class(fmla)
+lm(fmla, data = flights)
+```
+
+More formula syntax:
+
+```{r}
+y ~ x1 + x2
+y ~ x1 - x2 # ignore x2 in analysis
+y ~ . # select all other variables in model matrix
+```
+
+Interactions:
+
+```{r}
+y ~ x1 * x2 # That's equivalent to y ~ x1 + x2 + x1*x2
+y ~ x1:x2  # only interaction, no main effects
+```
+
+As-is variables:
+
+```{r}
+y ~ x + I(x^2)
+```
+
+Extract all variable names from a formula object:
+
+```{r}
+all.vars(fmla)
+```
+
+Incrementally modify/update a formula:
+
+```{r}
+#?update
+```
+
+### Further reading
+
+-   [Model formulae in R by Thomas Leeper](https://thomasleeper.com/Rcourse/Tutorials/formulae.html)
+-   [`formula {stats}` documentation](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/formula.html)
+
+---
+
+## Advanced crafting of formulas: fitting multiple models
+
+Create a formula for a model with a large number of variables:
+
+```{r}
+xnam <- paste0("x", 1:25)
+(fmla <- as.formula(paste("y ~ ", paste(xnam, collapse= "+"))))
+```
+
+### Create a multitude of covariate sets
+
+**Step 1:** Define dependent variable + covariate set
+
+```{r}
+depvar <- "arr_delay"
+covars <- c("dep_delay", "carrier", "origin", "air_time", "distance", "hour")
+```
+
+**Step 2:** Build function to run lm models across set of all possible variable combinations
+
+```{r}
+combn_models <- function(depvar, covars, data)
+{
+  combn_list <- list()
+  # generate list of covariate combinations
+  for (i in seq_along(covars)) {
+    combn_list[[i]] <- combn(covars, i, simplify = FALSE)
+  }
+  combn_list <- unlist(combn_list, recursive = FALSE)
+  # function to generate formulas
+  gen_formula <- function(covars, depvar) {
+    form <- as.formula(paste0(depvar, " ~ ", paste0(covars, collapse = "+")))
+    form
+  }
+  # generate formulas
+  formulas_list <- purrr::map(combn_list, gen_formula, depvar = depvar)
+  # run models
+  models_list <- purrr::map(formulas_list, lm, data = data)
+  models_list
+}
+```
+
+**Step 3:** Run models (careful, this will generate a quite heavy list)
+
+```{r}
+models_list <- combn_models(depvar = depvar,  covars = covars, data = flights)
+length(models_list)
+```
+
+### Further reading
+
+-   [Multiverse analysis with multiverse](https://github.com/MUCollective/multiverse)
+-   [Specification curves with `specr`](https://masurp.github.io/specr/articles/specr.html)
+-   [For more background on multiverse analysis, see Steegen et al.](https://journals.sagepub.com/doi/pdf/10.1177/1745691616658637)
+
+---
+
+## Working with tidy model outputs
+
+Inspecting models in R is straightforward with the `summary()` function.
+
+```{r}
+lm(arr_delay ~ distance + origin, data = flights) |> summary()
+```
+
+But often you want to post-process estimation results. So let's examine the output of a model function more closely.
+
+```{r}
+model_out <- lm(arr_delay ~ distance + origin, data = flights)
+#class(model_out)
+#str(model_out)
+```
+
+Ugh, that's a lot of information in a list structure. Let's use some helper functions to unpack these:
+
+```{r}
+#coef(model_out)
+#fitted.values(model_out)
+#residuals(model_out)
+#model.matrix(model_out)
+```
+
+We can also dig in the summary of the model.
+
+```{r}
+#str(summary(model_out))
+summary(model_out)$coefficients
+```
+
+### The broom philosophy `r emo::ji("broom")`
+
+The broom package takes the messy output of built-in R functions such as `lm()`, `nls()`, or `t.test()`, and turns them into tidy tibbles.
+
+**Example**: linear model output
+
+```{r}
+model_out <- lm(arr_delay ~ distance + origin, data = flights)
+model_out
+summary(model_out)
+```
+
+Examine model object:
+
+```{r}
+#?tidy.lm
+broom::tidy(model_out)
+broom::tidy(model_out, conf.int = TRUE, conf.level = 0.95)
+```
+
+Inspect summary statistics:
+
+```{r}
+#?glance.lm
+broom::glance(model_out)
+```
+
+Add fitted values and residuals to original data:
+
+```{r}
+#?augment.lm
+broom::augment(model_out) |> slice(1:5)
+```
+
+`tidy()` can also be applied to `htest` objects:
+
+```{r}
+tt <- t.test(wt ~ am, mtcars)
+tidy(tt)
+```
+
+The true power of broom unfolds in settings where you want to combine results from multiple analyses (using subgroups of data, different models, bootstrap replicates of the original data frame, permutations, imputations, ...).
+
+**Step 4:** (continuing the analysis from above): Extract results from all models
+
+```{r}
+models_broom <- purrr::map(models_list, broom::tidy)
+models_broom[[1]] # inspect one list entry
+# turn into df by rbinding all tidied results
+models_broom_df <- purrr::map_dfr(models_broom, rbind)
+```
+
+**Step 5:** Summarize results
+
+```{r, fig.width=10}
+models_broom_df |> 
+  dplyr::filter(!str_detect(term, "Intercept|carrier")) |>
+  ggplot(aes(estimate)) + 
+  geom_histogram(binwidth = .1) + 
+  geom_vline(xintercept = 0, linetype="dashed") + 
+  facet_grid(cols = vars(term), scales = "free_y") + 
+  theme_minimal()
+```
+
+### Further reading
+
+-   [Introductory broom package vignette](https://cran.r-project.org/web/packages/broom/vignettes/broom.html)
+-   [Overview of available methods](https://cran.r-project.org/web/packages/broom/vignettes/available-methods.html)
+
+---
+
+## Reporting model results
+
+### Tables
+
+A table of models:
+
+```{r}
+model1_out <- lm(arr_delay ~ dep_delay, data = flights)
+model2_out <- lm(arr_delay ~ distance, data = flights)
+model3_out <- lm(arr_delay ~ dep_delay + distance, data = flights)
+
+models <- list(model1_out, model2_out, model3_out)
+
+modelsummary::modelsummary(models, 
+                           estimate = "{estimate} [{conf.low}, {conf.high}]",
+                           statistic = NULL,
+                           gof_omit = ".+",
+                           title = "Linear regression of flight delay at arrival (in mins)") 
+```
+
+### Coefficient plots
+
+One model, one plot:
+
+```{r}
+cm <- c("distance" = "Distance",
+        "originLGA" = "Origin: LGA",
+        "originJFK" = "Origin: JFK")
+
+modelsummary::modelplot(model_out, 
+                        coef_omit = "Interc", 
+                        coef_map = cm)
+```
+
+Standardized continuous variable:
+
+```{r}
+flights$distance_std <- effectsize::standardize(flights$distance)
+model_out_std2 <-lm(arr_delay ~ distance_std + origin, data = flights)
+
+cm <- c("distance_std" = "Distance",
+        "originLGA" = "Origin: LGA",
+        "originJFK" = "Origin: JFK")
+```
+
+One model, one plot (more options):
+
+```{r}
+modelsummary::modelplot(model_out_std2, coef_omit = "Interc", coef_map = cm) + 
+  xlim(-5, .25) + 
+  geom_vline(xintercept = 0, linetype="dashed") + 
+  labs(title = "Linear regression of flight delay at arrival (in mins)",
+       caption = "Data source: nycflights13 package") + 
+  theme_minimal()
+```
+
+Re-scale continuous variable:
+
+```{r}
+flights$distance1kmiles <- flights$distance / 1000
+model_out_kmiles <-lm(arr_delay ~ distance1kmiles + origin, data = flights)
+cm <- c("distance1kmiles" = "Distance (1k miles)",
+        "originLGA" = "Origin: LGA",
+        "originJFK" = "Origin: JFK")
+```
+
+One model, one plot (more options):
+
+```{r}
+modelsummary::modelplot(model_out_kmiles, coef_omit = "Interc", coef_map = cm) + 
+  xlim(-5, .25) + 
+  geom_vline(xintercept = 0, linetype="dashed") + 
+  labs(title = "Linear regression of flight delay at arrival (in mins)",
+       caption = "Data source: nycflights13 package") + 
+  theme_minimal()
+```
+
+Multiple options, one faceted plot:
+
+```{r}
+modelsummary::modelplot(models, coef_omit = "Interc") + 
+  facet_grid(~model)
+
+library(effectsize)
+#?standardize
+#model_out_std <- standardize_parameters(model_out)
+#modelplot(model_out_std, coef_omit = "Interc", coef_map = cm) + 
+#  labs(title = "Linear regression of flight delay at arrival (in mins)",
+#       caption = "Data source: nycflights13 package") + 
+#  theme_minimal()
+```
+
+### True-vs-fitted plots
+
+```{r cache = TRUE}
+model_out |> 
+  broom::augment() |>
+  dplyr::slice_sample(n = 10000) |> 
+  ggplot(aes(x = .fitted, y = arr_delay)) +
+  geom_point(alpha =  0.25) +
+  geom_abline(intercept = 0, slope = 1) + 
+  labs(title = "Fitted vs. true values, lm(arr_delay ~ distance + origin)",
+       caption = "Data source: nycflights13 package") + 
+  xlab("Fitted values") + 
+  ylab("Arrival delay (in mins)") + 
+  theme_minimal()
+
+model_out_improve <- lm(arr_delay ~ dep_delay + distance + origin, data = flights)
+
+model_out_improve |> 
+  broom::augment() |>
+  dplyr::slice_sample(n = 10000) |> 
+  ggplot(aes(x = .fitted, y = arr_delay)) +
+  geom_point(alpha =  0.25) +
+  geom_abline(intercept = 0, slope = 1) + 
+  labs(title = "Fitted vs. true values, lm(arr_delay ~ dep_delay + distance + origin)",
+       caption = "Data source: nycflights13 package") + 
+  xlab("Fitted values") + 
+  ylab("Arrival delay (in mins)") + 
+  theme_minimal()
+```
+
+### Further reading
+
+-   The [`modelsummary`](https://github.com/vincentarelbundock/modelsummary) package creates tables and plots to summarize statistical models and data in R
+-   [Alternative packages for model summaries, including stargazer and texreg](https://github.com/vincentarelbundock/modelsummary#alternative-packages)
+-   Yet another alternative for data visualization for statistics: [sjPlot](https://strengejacke.github.io/sjPlot/)
+
+------------------------------------------------------------------------
+
+# <b style="color:#2f1a61">Acknowledgements</b> {.unnumbered}
+
+This tutorial drew heavily on the vignette from the [*specr package*](https://masurp.github.io/specr/articles/specr.html) as well as the [*Regression Section*](https://raw.githack.com/uo-ec607/lectures/master/08-regression/08-regression.html#Presentation) in McDermott's Data Science for Economists by Grant McDermott.
+
+This script was drafted by [Tom Arendt](https://github.com/tom-arend) and [Lisa Oswald](https://lfoswald.github.io/), with contributions by [Steve Kerr](https://smkerr.github.io/), [Hiba Ahmad](https://github.com/hiba-ahmad), [Carmen Garro](https://github.com/cgarroca), and [Sebastian Ramirez-Ruiz](https://seramirezruiz.github.io/).
