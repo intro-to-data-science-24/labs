@@ -259,7 +259,7 @@ specs <- specr::setup(
   as.list(distinct(life_expec_dat, status)) # specify subgroup
   )
 
-summary(specs, rows = 20)
+summary(specs, rows = 31)
 ```
 **Step 2**: Run Specification Curve Analysis:
 
@@ -279,6 +279,8 @@ plot(specs, circular = TRUE)
 More concretely you could also look at some summary statistics for your p-values across the different model specifications:
 
 ```{r}
+options(scipen = 999)
+
 summary(results, 
         type = "curve",
         group = c("x", "controls")  # group analysis by model choices

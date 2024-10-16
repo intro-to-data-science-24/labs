@@ -1,0 +1,401 @@
+---
+title: "Functions in R"
+subtitle: "Basics - and some more - in R functions"
+author: "Carmen Garro & Sebastian Ramirez-Ruiz"
+date: "(Fall 2024) Introduction to Data Science"
+output: 
+    rmdformats::robobook:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    toc_depth: 3
+    toc_float: true
+    self_contained: false
+---
+
+```{=html}
+<style>
+.h1,h2,h3 {
+color:#2f1a61;
+}
+
+.subtitle, section.normal {
+color:#291854;
+}
+
+.title {
+color:#cc0065;
+}
+</style>
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Welcome! `r emo::ji("wave")`
+
+Let's take a deeper look into functionality in R
+
+---
+
+# Important Concepts
+
+## What is an R function?
+
+* Functions in R are objects, just as data frames, vectors and lists are.
+* Functions allow us to group code lines that serve a purpose and make them reusable.
+* Functions are the abstract form of how a the code works.
+* They can be broken down into 3 components: arguments, body and environment.
+
+## Syntax and Components of a Function
+
+A function in R will have the following structure:
+
+```
+first_function <- function(arguments){
+  body of function
+  }
+```
+
+## Components of a function
+
+1. **Arguments**: what are the inputs that your function will work with. Called with *formals(function)*.
+2. **Body**: this is the code inside the function. What you want to do with the inputs and define outputs. Called with *body(function)*
+3. **Environment**: the data structure where your function finds the values associated with the inputs. *environment(function)*
+
+```{r}
+# function of summation
+f_1 <- function(x,y){
+  # sum of inputs
+  result = x+y
+  return(result)
+}
+
+formals(f_1)
+# returns x and y
+
+body(f_1)
+# returns code inside of {}
+
+environment(f_1)
+# where the function is looking for x and y
+```
+---
+
+# Types of Functions `r emo::ji("alien")`
+
+## Primitive Functions
+
+These are the functions present in baseR and don't require any package loading or function construction. They directly call C code to run, and are the exception to the rule of the three components.
+
+All of these are primitive functions:
+
+* sum()
+* mean()
+* sqrt()
+* min()
+* max()
+
+```{r}
+sum
+```
+They can be either builtin or special types. Closure type function are those that capture their environments.
+
+```{r}
+typeof(sum)
+typeof(`[`)
+typeof(f_1)
+```
+
+```{r}
+formals(sum)
+body(sum)
+environment(sum)
+```
+## First Class Functions
+
+Functions you create or load in R are objects, this property is called "First-Class Functions".  
+
+You can name your functions or you can create anonymous ones, depending on your objective. Remember purrr's anonymous functions?
+
+```{r}
+purrr::map_int(1:3, ~.x + 1)
+```
+---
+
+# Building Functions `r emo::ji("pencil")`
+
+## Basic Functions in R
+
+Previously we saw how the basic syntax of a function looks. We can use it as a guide to build our own functions in R.
+
+When naming functions, a good practice to follow is to use **verbs** for the desired protocol to follow. Another good practice is to names them in an intuitive manner like "roll_the_dice". The most used arguments in basic functions are `x` and `y`.
+
+Both baseR functions and arithmetic can be used to manipulate values.
+
+The `...` is used to add non-specified arguments to the function.
+
+```{r}
+summation <- function(x,y, ...){
+  result = sum(x,y,...)
+  return(result)
+}
+
+summation(1,2,3,4,5,c(1,2,3,4))
+```
+
+We can also specify default values to the arguments of a function:
+
+```{r}
+# create dice simulation, and specify number of times to roll the dice
+roll_the_dice <- function(n_times = 1){
+  result = sample(1:6, n_times, replace = TRUE)
+  return(paste("Rolling the dice",as.character(n_times),"times:",paste0(result, collapse = "-")))
+}
+
+roll_the_dice()
+roll_the_dice(5)
+```
+
+## Conditional Statements in Functions
+
+`if statements` allow for condition handling in functions.
+
+Syntax
+```
+if(condition){
+  what you want to happen if condition is true
+} else {
+  if condition is not true then do this
+}
+```
+
+
+```{r}
+roll_the_dice <- function(n_times = 1){
+  if(!is.numeric(n_times)){
+    print("Noup, I need a numerical input to work. Try again!")
+  } else {
+    result = sample(1:6, n_times, replace = TRUE)
+  return(paste("Rolling the dice",as.character(n_times),"times:",paste0(result, collapse = "-")))
+  }
+}
+
+
+roll_the_dice("Hallo")
+```
+## Error Handling
+
+You can use if statements to handle errors, like in the last function. Let's see some other ways. You can use `stop()` to tell R what to output in case of an error where it cannot evaluate the function. 
+
+```{r}
+roll_the_dice <- function(n_times = 1){
+  stop("Really, I need a number as an input")
+  result = sample(1:6, n_times, replace = TRUE)
+  return(paste("Rolling the dice",as.character(n_times),"times:",paste0(result, collapse = "-")))
+}
+
+# this produces an error with the desired message
+# roll_the_dice(list(2))
+```
+
+Sometimes you want your function to be flexible and ignore or skip errors. You can use try() for this.
+
+```{r}
+#purrr::map(c(1,2,"three"), roll_the_dice)
+```
+
+
+```{r}
+roll_the_dice <- function(n_times = 1){
+  try(sample(1:6, n_times, replace = TRUE))
+}
+
+#purrr::map(c(1,2,"three"), roll_the_dice)
+```
+`try()` does not allow assigning names within it. If you want to do something further than ignoring the error you can use `tryCatch()`
+
+```
+f_1 <- function(name_input){
+  tryCatch({your_function},
+           error = function(e)
+                    {e})
+}
+```
+
+```{r}
+roll_the_dice <- function(n_times = 1){
+  tryCatch({
+    result <- sample(1:6, n_times, replace = TRUE)
+    return(paste("Rolling the dice", as.character(n_times),"times:",paste(result, collapse = "-")))},
+    error = function(e){
+      return(paste(paste0("'",as.character(n_times),"'"), "is not a numeric input..."))
+    }
+    )
+}
+
+purrr::map(c(1,2,"three"), roll_the_dice)
+```
+## Creating More Complex Functions
+
+We can also add some elements we have worked with in past sessions. Let's create a function that creates possible variations of how a person can be called in documents.
+
+This function works with names that have one first name and one last name, e.g. "Wael Sawan", CEO of Shell.
+
+Possible variations:
+
+Wael Sawal
+W. Sawal
+W Sawal
+Wael S.
+Wael S
+W.S.
+
+- Pseudocode - writing the steps I want my function to make in paper
+
+first: split_name into first and last
+
+construct variations:
+complete  name
+include first capital letter of name and complete last name
+include first capital letter of name + . + complete last name
+...
+
+store them in a vector
+
+
+```{r}
+strsplit("Wael Sawan", " ")[[1]]
+```
+
+
+
+```{r}
+generate_name_variations <- function(full_name) {
+  tryCatch({
+    # Split the name into first and last name
+    name_parts <- strsplit(full_name, " ")[[1]]
+    
+    # Ensure that the name has exactly two parts
+    if (length(name_parts) != 2) {
+      stop("The input must be a two-word name.")
+    }
+    
+    first_name <- name_parts[1]
+    last_name <- name_parts[2]
+    first_initial <- substr(first_name, 1, 1)
+    last_initial <- substr(last_name, 1, 1)
+    
+    # Create the variations
+    variations <- c(
+      paste0(first_initial, ".", last_initial, "."),
+      paste0(first_initial, ".", " ", last_initial, "."),
+      paste0(first_initial, ".", " ", last_name),
+      paste0(first_initial, " ", last_name),
+      paste0(first_name, " ", last_name),
+      paste0(first_name, " ", last_initial, "."),
+      paste0(first_name, " ", last_initial)
+    )
+    
+    return(variations)
+  }, error = function(e) {
+    # Handle the error and return a message
+    return(paste("Error:", e$message))
+  })
+}
+
+# Apply the function to a vector of names, using purrr::map or lapply
+names_vector <- c("Wael Sawan", "John", "", "Alice Johnson", "NotAName")
+purrr::map(names_vector, generate_name_variations)
+```
+Let's simplify this to show no output and create a regex pattern:
+
+```{r}
+generate_name_variations <- function(full_name) {
+  tryCatch({
+    # Split the name into first and last name
+    name_parts <- strsplit(full_name, " ")[[1]]
+    
+    # Ensure that the name has exactly two parts
+    if (length(name_parts) != 2) {
+      e = ""
+    } else
+    {
+    first_name <- name_parts[1]
+    last_name <- name_parts[2]
+    first_initial <- substr(first_name, 1, 1)
+    last_initial <- substr(last_name, 1, 1)
+    
+    # Create the variations
+    variations <- c(
+      paste0(first_initial, ".", last_initial, "."),
+      paste0(first_initial, ".", " ", last_initial, "."),
+      paste0(first_initial, ".", " ", last_name),
+      paste0(first_initial, ".", last_name),
+      paste0(first_initial, " ", last_name),
+      paste0(first_name, " ", last_name),
+      paste0(first_name, " ", last_initial, "."),
+      paste0(first_name, " ", last_initial),
+      last_name
+    )
+    
+    return(paste(variations, collapse = "|"))}
+  }, error = function(e) {
+    # return empty
+    e
+  })
+}
+
+# Apply the function to a vector of names, using purrr::map or lapply
+names_vector <- c("Wael Sawan", "John", "", "Alice Johnson", "NotAName")
+purrr::map(names_vector, generate_name_variations)
+```
+
+We can use the function to create variations of a list of names and create a string to match in a text. Let's use the names of the [Alabama US congress members](https://www.house.gov/representatives).
+
+```{r}
+al_cong <- c("Jerry Carl","Barry Moore","Miker Rogers","Robert Aderholt","Dale Strong","Gary Palmer","Sewell Terri")
+
+texts_to_look <-c("J Carl is a congress member of the US","Robert A. and Strong are frequently seen discussing laws", "G.P. is from Alabama")
+
+# Function to check if any variations of the name are mentioned in the texts
+check_name_in_texts <- function(name, texts) {
+  # Generate the name variations
+  variations <- generate_name_variations(name)
+  
+  # Create a logical vector for each text, checking if any variation is found
+  sapply(texts, function(text) {
+    any(sapply(variations, function(variation) grepl(variation, text, ignore.case = TRUE)))
+  })
+}
+
+# Create a data frame with names as rows and texts as columns
+result_matrix <- sapply(al_cong, function(name) check_name_in_texts(name, texts_to_look))
+result_df <- as.data.frame(t(result_matrix))
+
+# Name the columns as text1, text2, etc.
+colnames(result_df) <- paste0("text", seq_along(texts_to_look))
+
+# Add the names of congress members as a column
+result_df <- cbind(Name = al_cong, result_df)
+
+# View the result
+result_df <- as.data.frame(result_df)
+row.names(result_df) <- NULL
+
+result_df
+  
+```
+
+
+
+---
+
+References:
+
+* Hadley Wickham. **Advanced R** Available at: https://adv-r.hadley.nz/functions.html#functionshttps://adv-r.hadley.nz/functions.html#functions
+* Introduction to Data Science. Session 03 Tidyverse and Function. (2024). Hertie School. https://github.com/intro-to-data-science-24/labs/tree/main/session-03-tidyverse-functions
+* ChatGPT was used to make code more efficient
+
