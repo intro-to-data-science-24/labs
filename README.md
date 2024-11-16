@@ -12,7 +12,7 @@
 7. Modelling \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-24/labs/7328e43628f9799d64eb295a3b389aaef237129a/session-07-modelling/7-modelling.html#) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-07-modelling/7-modelling.Rmd)\]
 8. Visualization \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-24/labs/4a6521e82003c0d3c57a12e615465522a52beb30/session-08-visualization/8-visualization.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-08-visualization/8-visualization.Rmd)\]
 9. Packaging in R \[[**slides**](https://rawcdn.githack.com/intro-to-data-science-24/labs/103dc6669d808931659d14afdbc22998da1c7cb6/session-09-packaging/helper_slides.html) | [**.html**](https://rawcdn.githack.com/intro-to-data-science-24/labs/103dc6669d808931659d14afdbc22998da1c7cb6/session-09-packaging/09-packaging.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-09-packaging/09-packaging.Rmd)\]
-10. Flexdashboards and Shiny Apps \[[**.html**](https://github.com/intro-to-data-science-24/labs/blob/main/session-11-shiny/11-shiny.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-10-shiny/10-shiny.Rmd)\]
+10. Flexdashboards and Shiny Apps \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-24/labs/c40c01de2fec96e25ab56ae2cdddeb2d38bb4352/session-10-shiny/10-shiny.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-10-shiny/10-shiny.Rmd)\]
 
 ## Instructors
 
