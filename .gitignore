@@ -6,8 +6,6 @@ wikipediaStatisticians
 **/._.DS_Store
 .Rproj.user
 practice-scripts/07-model-fitting.R
-session-10-shiny/10-shiny.html
-session-10-shiny/10-shiny.Rmd
 session-10-shiny/10-shiny_files/bootstrap-3.3.5/css/bootstrap-theme.css
 session-10-shiny/10-shiny_files/bootstrap-3.3.5/css/bootstrap-theme.css.map
 session-10-shiny/10-shiny_files/bootstrap-3.3.5/css/bootstrap-theme.min.css
@@ -90,13 +88,9 @@ session-10-shiny/10-shiny_files/tocify-1.9.1/jquery.tocify.css
 session-10-shiny/10-shiny_files/tocify-1.9.1/jquery.tocify.js
 session-10-shiny/footer.html
 session-10-shiny/our_app/.Renviron
-session-10-shiny/our_app/app.R
+
 session-10-shiny/our_app/app_plotly.R
-session-10-shiny/our_app/app_plotly_solutions.R
-session-10-shiny/our_app/DESCRIPTION
-session-10-shiny/our_app/movies.db
-session-10-shiny/our_app/README.md
-session-10-shiny/pics/basic-widgets.png
+
 session-05-web-scraping-old/5-web-scraping.html
 session-05-web-scraping-old/5-web-scraping.R
 session-05-web-scraping-old/5-web-scraping.Rmd
