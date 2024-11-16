@@ -1,0 +1,144 @@
+---
+title: "Waste Lands - America's forgotten nuclear legacy"
+author: IDS 2024 slight adaptation from Philipp Ottolinger's dashboard
+output: 
+  flexdashboard::flex_dashboard:
+    theme: journal
+    source_code: embed
+---
+
+```{r setup, include = FALSE}
+library(flexdashboard)
+library(shiny)
+library(jsonlite)
+library(maptools)
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(leaflet)
+library(plotly)
+
+# load data
+sites <- jsonlite::fromJSON(flatten=TRUE,
+                            "https://raw.githubusercontent.com/52vis/2016-15/ec4b0ef/sites.json")
+
+# created nested dfs with location info
+sites$locations <- purrr::map(sites$locations, function(x) {
+  if (nrow(x) == 0) {
+    data_frame(latitude=NA, longitude=NA, postal_code=NA, name=NA, street_address=NA)
+  } else {
+    x
+  }
+})
+
+# unnest sites and keep complete.cases
+sites <- tidyr::unnest(sites)
+sites <- sites[complete.cases(sites[,c("longitude", "latitude")]),]
+
+# create coloring scheme and labels
+sites$ratingcol <- dplyr::case_when(sites$site.rating == 0 ~ "#c99334",
+                                    sites$site.rating == 1 ~ "#32a852",
+                                    sites$site.rating == 2 ~ "#c93434",
+                                    TRUE ~ "#000000")
+
+sites$ratingf <- factor(sites$site.rating,
+                        levels=c(3:0),
+                        labels=c("Remote or no potential for radioactive contamination.",
+                                 "No authority to clean up or status unclear.",
+                                 "Cleanup declared complete.",
+                                 "Cleanup in progress."))
+
+# infer whether site was located at a university campus 
+sites$campus <- ifelse(grepl("University", sites$site.name) | 
+                         grepl("University", sites$street_address) | 
+                         grepl("Campus", sites$street_address), 1, 0)
+
+sites$campuscol <- ifelse(sites$campus == 1, "#c93434", "black")
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### All sites and their current status
+
+```{r}
+leaflet::leaflet() %>% 
+  leaflet::addTiles() %>% 
+  leaflet::fitBounds(-127.44,24.05,-65.30,50.35) %>% 
+  leaflet::addCircleMarkers(sites$longitude, 
+                            sites$latitude, 
+                            color = sites$ratingcol, 
+                            radius = 6, 
+                            fill = T,
+                            fillOpacity = 0.2,
+                            opacity = 0.6,
+                            popup = paste(sites$site.city,
+                                          sites$site.name, 
+                                          sep = "")) %>%
+  leaflet::addLegend("bottomleft", 
+                     colors = c("#c99334","#32a852", "#c93434", "#000000"),
+                     labels = c("Cleanup in progress.",
+                                "Cleanup complete.",
+                                "Status unclear.",
+                                "No potential for radioactive contamination."), 
+                     opacity = 0.8)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Number of sites
+
+```{r}
+# extract values and create labels
+rates <- sites %>% 
+  dplyr::count(ratingf)
+
+txt <- paste(rates$n, rates$ratingf, sep = "\n")
+
+gg_rates <- ggplot(rates, aes(x = stringr::str_wrap(ratingf, 15), y = n, fill = ratingf, text = txt)) +
+  geom_col() +
+  scale_fill_manual(values = c("#32a852", "#c99334","#c93434", "#000000")) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.title = element_blank())
+
+
+plotly::ggplotly(gg_rates, tooltip = "text")
+
+
+```
+
+```{r eval = F}
+# Plotly equivalent
+plotly::plot_ly(rates,
+                type = "bar",
+                x = ~ratingf, y = ~n,
+                color = ~ratingf,
+                text = txt,
+                hoverinfo = "text"
+) %>%
+  plotly::layout(showlegend = FALSE,
+                 xaxis = list(showline = F, showticklabels = F, fixedrange = T, title = ""),
+                 yaxis = list(fixedrange = T, title = "")
+  )
+```
+
+### Sites on campus
+
+```{r}
+leaflet::leaflet() %>% 
+  leaflet::addTiles() %>% 
+  leaflet::fitBounds(-127.44,24.05,-65.30,50.35) %>% 
+  leaflet::addCircleMarkers(sites[sites$campus == 1, ]$longitude, 
+                            sites[sites$campus == 1, ]$latitude, 
+                            color = sites[sites$campus == 1, ]$campuscol, 
+                            radius = 6, 
+                            fill = T,
+                            fillOpacity = 0.2,
+                            opacity = 0.6,
+                            popup = paste(sites[sites$campus == 1, ]$site.city,
+                                          sites[sites$campus == 1, ]$site.name, 
+                                          sep = ", "))
+```
